@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  db:
+    image: bitnami/postgresql:9.6
+    volumes:
+      - ./.pgdata:/bitnami
+    expose:
+      - 5432
+    environment:
+      - POSTGRESQL_USERNAME=zazuko
+      - POSTGRESQL_PASSWORD=Ih4KQmqbyrLYGoBlz7HzBxfB7j0S9hii
+      - POSTGRESQL_DATABASE=ontology-editor
+  nuxt:
+    build:
+      context: ./docker-app-dev
+    ports:
+     - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db

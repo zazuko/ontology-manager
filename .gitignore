@@ -9,3 +9,9 @@ npm-debug.log
 
 # Nuxt generate
 dist
+
+# Postgres dev database
+.pgdata
+
+# Docker npm cache
+.npm_cache
