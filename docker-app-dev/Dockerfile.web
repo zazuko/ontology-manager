@@ -13,9 +13,9 @@ WORKDIR /
 
 EXPOSE 3000
 
-COPY run.sh /run.sh
-RUN chmod 755 /run.sh
+COPY entrypoint.web.sh /entrypoint.web.sh
+RUN chmod 755 /entrypoint.web.sh
 
 
-ENTRYPOINT [ "/run.sh"]
+ENTRYPOINT [ "/entrypoint.web.sh"]
 CMD ["dev" , "install"]

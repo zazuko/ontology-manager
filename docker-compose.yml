@@ -5,18 +5,29 @@ services:
     image: bitnami/postgresql:9.6
     volumes:
       - ./.pgdata:/bitnami
-    expose:
-      - 5432
-    environment:
-      - POSTGRESQL_USERNAME=zazuko
-      - POSTGRESQL_PASSWORD=Ih4KQmqbyrLYGoBlz7HzBxfB7j0S9hii
-      - POSTGRESQL_DATABASE=ontology-editor
+      - ./migrations:/migrations
+    ports:
+      - "5432:5432"
+    env_file: docker-app-dev/.env
+
+  postgraphile:
+    build:
+      context: ./docker-app-dev
+      dockerfile: Dockerfile.postgraphile
+    ports:
+      - "5000:5000"
+    env_file: docker-app-dev/.env
+    depends_on:
+      - db
+
   nuxt:
     build:
       context: ./docker-app-dev
+      dockerfile: Dockerfile.web
     ports:
      - "3000:3000"
     volumes:
       - .:/app
     depends_on:
       - db
+      - postgraphile

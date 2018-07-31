@@ -22,5 +22,9 @@
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
     "eslint-plugin-vue": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=8.6",
+    "npm": ">=6.0"
   }
 }

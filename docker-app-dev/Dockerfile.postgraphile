@@ -1,0 +1,8 @@
+FROM graphile/postgraphile
+
+
+COPY entrypoint.postgraphile.sh /entrypoint.postgraphile.sh
+RUN chmod 755 /entrypoint.postgraphile.sh
+
+
+ENTRYPOINT [ "/entrypoint.postgraphile.sh"]
