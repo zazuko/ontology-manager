@@ -17,6 +17,26 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+  modules: ['@nuxtjs/apollo'],
+  // Give apollo module options
+  apollo: {
+    tokenName: process.env.TOKENSECRET,
+    // required
+    clientConfigs: {
+      default: {
+        // required
+        httpEndpoint: 'http://localhost:5000/graphql',
+        // You can use `wss` for secure connection (recommended in production)
+        // Use `null` to disable subscriptions
+        wsEndpoint: null
+      }
+      // test: {
+      //   httpEndpoint: 'http://localhost:5000',
+      //   wsEndpoint: 'http://localhost:5000',
+      //   tokenName: 'apollo-token'
+      // },
+    }
+  },
   /*
   ** Build configuration
   */
@@ -36,4 +56,3 @@ module.exports = {
     }
   }
 }
-

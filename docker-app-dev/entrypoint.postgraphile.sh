@@ -6,4 +6,5 @@ postgraphile \
   --secret $TOKENSECRET \
   --schema ontology_editor \
   --default-role ontology_editor_anonymous \
+  --cors
   --token ontology_editor.jwt_token

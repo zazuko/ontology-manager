@@ -123,6 +123,7 @@ $$ language sql stable;
 comment on function ontology_editor.search_messages(text) is 'Returns threads containing a given search term.';
 
 alter table ontology_editor.person add column updated_at timestamp default now();
+alter table ontology_editor.thread add column updated_at timestamp default now();
 alter table ontology_editor.message add column updated_at timestamp default now();
 
 create function ontology_editor_private.set_updated_at() returns trigger as $$
@@ -139,6 +140,11 @@ create trigger person_updated_at before update
 
 create trigger message_updated_at before update
   on ontology_editor.message
+  for each row
+  execute procedure ontology_editor_private.set_updated_at();
+
+create trigger message_updated_at before update
+  on ontology_editor.thread
   for each row
   execute procedure ontology_editor_private.set_updated_at();
 

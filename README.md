@@ -12,6 +12,34 @@ $ make dbup
 $ make up
 ```
 
+### [Graph*i*QL](http://localhost:5000/graphiql)
+
+Sample queries to try:
+
+```gql
+mutation {
+  registerPerson (input: {
+    firstName: "James",
+    lastName: "Bond",
+    email: "test@example.com",
+    password: "qwer1234"
+  }) {
+    clientMutationId
+  }
+}
+```
+
+```gql
+mutation {
+  authenticate (input: {
+    email: "test@example.com",
+    password: "qwer1234"
+  }) {
+    jwtToken
+  }
+}
+```
+
 ## Build Setup
 
 ```bash
