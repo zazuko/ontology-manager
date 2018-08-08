@@ -20,14 +20,15 @@ services:
     depends_on:
       - db
 
-  nuxt:
-    build:
-      context: ./docker-app-dev
-      dockerfile: Dockerfile.web
-    ports:
-     - "3000:3000"
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - postgraphile
+  # nuxt:
+  #   build:
+  #     context: ./docker-app-dev
+  #     dockerfile: Dockerfile.web
+  #   ports:
+  #    - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #   env_file: docker-app-dev/.env
+  #   depends_on:
+  #     - db
+  #     - postgraphile
