@@ -7,17 +7,20 @@
       <h2 class="subtitle">
         Semantic Web, RDF ontology editor
       </h2>
-      <SignUp />
+      <!-- <SignUp /> -->
+      <SignIn />
     </div>
   </section>
 </template>
 
 <script>
-import SignUp from '~/components/SignUp.vue'
+// import SignUp from '~/components/SignUp.vue'
+import SignIn from '~/components/SignIn.vue'
 
 export default {
   components: {
-    SignUp
+    // SignUp,
+    SignIn
   }
 }
 </script>

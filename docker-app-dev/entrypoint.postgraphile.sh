@@ -3,7 +3,7 @@
 postgraphile \
   -n 0.0.0.0 \
   --connection postgres://ontology_editor_postgraphile:password_placeholder@db:5432/$POSTGRESQL_DATABASE \
-  --secret $TOKENSECRET \
+  --secret $POSTGRAPHILE_TOKEN_SECRET \
   --schema ontology_editor \
   --default-role ontology_editor_anonymous \
   --cors

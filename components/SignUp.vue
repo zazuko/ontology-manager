@@ -58,10 +58,6 @@ export default {
       password: ''
     }
   },
-  // created () {
-  //   this.$apolloHelpers.onLogin(process.env.TOKENSECRET)
-  //   console.log(this.$apollo)
-  // },
   methods: {
     async signUp () {
       const result = await this.$apollo.mutate({
