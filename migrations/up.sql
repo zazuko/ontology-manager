@@ -8,16 +8,14 @@ create schema ontology_editor_private;
 
 create table ontology_editor.person (
   id               serial primary key,
-  first_name       text not null check (char_length(first_name) < 80),
-  last_name        text check (char_length(last_name) < 80),
+  name             text not null check (char_length(name) < 80),
   about            text,
   created_at       timestamp default now()
 );
 
 comment on table ontology_editor.person is 'A user of the ontology editor.';
 comment on column ontology_editor.person.id is 'The primary unique identifier for the person.';
-comment on column ontology_editor.person.first_name is 'The person’s first name.';
-comment on column ontology_editor.person.last_name is 'The person’s last name.';
+comment on column ontology_editor.person.name is 'The person’s first name.';
 comment on column ontology_editor.person.about is 'A short description about the user, written by the user.';
 comment on column ontology_editor.person.created_at is 'The time this person was created.';
 
@@ -83,12 +81,6 @@ comment on column ontology_editor.message.created_at is 'The time this message w
 
 alter default privileges revoke execute on functions from public;
 
-create function ontology_editor.person_full_name(person ontology_editor.person) returns text as $$
-  select person.first_name || ' ' || person.last_name
-$$ language sql stable;
-
-comment on function ontology_editor.person_full_name(ontology_editor.person) is 'A person’s full name which is a concatenation of their first and last name.';
-
 create function ontology_editor.message_summary(
   message ontology_editor.message,
   length int default 50,
@@ -149,39 +141,71 @@ create trigger message_updated_at before update
   execute procedure ontology_editor_private.set_updated_at();
 
 create table ontology_editor_private.person_account (
-  person_id        integer primary key references ontology_editor.person(id) on delete cascade,
-  email            text not null unique check (email ~* '^.+@.+\..+$'),
-  password_hash    text not null
+  person_id          integer primary key references ontology_editor.person(id) on delete cascade,
+  oauth_token        text not null,
+  oauth_provided_id  integer not null unique,
+  email              text not null check (email ~* '^.+@.+\..+$')
 );
 
 comment on table ontology_editor_private.person_account is 'Private information about a person’s account.';
 comment on column ontology_editor_private.person_account.person_id is 'The id of the person associated with this account.';
 comment on column ontology_editor_private.person_account.email is 'The email address of the person.';
-comment on column ontology_editor_private.person_account.password_hash is 'An opaque hash of the person’s password.';
-
-create extension if not exists "pgcrypto";
+comment on column ontology_editor_private.person_account.oauth_token is 'The token issued by the oauth process.';
+comment on column ontology_editor_private.person_account.oauth_provided_id is 'The account ID provided by the oauth external service.';
 
 create function ontology_editor.register_person(
-  first_name text,
-  last_name text,
+  name text,
   email text,
-  password text
+  oauth_token text,
+  oauth_provided_id integer
 ) returns ontology_editor.person as $$
 declare
   person ontology_editor.person;
 begin
-  insert into ontology_editor.person (first_name, last_name) values
-    (first_name, last_name)
+  insert into ontology_editor.person (name) values
+    (name)
     returning * into person;
 
-  insert into ontology_editor_private.person_account (person_id, email, password_hash) values
-    (person.id, email, crypt(password, gen_salt('bf')));
+  insert into ontology_editor_private.person_account (person_id, email, oauth_token, oauth_provided_id) values
+    (person.id, email, oauth_token, oauth_provided_id);
 
   return person;
 end;
 $$ language plpgsql strict security definer;
+comment on function ontology_editor.register_person(text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
-comment on function ontology_editor.register_person(text, text, text, text) is 'Registers a single user and creates an account in our ontology editor.';
+create function ontology_editor.upsert_person(
+  name text,
+  email text,
+  token text,
+  provided_id integer
+) returns ontology_editor.person as $$
+declare
+  person ontology_editor.person;
+begin
+  select p.*
+  into person
+  from ontology_editor.person as p
+    join ontology_editor_private.person_account as pa
+    on p.id = pa.person_id
+  where pa.oauth_provided_id = provided_id limit 1;
+
+  if not found then
+    insert into ontology_editor.person (name) values
+      (name)
+      returning * into person;
+  end if;
+
+  insert into ontology_editor_private.person_account
+    (person_id, email, oauth_token, oauth_provided_id) values
+    (person.id, email,       token,       provided_id)
+  on conflict (oauth_provided_id) do update set
+    oauth_token = token;
+
+  return person;
+end;
+$$ language plpgsql strict security definer;
+comment on function ontology_editor.upsert_person(text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
 create role ontology_editor_postgraphile login password 'password_placeholder';
 
@@ -234,14 +258,14 @@ grant select on table ontology_editor.message to ontology_editor_anonymous, onto
 grant insert, update, delete on table ontology_editor.message to ontology_editor_person;
 grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person;
 
-grant execute on function ontology_editor.person_full_name(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.person_latest_message(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.search_messages(text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.authenticate(text, text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
-grant execute on function ontology_editor.register_person(text, text, text, text) to ontology_editor_anonymous;
+grant execute on function ontology_editor.register_person(text, text, text, integer) to ontology_editor_anonymous;
+grant execute on function ontology_editor.upsert_person(text, text, text, integer) to ontology_editor_anonymous;
 
 alter table ontology_editor.person enable row level security;
 alter table ontology_editor.message enable row level security;
