@@ -50,12 +50,6 @@ module.exports = {
         client_secret: process.env.OAUTH_CLIENT_SECRET,
         scope: ['user:email']
       }
-    },
-    redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
-      user: '/'
     }
   },
   /*
