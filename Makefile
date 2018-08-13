@@ -4,9 +4,8 @@ dbup:
 
 # starts all services
 up: dbup
-	sleep 60 && make migrate
+	sleep 30 && make migrate
 	docker-compose up -d
-	docker-compose logs -f nuxt
 
 # stops all services
 down:

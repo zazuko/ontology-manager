@@ -17,11 +17,17 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+  /*
+  ** Modules
+  */
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/apollo'
   ],
+  /*
+  ** Modules config: apollo
+  */
   apollo: {
     tokenName: process.env.POSTGRAPHILE_TOKEN_SECRET,
     clientConfigs: {
@@ -33,6 +39,9 @@ module.exports = {
       }
     }
   },
+  /*
+  ** Modules config: auth
+  */
   auth: {
     strategies: {
       local: false,
@@ -49,6 +58,10 @@ module.exports = {
       user: '/'
     }
   },
+  /*
+  ** Internal API
+  */
+  serverMiddleware: ['~/api/'],
   /*
   ** Build configuration
   */
