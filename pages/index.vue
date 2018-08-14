@@ -8,7 +8,8 @@
         Semantic Web, RDF ontology editor
       </h2>
 
-      <sign-in />
+      <sign-in
+        @loggedOut="loggedOut" />
 
     </div>
   </section>
@@ -16,10 +17,16 @@
 
 <script>
 import SignIn from '~/components/SignIn.vue'
+import { toastClose } from '~/libs/utils'
 
 export default {
   components: {
     SignIn
+  },
+  methods: {
+    loggedOut () {
+      this.$toast.success('Signed out successfully!', toastClose)
+    }
   }
 }
 </script>

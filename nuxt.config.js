@@ -23,7 +23,8 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/apollo'
+    '@nuxtjs/apollo',
+    '@nuxtjs/toast'
   ],
   /*
   ** Modules config: apollo
@@ -50,6 +51,12 @@ module.exports = {
         scope: ['user:email']
       }
     }
+  },
+  /*
+  ** Modules config: toast
+  */
+  toast: {
+    position: 'top-center'
   },
   /*
   ** Internal API
