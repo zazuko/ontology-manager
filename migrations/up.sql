@@ -45,6 +45,7 @@ create table ontology_editor.thread (
   id               serial primary key,
   author_id        integer not null references ontology_editor.person(id),
   hat_id           integer default null references ontology_editor.hat(id),
+  external_id      integer default null ,
   headline         text not null check (char_length(headline) < 280),
   iri              text not null check (char_length(iri) < 280),
   body             text,
@@ -56,6 +57,7 @@ comment on table ontology_editor.thread is 'A message thread.';
 comment on column ontology_editor.thread.id is 'The primary key for the thread.';
 comment on column ontology_editor.thread.author_id is 'The id of the author user.';
 comment on column ontology_editor.thread.hat_id is 'The hat used to post this message, if any.';
+comment on column ontology_editor.thread.external_id is 'The id of an external object (e.g. a github PR), if any.';
 comment on column ontology_editor.thread.headline is 'The title written by the user.';
 comment on column ontology_editor.thread.iri is 'The IRI of the object our thread is about.';
 comment on column ontology_editor.thread.body is 'The main body text of our thread.';
@@ -258,7 +260,10 @@ grant select on table ontology_editor.person to ontology_editor_anonymous, ontol
 grant update, delete on table ontology_editor.person to ontology_editor_person;
 
 grant select on table ontology_editor.message to ontology_editor_anonymous, ontology_editor_person;
+grant select on table ontology_editor.thread to ontology_editor_anonymous, ontology_editor_person;
+grant select on table ontology_editor.hat to ontology_editor_anonymous, ontology_editor_person;
 grant insert, update, delete on table ontology_editor.message to ontology_editor_person;
+grant insert, update, delete on table ontology_editor.thread to ontology_editor_person;
 grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person;
 
 grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
