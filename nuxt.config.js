@@ -29,7 +29,6 @@ module.exports = {
   ** Modules config: apollo
   */
   apollo: {
-    tokenName: process.env.POSTGRAPHILE_TOKEN_SECRET,
     clientConfigs: {
       default: {
         httpEndpoint: 'http://localhost:5000/graphql',
