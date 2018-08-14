@@ -18,6 +18,7 @@
     "@nuxtjs/apollo": "^4.0.0-rc1",
     "@nuxtjs/auth": "^4.5.1",
     "@nuxtjs/axios": "^5.3.1",
+    "@nuxtjs/toast": "^3.0.1",
     "apollo-cache-inmemory": "^1.2.7",
     "apollo-client": "^2.3.8",
     "apollo-link": "^1.2.2",
