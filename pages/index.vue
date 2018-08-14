@@ -7,7 +7,9 @@
       <h2 class="subtitle">
         Semantic Web, RDF ontology editor
       </h2>
-      <SignIn />
+
+      <sign-in />
+
     </div>
   </section>
 </template>
@@ -17,7 +19,6 @@ import SignIn from '~/components/SignIn.vue'
 
 export default {
   components: {
-    // SignUp,
     SignIn
   }
 }
