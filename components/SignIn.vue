@@ -1,16 +1,18 @@
 <template>
-  <div class="signin">
-    <button
-      v-show="loggedIn"
-      @click="signOut">
-      Sign Out
-    </button>
+  <span>
     <button
       v-show="!loggedIn"
+      class="button is-small is-info is-outlined"
       @click="signIn">
-      Sign In
+      <span>Sign In</span>
     </button>
-  </div>
+    <button
+      v-show="loggedIn"
+      class="button is-small is-info is-outlined"
+      @click="signOut">
+      <span>Sign Out</span>
+    </button>
+  </span>
 </template>
 
 <script>

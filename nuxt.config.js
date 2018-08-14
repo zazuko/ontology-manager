@@ -13,6 +13,9 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  css: [
+    { lang: 'scss', src: '@/assets/scss/app.scss' }
+  ],
   /*
   ** Customize the progress bar color
   */
@@ -56,7 +59,7 @@ module.exports = {
   ** Modules config: toast
   */
   toast: {
-    position: 'top-center'
+    position: 'top-right'
   },
   /*
   ** Internal API
@@ -67,9 +70,17 @@ module.exports = {
   */
   build: {
     /*
-    ** Run ESLint on save
+    ** Custom PostCSS config
     */
+    postcss: {
+      plugins: {
+        'postcss-custom-properties': false
+      }
+    },
     extend (config, { isDev, isClient }) {
+      /*
+      ** Run ESLint on save
+      */
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
@@ -77,6 +88,20 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+      }
+
+      /*
+      ** Make Bulma @importable
+      */
+      for (const rule of config.module.rules) {
+        if (rule.use) {
+          for (const use of rule.use) {
+            if (use.loader === 'sass-loader') {
+              use.options = use.options || {}
+              use.options.includePaths = ['node_modules/bulma/bulma']
+            }
+          }
+        }
       }
     }
   }
