@@ -221,17 +221,20 @@ create type ontology_editor.jwt_token as (
 );
 
 create function ontology_editor.authenticate(
-  email text,
-  password text
+  oauth_token text,
+  oauth_provided_id integer
 ) returns ontology_editor.jwt_token as $$
 declare
   account ontology_editor_private.person_account;
 begin
   select a.* into account
   from ontology_editor_private.person_account as a
-  where a.email = $1;
+  where
+    a.oauth_token = $1
+  and
+    a.oauth_provided_id = $2;
 
-  if account.password_hash = crypt(password, account.password_hash) then
+  if found then
     return ('ontology_editor_person', account.person_id)::ontology_editor.jwt_token;
   else
     return null;
@@ -239,7 +242,7 @@ begin
 end;
 $$ language plpgsql strict security definer;
 
-comment on function ontology_editor.authenticate(text, text) is 'Creates a JWT token that will securely identify a person and give them certain permissions.';
+comment on function ontology_editor.authenticate(text, integer) is 'Creates a JWT token that will securely identify a person and give them certain permissions.';
 
 create function ontology_editor.current_person() returns ontology_editor.person as $$
   select *
@@ -261,7 +264,7 @@ grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person
 grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.person_latest_message(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.search_messages(text) to ontology_editor_anonymous, ontology_editor_person;
-grant execute on function ontology_editor.authenticate(text, text) to ontology_editor_anonymous, ontology_editor_person;
+grant execute on function ontology_editor.authenticate(text, integer) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
 grant execute on function ontology_editor.register_person(text, text, text, integer) to ontology_editor_anonymous;

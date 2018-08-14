@@ -16,6 +16,7 @@
 <script>
 import axios from 'axios'
 import _get from 'lodash/get'
+import gql from 'graphql-tag'
 
 export default {
   name: 'SignIn',
@@ -35,15 +36,41 @@ export default {
       if ([token, email, name, id].every(Boolean)) {
         // check and link account to local account
         return axios.post('/api/link', { token, email, name, id })
+          .then(async () => {
+            // generate a JWT for authenticated user graphql
+            try {
+              const res = await this.$apollo.mutate({
+                mutation: gql`mutation ($oauthToken: String!, $oauthProvidedId: Int!) {
+                  authenticate (input: {
+                    oauthToken: $oauthToken,
+                    oauthProvidedId: $oauthProvidedId
+                  }) {
+                    jwtToken
+                  }
+                }`,
+                variables: {
+                  oauthToken: token,
+                  oauthProvidedId: id
+                }
+              }).then(({data}) => {
+                return data && data.authenticate
+              })
+
+              await this.$apolloHelpers.onLogin(res.jwtToken)
+            } catch (e) {
+              console.error(e)
+            }
+          })
       }
     }
   },
   methods: {
-    signIn () {
-      this.$auth.loginWith('github')
+    async signIn () {
+      await this.$auth.loginWith('github')
     },
-    signOut () {
+    async signOut () {
       this.$auth.logout()
+      await this.$apolloHelpers.onLogout()
     }
   }
 }
