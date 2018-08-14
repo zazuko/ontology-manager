@@ -61,12 +61,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-tr {
-  padding: 12px;
-}
-td {
-  padding: 12px;
-}
-</style>
