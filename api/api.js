@@ -58,7 +58,7 @@ router.post('/link', async function (req, res, next) {
   }
 
   try {
-    const result = await apolloClient.mutate({
+    await apolloClient.mutate({
       mutation: gql`mutation ($name: String!, $email: String!, $token: String!, $providedId: Int!) {
         upsertPerson (input: {
           name: $name,
@@ -74,8 +74,28 @@ router.post('/link', async function (req, res, next) {
       variables
     })
 
-    res.json(result.upsertPerson)
-    return
+    // generate the user-specific JWT that Apollo will use to make authenticated
+    // graphql queries for this user
+    const result = await apolloClient.mutate({
+      mutation: gql`mutation ($oauthToken: String!, $oauthProvidedId: Int!) {
+        authenticate (input: {
+          oauthToken: $oauthToken,
+          oauthProvidedId: $oauthProvidedId
+        }) {
+          jwtToken
+        }
+      }`,
+      variables: {
+        oauthToken: serverToken,
+        oauthProvidedId: serverId
+      }
+    })
+
+    if (!_.get(result, 'data.authenticate')) {
+      throw new Error('Authentication failed.')
+    }
+    // data && data.authenticate
+    res.json(result.data.authenticate)
   } catch (err) {
     if (_.get(err, 'graphQLErrors.length', 0)) {
       console.error(err.graphQLErrors)
