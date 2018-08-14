@@ -10,15 +10,15 @@ services:
       - "5432:5432"
     env_file: docker-app-dev/.env
 
-  # postgraphile:
-  #   build:
-  #     context: ./docker-app-dev
-  #     dockerfile: Dockerfile.postgraphile
-  #   ports:
-  #     - "5000:5000"
-  #   env_file: docker-app-dev/.env
-  #   depends_on:
-  #     - db
+  postgraphile:
+    build:
+      context: ./docker-app-dev
+      dockerfile: Dockerfile.postgraphile
+    ports:
+      - "5000:5000"
+    env_file: docker-app-dev/.env
+    depends_on:
+      - db
 
   # nuxt:
   #   build:
