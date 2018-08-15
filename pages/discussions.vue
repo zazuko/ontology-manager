@@ -1,38 +1,18 @@
 <template>
   <section class="container">
-    <div
-      v-for="thread in allThreads.threads"
-      :key="thread.id">
-      <table border="1">
-        <tr>
-          <td>id</td>
-          <td>author name</td>
-          <td>hat</td>
-          <td>externalId</td>
-          <td>headline</td>
-          <td>iri</td>
-          <td>body</td>
-          <td>threadType</td>
-        </tr>
-        <tr>
-          <td>{{ thread.id }}</td>
-          <td>{{ thread.author.name }}</td>
-          <td>{{ thread.hat }}</td>
-          <td>{{ thread.externalId }}</td>
-          <td>{{ thread.headline }}</td>
-          <td>{{ thread.iri }}</td>
-          <td>{{ thread.body }}</td>
-          <td>{{ thread.threadType }}</td>
-        </tr>
-      </table>
-    </div>
+    <discussions-list
+      :threads="allThreads.threads"/>
   </section>
 </template>
 
 <script>
 import gql from 'graphql-tag'
+import DiscussionsList from '~/components/DiscussionsList.vue'
 
 export default {
+  components: {
+    DiscussionsList
+  },
   data: () => ({
     allThreads: []
   }),

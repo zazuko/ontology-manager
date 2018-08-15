@@ -292,6 +292,7 @@ grant select on table ontology_editor.thread to ontology_editor_anonymous, ontol
 grant select on table ontology_editor.hat to ontology_editor_anonymous, ontology_editor_person;
 grant insert, update, delete on table ontology_editor.message to ontology_editor_person;
 grant insert, update, delete on table ontology_editor.thread to ontology_editor_person;
+grant usage on sequence ontology_editor.thread_id_seq to ontology_editor_person;
 grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person;
 
 grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
