@@ -15,3 +15,7 @@ dist
 
 # Docker npm cache
 .npm_cache
+
+# Secrets
+docker-app-dev/.env
+
