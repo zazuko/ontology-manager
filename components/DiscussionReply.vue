@@ -67,10 +67,7 @@ export default {
 
       this.$apollo.mutate({mutation, variables})
         .then((data) => {
-          // const id = _get(data, 'createMessage.message.id')
-          // if (id) {
-          //   this.$router.push({ name: 'discussion', query: { id } })
-          // }
+          this.$emit('answerAdded')
         })
         .catch((err) => {
           console.error(err)
