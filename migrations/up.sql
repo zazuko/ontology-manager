@@ -67,7 +67,7 @@ create table ontology_editor.thread (
   id               serial primary key,
   author_id        integer not null default ontology_editor.current_person_id() references ontology_editor.person(id),
   hat_id           integer default null references ontology_editor.hat(id),
-  external_id      integer default null ,
+  external_id      integer default null,
   headline         text not null check (char_length(headline) < 280),
   iri              text not null check (char_length(iri) < 280),
   body             text,
