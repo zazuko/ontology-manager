@@ -11,7 +11,13 @@
       * If you want to watch the front AND the API: `npm run dev-api`
 * Delete the DB to start over
     * `make reset`
-* GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)
+
+### Helpful Tools
+
+- Vue devtools extension [Chrome, Firefox](https://github.com/vuejs/vue-devtools#installation)
+- Local GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)
+- A postgres client (e.g. [Postico](https://eggerapps.at/postico/) for MacOS) to inspect schemas and data
+- Apollo devtools extension [Chrome, Firefox](https://github.com/apollographql/apollo-client-devtools#apollo-client-devtools)
 
 ## GitHub Setup
 

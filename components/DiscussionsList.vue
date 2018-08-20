@@ -16,7 +16,11 @@
       <tr
         v-for="discussion in discussions"
         :key="discussion.id">
-        <td>{{ discussion.id }}</td>
+        <td>
+          <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+            {{ discussion.id }}
+          </nuxt-link>
+        </td>
         <td>{{ discussion.author.name }}</td>
         <td>{{ discussion.hat }}</td>
         <td>{{ discussion.externalId }}</td>
