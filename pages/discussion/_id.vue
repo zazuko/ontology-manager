@@ -1,7 +1,9 @@
 <template>
   <section class="container">
     <discussion-card :discussion="discussion" />
-    <discussion-reply :id="id" />
+    <discussion-reply
+      :id="id"
+      @answerAdded="$apollo.queries.discussion.refetch()"/>
   </section>
 </template>
 

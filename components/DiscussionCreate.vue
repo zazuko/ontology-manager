@@ -94,10 +94,12 @@ export default {
       }
 
       this.$apollo.mutate({mutation, variables})
-        .then((data) => {
-          const id = _get(data, 'createThread.thread.id')
+        .then((result) => {
+          const id = _get(result, 'data.createThread.thread.id')
           if (id) {
-            this.$router.push({ name: 'discussion', query: { id } })
+            this.$router.push({ name: 'discussion-id', params: { id } })
+          } else {
+            console.error('Failed to redirect', result)
           }
         })
         .catch((err) => {
