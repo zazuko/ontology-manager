@@ -2,24 +2,8 @@
 
 ## Dev Setup
 
-* Run the project:
-  * Database and GraphQL API:
-    * `make up`
-  * Front dev server + watch:
-    1. Export all environment variables from `./docker-app-dev/.env`
-      * If you only want to watch the front (you probably do): `npm run dev`
-      * If you want to watch the front AND the API: `npm run dev-api`
-* Delete the DB to start over
-    * `make reset`
 
-### Helpful Tools
-
-- Vue devtools extension [Chrome, Firefox](https://github.com/vuejs/vue-devtools#installation)
-- Local GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)
-- A postgres client (e.g. [Postico](https://eggerapps.at/postico/) for MacOS) to inspect schemas and data
-- Apollo devtools extension [Chrome, Firefox](https://github.com/apollographql/apollo-client-devtools#apollo-client-devtools)
-
-## GitHub Setup
+### A. GitHub Setup
 
 1. Create an OAuth app: https://github.com/settings/applications/new
 1. Homepage / Callback : `http://localhost:3000/`
@@ -28,6 +12,29 @@
     OAUTH_CLIENT_ID=6bac5524e0e11f1ae9ec
     OAUTH_CLIENT_SECRET=b5d15ea361b1d28a44152599c72621a36c631751
     ```
+
+### B. Local Setup
+
+1. `npm install`
+1. Run the project:
+  * Database and GraphQL API:
+      * `make up`
+  * Front dev server + watch:
+    1. Export all environment variables from `./docker-app-dev/.env`
+        * If you only want to watch the front (you probably do): `npm run dev`
+        * If you want to watch the front AND the API: `npm run dev-api`
+
+Whenever you feel like it:
+
+* Deleting the DB to start over:
+    * `make reset`
+
+### Helpful Tools
+
+- Vue devtools extension [Chrome, Firefox](https://github.com/vuejs/vue-devtools#installation)
+- Local GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)
+- A postgres client (e.g. [Postico](https://eggerapps.at/postico/) for MacOS) to inspect schemas and data
+- Apollo devtools extension [Chrome, Firefox](https://github.com/apollographql/apollo-client-devtools#apollo-client-devtools)
 
 ## Architecture
 
