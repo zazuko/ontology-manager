@@ -1,7 +1,15 @@
 <template>
   <section class="container">
+
+    <nuxt-link
+      :to="{ name: 'discussion-new', query: { iri: 'http://example.org/foo' } }"
+      class="button is-link">
+      New Thread
+    </nuxt-link>
+
     <discussions-list
-      :threads="allThreads.threads"/>
+      :discussions="discussions.nodes"/>
+
   </section>
 </template>
 
@@ -14,13 +22,15 @@ export default {
     DiscussionsList
   },
   data: () => ({
-    allThreads: []
+    discussions: {
+      discussions: []
+    }
   }),
   apollo: {
-    allThreads: {
-      query: gql`{
-        allThreads {
-          threads: nodes {
+    discussions: {
+      query: gql` query GetAllDiscussions {
+        discussions: allThreads {
+          nodes {
             id,
             headline,
             body,
@@ -36,7 +46,8 @@ export default {
             externalId
           }
         }
-      }`
+      }`,
+      fetchPolicy: 'cache-and-network'
     }
   }
 }
