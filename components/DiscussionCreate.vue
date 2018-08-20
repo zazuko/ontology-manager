@@ -1,6 +1,17 @@
 <template>
   <div>
     <div class="field">
+      <label class="label">IRI</label>
+      <div class="control">
+        <input
+          :value="_iri"
+          class="input"
+          type="text"
+          disabled>
+      </div>
+    </div>
+
+    <div class="field">
       <label class="label">Headline</label>
       <div class="control">
         <input
@@ -36,6 +47,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import _get from 'lodash/get'
 
 export default {
   name: 'DiscussionCreate',
@@ -82,6 +94,15 @@ export default {
       }
 
       this.$apollo.mutate({mutation, variables})
+        .then((data) => {
+          const id = _get(data, 'createThread.thread.id')
+          if (id) {
+            this.$router.push({ name: 'discussion', query: { id } })
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 }

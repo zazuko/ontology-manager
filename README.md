@@ -2,9 +2,13 @@
 
 ## Dev Setup
 
-* Run the project
-    1. `make up`
-    2. `npm run dev-api`
+* Run the project:
+  * Database and GraphQL API:
+    * `make up`
+  * Front dev server + watch:
+    1. Export all environment variables from `./docker-app-dev/.env`
+      * If you only want to watch the front (you probably do): `npm run dev`
+      * If you want to watch the front AND the API: `npm run dev-api`
 * Delete the DB to start over
     * `make reset`
 * GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)

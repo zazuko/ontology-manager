@@ -2,14 +2,14 @@
   <nav class="navbar is-white topNav">
     <div class="container">
       <div class="navbar-brand">
-        <router-link
+        <nuxt-link
           :to="{ name: 'index', params: {} }"
           class="navbar-item">
           <img
             src="~/assets/images/logo.png"
             style="filter: invert(100%);"
             height="28">
-        </router-link>
+        </nuxt-link>
         <div
           :class="{'is-active': isActive}"
           class="navbar-burger burger"
@@ -25,12 +25,16 @@
         :class="{'is-active': isActive}"
         class="navbar-menu">
         <div class="navbar-start">
-          <router-link
+          <nuxt-link
             :to="{ name: 'index', params: {} }"
-            class="navbar-item">Home</router-link>
-          <router-link
+            class="navbar-item">
+            Home
+          </nuxt-link>
+          <nuxt-link
             :to="{ name: 'discussions', params: {} }"
-            class="navbar-item">Discussions</router-link>
+            class="navbar-item">
+            Discussions
+          </nuxt-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">

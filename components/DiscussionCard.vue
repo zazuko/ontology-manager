@@ -13,9 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        v-for="discussion in discussions"
-        :key="discussion.id">
+      <tr>
         <td>{{ discussion.id }}</td>
         <td>{{ discussion.author.name }}</td>
         <td>{{ discussion.hat }}</td>
@@ -31,7 +29,7 @@
 
 <script>
 export default {
-  name: 'DiscussionsList',
-  props: ['discussions']
+  name: 'DiscussionCard',
+  props: ['discussion']
 }
 </script>
