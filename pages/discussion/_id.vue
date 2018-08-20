@@ -1,6 +1,7 @@
 <template>
   <section class="container">
     <discussion-card :discussion="discussion" />
+    <discussion-reply :id="id" />
   </section>
 </template>
 
@@ -8,6 +9,7 @@
 import _get from 'lodash/get'
 import gql from 'graphql-tag'
 import DiscussionCard from '~/components/DiscussionCard.vue'
+import DiscussionReply from '~/components/DiscussionReply.vue'
 
 export default {
   async asyncData (context) {
@@ -19,19 +21,16 @@ export default {
       })
     }
     return {
-      id
+      id: parseInt(id, 10)
     }
   },
   middleware: 'authenticated',
   components: {
-    DiscussionCard
+    DiscussionCard,
+    DiscussionReply
   },
   data: () => ({
-    discussion: {
-      author: {
-        name: ''
-      }
-    }
+    discussion: {}
   }),
   apollo: {
     discussion: {
@@ -49,7 +48,16 @@ export default {
           iri,
           threadType,
           authorId,
-          externalId
+          externalId,
+          answers: messagesByThreadId {
+            messages: nodes {
+              id,
+              body,
+              author: personByAuthorId {
+                name
+              }
+            }
+          }
         }
       }`,
       variables () {
