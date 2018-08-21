@@ -57,7 +57,7 @@ export default {
         const id = _get(this, '$store.state.auth.user.id', '')
 
         if ([token, email, name, id].every(Boolean)) {
-          // check and link account to local account
+          // check token then link oauth account/token to local account/token
           const result = await axios.post('/api/link', { token, email, name, id })
           const jwtToken = _get(result, 'data.jwtToken')
           if (!jwtToken) throw new Error('Account linking failed.')
