@@ -17,7 +17,7 @@
         v-for="discussion in discussions"
         :key="discussion.id">
         <td>
-          <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+          <nuxt-link :to="{ name: 'discussions-id', params: { id: discussion.id } }">
             {{ discussion.id }}
           </nuxt-link>
         </td>

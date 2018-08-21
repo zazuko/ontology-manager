@@ -45,6 +45,7 @@ export default {
             title
           },
           author: personByAuthorId {
+            avatar,
             name
           },
           iri,
@@ -62,12 +63,27 @@ export default {
           }
         }
       }`,
+      prefetch: ({ route }) => {
+        return {
+          id: route.params.id
+        }
+      },
       variables () {
         return {
           id: this.id
         }
       },
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      result ({data, loading}) {
+        if (!loading && data) {
+          if (!data.discussion) {
+            return this.$router.app.error({
+              statusCode: 404,
+              message: 'Not found'
+            })
+          }
+        }
+      }
     }
   }
 }
