@@ -5,6 +5,7 @@
       <thead>
         <tr>
           <th>id</th>
+          <th>avatar</th>
           <th>author name</th>
           <th>hat</th>
           <th>externalId</th>
@@ -17,6 +18,7 @@
       <tbody>
         <tr v-if="discussion.author">
           <td>{{ discussion.id }}</td>
+          <td>{{ discussion.author.avatar }}</td>
           <td>{{ discussion.author.name }}</td>
           <td>{{ discussion.hat }}</td>
           <td>{{ discussion.externalId }}</td>
@@ -33,6 +35,7 @@
       <thead>
         <tr>
           <th>id</th>
+          <th>avatar</th>
           <th>author name</th>
           <th>hat</th>
           <th>body</th>
@@ -43,6 +46,7 @@
           v-for="message in discussion.answers.messages"
           :key="message.id">
           <td>{{ message.id }}</td>
+          <td>{{ message.author.avatar }}</td>
           <td>{{ message.author.name }}</td>
           <td>{{ message.hat }}</td>
           <td>{{ message.body }}</td>
