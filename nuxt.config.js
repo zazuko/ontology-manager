@@ -1,4 +1,14 @@
 module.exports = {
+  ontology: {
+    github: {
+      repo: 'o',
+      owner: 'vhf',
+      branch: 'master',
+      files: {
+        'ontology.nt': true
+      }
+    }
+  },
   /*
   ** Headers of the page
   */
@@ -59,7 +69,9 @@ module.exports = {
   ** Modules config: toast
   */
   toast: {
-    position: 'top-right'
+    position: 'top-right',
+    containerClass: 'notification-toast',
+    className: 'notification'
   },
   /*
   ** Internal API

@@ -3,12 +3,13 @@
     <discussion-card :discussion="discussion" />
     <discussion-reply
       :id="id"
-      @answerAdded="$apollo.queries.discussion.refetch()"/>
+      @answerAdded="answerAdded()"/>
   </section>
 </template>
 
 <script>
 import gql from 'graphql-tag'
+import { toastClose } from '~/libs/utils'
 import DiscussionCard from '~/components/DiscussionCard.vue'
 import DiscussionReply from '~/components/DiscussionReply.vue'
 
@@ -73,6 +74,14 @@ export default {
           }
         }
       }
+    }
+  },
+  methods: {
+    answerAdded () {
+      this.$apollo.queries.discussion.refetch()
+        .then(() => {
+          this.$toast.success('Answer successfully added!', toastClose)
+        })
     }
   }
 }
