@@ -172,15 +172,17 @@ const defaultOptions = {
   }
 }
 
-const options = require('../nuxt.config').apollo.clientConfigs.default
+const nuxtOptions = require('../nuxt.config').apollo.clientConfigs.default
 
-let client
-module.exports = () => {
-  if (!client) {
-    ({apolloClient: client} = createApolloClient({
+let clients = {}
+module.exports = (options = nuxtOptions) => {
+  const key = JSON.stringify(options)
+  if (!clients.hasOwnProperty(key)) {
+    const { apolloClient } = createApolloClient({
       ...defaultOptions,
       ...options
-    }))
+    })
+    clients[key] = apolloClient
   }
-  return client
+  return clients[key]
 }
