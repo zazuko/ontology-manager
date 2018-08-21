@@ -8,22 +8,16 @@
 </template>
 
 <script>
-import _get from 'lodash/get'
 import gql from 'graphql-tag'
 import DiscussionCard from '~/components/DiscussionCard.vue'
 import DiscussionReply from '~/components/DiscussionReply.vue'
 
 export default {
-  async asyncData (context) {
-    const id = _get(context, 'params.id')
-    if (!id) {
-      return context.error({
-        statusCode: 404,
-        message: 'Missing `id` parameter'
-      })
-    }
+  async asyncData ({route}) {
+    const id = parseInt(route.params.id, 10)
+
     return {
-      id: parseInt(id, 10)
+      id
     }
   },
   middleware: 'authenticated',
@@ -63,11 +57,6 @@ export default {
           }
         }
       }`,
-      prefetch: ({ route }) => {
-        return {
-          id: route.params.id
-        }
-      },
       variables () {
         return {
           id: this.id
