@@ -2,7 +2,7 @@
   <section class="container">
 
     <nuxt-link
-      :to="{ name: 'discussion-new', query: { iri: 'http://example.org/foo' } }"
+      :to="{ name: 'discussions-new', query: { iri: 'http://example.org/foo' } }"
       class="button is-link">
       New Thread
     </nuxt-link>

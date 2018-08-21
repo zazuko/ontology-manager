@@ -8,16 +8,18 @@ create schema ontology_editor_private;
 
 create table ontology_editor.person (
   id               serial primary key,
-  name             text not null check (char_length(name) < 80),
   is_admin         boolean not null default false,
+  name             text not null check (char_length(name) < 80),
+  avatar           text,
   about            text,
   created_at       timestamp default now()
 );
 
 comment on table ontology_editor.person is '@omit all\nA user of the ontology editor.';
 comment on column ontology_editor.person.id is 'The primary unique identifier for the person.';
-comment on column ontology_editor.person.name is 'The person’s first name.';
 comment on column ontology_editor.person.is_admin is 'If true, the user has elevated privileges.';
+comment on column ontology_editor.person.name is 'The person’s first name.';
+comment on column ontology_editor.person.avatar is 'The person’s avatar URL.';
 comment on column ontology_editor.person.about is 'A short description about the user, written by the user.';
 comment on column ontology_editor.person.created_at is 'The time this person was created.';
 
