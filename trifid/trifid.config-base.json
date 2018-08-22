@@ -1,0 +1,103 @@
+{
+  "express": {
+    "trust proxy": "loopback",
+    "x-powered-by": null
+  },
+  "patchHeaders": {
+    "root": {
+      "static": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "public, max-age=120",
+        "Vary": "Accept"
+      }
+    }
+  },
+  "mediaTypeUrl": {
+    "root": {
+      "formats": {
+        "json": "application/json",
+        "jsonld": "application/ld+json",
+        "nt": "application/n-triples",
+        "ttl": "text/turtle",
+        "xml": "application/rdf+xml"
+      }
+    }
+  },
+  "rewrite": {
+    "root": {
+      "mediaTypes": [
+        "application/html",
+        "application/json",
+        "application/ld+json",
+        "application/n-triples",
+        "application/rdf+xml",
+        "application/xhtml+xml",
+        "text/html",
+        "text/turtle"
+      ],
+      "rewriteContent": true,
+      "rewriteHeaders": true
+    }
+  },
+  "breakDown": {
+    "rewrite": {},
+    "rewrite.root": {},
+    "rewrite.root.url": "datasetBaseUrl"
+  },
+  "plugins": {
+    "requestLogger": {
+      "priority": 20,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "morgan",
+      "params": ["combined"]
+    },
+    "compression": {
+      "priority": 30,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "compression"
+    },
+    "patchHeaders": {
+      "priority": 40,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "patch-headers"
+    },
+    "redirects": {
+      "priority": 50,
+      "module": "trifid-core:./plugins/redirects"
+    },
+    "mediaTypeUrl": {
+      "priority": 70,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "format-to-accept"
+    },
+    "rewrite": {
+      "priority": 80,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "camouflage-rewrite"
+    },
+    "iri": {
+      "priority": 90,
+      "module": "trifid-core:./plugins/iri"
+    },
+    "passthrough": {
+      "priority": 95,
+      "module": "cwd:./trifid/passthrough-plugin"
+    },
+    "locals": {
+      "priority": 100,
+      "module": "trifid-core:./plugins/locals"
+    },
+    "markdown": {
+      "priority": 110,
+      "module": "trifid-plugin-markdown"
+    },
+    "handler": {
+      "priority": 150,
+      "module": "trifid-core:./plugins/handler"
+    },
+    "headers-fix": {
+      "priority": 160,
+      "module": "trifid-core:./plugins/headers-fix"
+    }
+  }
+}

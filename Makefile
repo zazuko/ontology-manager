@@ -13,11 +13,11 @@ down:
 
 # migrates the database up
 migrate: dbup
-	docker exec -it ontology-editor_db_1 /migrations/up.sh
+	docker-compose exec db /migrations/up.sh
 
 # migrates the database down
 drop: dbup
-	docker exec -it ontology-editor_db_1 /migrations/down.sh
+	docker-compose exec db /migrations/down.sh
 
 # deletes the database files
 reset: down
