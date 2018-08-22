@@ -3,7 +3,7 @@ module.exports = {
     github: {
       repo: 'o',
       owner: 'vhf',
-      branch: 'master',
+      branch: 'example-com',
       files: {
         'ontology.nt': true
       }
@@ -76,7 +76,10 @@ module.exports = {
   /*
   ** Internal API
   */
-  serverMiddleware: ['~/api/'],
+  serverMiddleware: [
+    '~/api/',
+    '~/trifid/'
+  ],
   /*
   ** Build configuration
   */

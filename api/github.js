@@ -43,6 +43,11 @@ function forgeApiFactory (config) {
       return
     }
 
+    if (!clientToken) {
+      res.status(500).send({message: 'Missing client token!'})
+      return
+    }
+
     let serverToken, serverId
 
     try {
@@ -108,14 +113,15 @@ function forgeApiFactory (config) {
       }
       // data && data.authenticate
       res.json(result.data.authenticate)
+      return
     } catch (err) {
       if (_.get(err, 'graphQLErrors.length', 0)) {
         console.error(err.graphQLErrors)
       } else {
         console.error(err)
       }
-      res.status(404).send()
     }
+    res.status(500).send()
   })
 
   return router
