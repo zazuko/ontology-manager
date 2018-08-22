@@ -1,0 +1,22 @@
+{
+  "baseConfig": "cwd:trifid/trifid.config-base.json",
+  "datasetBaseUrl": "http://example.com/",
+  "patchHeaders": {
+    "root": {
+      "static": {
+        "Cache-Control": null
+      }
+    }
+  },
+  "handler": {
+    "ontology": {
+      "module": "cwd:node_modules/trifid-handler-fetch",
+      "priority": 100,
+      "options": {
+        "url": "https://raw.githubusercontent.com/vhf/o/example-com/ontology.nt",
+        "contentType": "application/n-triples",
+        "split": "true"
+      }
+    }
+  }
+}
