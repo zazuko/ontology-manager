@@ -81,6 +81,12 @@ module.exports = {
     '~/trifid/'
   ],
   /*
+  ** Middleware configuration https://nuxtjs.org/guide/routing#middleware
+  */
+  router: {
+    middleware: 'iri'
+  },
+  /*
   ** Build configuration
   */
   build: {
