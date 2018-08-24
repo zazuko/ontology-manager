@@ -57,11 +57,18 @@ export default {
         const id = _get(this, '$store.state.auth.user.id', '')
 
         if ([token, email, name, id].every(Boolean)) {
-          // check token then link oauth account/token to local account/token
-          const result = await axios.post('/api/link', { token, email, name, id })
-          const jwtToken = _get(result, 'data.jwtToken')
-          if (!jwtToken) throw new Error('Account linking failed.')
-          this.$apolloHelpers.onLogin(jwtToken)
+          try {
+            // check token then link oauth account/token to local account/token
+            const result = await axios.post('/api/link', { token, email, name, id })
+              .catch((err) => {
+                this.$toast.error(`Server Error: ${err.response.data.message}`, toastClose)
+              })
+            const jwtToken = _get(result, 'data.jwtToken')
+            if (!jwtToken) throw new Error('Account linking failed.')
+            this.$apolloHelpers.onLogin(jwtToken)
+          } catch (err) {
+            this.$toast.error(err, toastClose)
+          }
         }
       }
     }
