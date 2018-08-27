@@ -258,7 +258,9 @@ grant ontology_editor_person to ontology_editor_postgraphile;
 
 create type ontology_editor.jwt_token as (
   role text,
-  person_id integer
+  person_id integer,
+  email text,
+  name text
 );
 
 create function ontology_editor.authenticate(
@@ -267,6 +269,7 @@ create function ontology_editor.authenticate(
 ) returns ontology_editor.jwt_token as $$
 declare
   account ontology_editor_private.person_account;
+  name    text;
 begin
   select a.* into account
   from ontology_editor_private.person_account as a
@@ -276,7 +279,11 @@ begin
     a.oauth_provided_id = $2;
 
   if found then
-    return ('ontology_editor_person', account.person_id)::ontology_editor.jwt_token;
+    select p.name into name
+    from ontology_editor.person as p
+    where p.id = account.person_id;
+
+    return ('ontology_editor_person', account.person_id, account.email, name)::ontology_editor.jwt_token;
   else
     return null;
   end if;
