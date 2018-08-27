@@ -14,7 +14,7 @@ export default {
   middleware: 'authenticated',
   methods: {
     async paf () {
-      const headers = {headers: {authorization: this.$auth.getToken('github')}}
+      const headers = {headers: {authorization: `Bearer ${this.$apolloHelpers.getToken()}`}}
       const result = await axios.post('/api/proposals/new', {}, headers)
         .then(() => {
           console.log('success', result)
