@@ -51,15 +51,15 @@ export default {
     },
     async authenticate () {
       if (Object.keys(this.$store.state.auth || {}).length) {
-        const token = (this.$auth.getToken('github') || ' ').split(' ').slice(1)[0]
         const email = _get(this, '$store.state.auth.user.email', '')
         const name = _get(this, '$store.state.auth.user.name', '')
         const id = _get(this, '$store.state.auth.user.id', '')
 
-        if ([token, email, name, id].every(Boolean)) {
+        if ([email, name, id].every(Boolean)) {
           try {
             // check token then link oauth account/token to local account/token
-            const result = await axios.post('/api/link', { token, email, name, id })
+            const headers = {headers: {authorization: this.$auth.getToken('github')}}
+            const result = await axios.post('/api/link', { email, name, id }, headers)
               .catch((err) => {
                 this.$toast.error(`Server Error: ${err.response.data.message}`, toastClose)
               })

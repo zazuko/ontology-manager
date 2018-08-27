@@ -6,6 +6,13 @@ module.exports = {
       branch: 'example-com',
       files: {
         'ontology.nt': true
+      },
+      committer: {
+        name: 'Ontology Editor',
+        email: 'victor.felder@zazuko.com',
+        get date () {
+          return (new Date()).toISOString()
+        }
       }
     }
   },
@@ -98,11 +105,11 @@ module.exports = {
         'postcss-custom-properties': false
       }
     },
-    extend (config, { isDev, isClient }) {
+    extend (config, { isDev }) {
       /*
       ** Run ESLint on save
       */
-      if (isDev && isClient) {
+      if (isDev && process.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
