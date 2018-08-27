@@ -8,9 +8,15 @@ async asyncData (context) {
   }
 }
 */
+
 export default function (context) {
   if (context.req && context.req._iri) {
-    console.log(`Got iri '${context.req._iri}'`)
     context.iri = context.req._iri
+
+    if (context.req.iri && context.req.iri.startsWith('http')) {
+      console.log(`Trifid found iri '${context.iri}'`)
+    } else {
+      console.log(`Trifid found no such iri: '${context.iri}'`)
+    }
   }
 }
