@@ -1,8 +1,16 @@
+const jwt = require('express-jwt')
 const bodyParser = require('body-parser')
 const express = require('express')
 
 const app = express()
 
+/**
+Except when linking github oauth token with postgraphile JWT, all
+API requests that come through here need a valid postgraphile JWT
+*/
+app.use(
+  jwt({secret: process.env.POSTGRAPHILE_TOKEN_SECRET})
+    .unless({path: ['/api/link']}))
 app.use(bodyParser.json())
 app.use('/', apiMiddleware())
 

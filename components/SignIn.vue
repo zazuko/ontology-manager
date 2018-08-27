@@ -50,7 +50,7 @@ export default {
       this.$emit('loggedOut')
     },
     async authenticate () {
-      if (Object.keys(this.$store.state.auth || {}).length) {
+      if (!this.$auth.$state.loggedIn && Object.keys(this.$store.state.auth || {}).length) {
         const email = _get(this, '$store.state.auth.user.email', '')
         const name = _get(this, '$store.state.auth.user.name', '')
         const id = _get(this, '$store.state.auth.user.id', '')
