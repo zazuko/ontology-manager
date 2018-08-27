@@ -102,32 +102,30 @@ router.post('/link', async function (req, res, next) {
 })
 
 router.post('/proposals/new', async (req, res, next) => {
-  if (checkToken(req, res)) {
-    // const {
-    //   email: clientEmail,
-    //   name: clientName,
-    //   id: clientId
-    // } = req.body
-    try {
-      const {name: branch} = await api.createBranch()
-      await api.updateFile({
-        message: 'hello',
-        content: 'foobar test',
-        branch,
-        author: {
-          name: 'Test User',
-          email: 'victor.felder@zazuko.com'
-        }
-      })
-      await api.createPR({
-        title: 'my title',
-        body: 'this **is** the body',
-        branch
-      })
-      res.json('yay')
-    } catch (err) {
-      res.status(500).json(err)
-    }
+  // const {
+  //   email: clientEmail,
+  //   name: clientName,
+  //   id: clientId
+  // } = req.body
+  try {
+    const {name: branch} = await api.createBranch()
+    await api.updateFile({
+      message: 'hello',
+      content: 'foobar test',
+      branch,
+      author: {
+        name: req.user.name,
+        email: req.user.email
+      }
+    })
+    await api.createPR({
+      title: 'my title',
+      body: 'this **is** the body',
+      branch
+    })
+    res.json('yay')
+  } catch (err) {
+    res.status(500).json(err)
   }
 })
 
