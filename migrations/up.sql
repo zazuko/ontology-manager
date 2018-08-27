@@ -217,6 +217,7 @@ comment on function ontology_editor.register_person(text, text, text, integer) i
 create function ontology_editor.upsert_person(
   name text,
   email text,
+  avatar text,
   token text,
   provided_id integer
 ) returns ontology_editor.person as $$
@@ -231,8 +232,8 @@ begin
   where pa.oauth_provided_id = provided_id limit 1;
 
   if not found then
-    insert into ontology_editor.person (name) values
-      (name)
+    insert into ontology_editor.person (name, avatar) values
+      (name, avatar)
       returning * into person;
   end if;
 
@@ -245,7 +246,7 @@ begin
   return person;
 end;
 $$ language plpgsql strict security definer;
-comment on function ontology_editor.upsert_person(text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
+comment on function ontology_editor.upsert_person(text, text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
 create role ontology_editor_postgraphile login password 'password_placeholder';
 
@@ -304,7 +305,7 @@ grant execute on function ontology_editor.authenticate(text, integer) to ontolog
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
 grant execute on function ontology_editor.register_person(text, text, text, integer) to ontology_editor_anonymous;
-grant execute on function ontology_editor.upsert_person(text, text, text, integer) to ontology_editor_anonymous;
+grant execute on function ontology_editor.upsert_person(text, text, text, text, integer) to ontology_editor_anonymous;
 
 alter table ontology_editor.person enable row level security;
 alter table ontology_editor.message enable row level security;

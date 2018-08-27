@@ -7,6 +7,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "dev-api": "nodemon --watch api --exec \"nuxt\"",
+    "build": "nuxt build",
+    "start": "nuxt start",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "test": "ava --serial --verbose"
@@ -16,6 +19,7 @@
     "@nuxtjs/auth": "^4.5.1",
     "@nuxtjs/axios": "^5.3.1",
     "@nuxtjs/toast": "^3.0.1",
+    "@octokit/rest": "^15.10.0",
     "apollo-cache-inmemory": "^1.2.7",
     "apollo-client": "^2.3.8",
     "apollo-link": "^1.2.2",
