@@ -10,7 +10,8 @@ API requests that come through here need a valid postgraphile JWT
 */
 app.use(
   jwt({secret: process.env.POSTGRAPHILE_TOKEN_SECRET})
-    .unless({path: ['/api/link']}))
+    // no smart trailing slash handling unfortunately
+    .unless({path: ['/api', '/api/', '/api/link', '/api/link/']}))
 app.use(bodyParser.json())
 app.use('/', apiMiddleware())
 

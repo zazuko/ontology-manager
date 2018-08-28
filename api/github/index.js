@@ -3,6 +3,7 @@ const Router = require('express').Router
 const axios = require('axios')
 const gql = require('graphql-tag')
 const {ontology} = require('../../nuxt.config')
+const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
 const api = new GitHubAPIv3(ontology.github)
@@ -11,8 +12,11 @@ const router = Router()
 
 module.exports = router
 
-const localApolloClient = require('../getApolloClient')()
-// const githubApolloClient = require('./getApolloClient')({
+const anonApolloClient = apolloClientFactory()
+const getAuthenticatedApolloClient = (token) => apolloClientFactory({
+  getAuth: () => token
+})
+// const githubApolloClient = apolloClientFactory({
 //   httpEndpoint: 'https://api.github.com/graphql',
 //   wsEndpoint: null,
 //   httpLinkOptions: {
@@ -27,8 +31,9 @@ router.get('/', function (req, res, next) {
 })
 
 router.post('/link', async function (req, res, next) {
-  // our user got a token from github, now we need to ask github to whom this token belongs
-  // and associate it to our user's account
+  // This is (`/` aside) the only endpoint that does not require a valid JWT.
+  // We use this when our user got a token from github, and now need to ask
+  // github to whom this token belongs and associate it to our user's account
   const {
     email: clientEmail,
     name: clientName,
@@ -51,7 +56,7 @@ router.post('/link', async function (req, res, next) {
   }
 
   try {
-    await localApolloClient.mutate({
+    await anonApolloClient.mutate({
       mutation: gql`mutation ($name: String!, $email: String!, $avatar: String!, $token: String!, $providedId: Int!) {
         upsertPerson (input: {
           name: $name,
@@ -70,7 +75,7 @@ router.post('/link', async function (req, res, next) {
 
     // generate the user-specific JWT that Apollo will use to make authenticated
     // graphql queries for this user
-    const result = await localApolloClient.mutate({
+    const result = await anonApolloClient.mutate({
       mutation: gql`mutation ($oauthToken: String!, $oauthProvidedId: Int!) {
         authenticate (input: {
           oauthToken: $oauthToken,
@@ -107,23 +112,50 @@ router.post('/proposals/new', async (req, res, next) => {
   //   name: clientName,
   //   id: clientId
   // } = req.body
+  const {
+    title = 'my title',
+    body = 'this **is** the body',
+    message = 'hello',
+    content = 'foobar test'
+  } = {}
+  const author = {name: req.user.name, email: req.user.email}
+
   try {
     const {name: branch} = await api.createBranch()
-    await api.updateFile({
-      message: 'hello',
-      content: 'foobar test',
-      branch,
-      author: {
-        name: req.user.name,
-        email: req.user.email
+
+    await api.updateFile({message, content, branch, author})
+
+    const {number} = await api.createPR({title, body, branch})
+
+    const userApolloClient = getAuthenticatedApolloClient(getToken(req))
+
+    const result = await userApolloClient.mutate({
+      mutation: gql`
+        mutation ($headline: String!, $body: String!, $iri: String!, $externalId: Int!) {
+          createThread (input: {
+            thread: {
+              headline: $headline,
+              body: $body,
+              iri: $iri,
+              externalId: $externalId,
+              threadType: 'proposal'
+            }
+          }) {
+            thread {
+              id
+            }
+          }
+        }
+      `,
+      variables: {
+        headline: title,
+        iri: iri,
+        body: body,
+        externalId: number
       }
     })
-    await api.createPR({
-      title: 'my title',
-      body: 'this **is** the body',
-      branch
-    })
-    res.json('yay')
+
+    res.json(result.data)
   } catch (err) {
     res.status(500).json(err)
   }
