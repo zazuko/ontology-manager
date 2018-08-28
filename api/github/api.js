@@ -85,6 +85,9 @@ module.exports = class GitHubAPIv3 {
       title,
       body
     })
-    console.log(JSON.stringify(result, null, 2))
+
+    return {
+      number: result.data.number
+    }
   }
 }

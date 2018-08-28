@@ -77,7 +77,8 @@ export default {
             thread: {
               headline: $headline,
               body: $body,
-              iri: $iri
+              iri: $iri,
+              threadType: 'discussion'
             }
           }) {
             thread {
