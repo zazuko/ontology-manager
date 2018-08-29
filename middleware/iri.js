@@ -10,13 +10,12 @@ async asyncData (context) {
 */
 
 export default function (context) {
+  /**
+   * We only enter this middleware when trifid didn't intercept the request.
+   * If we're here, we either want to show a nuxt page or fallback to displaying the HTML
+   * version of the dereferenced iri we are extracting here from the request.
+   */
   if (context.req && context.req._iri) {
     context.iri = context.req._iri
-
-    if (context.req.iri && context.req.iri.startsWith('http')) {
-      console.log(`Trifid found iri '${context.iri}'`)
-    } else {
-      console.log(`Trifid found no such iri: '${context.iri}'`)
-    }
   }
 }

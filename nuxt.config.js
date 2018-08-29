@@ -91,7 +91,14 @@ module.exports = {
   ** Middleware configuration https://nuxtjs.org/guide/routing#middleware
   */
   router: {
-    middleware: 'iri'
+    middleware: 'iri',
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'fallback',
+        path: '*',
+        component: resolve(__dirname, 'pages/fallback.vue')
+      })
+    }
   },
   /*
   ** Build configuration
