@@ -10,7 +10,7 @@ const api = new GitHubAPIv3(ontology.github)
 const cacheTTL = 5
 
 let baseDataset
-let now = Date.now()
+let cacheTimestamp = Date.now()
 
 /**
  * This middleware runs on every page load, it fetchs the dataset and puts
@@ -20,21 +20,28 @@ let now = Date.now()
  */
 module.exports = function handler (router) {
   router.use(async (req, res, next) => {
-    if (baseDataset && (Date.now() - now) > cacheTTL * 60 * 1000) {
-      req.dataset = _.cloneDeep(baseDataset)
+    // skip when trifid handles it
+    if (req.iri && req.iri.startsWith('http')) {
       next()
       return
     }
 
-    const datasetString = await api.getFile()
-    now = Date.now()
+    // if no dataset yet or cache too old
+    if (!baseDataset || (Date.now() - cacheTimestamp) > cacheTTL * 10 * 1000) {
+      const datasetString = await api.getFile()
+      cacheTimestamp = Date.now()
 
-    const parser = new N3Parser({factory: rdf})
-    const quadStream = parser.import(stringToStream(datasetString))
-    const dataset = await rdf.dataset().import(quadStream)
+      const parser = new N3Parser({factory: rdf})
+      const quadStream = parser.import(stringToStream(datasetString))
+      const dataset = await rdf.dataset().import(quadStream)
 
-    baseDataset = dataset
-    req.dataset = baseDataset
+      baseDataset = dataset
+      // console.log('caching dataset')
+    } /* else {
+      console.log(`cached, time remaining: ${(cacheTTL * 10 * 1000) - (Date.now() - cacheTimestamp)}`)
+    } */
+
+    req.dataset = _.cloneDeep(baseDataset)
     next()
   })
 }
