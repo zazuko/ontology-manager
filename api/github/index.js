@@ -163,10 +163,10 @@ router.post('/proposals/new', async (req, res, next) => {
         }
       `,
       variables: {
-        headline: title,
-        iri: iri,
-        body: body,
-        externalId: number
+        // headline: title,
+        // iri: iri,
+        // body: body,
+        // externalId: number
       }
     })
 
