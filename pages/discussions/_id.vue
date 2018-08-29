@@ -83,6 +83,10 @@ export default {
           this.$toast.success('Answer successfully added!', toastClose)
         })
     }
+  },
+  validate ({ params }) {
+    // Must be a number
+    return /^\d+$/.test(params.id)
   }
 }
 </script>
