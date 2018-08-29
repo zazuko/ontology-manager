@@ -83,6 +83,10 @@
       "priority": 95,
       "module": "cwd:./trifid/passthrough-plugin"
     },
+    "dataset": {
+      "priority": 99,
+      "module": "cwd:./trifid/dataset-plugin"
+    },
     "locals": {
       "priority": 100,
       "module": "trifid-core:./plugins/locals"
