@@ -1,16 +1,18 @@
 const _ = require('lodash')
 const Router = require('express').Router
 const axios = require('axios')
+const apicache = require('apicache')
 const gql = require('graphql-tag')
 const {ontology} = require('../../nuxt.config')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
-const api = new GitHubAPIv3(ontology.github)
-
 const router = Router()
 
 module.exports = router
+
+const api = new GitHubAPIv3(ontology.github)
+const cache = apicache.middleware
 
 const anonApolloClient = apolloClientFactory()
 const getAuthenticatedApolloClient = (token) => apolloClientFactory({
@@ -26,11 +28,24 @@ const getAuthenticatedApolloClient = (token) => apolloClientFactory({
 //   }
 // })
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   res.send('Ontology Editor currently using GitHub')
 })
 
-router.post('/link', async function (req, res, next) {
+router.get('/blob/:branch/:file', cache('5 minutes'), (req, res, next) => {
+  const path = req.params.file
+  const branch = req.params.branch
+  const content = api.getFile({path, branch})
+  res.send(content)
+})
+
+router.get('/blob/:file', cache('5 minutes'), (req, res, next) => {
+  const path = req.params.file
+  const content = api.getFile({path})
+  res.send(content)
+})
+
+router.post('/link', async (req, res, next) => {
   // This is (`/` aside) the only endpoint that does not require a valid JWT.
   // We use this when our user got a token from github, and now need to ask
   // github to whom this token belongs and associate it to our user's account
