@@ -20,6 +20,7 @@
     "@nuxtjs/axios": "^5.3.1",
     "@nuxtjs/toast": "^3.0.1",
     "@octokit/rest": "^15.10.0",
+    "apicache": "^1.2.3",
     "apollo-cache-inmemory": "^1.2.9",
     "apollo-client": "^2.4.1",
     "apollo-link": "^1.2.2",

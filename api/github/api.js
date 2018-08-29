@@ -45,6 +45,15 @@ module.exports = class GitHubAPIv3 {
     }
   }
 
+  async getFile ({path, branch} = {path: this.path, branch: this.branch}) {
+    const owner = this.owner
+    const repo = this.repo
+    const ref = `heads/${this.branch}`
+    const result = await octokit.repos.getContent({owner, repo, path, ref})
+    const content = Buffer.from(result.data.content, 'base64').toString()
+    return content
+  }
+
   async updateFile ({message, content, branch, author} = {}) {
     const owner = this.owner
     const repo = this.repo
