@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic dev Route / Route /pouch/CargoHandlersPouch accept 1`] = `
+Object {
+  "@id": "http://localhost:4000/pouch/CargoHandlersPouch",
+  "@type": "http://schema.org/CreativeWork",
+  "http://purl.org/dc/terms/modified": Object {
+    "@type": "http://www.w3.org/2001/XMLSchema#date",
+    "@value": "2017-11-16",
+  },
+  "http://www.w3.org/2000/01/rdf-schema#comment": "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Cargo Handlers Pouch, you will find data typically from the following documents; TBD.",
+  "http://www.w3.org/2000/01/rdf-schema#label": "Cargo Handlers Pouch",
+}
+`;
