@@ -4,20 +4,13 @@ dbup:
 
 # starts all services
 up: dbup
-	sleep 30 && make migrate
+	sleep 20 && \
+	node migrations/migrate.js && \
 	docker-compose up -d
 
 # stops all services
 down:
 	docker-compose down
-
-# migrates the database up
-migrate: dbup
-	docker-compose exec db /migrations/up.sh
-
-# migrates the database down
-drop: dbup
-	docker-compose exec db /migrations/down.sh
 
 # deletes the database files
 reset: down

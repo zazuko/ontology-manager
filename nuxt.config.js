@@ -94,7 +94,6 @@ module.exports = {
     middleware: 'iri',
     extendRoutes (routes, resolve) {
       routes.push({
-        name: 'fallback',
         path: '*',
         component: resolve(__dirname, 'pages/fallback.vue')
       })
