@@ -1,8 +1,5 @@
 -- This file is mostly inspired from https://www.graphile.org/postgraphile/postgresql-schema-design/
 
-begin;
-
-
 create schema ontology_editor;
 create schema ontology_editor_private;
 
@@ -61,7 +58,7 @@ comment on function ontology_editor.current_person_id() is 'Gets the person who 
 create function ontology_editor.current_person_is_admin() returns bool as $$
   select exists(
     select 1 from ontology_editor.person where id = ontology_editor.current_person_id() and is_admin = true
-	);
+  );
 $$ language sql stable set search_path from current;
 comment on function ontology_editor.current_person_is_admin() is E'@omit\nHandy method to determine if the current user is an admin, for use in RLS policies, etc; in GraphQL should use `currentUser{isAdmin}` instead.';
 
@@ -363,7 +360,3 @@ create policy select_hat_person on ontology_editor.hat_person for select
   using (true);
 create policy delete_hat_person on ontology_editor.hat_person for delete to ontology_editor_person
   using (ontology_editor.current_person_is_admin());
-
-commit;
-
--- https://github.com/graphile/postgraphile/issues/91#issuecomment-308664225
