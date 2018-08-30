@@ -2,7 +2,8 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
+    node: true,
+    'jest/globals': true
   },
   parserOptions: {
     parser: 'babel-eslint'
@@ -16,8 +17,14 @@ module.exports = {
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'vue',
+    'jest'
   ],
+  settings: {
+    'import/resolver': {
+      node: { extensions: ['.js', '.mjs'] }
+    }
+  },
   // add your custom rules here
   rules: {
     'vue/require-prop-types': 0,
