@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node -r dotenv/config node_modules/.bin/nuxt dev . dotenv_config_path=docker-app-dev/.env",
-    "dev-api": "nodemon --watch api --exec 'node -r dotenv/config' node_modules/.bin/nuxt dev . dotenv_config_path=docker-app-dev/.env",
+    "dev-api": "nodemon --watch api --watch trifid --exec 'node -r dotenv/config' node_modules/.bin/nuxt dev . dotenv_config_path=docker-app-dev/.env",
     "build": "node -r dotenv/config node_modules/.bin/nuxt build . dotenv_config_path=docker-app-dev/.env",
     "start": "node -r dotenv/config node_modules/.bin/nuxt start . dotenv_config_path=docker-app-dev/.env",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",

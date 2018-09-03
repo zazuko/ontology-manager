@@ -11,7 +11,7 @@ octokit.authenticate({
 const { getRefSHA, getFileSHA } = helpersFactory(octokit)
 
 module.exports = class GitHubAPIv3 {
-  constructor ({branch, committer, owner, repo} = {}) {
+  constructor ({branch, committer, owner, repo, files} = {}) {
     if (!branch || !committer || !owner || !repo) {
       throw new Error('GitHubAPIv3 should be instantiated with a config object')
     }
@@ -20,7 +20,7 @@ module.exports = class GitHubAPIv3 {
     this.owner = owner
     this.repo = repo
     this.committer = committer
-    this.path = 'ontology.nt'
+    this.path = files.ontology
   }
 
   async createBranch () {
