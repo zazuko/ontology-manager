@@ -1,9 +1,13 @@
 export const state = () => ({
-  baseDataset: {}
+  ontology: {},
+  structure: {}
 })
 
 export const mutations = {
-  setBase (state, dataset) {
-    state.baseDataset = dataset
+  setOntology (state, dataset) {
+    state.ontology = dataset
+  },
+  setStructure (state, dataset) {
+    state.structure = dataset
   }
 }
