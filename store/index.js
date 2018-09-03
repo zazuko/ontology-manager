@@ -5,7 +5,8 @@ export const mutations = {}
 export const actions = {
   async nuxtServerInit (context, { req }) {
     if (req) {
-      context.commit('graph/setBase', req.dataset)
+      context.commit('graph/setOntology', req.ontology)
+      context.commit('graph/setStructure', req.structure)
     }
   }
 }

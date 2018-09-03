@@ -9,7 +9,8 @@ const api = new GitHubAPIv3(ontology.github)
 
 const cacheTTL = 5
 
-let baseDataset
+let ontologyDataset
+let structureDataset
 let cacheTimestamp = Date.now()
 
 /**
@@ -27,21 +28,31 @@ module.exports = function handler (router) {
     }
 
     // if no dataset yet or cache too old
-    if (!baseDataset || (Date.now() - cacheTimestamp) > cacheTTL * 10 * 1000) {
-      const datasetString = await api.getFile()
-      cacheTimestamp = Date.now()
+    if (!ontologyDataset || (Date.now() - cacheTimestamp) > cacheTTL * 10 * 1000) {
+      const branch = ontology.github.branch
 
-      const parser = new N3Parser({factory: rdf})
-      const quadStream = parser.import(stringToStream(datasetString))
-      const dataset = await rdf.dataset().import(quadStream)
+      ;([ontologyDataset, structureDataset] = await Promise.all([
+        api.getFile({branch, path: ontology.github.files.ontology}),
+        api.getFile({branch, path: ontology.github.files.structure})
+      ]).then(([ontologyString, structureString] = []) => {
+        cacheTimestamp = Date.now()
 
-      baseDataset = dataset
-      // console.log('caching dataset')
-    } /* else {
-      console.log(`cached, time remaining: ${(cacheTTL * 10 * 1000) - (Date.now() - cacheTimestamp)}`)
-    } */
+        const parser = new N3Parser({factory: rdf})
+        const ontologyQuadStream = parser.import(stringToStream(ontologyString))
+        const structureQuadStream = parser.import(stringToStream(structureString))
+        return Promise.all([
+          rdf.dataset().import(ontologyQuadStream),
+          rdf.dataset().import(structureQuadStream)
+        ])
+      }))
 
-    req.dataset = _.cloneDeep(baseDataset)
+      req.ontology = ontologyDataset
+      req.structure = structureDataset
+    }
+
+    req.ontology = _.cloneDeep(ontologyDataset)
+    req.structure = _.cloneDeep(structureDataset)
+
     next()
   })
 }
