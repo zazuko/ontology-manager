@@ -97,6 +97,18 @@ module.exports = {
     middleware: 'iri',
     extendRoutes (routes, resolve) {
       routes.push({
+        path: '/:p1',
+        component: resolve(__dirname, 'pages/fallback.vue')
+      }, {
+        path: '/:p1/:p2',
+        component: resolve(__dirname, 'pages/fallback.vue')
+      }, {
+        path: '/:p1/:p2/:p3',
+        component: resolve(__dirname, 'pages/fallback.vue')
+      }, {
+        path: '/:p1/:p2/:p3/:p4',
+        component: resolve(__dirname, 'pages/fallback.vue')
+      }, {
         path: '*',
         component: resolve(__dirname, 'pages/fallback.vue')
       })
