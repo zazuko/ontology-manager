@@ -14,9 +14,14 @@
 
       <p class="title">
         <nuxt-link
+          v-if="obj.path"
           :to="{ path: obj.path, params: {} }">
           {{ name }}
         </nuxt-link>
+        <span
+          v-else>
+          {{ name }}
+        </span>
       </p>
 
       <structure
