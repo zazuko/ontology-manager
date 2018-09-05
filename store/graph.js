@@ -7,17 +7,10 @@ export const state = () => ({
 export const mutations = {
   setOntology (state, dataset) {
     state.ontology = dataset
-    if (typeof window !== 'undefined') {
-      window.ontology = dataset
-    }
   },
   setStructure (state, dataset) {
     state.structure = dataset
     state.structureTree = buildTree(dataset)
-    if (typeof window !== 'undefined') {
-      window.structure = state.structure
-      window.structureTree = state.structureTree
-    }
   }
 }
 
