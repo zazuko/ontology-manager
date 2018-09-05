@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <h1>{{ _iri }}</h1>
+    <h1>{{ iri }}</h1>
 
     <script
-      v-if="_jsonld"
+      v-if="jsonld"
       id="data"
       type="application/ld+json"
-      v-html="_jsonld" />
+      v-html="jsonld" />
 
   </div>
 </template>
@@ -17,63 +17,47 @@ import rdf from 'rdf-ext'
 import JsonLdSerializer from 'rdf-serializer-jsonld'
 import Readable from 'readable-stream'
 import Structure from '~/components/Structure'
+import { datasetsSetup } from '~/libs/utils'
 const datasetBaseUrl = require('~/trifid/trifid.config.json').datasetBaseUrl
 
 export default {
+  created () {
+    datasetsSetup(this.$store)
+  },
   components: {
     Structure
-  },
-  async asyncData (context) {
-    if (process.server) {
-      const data = find(context.req.ontology, context.req.structure, context.iri)
-      if (data) {
-        return data
-      }
-
-      // nothing found so far, send 404
-      context.error({statusCode: 404, message: 'Not Found'})
-    }
-  },
-  data () {
-    if (typeof window !== 'undefined' && window.ontology) {
-      const data = find(window.ontology, window.structure, this._iri)
-      if (data) {
-        return data
-      }
-    }
-    return {}
   },
   computed: {
     tree () {
       return this.$store.state.graph.structureTree[this.iri]
     },
-    _iri () {
-      if (this.iri) return this.iri
+    iri () {
       const params = this.$route.params
       return datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
     },
-    _jsonld () {
-      if (this.jsonld) return this.jsonld
+    jsonld () {
       return ''
     }
   },
   validate ({ params, store }) {
+    // check that either the ontology or the structure contains this IRI
     const ontology = store.state.graph.ontology
     const structureTree = store.state.graph.structureTree
     const iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
-    if (typeof ontology.find === 'function') {
-      if (
-        ontology.find(({subject}) => subject.termType === 'NamedNode' && subject.value === iri) ||
-        structureTree.hasOwnProperty(iri)
-      ) {
-        return true
-      }
-    } else if (
-      ontology.match(rdf.namedNode(iri)).length ||
-      structureTree.hasOwnProperty(iri)
-    ) {
+
+    // we arrived here by navigating from another page
+    if (typeof ontology.find === 'function' &&
+        (ontology.find(({subject}) => subject.termType === 'NamedNode' && subject.value === iri) ||
+        structureTree.hasOwnProperty(iri))) {
       return true
     }
+
+    // we arrived here by loading the page, it's an entry page
+    if (ontology.match(rdf.namedNode(iri)).length || structureTree.hasOwnProperty(iri)) {
+      return true
+    }
+
+    // triggers a 404
     return false
   }
 }
