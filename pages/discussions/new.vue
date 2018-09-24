@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import DiscussionCreate from '~/components/DiscussionCreate.vue'
 import _get from 'lodash/get'
+import DiscussionCreate from '~/components/DiscussionCreate.vue'
+import { datasetsSetup } from '~/libs/utils'
 
 export default {
   async asyncData (context) {
@@ -24,6 +25,9 @@ export default {
   middleware: 'authenticated',
   components: {
     DiscussionCreate
+  },
+  async created () {
+    await datasetsSetup(this.$store)
   }
 }
 </script>

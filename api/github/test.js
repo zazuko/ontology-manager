@@ -3,7 +3,7 @@ module.exports = function tests (config) {
   const g = new GitHubAPI(config)
 
   g.createBranch()
-    .then(async ({name} = {}) => {
+    .then(async ({ name } = {}) => {
       await g.updateFile({
         path: 'ontology.nt',
         message: `test ${Math.round(Math.random() * 100000)}`,

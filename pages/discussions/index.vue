@@ -16,6 +16,7 @@
 <script>
 import gql from 'graphql-tag'
 import DiscussionsList from '~/components/DiscussionsList.vue'
+import { datasetsSetup } from '~/libs/utils'
 
 export default {
   components: {
@@ -26,6 +27,9 @@ export default {
       discussions: []
     }
   }),
+  async created () {
+    await datasetsSetup(this.$store)
+  },
   apollo: {
     discussions: {
       query: gql` query GetAllDiscussions {

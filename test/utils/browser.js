@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer'
 
 export default class Browser {
-  async start(options = {}) {
+  async start (options = {}) {
     // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions
     this.browser = await puppeteer.launch(
       Object.assign(
@@ -14,12 +14,12 @@ export default class Browser {
     )
   }
 
-  async close() {
+  async close () {
     if (!this.browser) return
     await this.browser.close()
   }
 
-  async page(url) {
+  async page (url) {
     if (!this.browser) throw new Error('Please call start() before page(url)')
     const page = await this.browser.newPage()
     await page.goto(url)
@@ -40,7 +40,7 @@ export default class Browser {
     page.$nuxt = await page.evaluateHandle('window.$nuxt')
 
     page.nuxt = {
-      async navigate(path, waitEnd = true) {
+      async navigate (path, waitEnd = true) {
         const hook = page.evaluate(() => {
           return new Promise(resolve =>
             window.$nuxt.$once('routeChanged', resolve)
@@ -54,7 +54,7 @@ export default class Browser {
         if (waitEnd) await hook
         return { hook }
       },
-      routeData() {
+      routeData () {
         return page.evaluate(($nuxt) => {
           return {
             path: $nuxt.$route.path,
@@ -62,13 +62,13 @@ export default class Browser {
           }
         }, page.$nuxt)
       },
-      loadingData() {
+      loadingData () {
         return page.evaluate($nuxt => $nuxt.$loading.$data, page.$nuxt)
       },
-      errorData() {
+      errorData () {
         return page.evaluate($nuxt => $nuxt.nuxt.err, page.$nuxt)
       },
-      storeState() {
+      storeState () {
         return page.evaluate($nuxt => $nuxt.$store.state, page.$nuxt)
       }
     }

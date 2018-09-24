@@ -37,6 +37,7 @@
 
 <script>
 import Structure from '~/components/Structure'
+import { datasetsSetup } from '~/libs/utils'
 
 export default {
   components: {
@@ -46,6 +47,9 @@ export default {
     return {
       tree: this.$store.state.graph.structureTree
     }
+  },
+  async created () {
+    await datasetsSetup(this.$store)
   }
 }
 </script>
