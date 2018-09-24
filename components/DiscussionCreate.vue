@@ -94,7 +94,7 @@ export default {
         body: this.body
       }
 
-      this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({ mutation, variables })
         .then((result) => {
           const id = _get(result, 'data.createThread.thread.id')
           if (id) {

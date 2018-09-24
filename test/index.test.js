@@ -7,12 +7,11 @@ jest.setTimeout(60000)
 
 // https://nuxtjs.org/guide/development-tools#end-to-end-testing
 
-const getJSONLD = (url) => axios.get(`http://localhost:4000${url}`, {headers: {accept: 'application/ld+json'}})
-const getRDFXML = (url) => axios.get(`http://localhost:4000${url}`, {headers: {accept: 'application/rdf+xml'}})
-const getNT = (url) => axios.get(`http://localhost:4000${url}`, {headers: {accept: 'application/n-triples'}})
-const getTURTLE = (url) => axios.get(`http://localhost:4000${url}`, {headers: {accept: 'text/turle'}})
-const getHTML = (url) => axios.get(`http://localhost:4000${url}`, {headers: {accept: 'text/html'}})
-
+const getJSONLD = (url) => axios.get(`http://localhost:4000${url}`, { headers: { accept: 'application/ld+json' } })
+const getRDFXML = (url) => axios.get(`http://localhost:4000${url}`, { headers: { accept: 'application/rdf+xml' } })
+const getNT = (url) => axios.get(`http://localhost:4000${url}`, { headers: { accept: 'application/n-triples' } })
+const getTURTLE = (url) => axios.get(`http://localhost:4000${url}`, { headers: { accept: 'text/turle' } })
+const getHTML = (url) => axios.get(`http://localhost:4000${url}`, { headers: { accept: 'text/html' } })
 
 // We keep the nuxt and server instance
 // So we can close them at the end of the test

@@ -3,7 +3,7 @@ const stringToStream = require('string-to-stream')
 const N3Parser = require('rdf-parser-n3')
 const _ = require('lodash')
 
-const {ontology} = require('../nuxt.config')
+const { ontology } = require('../nuxt.config')
 const GitHubAPIv3 = require('../api/github/api')
 const api = new GitHubAPIv3(ontology.github)
 
@@ -32,12 +32,12 @@ module.exports = function handler (router) {
       const branch = ontology.github.branch
 
       ;([ontologyDataset, structureDataset] = await Promise.all([
-        api.getFile({branch, path: ontology.github.files.ontology}),
-        api.getFile({branch, path: ontology.github.files.structure})
+        api.getFile({ branch, path: ontology.github.files.ontology }),
+        api.getFile({ branch, path: ontology.github.files.structure })
       ]).then(([ontologyString, structureString] = []) => {
         cacheTimestamp = Date.now()
 
-        const parser = new N3Parser({factory: rdf})
+        const parser = new N3Parser({ factory: rdf })
         const ontologyQuadStream = parser.import(stringToStream(ontologyString))
         const structureQuadStream = parser.import(stringToStream(structureString))
         return Promise.all([

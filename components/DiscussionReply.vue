@@ -65,7 +65,7 @@ export default {
         hatId: this.hatId
       }
 
-      this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({ mutation, variables })
         .then((data) => {
           this.$emit('answerAdded')
         })

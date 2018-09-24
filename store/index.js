@@ -3,10 +3,13 @@ export const state = () => ({})
 export const mutations = {}
 
 export const actions = {
-  async nuxtServerInit (context, { req }) {
+  // Note: this gets called during SSR, which is
+  // a. why we have access to `req`
+  // b. why it will be broken client-side: data will be (de)serialized to/from JSON for the client
+  async nuxtServerInit (store, { req }) {
     if (req) {
-      context.commit('graph/setOntology', req.ontology)
-      context.commit('graph/setStructure', req.structure)
+      store.commit('graph/setOntology', req.ontology)
+      store.commit('graph/setStructure', req.structure)
     }
   }
 }

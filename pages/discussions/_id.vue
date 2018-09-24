@@ -9,12 +9,12 @@
 
 <script>
 import gql from 'graphql-tag'
-import { toastClose } from '~/libs/utils'
+import { datasetsSetup, toastClose } from '~/libs/utils'
 import DiscussionCard from '~/components/DiscussionCard.vue'
 import DiscussionReply from '~/components/DiscussionReply.vue'
 
 export default {
-  async asyncData ({route}) {
+  async asyncData ({ route }) {
     const id = parseInt(route.params.id, 10)
 
     return {
@@ -29,6 +29,9 @@ export default {
   data: () => ({
     discussion: {}
   }),
+  async created () {
+    await datasetsSetup(this.$store)
+  },
   apollo: {
     discussion: {
       query: gql` query GetDiscussion ($id: Int!) {
@@ -64,7 +67,7 @@ export default {
         }
       },
       fetchPolicy: 'cache-and-network',
-      result ({data, loading}) {
+      result ({ data, loading }) {
         if (!loading && data) {
           if (!data.discussion) {
             return this.$router.app.error({
