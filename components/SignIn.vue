@@ -35,8 +35,9 @@ export default {
     async signIn () {
       try {
         this.$toast.show('Logging in...')
+        const loggedIn = this.$auth.$state.loggedIn
         await this.$auth.loginWith('github')
-        await this.authenticate()
+        await this.authenticate(loggedIn)
         this.loggedIn = true
       } catch (err) {
         console.error(err)
@@ -49,8 +50,8 @@ export default {
       this.loggedIn = false
       this.$emit('loggedOut')
     },
-    async authenticate () {
-      if (!this.$auth.$state.loggedIn && Object.keys(this.$store.state.auth || {}).length) {
+    async authenticate (loggedIn) {
+      if (!loggedIn && Object.keys(this.$store.state.auth || {}).length) {
         const email = _get(this, '$store.state.auth.user.email', '')
         const name = _get(this, '$store.state.auth.user.name', '')
         const id = _get(this, '$store.state.auth.user.id', '')
