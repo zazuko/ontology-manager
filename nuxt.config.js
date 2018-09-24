@@ -19,6 +19,8 @@ module.exports = {
       }
     }
   },
+  mode: 'universal',
+
   /*
   ** Headers of the page
   */
@@ -33,15 +35,27 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+
+  /*
+  ** Global CSS
+  */
   css: [
     { lang: 'scss', src: '@/assets/scss/app.scss' }
   ],
+
   /*
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+
   /*
-  ** Modules
+  ** Plugins to load before mounting the App
+  */
+  plugins: [
+  ],
+
+  /*
+  ** Nuxt.js modules
   */
   modules: [
     '@nuxtjs/axios',
@@ -49,8 +63,9 @@ module.exports = {
     '@nuxtjs/apollo',
     '@nuxtjs/toast'
   ],
+
   /*
-  ** Modules config: apollo
+  ** Module config: apollo
   */
   apollo: {
     clientConfigs: {
@@ -62,8 +77,9 @@ module.exports = {
       }
     }
   },
+
   /*
-  ** Modules config: auth
+  ** Module config: auth
   */
   auth: {
     strategies: {
@@ -75,14 +91,16 @@ module.exports = {
       }
     }
   },
+
   /*
-  ** Modules config: toast
+  ** Module config: toast
   */
   toast: {
     position: 'top-right',
     containerClass: 'notification-toast',
     className: 'notification'
   },
+
   /*
   ** Internal API
   */
@@ -90,6 +108,7 @@ module.exports = {
     '~/api/',
     '~/trifid/'
   ],
+
   /*
   ** Middleware configuration https://nuxtjs.org/guide/routing#middleware
   */
@@ -114,6 +133,7 @@ module.exports = {
       })
     }
   },
+
   /*
   ** Build configuration
   */
@@ -122,8 +142,10 @@ module.exports = {
     ** Custom PostCSS config
     */
     postcss: {
-      plugins: {
-        'postcss-custom-properties': false
+      preset: {
+        features: {
+          customProperties: false
+        }
       }
     },
     extend (config, { isDev }) {
