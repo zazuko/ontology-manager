@@ -48,6 +48,13 @@ export default {
       ontology = store.state.graph.ontology
     }
 
+    // when trifid cannot find the IRI in the dataset, the request goes through
+    // nuxt but without `req.dataset`, which means the store is empty and here
+    // is our chance to send a 404
+    if (typeof ontology.match !== 'function') {
+      return false
+    }
+
     const structureTree = store.state.graph.structureTree
 
     // check that either the ontology or the structure contains this IRI
