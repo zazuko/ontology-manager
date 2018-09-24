@@ -4,7 +4,7 @@ module.exports = function handler (router) {
       req._iri = req.iri
     }
     if (req.accepts(['html', 'xhtml+xml', 'xml'])) {
-      const accepted = req.get('Accept')
+      const accepted = req.get('Accept') || []
       if (accepted.includes('*/*')) {
         const filtered = accepted.split(',').filter(str => !str.includes('*/*')).join(',')
         // need to use lowercase key!
