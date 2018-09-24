@@ -37,7 +37,7 @@ export const loadFixture = async function (fixture, overrides) {
  *
  * @returns {Boolean} true: timeout, false: condition becomes true within total time
  */
-export const waitUntil = async function waitUntil(condition, duration = 20, interval = 250) {
+export const waitUntil = async function waitUntil (condition, duration = 20, interval = 250) {
   let iterator = 0
   const steps = Math.floor(duration * 1000 / interval)
 

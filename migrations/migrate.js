@@ -15,7 +15,7 @@ async function up (env = 'dev') {
   }
 
   // load env vars
-  dotenv.config({path: environments[env]})
+  dotenv.config({ path: environments[env] })
 
   await run()
 }
@@ -49,10 +49,10 @@ async function run () {
   try {
     for (const file of files) {
       const filename = path.basename(file)
-      const done = await client.select('succeeded').from('__migrations').where({filename})
+      const done = await client.select('succeeded').from('__migrations').where({ filename })
 
       if (!done.length) {
-        await client('__migrations').insert({filename})
+        await client('__migrations').insert({ filename })
       }
       if (!done.length || !done[0].succeeded) {
         console.warn(filename, 'running')
@@ -75,8 +75,8 @@ async function execute (file, client) {
     const sql = fs.readFileSync(file).toString()
     await trx.raw(sql)
     return trx('__migrations')
-      .where({filename})
-      .update({succeeded: true})
+      .where({ filename })
+      .update({ succeeded: true })
   })
 }
 

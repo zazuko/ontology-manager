@@ -1,7 +1,7 @@
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
 
-const octokit = octokitFactory({debug: process.env.NODE_ENV !== 'production'})
+const octokit = octokitFactory({ debug: process.env.NODE_ENV !== 'production' })
 
 octokit.authenticate({
   type: 'oauth',
@@ -11,7 +11,7 @@ octokit.authenticate({
 const { getRefSHA, getFileSHA } = helpersFactory(octokit)
 
 module.exports = class GitHubAPIv3 {
-  constructor ({branch, committer, owner, repo, files} = {}) {
+  constructor ({ branch, committer, owner, repo, files } = {}) {
     if (!branch || !committer || !owner || !repo) {
       throw new Error('GitHubAPIv3 should be instantiated with a config object')
     }
@@ -45,16 +45,16 @@ module.exports = class GitHubAPIv3 {
     }
   }
 
-  async getFile ({path, branch} = {path: this.path, branch: this.branch}) {
+  async getFile ({ path, branch } = { path: this.path, branch: this.branch }) {
     const owner = this.owner
     const repo = this.repo
     const ref = `heads/${this.branch}`
-    const result = await octokit.repos.getContent({owner, repo, path, ref})
+    const result = await octokit.repos.getContent({ owner, repo, path, ref })
     const content = Buffer.from(result.data.content, 'base64').toString()
     return content
   }
 
-  async updateFile ({message, content, branch, author} = {}) {
+  async updateFile ({ message, content, branch, author } = {}) {
     const owner = this.owner
     const repo = this.repo
     const committer = this.committer
@@ -81,7 +81,7 @@ module.exports = class GitHubAPIv3 {
     return result
   }
 
-  async createPR ({title, body, branch} = {}) {
+  async createPR ({ title, body, branch } = {}) {
     const owner = this.owner
     const repo = this.repo
 

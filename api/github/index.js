@@ -3,7 +3,7 @@ const Router = require('express').Router
 const axios = require('axios')
 const apicache = require('apicache')
 const gql = require('graphql-tag')
-const {ontology} = require('../../nuxt.config')
+const { ontology } = require('../../nuxt.config')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
@@ -35,13 +35,13 @@ router.get('/', (req, res, next) => {
 router.get('/blob/:branch/:file', cache('5 minutes'), (req, res, next) => {
   const path = req.params.file
   const branch = req.params.branch
-  const content = api.getFile({path, branch})
+  const content = api.getFile({ path, branch })
   res.send(content)
 })
 
 router.get('/blob/:file', cache('5 minutes'), (req, res, next) => {
   const path = req.params.file
-  const content = api.getFile({path})
+  const content = api.getFile({ path })
   res.send(content)
 })
 
@@ -55,10 +55,10 @@ router.post('/link', async (req, res, next) => {
     id: clientId
   } = req.body
 
-  const {token, avatarUrl, serverId} = await checkToken(req, res)
+  const { token, avatarUrl, serverId } = await checkToken(req, res)
 
   if (!clientId || clientId !== serverId) {
-    res.status(500).send({message: `Client-provided ID ${clientId} doesn't match server's one`})
+    res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
     return
   }
 
@@ -133,14 +133,14 @@ router.post('/proposals/new', async (req, res, next) => {
     message = 'hello',
     content = 'foobar test'
   } = {}
-  const author = {name: req.user.name, email: req.user.email}
+  const author = { name: req.user.name, email: req.user.email }
 
   try {
-    const {name: branch} = await api.createBranch()
+    const { name: branch } = await api.createBranch()
 
-    await api.updateFile({message, content, branch, author})
+    await api.updateFile({ message, content, branch, author })
 
-    const {number} = await api.createPR({title, body, branch})
+    const { number } = await api.createPR({ title, body, branch })
 
     const userApolloClient = getAuthenticatedApolloClient(getToken(req))
 
@@ -189,7 +189,7 @@ function getToken (req) {
 async function checkToken (req, res) {
   const bearerToken = getToken(req)
   if (!bearerToken) {
-    res.status(500).send({message: 'Missing Bearer token!'})
+    res.status(500).send({ message: 'Missing Bearer token!' })
     return false
   }
 
@@ -200,7 +200,7 @@ async function checkToken (req, res) {
   }
 
   if (!auth.username || !auth.password) {
-    res.status(500).send({message: 'Missing env vars!'})
+    res.status(500).send({ message: 'Missing env vars!' })
     return false
   }
 
@@ -219,7 +219,7 @@ async function checkToken (req, res) {
       throw new Error(`Bearer token ${bearerToken} differs from the token GitHub gave us`)
     }
   } catch (err) {
-    res.status(404).send({message: err.message})
+    res.status(404).send({ message: err.message })
     return false
   }
 

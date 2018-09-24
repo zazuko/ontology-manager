@@ -1,17 +1,29 @@
+import { quadToNTriples } from '@rdfjs/to-ntriples'
+
 export const state = () => ({
   ontology: {},
   structure: {},
+  ontologySerialized: '',
+  structureSerialized: '',
   structureTree: {}
 })
 
 export const mutations = {
   setOntology (state, dataset) {
+    state.ontologySerialized = serialize(dataset)
     state.ontology = dataset
   },
   setStructure (state, dataset) {
+    state.structureSerialized = serialize(dataset)
     state.structure = dataset
     state.structureTree = buildTree(dataset)
   }
+}
+
+function serialize (dataset) {
+  return dataset._quads
+    .map((quad) => quadToNTriples(quad))
+    .join('\n')
 }
 
 function buildTree (triples) {
