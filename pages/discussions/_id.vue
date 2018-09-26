@@ -3,7 +3,7 @@
     <discussion-card :discussion="discussion" />
     <discussion-reply
       :id="id"
-      @answerAdded="answerAdded()"/>
+      @answerAdded="answerAdded()" />
   </section>
 </template>
 

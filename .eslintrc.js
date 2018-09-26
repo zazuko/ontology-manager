@@ -11,7 +11,7 @@ module.exports = {
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/recommended',
+    'plugin:vue/strongly-recommended',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
     'standard'
   ],
@@ -36,6 +36,10 @@ module.exports = {
     quotes: ['error', 'single', { 'avoidEscape': true }],
     'callback-return': ['error', ['done', 'callback', 'cb', 'send']],
     curly: 'error',
-    'object-shorthand': 'error'
+    'object-shorthand': 'error',
+    'vue/html-closing-bracket-newline': ['error', {
+      singleline: 'never',
+      multiline: 'never'
+    }]
   }
 }

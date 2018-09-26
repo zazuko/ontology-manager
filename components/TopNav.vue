@@ -15,9 +15,9 @@
           class="navbar-burger burger"
           data-target="topNav"
           @click="toggle()">
-          <span/>
-          <span/>
-          <span/>
+          <span />
+          <span />
+          <span />
         </div>
       </div>
       <div
