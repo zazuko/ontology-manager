@@ -23,9 +23,9 @@ import { toastClose } from '~/libs/utils'
 export default {
   name: 'SignIn',
   components: {},
-  data () {
-    return {
-      loggedIn: this.$auth.$state.loggedIn
+  computed: {
+    loggedIn () {
+      return this.$auth && this.$auth.$state.loggedIn
     }
   },
   mounted () {
@@ -38,7 +38,6 @@ export default {
         const loggedIn = this.$auth.$state.loggedIn
         await this.$auth.loginWith('github')
         await this.authenticate(loggedIn)
-        this.loggedIn = true
       } catch (err) {
         console.error(err)
         this.$toast.error('Error while authenticating', toastClose)
@@ -47,7 +46,6 @@ export default {
     async signOut () {
       this.$auth.logout()
       await this.$apolloHelpers.onLogout()
-      this.loggedIn = false
       this.$emit('loggedOut')
     },
     async authenticate (loggedIn) {

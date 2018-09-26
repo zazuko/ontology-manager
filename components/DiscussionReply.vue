@@ -6,7 +6,7 @@
         <textarea
           v-model="body"
           class="textarea"
-          placeholder="Content"/>
+          placeholder="Content" />
       </div>
     </div>
 

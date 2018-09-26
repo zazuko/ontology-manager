@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <discussion-create :_iri="iri" />
+    <discussion-create :iri="iri" />
   </section>
 </template>
 

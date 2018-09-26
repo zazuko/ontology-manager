@@ -1,7 +1,7 @@
 FROM node:alpine
 LABEL description="Instant high-performance GraphQL API for your PostgreSQL database https://github.com/graphile/postgraphile"
 
-RUN npm install -g postgraphile@4.0.0-rc.3
+RUN npm install -g postgraphile@4.0.0-rc.5
 
 COPY entrypoint.postgraphile.sh /entrypoint.postgraphile.sh
 RUN chmod 755 /entrypoint.postgraphile.sh
