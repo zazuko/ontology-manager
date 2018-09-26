@@ -4,7 +4,7 @@
       <label class="label">IRI</label>
       <div class="control">
         <input
-          :value="_iri"
+          :value="iri"
           class="input"
           type="text"
           disabled>
@@ -15,7 +15,7 @@
       <label class="label">Headline</label>
       <div class="control">
         <input
-          v-model="headline"
+          v-model="headlineModel"
           class="input"
           type="text"
           placeholder="Thread title">
@@ -28,7 +28,7 @@
         <textarea
           v-model="body"
           class="textarea"
-          placeholder="Content"/>
+          placeholder="Content" />
       </div>
     </div>
 
@@ -52,12 +52,12 @@ import _get from 'lodash/get'
 export default {
   name: 'DiscussionCreate',
   props: {
-    _iri: {
+    iri: {
       required: true,
       type: String,
       validator: (val) => val.length < 280
     },
-    _headline: {
+    headline: {
       type: String,
       required: false,
       default: ''
@@ -65,20 +65,20 @@ export default {
   },
   data () {
     return {
-      headline: this._headline,
+      headlineModel: this._headline,
       body: ''
     }
   },
   methods: {
     create () {
       const mutation = gql`
-        mutation ($headline: String!, $body: String!, $iri: String!) {
+        mutation ($headline: String!, $body: String!, $iri: String!, $threadType: ThreadType!) {
           createThread (input: {
             thread: {
               headline: $headline,
               body: $body,
               iri: $iri,
-              threadType: 'discussion'
+              threadType: $threadType
             }
           }) {
             thread {
@@ -90,8 +90,9 @@ export default {
 
       const variables = {
         headline: this.headline,
-        iri: this._iri,
-        body: this.body
+        iri: this.iri,
+        body: this.body,
+        threadType: 'DISCUSSION'
       }
 
       this.$apollo.mutate({ mutation, variables })

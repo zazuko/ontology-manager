@@ -8,7 +8,7 @@
     </nuxt-link>
 
     <discussions-list
-      :discussions="discussions.nodes"/>
+      :discussions="discussions.nodes" />
 
   </section>
 </template>
@@ -24,7 +24,7 @@ export default {
   },
   data: () => ({
     discussions: {
-      discussions: []
+      nodes: []
     }
   }),
   async created () {

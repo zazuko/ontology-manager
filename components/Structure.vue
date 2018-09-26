@@ -26,12 +26,12 @@
 
       <structure
         v-for="child in obj.children"
-        :key="child.lvl"
+        :key="child.iri"
         :obj="child"
         :parent="obj"
-        :name="child.lvl"
+        :name="child.label"
         :depth="depth + 1"
-        class="is-child"/>
+        class="is-child" />
     </div>
   </div>
 </template>

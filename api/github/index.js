@@ -153,7 +153,7 @@ router.post('/proposals/new', async (req, res, next) => {
               body: $body,
               iri: $iri,
               externalId: $externalId,
-              threadType: 'proposal'
+              threadType: "PROPOSAL"
             }
           }) {
             thread {

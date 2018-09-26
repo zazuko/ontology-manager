@@ -24,13 +24,13 @@
     </section>
 
     <section
-      v-for="child in tree.children"
-      :key="child.lvl"
+      v-for="(tree, index) in forest"
+      :key="index"
       class="container"
       style="margin-bottom: 25px;">
       <structure
-        :obj="child"
-        :name="child.lvl" />
+        :obj="tree"
+        :name="tree.label" />
     </section>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
   },
   data () {
     return {
-      tree: this.$store.state.graph.structureTree
+      forest: this.$store.state.graph.structureTree
     }
   },
   async created () {
