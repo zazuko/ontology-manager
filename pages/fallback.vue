@@ -4,7 +4,7 @@
     <section
       class="container"
       style="margin-bottom: 25px;">
-      <h1 class="title">{{ iri }}</h1>
+      <h1 class="title">{{ iri }} {{ isClass() }}</h1>
     </section>
 
     <script
@@ -32,6 +32,12 @@ import { datasetsSetup, findSubtreeInForest } from '~/libs/utils'
 const datasetBaseUrl = require('~/trifid/trifid.config.json').datasetBaseUrl
 
 export default {
+  asyncData ({ route }) {
+    const isStructure = route.path.endsWith('/')
+    return {
+      isStructure
+    }
+  },
   components: {
     Structure
   },
@@ -44,7 +50,7 @@ export default {
     iri () {
       const params = this.$route.params
       let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
-      if (this.isStructure()) iri += '/'
+      if (this.isStructure) iri += '/'
       return iri
     },
     jsonld () {
@@ -54,13 +60,30 @@ export default {
   async created () {
     await datasetsSetup(this.$store)
   },
+  data () {
+    return {
+      ontology: undefined
+    }
+  },
+  mounted () {
+    let i = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        this.ontology = window.ontology
+        clearInterval(i)
+      }
+    })
+  },
   methods: {
-    isStructure () {
-      // We need a way of discrimating IRI to a container (they end with a /) from the ones
-      // that are to a class or property. Also keep in mind that express will strip the final /
-      // which is an issue to retrieve iriEndingWithSlash from dataset when the final /
-      // got stripped.
-      return this.$route.path.endsWith('/')
+    isClass () {
+      if (!this.isStructure) {
+        if (this.ontology) {
+          const subject = rdf.namedNode(this.iri)
+          const predicate = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
+          const object = rdf.namedNode('http://www.w3.org/2002/07/owl#Class')
+          const x = this.ontology.match(subject, predicate, object).toArray()
+          return x
+        }
+      }
     }
   },
   validate ({ params, store, route }) {
@@ -87,6 +110,7 @@ export default {
     let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
 
     // we don't have access to `this.isStructure()` in here
+    // THIS SHOULD BE IN STORE!
     if (route.path.endsWith('/')) {
       iri += '/'
     }

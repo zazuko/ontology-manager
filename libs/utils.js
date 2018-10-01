@@ -67,7 +67,7 @@ export function buildTree (dataset) {
   const forest = Object.keys(nodes)
     .reduce((acc, iri) => {
       const node = nodes[iri]
-      node.path = iri.replace(datasetBaseUrl, '')
+      node.path = `/${iri.replace(datasetBaseUrl, '')}`
       const label = dataset.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
       node.label = label.length ? label[0].object.value : iri
 
