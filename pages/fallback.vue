@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <h1>{{ iri }}</h1>
+    <section
+      class="container"
+      style="margin-bottom: 25px;">
+      <h1 class="title">{{ iri }}</h1>
+    </section>
 
     <script
       v-if="jsonld"
@@ -39,7 +43,9 @@ export default {
     },
     iri () {
       const params = this.$route.params
-      return datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+      let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+      if (this.isStructure()) iri += '/'
+      return iri
     },
     jsonld () {
       return ''
@@ -48,7 +54,16 @@ export default {
   async created () {
     await datasetsSetup(this.$store)
   },
-  validate ({ params, store }) {
+  methods: {
+    isStructure () {
+      // We need a way of discrimating IRI to a container (they end with a /) from the ones
+      // that are to a class or property. Also keep in mind that express will strip the final /
+      // which is an issue to retrieve iriEndingWithSlash from dataset when the final /
+      // got stripped.
+      return this.$route.path.endsWith('/')
+    }
+  },
+  validate ({ params, store, route }) {
     let ontology
     let structure
     if (typeof window !== 'undefined' && window.ontology) {
@@ -69,7 +84,12 @@ export default {
     }
 
     // check that either the ontology or the structure contains this IRI
-    const iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+
+    // we don't have access to `this.isStructure()` in here
+    if (route.path.endsWith('/')) {
+      iri += '/'
+    }
 
     if (ontology.match(rdf.namedNode(iri)).toArray().length) {
       return true
