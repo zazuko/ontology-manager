@@ -131,7 +131,8 @@ router.post('/proposals/new', async (req, res, next) => {
     title = 'my title',
     body = 'this **is** the body',
     message = 'hello',
-    content = 'foobar test'
+    content = 'foobar test',
+    iri = 'http://example.com/schema/FlightManifest'
   } = {}
   const author = { name: req.user.name, email: req.user.email }
 
@@ -163,10 +164,10 @@ router.post('/proposals/new', async (req, res, next) => {
         }
       `,
       variables: {
-        // headline: title,
-        // iri: iri,
-        // body: body,
-        // externalId: number
+        headline: title,
+        iri: iri,
+        body: body,
+        externalId: number
       }
     })
 
