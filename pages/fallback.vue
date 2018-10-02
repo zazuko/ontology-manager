@@ -20,11 +20,21 @@
         v-if="subtree"
         :obj="subtree"
         :name="subtree.label" />
+
+      <div
+        v-if="proposals && proposals.proposals">
+        <div
+          v-for="proposal in proposals.proposals"
+          :key="proposal.id">
+          <h1 class="title">{{ proposal }}</h1>
+        </div>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import rdf from 'rdf-ext'
 import Structure from '~/components/Structure'
 import { datasetsSetup, findSubtreeInForest } from '~/libs/utils'
@@ -80,8 +90,7 @@ export default {
           const subject = rdf.namedNode(this.iri)
           const predicate = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
           const object = rdf.namedNode('http://www.w3.org/2002/07/owl#Class')
-          const x = this.ontology.match(subject, predicate, object).toArray()
-          return x
+          return this.ontology.match(subject, predicate, object).toArray()
         }
       }
     }
@@ -125,6 +134,45 @@ export default {
 
     // triggers a 404
     return false
+  },
+  apollo: {
+    proposals: {
+      query: gql` query GetProposals ($iri: String!) {
+        proposals: proposalsByIri (iri: $iri) {
+          proposals: nodes {
+            id,
+            headline,
+            body,
+            hat: hatByHatId {
+              title
+            },
+            author: personByAuthorId {
+              avatar,
+              name
+            },
+            iri,
+            threadType,
+            authorId,
+            externalId,
+            answers: messagesByThreadId {
+              messages: nodes {
+                id,
+                body,
+                author: personByAuthorId {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables () {
+        return {
+          iri: this.iri
+        }
+      },
+      fetchPolicy: 'cache-and-network'
+    }
   }
 }
 </script>

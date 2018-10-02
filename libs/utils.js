@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import N3Parser from 'rdf-parser-n3'
-import { Readable } from 'stream'
+import { Readable } from 'readable-stream'
 import { datasetBaseUrl } from '~/trifid/trifid.config.json'
 
 export const toastClose = {
