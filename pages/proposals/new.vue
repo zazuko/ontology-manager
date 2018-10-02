@@ -20,7 +20,13 @@ export default {
   methods: {
     async paf () {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
-      const result = await axios.post('/api/proposals/new', {}, headers)
+      const result = await axios.post(
+        '/api/proposals/new',
+        {
+          iri: 'http://example.com/schema/FlightManifest'
+        },
+        headers
+      )
 
       const id = _get(result, 'createThread.thread.id')
       if (id) {
