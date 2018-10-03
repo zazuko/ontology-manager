@@ -4,24 +4,14 @@ query GetUserContent ($iri: String!) {
       id,
       headline,
       body,
-      hat: hatByHatId {
-        title
-      },
       author: personByAuthorId {
         avatar,
         name
       },
-      iri,
-      threadType,
-      authorId,
-      externalId,
+      createdAt,
       answers: messagesByThreadId {
         messages: nodes {
-          id,
-          body,
-          author: personByAuthorId {
-            name
-          }
+          id
         }
       }
     }

@@ -31,12 +31,8 @@
               :key="proposal.id">
               <h1 class="title">PROPOSAL:{{ proposal.headline }} {{ proposal.id }}</h1>
             </div>
-            <div
-              v-for="discussion in discussions.discussions"
-              :key="discussion.id">
-              <h1 class="title">DISCUSSION:{{ discussion.headline }} {{ discussion.id }}</h1>
-            </div>
           </div>
+          <discussions :iri="iri" />
         </div>
       </div>
     </section>
@@ -46,9 +42,9 @@
 <script>
 import rdf from 'rdf-ext'
 import proposals from '@/apollo/queries/proposalsByIri'
-import discussions from '@/apollo/queries/discussionsByIri'
 import Structure from '@/components/Structure'
 import SideNav from '@/components/SideNav'
+import Discussions from '@/components/Discussions'
 import { datasetsSetup, findSubtreeInForest } from '@/libs/utils'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
@@ -62,7 +58,8 @@ export default {
   },
   components: {
     SideNav,
-    Structure
+    Structure,
+    Discussions
   },
   computed: {
     subtree () {
@@ -151,16 +148,6 @@ export default {
   apollo: {
     proposals: {
       query: proposals,
-      variables () {
-        return {
-          iri: this.iri
-        }
-      },
-      prefetch: true,
-      fetchPolicy: 'cache-and-network'
-    },
-    discussions: {
-      query: discussions,
       variables () {
         return {
           iri: this.iri
