@@ -1,4 +1,4 @@
-import { serialize, buildTree } from '~/libs/utils'
+import { serialize, buildTree } from '@/libs/utils'
 
 export const state = () => ({
   ontology: {},

@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import SignIn from '~/components/SignIn.vue'
-import { toastClose } from '~/libs/utils'
+import SignIn from '@/components/SignIn.vue'
+import { toastClose } from '@/libs/utils'
 
 export default {
   components: {
