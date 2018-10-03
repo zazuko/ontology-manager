@@ -9,7 +9,7 @@
 <script>
 import axios from 'axios'
 import _get from 'lodash/get'
-import { datasetsSetup } from '~/libs/utils'
+import { datasetsSetup } from '@/libs/utils'
 
 export default {
   async asyncData () {},

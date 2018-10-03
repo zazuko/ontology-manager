@@ -104,8 +104,8 @@ module.exports = {
   ** Internal API
   */
   serverMiddleware: [
-    '~/api/',
-    '~/trifid/'
+    '@/api/',
+    '@/trifid/'
   ],
 
   /*

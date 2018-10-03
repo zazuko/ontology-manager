@@ -1,0 +1,13 @@
+mutation ($threadId: Int!, $body: String!, $hatId: Int) {
+  createMessage (input: {
+    message: {
+      threadId: $threadId,
+      body: $body,
+      hatId: $hatId
+    }
+  }) {
+    message {
+      id
+    }
+  }
+}

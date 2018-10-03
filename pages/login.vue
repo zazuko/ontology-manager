@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { datasetsSetup } from '~/libs/utils'
+import { datasetsSetup } from '@/libs/utils'
 
 export default {
   async created () {

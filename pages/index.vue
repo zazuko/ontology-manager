@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import Structure from '~/components/Structure'
-import { datasetsSetup } from '~/libs/utils'
+import Structure from '@/components/Structure'
+import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {

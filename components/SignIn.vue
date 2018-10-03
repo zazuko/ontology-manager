@@ -18,7 +18,7 @@
 <script>
 import axios from 'axios'
 import _get from 'lodash/get'
-import { toastClose } from '~/libs/utils'
+import { toastClose } from '@/libs/utils'
 
 export default {
   name: 'SignIn',

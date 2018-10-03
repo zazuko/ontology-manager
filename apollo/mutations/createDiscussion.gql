@@ -1,0 +1,14 @@
+mutation ($headline: String!, $body: String!, $iri: String!, $threadType: ThreadType!) {
+  createThread (input: {
+    thread: {
+      headline: $headline,
+      body: $body,
+      iri: $iri,
+      threadType: $threadType
+    }
+  }) {
+    thread {
+      id
+    }
+  }
+}

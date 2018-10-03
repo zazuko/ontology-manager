@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import DiscussionsList from '~/components/DiscussionsList.vue'
-import { datasetsSetup } from '~/libs/utils'
+import allDiscussions from '@/apollo/queries/allDiscussions'
+import DiscussionsList from '@/components/DiscussionsList.vue'
+import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {
@@ -32,25 +32,8 @@ export default {
   },
   apollo: {
     discussions: {
-      query: gql` query GetAllDiscussions {
-        discussions: allThreads {
-          nodes {
-            id,
-            headline,
-            body,
-            hat: hatByHatId {
-              title
-            },
-            author: personByAuthorId {
-              name
-            },
-            iri,
-            threadType,
-            authorId,
-            externalId
-          }
-        }
-      }`,
+      prefetch: true,
+      query: allDiscussions,
       fetchPolicy: 'cache-and-network'
     }
   }

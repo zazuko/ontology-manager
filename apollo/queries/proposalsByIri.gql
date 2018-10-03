@@ -1,0 +1,29 @@
+query GetUserContent ($iri: String!) {
+  proposals: proposalsByIri (iri: $iri) {
+    proposals: nodes {
+      id,
+      headline,
+      body,
+      hat: hatByHatId {
+        title
+      },
+      author: personByAuthorId {
+        avatar,
+        name
+      },
+      iri,
+      threadType,
+      authorId,
+      externalId,
+      answers: messagesByThreadId {
+        messages: nodes {
+          id,
+          body,
+          author: personByAuthorId {
+            name
+          }
+        }
+      }
+    }
+  }
+}

@@ -24,8 +24,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-// import _get from 'lodash/get'
+import answerDiscussion from '@/apollo/mutations/answerDiscussion'
 
 export default {
   name: 'DiscussionReply',
@@ -43,29 +42,13 @@ export default {
   },
   methods: {
     create () {
-      const mutation = gql`
-        mutation ($threadId: Int!, $body: String!, $hatId: Int) {
-          createMessage (input: {
-            message: {
-              threadId: $threadId,
-              body: $body,
-              hatId: $hatId
-            }
-          }) {
-            message {
-              id
-            }
-          }
-        }
-      `
-
       const variables = {
         threadId: this.id,
         body: this.body,
         hatId: this.hatId
       }
 
-      this.$apollo.mutate({ mutation, variables })
+      this.$apollo.mutate({ mutation: answerDiscussion, variables })
         .then((data) => {
           this.$emit('answerAdded')
         })

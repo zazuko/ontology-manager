@@ -14,7 +14,7 @@
 
 <script>
 // import rdf from 'rdf-ext'
-import Structure from '~/components/Structure'
+import Structure from '@/components/Structure'
 
 export default {
   components: {

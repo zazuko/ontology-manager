@@ -1,0 +1,27 @@
+query GetDiscussion ($id: Int!) {
+  discussion: threadById (id: $id) {
+    id,
+    headline,
+    body,
+    hat: hatByHatId {
+      title
+    },
+    author: personByAuthorId {
+      avatar,
+      name
+    },
+    iri,
+    threadType,
+    authorId,
+    externalId,
+    answers: messagesByThreadId {
+      messages: nodes {
+        id,
+        body,
+        author: personByAuthorId {
+          name
+        }
+      }
+    }
+  }
+}

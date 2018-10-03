@@ -1,0 +1,19 @@
+query GetAllDiscussions {
+  discussions: allThreads {
+    nodes {
+      id,
+      headline,
+      body,
+      hat: hatByHatId {
+        title
+      },
+      author: personByAuthorId {
+        name
+      },
+      iri,
+      threadType,
+      authorId,
+      externalId
+    }
+  }
+}
