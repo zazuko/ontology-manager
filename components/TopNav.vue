@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-white topNav">
+  <nav class="navbar is-white top-nav">
     <div class="container">
       <div class="navbar-brand">
         <nuxt-link
@@ -13,7 +13,7 @@
         <div
           :class="{'is-active': isActive}"
           class="navbar-burger burger"
-          data-target="topNav"
+          data-target="top-nav"
           @click="toggle()">
           <span />
           <span />
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div
-        id="topNav"
+        id="top-nav"
         :class="{'is-active': isActive}"
         class="navbar-menu">
         <div class="navbar-start">

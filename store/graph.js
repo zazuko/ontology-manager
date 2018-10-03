@@ -16,6 +16,6 @@ export const mutations = {
   setStructure (state, dataset) {
     state.structureSerialized = serialize(dataset)
     state.structure = dataset
-    state.structureTree = buildTree(dataset)
+    state.structureTree = buildTree(dataset, this.state.graph.ontology)
   }
 }

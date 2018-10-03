@@ -1,32 +1,37 @@
 <template>
-  <div>
+  <div class="container">
+    <section class="main-content columns is-fullheight">
+      <script
+        v-if="jsonld"
+        id="data"
+        type="application/ld+json"
+        v-html="jsonld" />
 
-    <section
-      class="container"
-      style="margin-bottom: 25px;">
-      <h1 class="title">{{ iri }} {{ isClass() }}</h1>
-    </section>
+      <side-nav :current-iri="iri" />
 
-    <script
-      v-if="jsonld"
-      id="data"
-      type="application/ld+json"
-      v-html="jsonld" />
+      <div class="container column is-10">
+        <div class="section">
 
-    <section
-      class="container"
-      style="margin-bottom: 25px;">
-      <structure
-        v-if="subtree"
-        :obj="subtree"
-        :name="subtree.label" />
+          <div class="card">
+            <div class="card-header"><p class="card-header-title">Header</p></div>
+            <div class="card-content"><div class="content">Content</div></div>
+          </div>
 
-      <div
-        v-if="proposals && proposals.proposals">
-        <div
-          v-for="proposal in proposals.proposals"
-          :key="proposal.id">
-          <h1 class="title">{{ proposal }}</h1>
+          <h1 class="title">{{ iri }} {{ isClass() }}</h1>
+
+          <structure
+            v-if="subtree"
+            :obj="subtree"
+            :name="subtree.label" />
+
+          <div
+            v-if="proposals && proposals.proposals">
+            <div
+              v-for="proposal in proposals.proposals"
+              :key="proposal.id">
+              <h1 class="title">{{ proposal }}</h1>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -37,6 +42,7 @@
 import gql from 'graphql-tag'
 import rdf from 'rdf-ext'
 import Structure from '~/components/Structure'
+import SideNav from '~/components/SideNav'
 import { datasetsSetup, findSubtreeInForest } from '~/libs/utils'
 
 const datasetBaseUrl = require('~/trifid/trifid.config.json').datasetBaseUrl
@@ -49,6 +55,7 @@ export default {
     }
   },
   components: {
+    SideNav,
     Structure
   },
   computed: {
@@ -64,6 +71,7 @@ export default {
       return iri
     },
     jsonld () {
+      // TODO: serialize and put in source here
       return ''
     }
   },
