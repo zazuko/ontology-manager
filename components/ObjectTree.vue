@@ -9,6 +9,7 @@
         v-for="node in tree.children"
         :key="node.iri"
         :tree="node"
+        :could-have-children="true"
         :current-iri="currentIri" />
     </ul>
   </div>
