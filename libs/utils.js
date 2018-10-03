@@ -45,7 +45,7 @@ export function serialize (dataset) {
     .join('\n')
 }
 
-export function buildTree (dataset) {
+export function buildTree (dataset, dataset2) {
   if (!dataset) return {}
 
   const predicate = rdf.namedNode('http://schema.org/hasPart')
@@ -68,8 +68,16 @@ export function buildTree (dataset) {
     .reduce((acc, iri) => {
       const node = nodes[iri]
       node.path = `/${iri.replace(datasetBaseUrl, '')}`
-      const label = dataset.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
-      node.label = label.length ? label[0].object.value : iri
+      let label = dataset.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
+      node.label = iri
+      if (label.length) {
+        node.label = label[0].object.value
+      } else {
+        const label = dataset2.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
+        if (label.length) {
+          node.label = label[0].object.value
+        }
+      }
 
       // then it's a root
       if (!node.parent) {
