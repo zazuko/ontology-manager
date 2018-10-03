@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ObjectNode from '~/components/ObjectNode'
+import ObjectNode from '@/components/ObjectNode'
 
 export default {
   name: 'ObjectTree',

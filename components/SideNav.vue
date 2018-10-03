@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import ObjectTree from '~/components/ObjectTree'
+import ObjectTree from '@/components/ObjectTree'
 
 export default {
   components: {

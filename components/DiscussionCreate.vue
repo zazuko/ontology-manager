@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import createDiscussion from '@/apollo/mutations/createDiscussion'
 import _get from 'lodash/get'
 
 export default {
@@ -71,23 +71,6 @@ export default {
   },
   methods: {
     create () {
-      const mutation = gql`
-        mutation ($headline: String!, $body: String!, $iri: String!, $threadType: ThreadType!) {
-          createThread (input: {
-            thread: {
-              headline: $headline,
-              body: $body,
-              iri: $iri,
-              threadType: $threadType
-            }
-          }) {
-            thread {
-              id
-            }
-          }
-        }
-      `
-
       const variables = {
         headline: this.headline,
         iri: this.iri,
@@ -95,7 +78,7 @@ export default {
         threadType: 'DISCUSSION'
       }
 
-      this.$apollo.mutate({ mutation, variables })
+      this.$apollo.mutate({ mutation: createDiscussion, variables })
         .then((result) => {
           const id = _get(result, 'data.createThread.thread.id')
           if (id) {

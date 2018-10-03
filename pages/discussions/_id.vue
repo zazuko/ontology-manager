@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import { datasetsSetup, toastClose } from '~/libs/utils'
-import DiscussionCard from '~/components/DiscussionCard.vue'
-import DiscussionReply from '~/components/DiscussionReply.vue'
+import discussionById from '@/apollo/queries/discussionById'
+import { datasetsSetup, toastClose } from '@/libs/utils'
+import DiscussionCard from '@/components/DiscussionCard.vue'
+import DiscussionReply from '@/components/DiscussionReply.vue'
 
 export default {
   async asyncData ({ route }) {
@@ -34,33 +34,7 @@ export default {
   },
   apollo: {
     discussion: {
-      query: gql` query GetDiscussion ($id: Int!) {
-        discussion: threadById (id: $id) {
-          id,
-          headline,
-          body,
-          hat: hatByHatId {
-            title
-          },
-          author: personByAuthorId {
-            avatar,
-            name
-          },
-          iri,
-          threadType,
-          authorId,
-          externalId,
-          answers: messagesByThreadId {
-            messages: nodes {
-              id,
-              body,
-              author: personByAuthorId {
-                name
-              }
-            }
-          }
-        }
-      }`,
+      query: discussionById,
       variables () {
         return {
           id: this.id
