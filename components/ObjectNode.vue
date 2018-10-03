@@ -4,20 +4,23 @@
       :to="{ path: tree.path, query: {from: ''}}"
       :class="{'is-active': isActive}">
       <span
-        v-if="tree.children && tree.children.length"
-        class="icon is-small"
-        @click.prevent="toggleCollapse">
-        <i
-          v-show="isActive"
-          class="mdi mdi-minus" />
-        <i
-          v-show="!isActive"
-          class="mdi mdi-plus" />
-      </span>
-      <span
-        v-else
-        class="icon is-small">
-        <i class="mdi" />
+        v-if="couldHaveChildren">
+        <span
+          v-if="tree.children && tree.children.length"
+          class="icon is-small"
+          @click.prevent="toggleCollapse">
+          <i
+            v-show="isActive"
+            class="mdi mdi-minus" />
+          <i
+            v-show="!isActive"
+            class="mdi mdi-plus" />
+        </span>
+        <span
+          v-else
+          class="icon is-small">
+          <i class="mdi" />
+        </span>
       </span>
       {{ tree.label }}
     </router-link>
@@ -29,6 +32,7 @@
         v-for="node in tree.children"
         :key="node.iri"
         :tree="node"
+        :could-have-children="!!tree.children.find((node) => node.children.length > 0)"
         :current-iri="currentIri" />
     </ul>
   </li>
@@ -37,7 +41,23 @@
 <script>
 export default {
   name: 'ObjectNode',
-  props: ['tree', 'currentIri'],
+  props: {
+    tree: {
+      type: Object,
+      required: true
+    },
+    currentIri: {
+      type: String,
+      required: true
+    },
+    // This node has children or has siblings that have children.
+    // This is needed to decide whether we render a sublist that has a mix of
+    // parents and leafs or leafs-only sublist
+    couldHaveChildren: {
+      type: Boolean,
+      required: true
+    }
+  },
   data () {
     return {
       isCurrentRoute: this.currentIri === this.tree.iri,
