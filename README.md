@@ -59,8 +59,9 @@ Whenever you feel like it:
 
 ### To Consider
 
-* Should the forge-specific functionalities implemented as a GraphQL endpoint?
+* ~~Should the forge-specific functionalities be implemented as a GraphQL endpoint?~~
   * How does Apollo support multiple endpoints?
+    * GitHub GraphQL API is not complete enough anyway.
   * https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d/
   * https://medium.com/@sastraxi/authenticated-and-stitched-schemas-with-postgraphile-passport-and-stripe-a51490a858a2
   * https://www.apollographql.com/docs/graphql-tools/schema-stitching.html
