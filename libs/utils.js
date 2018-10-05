@@ -70,12 +70,17 @@ export function buildTree (dataset, dataset2) {
       node.path = `/${iri.replace(datasetBaseUrl, '')}`
       let label = dataset.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
       node.label = iri
+      node.properties = []
+      node.type = 'container'
+
       if (label.length) {
         node.label = label[0].object.value
       } else {
         const label = dataset2.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
         if (label.length) {
+          node.type = 'class'
           node.label = label[0].object.value
+          node.properties = findClassProperties(iri, dataset2)
         }
       }
 
@@ -109,4 +114,17 @@ class Node {
     this.quads = quads
     this.children = children
   }
+}
+
+export function findClassProperties (classIRI, dataset) {
+  const type = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
+  const object = rdf.namedNode('http://www.w3.org/2002/07/owl#ObjectProperty')
+
+  const domain = rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#domain')
+  const classToSearchFor = rdf.namedNode(classIRI)
+
+  return dataset
+    .match(null, domain, classToSearchFor)
+    .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
+    // .map(({ subject }) => dataset.match(subject))
 }
