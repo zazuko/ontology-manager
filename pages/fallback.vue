@@ -144,18 +144,6 @@ export default {
 
     // triggers a 404
     return false
-  },
-  apollo: {
-    proposals: {
-      query: proposals,
-      variables () {
-        return {
-          iri: this.iri
-        }
-      },
-      prefetch: true,
-      fetchPolicy: 'cache-and-network'
-    }
   }
 }
 </script>
