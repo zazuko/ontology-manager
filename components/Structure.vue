@@ -12,7 +12,7 @@
       }"
       class="tile is-vertical">
 
-      <p class="title">
+      <h1 class="title">
         <nuxt-link
           v-if="obj.path"
           :to="{ path: obj.path, params: {} }">
@@ -22,7 +22,12 @@
           v-else>
           {{ name }}
         </span>
-      </p>
+      </h1>
+      <h2
+        v-if="obj.type === 'class'"
+        class="subtitle">
+        {{ obj.properties.length }} properties
+      </h2>
 
       <structure
         v-for="child in obj.children"
