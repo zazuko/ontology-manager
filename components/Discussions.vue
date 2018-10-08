@@ -69,7 +69,12 @@ import discussions from '@/apollo/queries/discussionsByIri'
 
 export default {
   name: 'Discussions',
-  props: ['iri'],
+  props: {
+    iri: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
