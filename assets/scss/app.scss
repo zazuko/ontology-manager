@@ -27,3 +27,14 @@ $primary-invert: $pink-invert;
 // 4. Import the rest of Bulma
 @import "../../node_modules/bulma/bulma";
 @import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
+
+// Override for ObjectTree
+.menu-list.side-nav {
+  li ul {
+    margin: 0.2em 0 0.5em 0.75em;
+    padding-left: 0;
+  }
+  a.is-current {
+    @extend .has-background-success;
+  }
+}
