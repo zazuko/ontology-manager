@@ -95,6 +95,7 @@ export function buildTree (dataset, dataset2) {
   return forest
 }
 
+// Navigate a tree until a node with IRI=iri is found.
 export function findSubtreeInForest (nodes, iri) {
   for (const node of nodes) {
     if (node.iri === iri) {

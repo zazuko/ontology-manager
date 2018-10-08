@@ -1,8 +1,8 @@
 <template>
   <li>
     <router-link
-      :to="{ path: tree.path, query: {from: ''}}"
-      :class="{'is-active': isActive}">
+      :to="{ path: tree.path }"
+      :class="{ 'is-active': isActive, 'is-current': isCurrent }">
       <span
         v-if="couldHaveChildren">
         <span
@@ -10,10 +10,10 @@
           class="icon is-small"
           @click.prevent="toggleCollapse">
           <i
-            v-show="isActive"
+            v-show="showMinusSymbol"
             class="mdi mdi-minus" />
           <i
-            v-show="!isActive"
+            v-show="showPlusSymbol"
             class="mdi mdi-plus" />
         </span>
         <span
@@ -62,16 +62,31 @@ export default {
     return {
       isCurrentRoute: this.currentIri === this.tree.iri,
       collapsed: null, // initial state
-      from: this.$route.query.from,
-      hasActiveChild: this.tree.children.find((node) => node.iri === this.currentIri)
+      hasActiveChild: !!this.tree.children.find((node) => node.iri === this.currentIri)
     }
   },
   computed: {
     isActive () {
-      if (this.level === 1) return false
-      if (this.hasActiveChild) return true
-      if (this.collapsed === null) return this.isCurrentRoute
+      if (this.collapsed === null) {
+        if (this.hasActiveChild) {
+          return true
+        }
+        return this.isCurrentRoute
+      }
       return !this.collapsed
+    },
+    isCurrent () {
+      return this.isCurrentRoute || this.hasActiveChild
+    },
+    showMinusSymbol () {
+      if (this.collapsed === null) {
+        return this.isActive || this.isCurrent
+      }
+
+      return !this.collapsed
+    },
+    showPlusSymbol () {
+      return !this.showMinusSymbol
     }
   },
   beforeCreate () {
@@ -81,8 +96,7 @@ export default {
     toggleCollapse (evt) {
       evt.preventDefault()
       evt.stopPropagation()
-      this.from = undefined
-      if (this.collapsed === null) {
+      if (this.collapsed === null && !this.isCurrent) {
         this.collapsed = this.isCurrentRoute
       } else {
         this.collapsed = !this.collapsed

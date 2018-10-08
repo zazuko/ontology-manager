@@ -101,7 +101,7 @@ export default {
           const subject = rdf.namedNode(this.iri)
           const predicate = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
           const object = rdf.namedNode('http://www.w3.org/2002/07/owl#Class')
-          return this.ontology.match(subject, predicate, object).toArray()
+          return this.ontology.match(subject, predicate, object).toArray().length
         }
       }
     }
