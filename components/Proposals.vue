@@ -67,7 +67,12 @@ import proposals from '@/apollo/queries/proposalsByIri'
 
 export default {
   name: 'Proposals',
-  props: ['iri'],
+  props: {
+    iri: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
