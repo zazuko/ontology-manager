@@ -16,7 +16,8 @@ const cache = apicache.middleware
 
 const anonApolloClient = apolloClientFactory()
 const getAuthenticatedApolloClient = (token) => apolloClientFactory({
-  getAuth: () => token
+  getAuth: () => token,
+  ssr: true
 })
 // const githubApolloClient = apolloClientFactory({
 //   httpEndpoint: 'https://api.github.com/graphql',
@@ -143,18 +144,18 @@ router.post('/proposals/new', async (req, res, next) => {
 
     const { number } = await api.createPR({ title, body, branch })
 
-    const userApolloClient = getAuthenticatedApolloClient(getToken(req))
+    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
 
     const result = await userApolloClient.mutate({
       mutation: gql`
-        mutation ($headline: String!, $body: String!, $iri: String!, $externalId: Int!) {
+        mutation ($headline: String!, $body: String!, $iri: String!, $externalId: Int!, $threadType: ThreadType!) {
           createThread (input: {
             thread: {
               headline: $headline,
               body: $body,
               iri: $iri,
               externalId: $externalId,
-              threadType: "PROPOSAL"
+              threadType: $threadType
             }
           }) {
             thread {
@@ -167,7 +168,8 @@ router.post('/proposals/new', async (req, res, next) => {
         headline: title,
         iri: iri,
         body: body,
-        externalId: number
+        externalId: number,
+        threadType: 'PROPOSAL'
       }
     })
 
@@ -179,12 +181,13 @@ router.post('/proposals/new', async (req, res, next) => {
 
 // TODO: factor these out
 function getToken (req) {
-  if (!req.headers.authorization) return
+  if (!_.get(req, 'headers.authorization')) return
 
   const parts = req.headers.authorization.split(' ')
   if (parts.length === 2 && parts[0] === 'Bearer') {
     return parts[1]
   }
+  throw new Error('Failed to extract auth token')
 }
 
 async function checkToken (req, res) {
@@ -217,7 +220,9 @@ async function checkToken (req, res) {
 
     // check that the client gave us the correct token
     if (!bearerToken || bearerToken !== serverToken) {
-      throw new Error(`Bearer token ${bearerToken} differs from the token GitHub gave us`)
+      const err = new Error(`Bearer token ${bearerToken} differs from the token GitHub gave us`)
+      res.status(500).send({ message: err.message })
+      return false
     }
   } catch (err) {
     res.status(404).send({ message: err.message })
