@@ -1,7 +1,7 @@
 import NamedNode from '@rdfjs/data-model/lib/named-node'
 import rdf from 'rdf-ext'
 
-export const stringIRI = {
+const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
 
   Property: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#Property',
@@ -38,12 +38,25 @@ export const stringIRI = {
   }
 }
 
-export const termIRI = Object
+const termIRI = Object
   .entries(stringIRI)
   .reduce((acc, [key, val]) => {
     acc[key] = rdf.namedNode(val)
     return acc
   }, {})
+
+const createXsdType = ([iri, label]) =>
+  rdf.quad(rdf.namedNode(iri), termIRI.label, rdf.literal(label))
+
+const xsdTypes = [
+  ['http://www.w3.org/2001/XMLSchema#boolean', 'Boolean'],
+  ['http://www.w3.org/2001/XMLSchema#date', 'Date'],
+  ['http://www.w3.org/2001/XMLSchema#dateTime', 'Date and time'],
+  ['http://www.w3.org/2001/XMLSchema#double', 'Double'],
+  ['http://www.w3.org/2001/XMLSchema#int', 'Integer'],
+  ['http://www.w3.org/2001/XMLSchema#string', 'String'],
+  ['http://www.w3.org/2001/XMLSchema#time', 'Time']
+].map(createXsdType)
 
 export class Property {
   constructor () {
@@ -53,7 +66,7 @@ export class Property {
     this.shortDescription = '' // label
     this.longDescription = ''  // comment
     this.type = ''             // range
-    this.classes = []          // domainIncludes
+    this.domains = []          // domainIncludes
   }
 
   validate () {
@@ -82,10 +95,10 @@ export class Property {
       }
     }
 
-    if (this.classes.length) {
-      this.classes.forEach((cls) => {
-        if (!(cls instanceof NamedNode)) {
-          throw new Error(`Class '${cls}' should be a rdf.namedNode`)
+    if (this.domains.length) {
+      this.domains.forEach((domain) => {
+        if (!(domain instanceof NamedNode)) {
+          throw new Error(`Class '${domain}' should be a rdf.namedNode`)
         }
       })
     }
@@ -101,20 +114,105 @@ export class Property {
     ]
 
     if (this.type) {
-      if (this.type.value) {
+      console.warn({type: this.type})
+      if (this.type instanceof NamedNode) {
         quads.push(rdf.quad(iri, termIRI.range, this.type))
       } else {
         quads.push(rdf.quad(iri, termIRI.range, termIRI.types[this.type]))
       }
     }
 
-    if (this.classes.length) {
-      quads.push(
-        ...this.classes
-          .map((cls) => rdf.quad(iri, termIRI.domain, cls))
-      )
+    if (this.domains.length) {
+      // quads.push(
+      //   ...this.domains
+      //     .map((domain) => rdf.quad(iri, termIRI.domain, domain))
+      // )
+      quads.push(...this.domains)
     }
 
     return quads
+  }
+}
+
+function toObject (domain, dataset) {
+  let label = dataset.match(domain.subject, termIRI.label).toArray()
+  if (Array.isArray(label)) {
+    if (label.length) label = label[0].object.value
+    else label = ''
+  }
+
+  let comment = dataset.match(domain.subject, termIRI.comment).toArray()
+  if (Array.isArray(comment)) {
+    if (comment.length) comment = comment[0].object.value
+    else comment = ''
+  }
+
+  return {
+    domain,
+    label,
+    comment
+  }
+}
+
+export function domainsSearchFactory (dataset) {
+  const domainsDataset = dataset
+    .match(null, termIRI.a, termIRI.Class)
+    .addAll(xsdTypes)
+
+  return (searchInput = '') => {
+    if (!searchInput) return []
+    let results = domainsDataset
+      .toArray()
+      .map(schemaClass => objectMatch(toObject(schemaClass, dataset), searchInput))
+      .filter(Boolean)
+
+    return results
+  }
+}
+
+/**
+ * Checks if a quad matches the search string
+ * @param QuadExt The quad that might match
+ * @param searchInput The search string
+ * @returns {*}
+ */
+function objectMatch (object, searchInput, detailed = false) {
+  const match = stringMatch(object.label, searchInput) || stringMatch(object.description, searchInput)
+
+  if (!match) {
+    return null
+  }
+
+  if (detailed) {
+    return {
+      object,
+      match
+    }
+  }
+
+  return object
+}
+
+/**
+ * Searches for searchInput in potentialMatch
+ * @param String potentialMatch
+ * @param String searchInput
+ * @returns {*}
+ */
+function stringMatch (potentialMatch, searchInput) {
+  if (!potentialMatch) {
+    return null
+  }
+
+  const index = potentialMatch.toLowerCase().indexOf(searchInput.toLowerCase())
+
+  if (index === -1) {
+    return null
+  }
+
+  return {
+    index,
+    input: potentialMatch,
+    source: searchInput
   }
 }
