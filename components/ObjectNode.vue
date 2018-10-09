@@ -1,6 +1,6 @@
 <template>
   <li>
-    <router-link
+    <nuxt-link
       :to="{ path: tree.path }"
       :class="{ 'is-active': isActive, 'is-current': isCurrent }">
       <span
@@ -23,7 +23,7 @@
         </span>
       </span>
       {{ tree.label }}
-    </router-link>
+    </nuxt-link>
 
     <ul
       v-if="tree.children && tree.children.length"
