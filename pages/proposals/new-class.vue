@@ -1,11 +1,15 @@
 <template>
   <div>
-
     <section class="section">
+
       <div class="container">
+
         <h1 class="title">
-          Request New Property
+          Request New Class
         </h1>
+        <h2 class="subtitle">
+          On <code>{{ iri }}</code>
+        </h2>
         <p>
           This form allows suggesting new elements to include in the ontology.
         </p>
@@ -21,7 +25,9 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    placeholder="" />
+                    placeholder="">
+                    NOT RDF
+                  </textarea>
                 </div>
               </div>
               <div class="column">
@@ -36,14 +42,16 @@
         </div>
 
         <div class="box">
+
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label">Suggested Property Name</label>
+                <label class="label">Suggested Class Name</label>
                 <div class="control">
                   <input
                     class="input"
-                    type="text">
+                    type="text"
+                    value="rdfs:Class">
                 </div>
               </div>
             </div>
@@ -51,13 +59,16 @@
           </div>
 
           <div class="columns">
+
             <div class="column">
               <div class="field">
                 <label class="label">Short Description</label>
                 <div class="control">
                   <textarea
                     class="textarea"
-                    placeholder="" />
+                    placeholder="">
+                    rdfs:label
+                  </textarea>
                 </div>
               </div>
             </div>
@@ -67,7 +78,9 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    placeholder="" />
+                    placeholder="">
+                    rdfs:comment
+                  </textarea>
                 </div>
               </div>
             </div>
@@ -78,25 +91,43 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label">Applies to the Following Classes</label>
+                <label class="label">Has the Following Properties</label>
                 <div class="control">
+                  <!--
+                  if click on 'add as new property',
+                  we add a box and add it to the progression
+                -->
                   <input
                     class="input"
-                    type="text">
+                    type="text"
+                    value="weight schema:domainIncludes MyNewClass">
                 </div>
               </div>
             </div>
-            <div class="column">
-              <div class="field">
-                <label class="label">Expected Type</label>
-                <div class="control">
-                  <input
-                    class="input"
-                    type="text">
-                </div>
-              </div>
-            </div>
+            <div class="column" />
           </div>
+
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Expected Type</th>
+                <th>Description</th>
+                <th>Used On</th>
+                <th>foo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>38</td>
+                <td>23</td>
+                <td>12</td>
+                <td>3</td>
+                <td>edit remove</td>
+              </tr>
+            </tbody>
+          </table>
+
         </div>
 
         <div class="box">
@@ -124,7 +155,9 @@
             </button>
           </p>
         </div>
+
       </div>
+
     </section>
   </div>
 </template>
