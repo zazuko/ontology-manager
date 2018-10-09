@@ -9,20 +9,20 @@
         </div>
         <div class="navbar-menu">
           <div class="navbar-end">
-            <a class="navbar-item">
+            <span class="navbar-item ">
               <nuxt-link
-                :to="{ name: 'proposals-new-class', query: { iri } }"
+                :to="{ name: 'proposals-new-class', query: { iri: iri } }"
                 class="button is-primary is-inverted">
                 Request New Class
               </nuxt-link>
-            </a>
-            <a class="navbar-item">
+            </span>
+            <span class="navbar-item ">
               <nuxt-link
-                :to="{ name: 'proposals-new-property', query: { iri } }"
+                :to="{ name: 'proposals-new-property', query: { iri: iri } }"
                 class="button is-primary is-inverted">
                 Request New Property
               </nuxt-link>
-            </a>
+            </span>
           </div>
         </div>
       </nav>
