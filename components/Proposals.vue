@@ -11,9 +11,16 @@
           <div class="navbar-end">
             <a class="navbar-item">
               <nuxt-link
-                :to="{ name: 'proposals-new', query: { iri: iri } }"
+                :to="{ name: 'proposals-new-class', query: { iri } }"
                 class="button is-primary is-inverted">
-                New Proposal
+                Request New Class
+              </nuxt-link>
+            </a>
+            <a class="navbar-item">
+              <nuxt-link
+                :to="{ name: 'proposals-new-property', query: { iri } }"
+                class="button is-primary is-inverted">
+                Request New Property
               </nuxt-link>
             </a>
           </div>
