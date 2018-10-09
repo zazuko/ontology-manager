@@ -91,15 +91,40 @@
 
           <div class="columns">
             <div class="column">
-              <div class="field">
-                <label class="label">Applies to the Following Classes</label>
-                <div class="control">
-                  <input
-                    class="input"
-                    autocomplete="new-password"
-                    type="text"
-                    value="schema:domainIncludes">
-                </div>
+              <div
+                v-if="renderTypeahead">
+                <typeahead
+                  :search-function="sfn"
+                  label="Applies to the Following Classes"
+                  @selectionChanged="addDomain">
+                  <div
+                    v-if="typeahead.inputString"
+                    slot="custom-options"
+                    slot-scope="typeahead"
+                    class="dropdown-item">
+                    <span class="class-label">New class:</span>
+                    <span class="class-name">“{ { term(schema.buildSchemaClassIri(typeahead.inputString)) } }”</span>
+                    <a
+                      href="#"
+                      title="Add as a new class"
+                      @click.prevent="addDomain(typeahead.inputString, typeahead.unfocus, $event)">
+                      Add as a new class?
+                    </a>
+                  </div>
+                  <ul
+                    slot="selected-list"
+                    class="configuration">
+                    <li
+                      v-for="(domain, index) in property.domains"
+                      :key="index">
+                      {{ domain.label }} <small>({{ domain.domain.subject.value }})</small>
+                      <a
+                        title="Remove class"
+                        class="delete"
+                        @click.prevent="removeDomain(index)" />
+                    </li>
+                  </ul>
+                </typeahead>
               </div>
             </div>
             <div class="column">
@@ -156,9 +181,11 @@
 
 <script>
 import axios from 'axios'
+import rdf from 'rdf-ext'
 import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
-import { Property } from '@/libs/rdf'
+import { Property, domainsSearchFactory } from '@/libs/rdf'
+import Typeahead from '@/components/Typeahead'
 
 export default {
   async asyncData ({ query }) {
@@ -167,13 +194,27 @@ export default {
     }
   },
   middleware: 'authenticated',
+  components: {
+    Typeahead
+  },
   async created () {
     await datasetsSetup(this.$store)
+  },
+  mounted () {
+    let i = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        this.ontology = window.ontology
+        this.sfn = domainsSearchFactory(this.ontology)
+        clearInterval(i)
+      }
+    })
   },
   data () {
     const property = new Property()
     return {
-      property
+      property,
+      sfn: () => ([]),
+      renderTypeahead: process.client
     }
   },
   methods: {
@@ -183,6 +224,12 @@ export default {
       } catch (err) {
         return err.message
       }
+    },
+    addDomain (domain) {
+      this.property.domains.push(domain)
+    },
+    removeDomain (index) {
+      this.property.domains.splice(index, 1)
     },
     async createProposal () {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
