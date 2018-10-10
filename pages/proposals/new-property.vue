@@ -113,6 +113,7 @@
                         <i class="mdi mdi-close-circle" />
                       </span>
                       {{ domain.label }}
+                      &nbsp;
                       <small>(<code>{{ domain.domain.subject.value }}</code>)</small>
                     </a>
                   </nav>
@@ -131,16 +132,17 @@
                     v-show="property.type"
                     slot="selected-list"
                     class="panel">
-                    <a class="panel-block">
+                    <a
+                      v-if="property.type"
+                      class="panel-block">
                       <span
                         class="panel-icon"
                         @click.prevent="removeType()">
                         <i class="mdi mdi-close-circle" />
                       </span>
-                      <code
-                        v-if="property.type">
-                        {{ property.type.value }}
-                      </code>
+                      {{ property.type.label }}
+                      &nbsp;
+                      <small>(<code>{{ property.type.value }}</code>)</small>
                     </a>
                   </nav>
                 </typeahead>
@@ -153,15 +155,20 @@
 
         <div class="box">
           <div class="field">
+            <label class="label">NT so far</label>
+            <div class="control">
+              <pre>{{ nt }}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="field">
             <label class="label">Example</label>
             <div class="control">
               <textarea
                 class="textarea"
-                placeholder=""
-                v-html="paf()">
-                NOT RDF
-                not implemented / TODO
-              </textarea>
+                placeholder="" />
             </div>
           </div>
         </div>
@@ -222,15 +229,22 @@ export default {
       property,
       sfn: () => ([]),
       domains: [],
+      contentNT: '',
       renderTypeahead: process.client
     }
   },
+  computed: {
+    nt () {
+      this.setNT()
+      return this.contentNT
+    }
+  },
   methods: {
-    paf () {
+    async setNT () {
       try {
-        return this.property.toQuads()
+        this.contentNT = await this.property.toNT()
       } catch (err) {
-        return err.message
+        this.contentNT = err.message
       }
     },
     addDomain (domain) {
@@ -242,6 +256,7 @@ export default {
       this.property.domains.splice(index, 1)
     },
     addType (type) {
+      type.domain.subject.label = type.label
       this.property.type = type.domain.subject
     },
     removeType () {
