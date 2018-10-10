@@ -5,10 +5,21 @@
 // You can easily customize Bulma with your own variables.
 // Just uncomment the following block to see the result.
 
-/*
-// 1. Import the initial variables
-@import "../../node_modules/bulma/sass/utilities/initial-variables";
 
+// 1. Import the initial variables
+// @import "../../node_modules/bulma/sass/utilities/initial-variables";
+
+@import "../../node_modules/bulma/sass/utilities/_all";
+
+$panel-block-active-border-left-color: $orange;
+$panel-block-active-icon-color: $orange;
+
+@import "../../node_modules/bulma/sass/base/_all";
+@import "../../node_modules/bulma/sass/elements/_all";
+@import "../../node_modules/bulma/sass/components/_all";
+@import "../../node_modules/bulma/sass/grid/_all";
+@import "../../node_modules/bulma/sass/layout/_all";
+/*
 // 2. Set your own initial variables
 // Update the blue shade, used for links
 $blue: #06bcef;
@@ -25,7 +36,7 @@ $primary-invert: $pink-invert;
 */
 
 // 4. Import the rest of Bulma
-@import "../../node_modules/bulma/bulma";
+// @import "../../node_modules/bulma/bulma";
 @import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
 
 // Override for ObjectTree
