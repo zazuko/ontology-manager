@@ -1,6 +1,6 @@
 {
   "name": "ontology-editor",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Semantic Web, RDF ontology editor",
   "author": "Zazuko GmbH",
   "license": "AGPLv3",
@@ -9,7 +9,9 @@
     "dev": "node -r dotenv/config node_modules/.bin/nuxt dev . dotenv_config_path=docker-app-dev/.env",
     "dev-api": "nodemon --watch api --watch trifid --exec 'node -r dotenv/config' node_modules/.bin/nuxt dev . dotenv_config_path=docker-app-dev/.env",
     "build": "node -r dotenv/config node_modules/.bin/nuxt build . dotenv_config_path=docker-app-dev/.env",
+    "build:prod": "nuxt build",
     "start": "node -r dotenv/config node_modules/.bin/nuxt start . dotenv_config_path=docker-app-dev/.env",
+    "start:prod": "nuxt start",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "test": "node -r dotenv/config node_modules/.bin/jest . dotenv_config_path=test/.env"
