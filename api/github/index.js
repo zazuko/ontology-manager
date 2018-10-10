@@ -123,18 +123,8 @@ router.post('/link', async (req, res, next) => {
 })
 
 router.post('/proposals/new', async (req, res, next) => {
-  // const {
-  //   email: clientEmail,
-  //   name: clientName,
-  //   id: clientId
-  // } = req.body
-  const {
-    title = 'my title',
-    body = 'this **is** the body',
-    message = 'hello',
-    content = 'foobar test',
-    iri = 'http://example.com/schema/FlightManifest'
-  } = {}
+  const { title, body, message, content, iri } = req.body
+
   const author = { name: req.user.name, email: req.user.email }
 
   try {

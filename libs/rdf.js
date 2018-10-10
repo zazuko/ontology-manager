@@ -82,7 +82,7 @@ export class Property {
     }
   }
 
-  toQuads () {
+  get quads () {
     this.validate()
     const iri = rdf.namedNode(this.baseIRI + this.name)
     const quads = [
@@ -105,9 +105,9 @@ export class Property {
     return quads
   }
 
-  toNT () {
+  toNT (_dataset) {
     const serializerNtriples = new SerializerNtriples()
-    const dataset = rdf.dataset().addAll(this.toQuads())
+    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).addAll(this.quads)
     const stream = dataset.toStream()
     const output = serializerNtriples.import(stream)
 
@@ -235,4 +235,12 @@ function stringMatch (potentialMatch, searchInput) {
     input: potentialMatch,
     source: searchInput
   }
+}
+
+export function labelQuadForIRI (iri, dataset) {
+  const matches = dataset.match(rdf.namedNode(iri), termIRI.label).toArray()
+  if (matches.length) {
+    return matches[0]
+  }
+  return {}
 }
