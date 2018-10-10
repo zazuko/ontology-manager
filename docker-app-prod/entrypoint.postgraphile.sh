@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-DEBUG="postgraphile:*" postgraphile \
+postgraphile \
   -n 0.0.0.0 \
   --show-error-stack \
   --extended-errors severity,code,detail,hint,position,internalPosition,internalQuery,where,schema,table,column,dataType,constraint,file,line,routine \
