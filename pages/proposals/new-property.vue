@@ -27,11 +27,9 @@
               <div class="column">
                 <div class="control">
                   <textarea
+                    v-model="motivation"
                     class="textarea"
-                    placeholder="">
-                    NOT RDF
-                    not implemented / TODO
-                  </textarea>
+                    placeholder="" />
                 </div>
               </div>
               <div class="column">
@@ -103,10 +101,18 @@
                   <nav
                     slot="selected-list"
                     class="panel">
+                    <a class="panel-block" title="New property is getting created on this class!">
+                      <span class="panel-icon">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ currentLabel }}
+                      &nbsp;
+                      <small>(<code>{{ iri }}</code>)</small>
+                    </a>
                     <a
                       v-for="(domain, index) in domains"
                       :key="index"
-                      class="panel-block">
+                      class="panel-block is-active">
                       <span
                         class="panel-icon"
                         @click.prevent="removeDomain(index)">
@@ -134,7 +140,7 @@
                     class="panel">
                     <a
                       v-if="property.type"
-                      class="panel-block">
+                      class="panel-block is-active">
                       <span
                         class="panel-icon"
                         @click.prevent="removeType()">
@@ -198,7 +204,7 @@
 import axios from 'axios'
 import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
-import { Property, domainsSearchFactory } from '@/libs/rdf'
+import { Property, domainsSearchFactory, labelQuadForIRI } from '@/libs/rdf'
 import Typeahead from '@/components/Typeahead'
 
 export default {
@@ -217,19 +223,24 @@ export default {
   mounted () {
     let i = setInterval(() => {
       if (typeof window !== 'undefined') {
+        clearInterval(i)
+
         this.ontology = window.ontology
         this.sfn = domainsSearchFactory(this.ontology)
-        clearInterval(i)
+        const currentLableQuad = labelQuadForIRI(this.iri, this.ontology)
+        this.currentLabel = currentLableQuad.object.value
+        this.property.domains.push(currentLableQuad.subject)
       }
     })
   },
   data () {
-    const property = new Property()
     return {
-      property,
+      currentLabel: '',
+      property: new Property(),
       sfn: () => ([]),
       domains: [],
       contentNT: '',
+      motivation: '',
       renderTypeahead: process.client
     }
   },
@@ -263,11 +274,20 @@ export default {
       this.property.type = ''
     },
     async createProposal () {
+      const fileContent = await this.property.toNT(window.ontology)
+      const body = {
+        title: `New property '${this.property.name}' on '${this.iri}'`,
+        message: `add property '${this.property.name}' to '${this.iri}'`,
+        body: this.motivation,
+        iri: this.iri,
+        content: fileContent
+      }
+
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        const result = await axios.post('/api/proposals/new', { iri: this.iri }, headers)
+        const result = await axios.post('/api/proposals/new', body, headers)
 
-        const id = _get(result, 'createThread.thread.id')
+        const id = _get(result, 'data.createThread.thread.id')
         if (id) {
           this.$router.push({ name: 'proposals-id', params: { id } })
         } else {
