@@ -4,8 +4,9 @@
       <label
         v-if="label"
         class="label">
-        {{label}}
+        {{ label }}
       </label>
+      <p class="control has-icons-left">
       <input
         v-model="inputString"
         autocomplete="new-password"
@@ -13,6 +14,10 @@
         class="input"
         @blur="unfocus"
         @focus="focus">
+        <span class="icon is-small is-left">
+          <i class="mdi mdi-magnify" />
+        </span>
+      </p>
       <div
         class="dropdown"
         :class="{'is-active': hasFocus && inputString.length >= minLength}">
@@ -23,7 +28,7 @@
               :inputString="inputString"
               :unfocus="unfocus"
               name="custom-options" />
-            <hr class="dropdown-divider">
+            <!-- <hr class="dropdown-divider"> -->
             <div
               v-for="option in searchFunction(inputString).slice(0, limit)"
               :key="option.key"
