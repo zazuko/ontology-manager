@@ -2,7 +2,9 @@ import NamedNode from '@rdfjs/data-model/lib/named-node'
 import Literal from '@rdfjs/data-model/lib/literal'
 import rdf from 'rdf-ext'
 import { compareTwoStrings } from 'string-similarity'
+
 import SerializerNtriples from '@rdfjs/serializer-ntriples'
+import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -39,7 +41,7 @@ const xsdTypes = [
 
 export class Property {
   constructor () {
-    this.baseIRI = 'http://example.com/'
+    this.baseIRI = propertyBaseUrl
     this.motivation = ''
     this.name = ''             // IRI
     this.shortDescription = '' // label
