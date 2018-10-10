@@ -25,7 +25,7 @@ async function run () {
     client: 'pg',
     connection: {
       user: 'postgres',
-      host: 'localhost',
+      host: process.env.POSTGRESQL_HOST || 'localhost',
       database: process.env.POSTGRESQL_DATABASE,
       password: process.env.POSTGRESQL_PASSWORD
     }
