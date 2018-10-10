@@ -1,5 +1,7 @@
 import NamedNode from '@rdfjs/data-model/lib/named-node'
+import Literal from '@rdfjs/data-model/lib/literal'
 import rdf from 'rdf-ext'
+import { compareTwoStrings } from 'string-similarity'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -11,31 +13,7 @@ const stringIRI = {
   comment: 'http://www.w3.org/2000/01/rdf-schema#comment',
 
   domain: 'http://schema.org/domainIncludes',
-  range: 'http://schema.org/rangeIncludes',
-
-  types: {
-    string: 'http://www.w3.org/2001/XMLSchema#string',
-    boolean: 'http://www.w3.org/2001/XMLSchema#boolean',
-    float: 'http://www.w3.org/2001/XMLSchema#float',
-    integer: 'http://www.w3.org/2001/XMLSchema#integer',
-    long: 'http://www.w3.org/2001/XMLSchema#long',
-    double: 'http://www.w3.org/2001/XMLSchema#double',
-    decimal: 'http://www.w3.org/2001/XMLSchema#decimal',
-    nonPositiveInteger: 'http://www.w3.org/2001/XMLSchema#nonPositiveInteger',
-    nonNegativeInteger: 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger',
-    negativeInteger: 'http://www.w3.org/2001/XMLSchema#negativeInteger',
-    int: 'http://www.w3.org/2001/XMLSchema#int',
-    unsignedLong: 'http://www.w3.org/2001/XMLSchema#unsignedLong',
-    positiveInteger: 'http://www.w3.org/2001/XMLSchema#positiveInteger',
-    short: 'http://www.w3.org/2001/XMLSchema#short',
-    unsignedInt: 'http://www.w3.org/2001/XMLSchema#unsignedInt',
-    byte: 'http://www.w3.org/2001/XMLSchema#byte',
-    unsignedShort: 'http://www.w3.org/2001/XMLSchema#unsignedShort',
-    unsignedByte: 'http://www.w3.org/2001/XMLSchema#unsignedByte',
-    date: 'http://www.w3.org/2001/XMLSchema#date',
-    time: 'http://www.w3.org/2001/XMLSchema#time',
-    dateTime: 'http://www.w3.org/2001/XMLSchema#dateTime'
-  }
+  range: 'http://schema.org/rangeIncludes'
 }
 
 const termIRI = Object
@@ -87,10 +65,7 @@ export class Property {
     }
 
     if (this.type) {
-      if (!termIRI.types.hasOwnProperty(this.type)) {
-        if (!(this.type instanceof NamedNode)) {
-          throw new Error(`Unknown xsd type '${this.type}'`)
-        }
+      if (!(this.type instanceof NamedNode)) {
         throw new Error(`Type '${this.type}' should be a rdf.namedNode`)
       }
     }
@@ -114,20 +89,14 @@ export class Property {
     ]
 
     if (this.type) {
-      console.warn({type: this.type})
-      if (this.type instanceof NamedNode) {
-        quads.push(rdf.quad(iri, termIRI.range, this.type))
-      } else {
-        quads.push(rdf.quad(iri, termIRI.range, termIRI.types[this.type]))
-      }
+      quads.push(rdf.quad(iri, termIRI.range, this.type))
     }
 
     if (this.domains.length) {
-      // quads.push(
-      //   ...this.domains
-      //     .map((domain) => rdf.quad(iri, termIRI.domain, domain))
-      // )
-      quads.push(...this.domains)
+      quads.push(
+        ...this.domains
+          .map((domain) => rdf.quad(iri, termIRI.domain, domain))
+      )
     }
 
     return quads
@@ -139,6 +108,9 @@ function toObject (domain, dataset) {
   if (Array.isArray(label)) {
     if (label.length) label = label[0].object.value
     else label = ''
+  }
+  if (!label && domain.object instanceof Literal) {
+    label = domain.object.value
   }
 
   let comment = dataset.match(domain.subject, termIRI.comment).toArray()
@@ -161,10 +133,21 @@ export function domainsSearchFactory (dataset) {
 
   return (searchInput = '') => {
     if (!searchInput) return []
-    let results = domainsDataset
+    const results = domainsDataset
       .toArray()
-      .map(schemaClass => objectMatch(toObject(schemaClass, dataset), searchInput))
-      .filter(Boolean)
+      .reduce((acc, elem) => {
+        const match = objectMatch(toObject(elem, dataset), searchInput)
+        if (!match) {
+          return acc
+        }
+        acc.push(match)
+        return acc
+      }, [])
+      .sort((a, b) => {
+        // Sort by similary to ensure that `Date` and `Date and Time` are ranked before
+        // `TrackUpdate` and such when searching for `date`
+        return compareTwoStrings(b.matched, searchInput) - compareTwoStrings(a.matched, searchInput)
+      })
 
     return results
   }
@@ -177,16 +160,33 @@ export function domainsSearchFactory (dataset) {
  * @returns {*}
  */
 function objectMatch (object, searchInput, detailed = false) {
-  const match = stringMatch(object.label, searchInput) || stringMatch(object.description, searchInput)
+  const labelMatch = stringMatch(object.label, searchInput)
+  const descMatch = stringMatch(object.description, searchInput)
 
-  if (!match) {
+  if (!labelMatch && !descMatch) {
     return null
+  }
+
+  if (labelMatch) {
+    const index = Math.min(
+      labelMatch.index,
+      labelMatch.index - 1,
+      labelMatch.index - 2
+    )
+    object.matched = object.label.substring(index, searchInput.length + 3)
+  } else if (descMatch) {
+    const index = Math.min(
+      descMatch.index,
+      descMatch.index - 1,
+      descMatch.index - 2
+    )
+    object.matched = object.description.substring(index, searchInput.length + 3)
   }
 
   if (detailed) {
     return {
       object,
-      match
+      match: labelMatch || descMatch
     }
   }
 

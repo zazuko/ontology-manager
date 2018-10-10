@@ -53,6 +53,7 @@
                 <label class="label">Property Name</label>
                 <div class="control">
                   <input
+                    :class="{'is-danger': !property.name}"
                     class="input"
                     autocomplete="new-password"
                     type="text"
@@ -71,6 +72,7 @@
                 <div class="control">
                   <textarea
                     class="textarea"
+                    :class="{'is-danger': !property.shortDescription}"
                     v-model="property.shortDescription" />
                 </div>
               </div>
@@ -81,6 +83,7 @@
                 <div class="control">
                   <textarea
                     class="textarea"
+                    :class="{'is-danger': !property.longDescription}"
                     v-model="property.longDescription" />
                 </div>
               </div>
@@ -97,47 +100,52 @@
                   :search-function="sfn"
                   label="Applies to the Following Classes"
                   @selectionChanged="addDomain">
-                  <div
-                    v-if="typeahead.inputString"
-                    slot="custom-options"
-                    slot-scope="typeahead"
-                    class="dropdown-item">
-                    <span class="class-label">New class:</span>
-                    <span class="class-name">“{ { term(schema.buildSchemaClassIri(typeahead.inputString)) } }”</span>
-                    <a
-                      href="#"
-                      title="Add as a new class"
-                      @click.prevent="addDomain(typeahead.inputString, typeahead.unfocus, $event)">
-                      Add as a new class?
-                    </a>
-                  </div>
-                  <ul
+                  <nav
                     slot="selected-list"
-                    class="configuration">
-                    <li
-                      v-for="(domain, index) in property.domains"
-                      :key="index">
-                      {{ domain.label }} <small>({{ domain.domain.subject.value }})</small>
-                      <a
-                        title="Remove class"
-                        class="delete"
-                        @click.prevent="removeDomain(index)" />
-                    </li>
-                  </ul>
+                    class="panel">
+                    <a
+                      v-for="(domain, index) in domains"
+                      :key="index"
+                      class="panel-block">
+                      <span
+                        class="panel-icon"
+                        @click.prevent="removeDomain(index)">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ domain.label }}
+                      <small>(<code>{{ domain.domain.subject.value }}</code>)</small>
+                    </a>
+                  </nav>
                 </typeahead>
               </div>
+              <div v-else />
             </div>
             <div class="column">
-              <div class="field">
-                <label class="label">Expected Type</label>
-                <div class="control">
-                  <input
-                    class="input"
-                    autocomplete="new-password"
-                    type="text"
-                    value="schema:rangeIncludes xsd:string">
-                </div>
+              <div
+                v-if="renderTypeahead">
+                <typeahead
+                  :search-function="sfn"
+                  label="Expected Type"
+                  @selectionChanged="addType">
+                  <nav
+                    v-show="property.type"
+                    slot="selected-list"
+                    class="panel">
+                    <a class="panel-block">
+                      <span
+                        class="panel-icon"
+                        @click.prevent="removeType()">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      <code
+                        v-if="property.type">
+                        {{ property.type.value }}
+                      </code>
+                    </a>
+                  </nav>
+                </typeahead>
               </div>
+              <div v-else />
             </div>
           </div>
 
@@ -181,7 +189,6 @@
 
 <script>
 import axios from 'axios'
-import rdf from 'rdf-ext'
 import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
 import { Property, domainsSearchFactory } from '@/libs/rdf'
@@ -214,6 +221,7 @@ export default {
     return {
       property,
       sfn: () => ([]),
+      domains: [],
       renderTypeahead: process.client
     }
   },
@@ -226,10 +234,18 @@ export default {
       }
     },
     addDomain (domain) {
-      this.property.domains.push(domain)
+      this.domains.push(domain)
+      this.property.domains.push(domain.domain.subject)
     },
     removeDomain (index) {
+      this.domains.splice(index, 1)
       this.property.domains.splice(index, 1)
+    },
+    addType (type) {
+      this.property.type = type.domain.subject
+    },
+    removeType () {
+      this.property.type = ''
     },
     async createProposal () {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
