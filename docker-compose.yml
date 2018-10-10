@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
 
-  # nuxt:
+  # web:
   #   build:
   #     context: ./docker-app-dev
   #     dockerfile: Dockerfile.web

@@ -1,0 +1,32 @@
+FROM node:10-stretch
+
+RUN npm install --global npm@6.4.1
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY . /usr/src/app/
+RUN npm ci
+
+# all these variables should be set in the env where the build gets executed
+# and passed using --build-arg
+ARG POSTGRESQL_PASSWORD
+ARG POSTGRESQL_DATABASE
+ARG POSTGRAPHILE_TOKEN_SECRET
+ARG OAUTH_TOKEN_SECRET
+ARG OAUTH_HOST
+ARG OAUTH_CLIENT_ID
+ARG OAUTH_CLIENT_SECRET
+ARG GITHUB_PERSONAL_ACCESS_TOKEN
+ARG VUE_APP_GRAPHQL_HTTP
+ARG VUE_APP_GRAPHQL_WS
+
+# Build app
+RUN npm run build:prod
+
+ENV HOST 0.0.0.0
+EXPOSE 3000
+
+# start command
+CMD [ "npm", "start:prod" ]
