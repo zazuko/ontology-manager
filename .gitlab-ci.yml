@@ -37,11 +37,18 @@ build-postgraphile:
   only:
     - tags
 
-# deploy:
-#   stage: deploy
-#   image: cdrx/rancher-gitlab-deploy
-#   script:
-#     - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
-#     - upgrade --environment default --stack ontology-editor-dev --service postgraphile --new-image $CI_REGISTRY_IMAGE/postgraphile:$CI_COMMIT_REF_NAME
-#   only:
-#     - tags
+deploy-web:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
+  only:
+    - tags
+
+deploy-graphile:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  script:
+    - upgrade --environment default --stack ontology-editor-dev --service postgraphile --new-image $CI_REGISTRY_IMAGE/postgraphile:$CI_COMMIT_REF_NAME
+  only:
+    - tags
