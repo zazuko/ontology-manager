@@ -11,6 +11,8 @@ build-web:
   stage: build
   script:
     - sed -i s/example-com/editor/ nuxt.config.js
+    - sed -i s/localhost:5000/postgraphile:5000/ nuxt.config.js
+
     - sed -i s/example-com/editor/ trifid/trifid.config.json
     - sed -i s/example.com/editor.zazuko.com/ trifid/trifid.config.json
 
