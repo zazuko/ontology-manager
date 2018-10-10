@@ -2,6 +2,7 @@ import NamedNode from '@rdfjs/data-model/lib/named-node'
 import Literal from '@rdfjs/data-model/lib/literal'
 import rdf from 'rdf-ext'
 import { compareTwoStrings } from 'string-similarity'
+import SerializerNtriples from '@rdfjs/serializer-ntriples'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -100,6 +101,23 @@ export class Property {
     }
 
     return quads
+  }
+
+  toNT () {
+    const serializerNtriples = new SerializerNtriples()
+    const dataset = rdf.dataset().addAll(this.toQuads())
+    const stream = dataset.toStream()
+    const output = serializerNtriples.import(stream)
+
+    return new Promise((resolve) => {
+      const outputLines = []
+      output.on('data', (ntriples) => {
+        outputLines.push(ntriples.toString())
+      })
+      output.on('end', () => {
+        resolve(outputLines.join(''))
+      })
+    })
   }
 }
 

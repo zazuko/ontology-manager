@@ -7,13 +7,13 @@
         {{ label }}
       </label>
       <p class="control has-icons-left">
-      <input
-        v-model="inputString"
-        autocomplete="new-password"
-        type="text"
-        class="input"
-        @blur="unfocus"
-        @focus="focus">
+        <input
+          v-model="inputString"
+          autocomplete="new-password"
+          type="text"
+          class="input"
+          @blur="unfocus"
+          @focus="focus">
         <span class="icon is-small is-left">
           <i class="mdi mdi-magnify" />
         </span>
@@ -30,7 +30,7 @@
               name="custom-options" />
             <!-- <hr class="dropdown-divider"> -->
             <div
-              v-for="option in searchFunction(inputString).slice(0, limit)"
+              v-for="option in searchResults()"
               :key="option.key"
               class="dropdown-item">
               <a
@@ -75,6 +75,10 @@ export default {
     }
   },
   methods: {
+    searchResults () {
+      const results = this.searchFunction(this.inputString).slice(0, this.limit)
+      return results
+    },
     unfocus () {
       // Suggested entries are out of the input, so clicking on them triggers
       // the `blur` event. This timeout allows clicks on suggested entries to
