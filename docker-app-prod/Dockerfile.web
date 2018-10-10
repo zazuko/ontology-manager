@@ -29,4 +29,7 @@ ENV HOST 0.0.0.0
 EXPOSE 3000
 
 # start command
-CMD [ "npm", "start:prod" ]
+RUN cp docker-app-prod/entrypoint.web.sh ./entrypoint.web.sh
+RUN chmod 755 ./entrypoint.web.sh
+
+ENTRYPOINT [ "entrypoint.web.sh"]
