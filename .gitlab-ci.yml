@@ -7,7 +7,7 @@ stages:
   - build
   - deploy
 
-build-web:
+build:
   stage: build
   script:
     - sed -i s/example-com/editor/ nuxt.config.js
@@ -18,38 +18,17 @@ build-web:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
     # all the build-arg variables should be set in the env where the build gets executed
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/web" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg OAUTH_TOKEN_SECRET --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg VUE_APP_GRAPHQL_HTTP --build-arg VUE_APP_GRAPHQL_WS -f docker-app-prod/Dockerfile.web .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/web" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRESQL_HOST --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg POSTGRESQL_POSTGRAPHILE_PASSWORD --build-arg OAUTH_TOKEN_SECRET --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg EDITOR_HOST -f docker-app-prod/Dockerfile.web .
     - docker push "$CI_REGISTRY_IMAGE/web"
     - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
     - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
   only:
     - tags
 
-build-postgraphile:
-  stage: build
-  script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - cd docker-app-prod
-    # all the build-arg variables should be set in the env where the build gets executed
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/postgraphile" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg OAUTH_TOKEN_SECRET --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg VUE_APP_GRAPHQL_HTTP --build-arg VUE_APP_GRAPHQL_WS -f Dockerfile.postgraphile .
-    - docker push "$CI_REGISTRY_IMAGE/postgraphile"
-    - docker tag "$CI_REGISTRY_IMAGE/postgraphile" "$CI_REGISTRY_IMAGE/postgraphile:$CI_COMMIT_REF_NAME"
-    - docker push "$CI_REGISTRY_IMAGE/postgraphile:$CI_COMMIT_REF_NAME"
-  only:
-    - tags
-
-deploy-web:
+deploy:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
     - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
-  only:
-    - tags
-
-deploy-graphile:
-  stage: deploy
-  image: cdrx/rancher-gitlab-deploy
-  script:
-    - upgrade --environment default --stack ontology-editor-dev --service postgraphile --new-image $CI_REGISTRY_IMAGE/postgraphile:$CI_COMMIT_REF_NAME
   only:
     - tags

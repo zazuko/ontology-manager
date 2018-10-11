@@ -2,41 +2,43 @@ FROM node:10-stretch
 
 RUN npm install --global npm@6.4.1
 
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN sudo apt-get update && sudo apt-get install yarn
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
-RUN npm ci
+RUN yarn
 
 # all these variables should be set in the env where the build gets executed
 # and passed using --build-arg
 ARG POSTGRESQL_PASSWORD
 ARG POSTGRESQL_DATABASE
+ARG POSTGRESQL_HOST
+
 ARG POSTGRAPHILE_TOKEN_SECRET
+ARG POSTGRESQL_POSTGRAPHILE_PASSWORD
+
 ARG OAUTH_TOKEN_SECRET
 ARG OAUTH_HOST
 ARG OAUTH_CLIENT_ID
 ARG OAUTH_CLIENT_SECRET
+
 ARG GITHUB_PERSONAL_ACCESS_TOKEN
-ARG VUE_APP_GRAPHQL_HTTP
-ARG VUE_APP_GRAPHQL_WS
+
+ARG EDITOR_HOST
 
 # Build app
-RUN npm run build:prod
+RUN npm run build
 
 ENV HOST 0.0.0.0
-EXPOSE 3001
+EXPOSE 3000
 
-# start command
+# entrypoint
 RUN cp docker-app-prod/entrypoint.web.sh /usr/src/app/entrypoint.web.sh
 RUN chmod 755 /usr/src/app/entrypoint.web.sh
-
-# <!-- nginx
-# delete this part after moving to middleware model
-RUN apt-get update && apt-get install -qy nginx
-COPY ./docker-app-prod/nginx.conf /etc/nginx/sites-enabled/nginx.conf
-
-# nginx -->
 
 ENTRYPOINT [ "/usr/src/app/entrypoint.web.sh"]

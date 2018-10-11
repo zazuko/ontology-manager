@@ -245,7 +245,7 @@ end;
 $$ language plpgsql strict security definer;
 comment on function ontology_editor.upsert_person(text, text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
-create role ontology_editor_postgraphile login password 'password_placeholder';
+create role ontology_editor_postgraphile login password '$POSTGRESQL_POSTGRAPHILE_PASSWORD';
 
 create role ontology_editor_anonymous;
 grant ontology_editor_anonymous to ontology_editor_postgraphile;

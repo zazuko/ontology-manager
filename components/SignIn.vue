@@ -60,7 +60,7 @@ export default {
             const headers = { headers: { authorization: this.$auth.getToken('github') } }
             const result = await axios.post('/api/link', { email, name, id }, headers)
               .catch((err) => {
-                this.$toast.error(`Server Error: ${err.response.data.message}`, toastClose)
+                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
               })
             const jwtToken = _get(result, 'data.jwtToken')
             if (!jwtToken) throw new Error('Account linking failed.')
