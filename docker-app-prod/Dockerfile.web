@@ -26,10 +26,17 @@ ARG VUE_APP_GRAPHQL_WS
 RUN npm run build:prod
 
 ENV HOST 0.0.0.0
-EXPOSE 3000
+EXPOSE 3001
 
 # start command
 RUN cp docker-app-prod/entrypoint.web.sh /usr/src/app/entrypoint.web.sh
 RUN chmod 755 /usr/src/app/entrypoint.web.sh
+
+# <!-- nginx
+# delete this part after moving to middleware model
+RUN apt-get update && apt-get install -qy nginx
+COPY ./docker-app-prod/nginx.conf /etc/nginx/sites-enabled/nginx.conf
+
+# nginx -->
 
 ENTRYPOINT [ "/usr/src/app/entrypoint.web.sh"]
