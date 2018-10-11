@@ -69,7 +69,7 @@ module.exports = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'http://localhost:5000/graphql',
+        httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql',
         // You can use `wss` for secure connection (recommended in production)
         // Use `null` to disable subscriptions
         wsEndpoint: null
