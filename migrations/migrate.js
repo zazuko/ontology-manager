@@ -17,10 +17,22 @@ async function up (env = 'dev') {
   // load env vars
   dotenv.config({ path: environments[env] })
 
-  await run()
+  console.warn('Starting migrations!')
+
+  const stringsToReplace = [
+    'POSTGRESQL_POSTGRAPHILE_PASSWORD'
+  ].reduce((obj, envVar) => {
+    obj[envVar] = process.env[envVar] || envVar
+    if (obj[envVar] !== envVar) {
+      console.warn(`  * Will replace $${envVar} with environment value!`)
+    }
+    return obj
+  }, {})
+
+  await run(stringsToReplace)
 }
 
-async function run () {
+async function run (stringsToReplace) {
   const client = knex({
     client: 'pg',
     connection: {
@@ -41,9 +53,9 @@ async function run () {
       table.boolean('succeeded').defaultTo(false)
       table.timestamps()
     })
-    console.warn('Created migrations table!')
+    console.warn('  * Created migrations table!')
   } catch (err) {
-    console.warn('Found migrations table!')
+    console.warn('  * Found migrations table!')
   }
 
   try {
@@ -55,10 +67,10 @@ async function run () {
         await client('__migrations').insert({ filename })
       }
       if (!done.length || !done[0].succeeded) {
-        console.warn(filename, 'running')
-        await execute(file, client)
+        console.warn('    *', filename, 'running')
+        await execute(file, client, stringsToReplace)
       } else {
-        console.warn(filename, 'already applied')
+        console.warn('    *', filename, 'already applied')
       }
     }
   } catch (err) {
@@ -69,10 +81,15 @@ async function run () {
   client.destroy()
 }
 
-async function execute (file, client) {
+async function execute (file, client, stringsToReplace) {
   const filename = path.basename(file)
   return client.transaction(async (trx) => {
-    const sql = fs.readFileSync(file).toString()
+    let sql = fs.readFileSync(file).toString()
+
+    Object.entries(stringsToReplace).forEach(([key, value]) => {
+      sql = sql.replace(new RegExp(`\\$${key}`, 'g'), `${value}`)
+    })
+
     await trx.raw(sql)
     return trx('__migrations')
       .where({ filename })

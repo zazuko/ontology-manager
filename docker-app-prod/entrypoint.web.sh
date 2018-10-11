@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
+set -euo pipefail
+
 node migrations/migrate.js
 
-service nginx start && \
 npm run start:prod

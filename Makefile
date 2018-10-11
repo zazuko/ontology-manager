@@ -4,9 +4,8 @@ dbup:
 
 # starts all services
 up: dbup
-	sleep 20 && \
-	node migrations/migrate.js && \
-	docker-compose up -d
+	sleep 30 && \
+	node migrations/migrate.js
 
 # stops all services
 down:
