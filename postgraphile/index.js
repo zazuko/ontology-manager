@@ -50,10 +50,14 @@ const options = {
 }
 
 // https://www.graphile.org/postgraphile/usage-library/
-const postgraphileMiddleware = postgraphile(
+const postgraphileMiddleware = process.env.BUILT ? postgraphile(
   pgConfig,
   schemaName,
   options
-)
+) : dummy
 
 export default postgraphileMiddleware
+
+function dummy (req, res, next) {
+  next()
+}
