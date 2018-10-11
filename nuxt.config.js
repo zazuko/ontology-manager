@@ -1,3 +1,10 @@
+const dotenv = require('dotenv')
+
+const env = process.env.NODE_TEST ? `${__dirname}/test/.env` : `${__dirname}/docker-app-dev/.env`
+
+// load env vars
+dotenv.config({ path: env })
+
 module.exports = {
   ontology: {
     github: {
@@ -69,10 +76,10 @@ module.exports = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql',
+        httpEndpoint: `http://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
         // You can use `wss` for secure connection (recommended in production)
         // Use `null` to disable subscriptions
-        wsEndpoint: null
+        wsEndpoint: null // `ws://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
       }
     }
   },
@@ -104,7 +111,10 @@ module.exports = {
   ** Internal API
   */
   serverMiddleware: [
+    '@/postgraphile/',
     '@/api/',
+    // always keep trifid as last serverMiddleware, otherwise it will swallow
+    // errors and logs from previous middlewares!
     '@/trifid/'
   ],
 
@@ -148,6 +158,14 @@ module.exports = {
       }
     },
     extend (config, { isDev }) {
+      // https://github.com/Akryum/vue-cli-plugin-apollo/issues/57
+      config.module.rules.push({
+        test: /\.mjs$/,
+        type: 'javascript/auto',
+        include: [
+          /node_modules/
+        ]
+      })
       /*
       ** Run ESLint on save
       */
