@@ -3,7 +3,7 @@ const stringToStream = require('string-to-stream')
 const N3Parser = require('rdf-parser-n3')
 const _ = require('lodash')
 
-const { ontology } = require('../nuxt.config')
+const ontology = require('../ontology.config')
 const GitHubAPIv3 = require('../api/github/api')
 const api = new GitHubAPIv3(ontology.github)
 

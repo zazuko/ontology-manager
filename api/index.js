@@ -18,7 +18,7 @@ app.use('/', apiMiddleware())
 module.exports = { path: '/api', handler: app }
 
 function apiMiddleware () {
-  const config = require(require.resolve('../nuxt.config.js')).ontology
+  const config = require(require.resolve('../ontology.config.js'))
 
   let api
   if (config.github) {
