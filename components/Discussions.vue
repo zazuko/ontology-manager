@@ -7,16 +7,14 @@
             <h1 class="title">Conversation</h1>
           </a>
         </div>
-        <div class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item">
-              <nuxt-link
-                :to="{ name: 'discussions-new', query: { iri: iri } }"
-                class="button is-info is-inverted">
-                New Thread
-              </nuxt-link>
-            </a>
-          </div>
+        <div class="navbar-end">
+          <a class="navbar-item">
+            <nuxt-link
+              :to="{ name: 'discussions-new', query: { iri: iri } }"
+              class="button is-info is-inverted">
+              New Thread
+            </nuxt-link>
+          </a>
         </div>
       </nav>
     </div>
