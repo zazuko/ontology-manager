@@ -175,7 +175,7 @@
             <div class="control">
               <textarea
                 class="textarea"
-                placeholder="" />
+                placeholder="this won't get saved for now" />
             </div>
           </div>
         </div>
@@ -228,9 +228,9 @@ export default {
 
         this.ontology = window.ontology
         this.sfn = domainsSearchFactory(this.ontology, 'Class', true)
-        const currentLableQuad = labelQuadForIRI(this.iri, this.ontology)
-        this.currentLabel = currentLableQuad.object.value
-        this.property.domains.push(currentLableQuad.subject)
+        const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
+        this.currentLabel = currentLabelQuad.object.value
+        this.property.domains.push(currentLabelQuad.subject)
       }
     })
   },
