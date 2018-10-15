@@ -10,7 +10,7 @@
         <div class="navbar-end">
           <a class="navbar-item">
             <nuxt-link
-              :to="{ name: 'discussions-new', query: { iri: iri } }"
+              :to="{ name: 'discussion-new', query: { iri: iri } }"
               class="button is-info is-inverted">
               New Thread
             </nuxt-link>
@@ -34,7 +34,7 @@
           <div class="media-content">
             <div class="content">
               <h3 class="subtitle">
-                <nuxt-link :to="{ name: 'discussions-id', params: { id: discussion.id } }">
+                <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
                   {{ discussion.headline }}
                 </nuxt-link>
               </h3>
@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="media-right">
-            <nuxt-link :to="{ name: 'discussions-id', params: { id: discussion.id } }">
+            <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
               <span class="icon is-small">
                 <i class="mdi mdi-message-reply-text" />
               </span>
@@ -66,7 +66,7 @@ import _get from 'lodash/get'
 import discussions from '@/apollo/queries/discussionsByIri'
 
 export default {
-  name: 'Discussions',
+  name: 'Discussion',
   props: {
     iri: {
       type: String,

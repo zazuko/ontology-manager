@@ -5,9 +5,9 @@
       <div class="container">
 
         <h1 class="title">
-          New Class Request<span
-            v-show="cls.name">:
-            "{{ cls.name }}"
+          Property Request<span
+            v-show="property.name">:
+            "{{ property.name }}"
           </span>
         </h1>
         <h2 class="subtitle">
@@ -48,14 +48,14 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label">Class Name</label>
+                <label class="label">Property Name</label>
                 <div class="control">
                   <input
-                    :class="{'is-danger': !cls.name}"
+                    :class="{'is-danger': !property.name}"
                     class="input"
                     autocomplete="new-password"
                     type="text"
-                    v-model="cls.name">
+                    v-model="property.name">
                 </div>
               </div>
             </div>
@@ -70,8 +70,8 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    :class="{'is-danger': !cls.shortDescription}"
-                    v-model="cls.shortDescription" />
+                    :class="{'is-danger': !property.shortDescription}"
+                    v-model="property.shortDescription" />
                 </div>
               </div>
             </div>
@@ -81,7 +81,7 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    v-model="cls.longDescription" />
+                    v-model="property.longDescription" />
                 </div>
               </div>
             </div>
@@ -95,85 +95,68 @@
                 v-if="renderTypeahead">
                 <typeahead
                   :search-function="sfn"
-                  label="Has the Following Properties"
-                  @selectionChanged="addDomain" />
+                  label="Applies to the Following Classes"
+                  @selectionChanged="addDomain">
+                  <nav
+                    slot="selected-list"
+                    class="panel">
+                    <a
+                      class="panel-block"
+                      title="New property is getting created on this class!">
+                      <span class="panel-icon">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ currentLabel }}
+                      &nbsp;
+                      <small>(<code>{{ iri }}</code>)</small>
+                    </a>
+                    <a
+                      v-for="(domain, index) in domains"
+                      :key="index"
+                      class="panel-block is-active">
+                      <span
+                        class="panel-icon"
+                        @click.prevent="removeDomain(index)">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ domain.label }}
+                      &nbsp;
+                      <small>(<code>{{ domain.domain.subject.value }}</code>)</small>
+                    </a>
+                  </nav>
+                </typeahead>
               </div>
               <div v-else />
             </div>
-            <div class="column" />
+            <div class="column">
+              <div
+                v-if="renderTypeahead">
+                <typeahead
+                  :search-function="sfn"
+                  label="Expected Type"
+                  @selectionChanged="addType">
+                  <nav
+                    v-show="property.type"
+                    slot="selected-list"
+                    class="panel">
+                    <a
+                      v-if="property.type"
+                      class="panel-block is-active">
+                      <span
+                        class="panel-icon"
+                        @click.prevent="removeType()">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ property.type.label }}
+                      &nbsp;
+                      <small>(<code>{{ property.type.value }}</code>)</small>
+                    </a>
+                  </nav>
+                </typeahead>
+              </div>
+              <div v-else />
+            </div>
           </div>
-
-          <table
-            slot="selected-list"
-            class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>
-                  Property
-                </th>
-                <th>
-                  Type
-                </th>
-                <th>
-                  Description
-                  <br>
-                  <small>short description</small>
-                </th>
-                <th>
-                  Used On
-                  <br>
-                  <small>these classes</small>
-                </th>
-                <th>
-                  Remove
-                  <br>
-                  <small>from class being created</small>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(property, index) in domains"
-                :key="index">
-                <td>
-                  <small>
-                    <code>{{ property.domain.subject.value }}</code>
-                  </small>
-                </td>
-                <td>
-                  <small>
-                    <code>{{ property.range }}</code>
-                  </small>
-                </td>
-                <td>
-                  {{ property.label }}
-                </td>
-                <td>
-                  <ul>
-                    <li
-                      v-for="otherClass in property.usedOn"
-                      :key="otherClass.object.value">
-                      <small>
-                        <code>{{ otherClass.object.value }}</code>
-                      </small>
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <!-- TODO: what would 'edit' do here? -->
-                  <!-- <span
-                    class="panel-icon">
-                    <i class="mdi mdi-pencil" />
-                  </span> -->
-                  <span
-                    class="panel-icon"
-                    @click.prevent="removeDomain(index)">
-                    <i class="mdi mdi-close-circle" />
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
         </div>
 
@@ -222,7 +205,7 @@
 import axios from 'axios'
 import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
-import { Cls, domainsSearchFactory } from '@/libs/rdf'
+import { Property, domainsSearchFactory, labelQuadForIRI } from '@/libs/rdf'
 import Typeahead from '@/components/Typeahead'
 
 export default {
@@ -244,14 +227,17 @@ export default {
         clearInterval(i)
 
         this.ontology = window.ontology
-        this.sfn = domainsSearchFactory(this.ontology, 'Property', false)
+        this.sfn = domainsSearchFactory(this.ontology, 'Class', true)
+        const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
+        this.currentLabel = currentLabelQuad.object.value
+        this.property.domains.push(currentLabelQuad.subject)
       }
     })
   },
   data () {
     return {
       currentLabel: '',
-      cls: new Cls(),
+      property: new Property(),
       sfn: () => ([]),
       domains: [],
       contentNT: '',
@@ -268,26 +254,31 @@ export default {
   methods: {
     async setNT () {
       try {
-        this.contentNT = await this.cls.toNT()
+        this.contentNT = await this.property.toNT()
       } catch (err) {
         this.contentNT = err.message
       }
     },
     addDomain (domain) {
-      if (!this.cls.domains.includes(domain.domain.subject)) {
-        this.domains.push(domain)
-        this.cls.domains.push(domain.domain.subject)
-      }
+      this.domains.push(domain)
+      this.property.domains.push(domain.domain.subject)
     },
     removeDomain (index) {
       this.domains.splice(index, 1)
-      this.cls.domains.splice(index, 1)
+      this.property.domains.splice(index, 1)
+    },
+    addType (type) {
+      type.domain.subject.label = type.label
+      this.property.type = type.domain.subject
+    },
+    removeType () {
+      this.property.type = ''
     },
     async createProposal () {
-      const fileContent = await this.cls.toNT(window.ontology)
+      const fileContent = await this.property.toNT(window.ontology)
       const body = {
-        title: `New class '${this.cls.name}'`,
-        message: `add class '${this.cls.name}'`,
+        title: `New property '${this.property.name}' on '${this.iri}'`,
+        message: `add property '${this.property.name}' to '${this.iri}'`,
         body: this.motivation,
         iri: this.iri,
         content: fileContent
@@ -299,7 +290,7 @@ export default {
 
         const id = _get(result, 'data.createThread.thread.id')
         if (id) {
-          this.$router.push({ name: 'proposals-id', params: { id } })
+          this.$router.push({ name: 'proposal-id', params: { id } })
         } else {
           console.error('Failed to redirect', result)
         }

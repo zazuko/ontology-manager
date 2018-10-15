@@ -2,12 +2,12 @@
   <section class="container">
 
     <nuxt-link
-      :to="{ name: 'discussions-new', query: { iri: 'http://example.org/foo' } }"
+      :to="{ name: 'discussion-new', query: { iri: 'http://example.org/foo' } }"
       class="button is-link">
       New Thread
     </nuxt-link>
 
-    <discussions-list
+    <discussion-list
       :discussions="discussions.nodes" />
 
   </section>
@@ -15,12 +15,12 @@
 
 <script>
 import allDiscussions from '@/apollo/queries/allDiscussions'
-import DiscussionsList from '@/components/DiscussionsList.vue'
+import DiscussionList from '@/components/DiscussionList.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {
-    DiscussionsList
+    DiscussionList
   },
   data: () => ({
     discussions: {

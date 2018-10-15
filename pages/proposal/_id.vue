@@ -37,7 +37,7 @@ export default {
       query: discussionById,
       variables () {
         return {
-          id: this.id
+          id: this.id || this.$route.params.id
         }
       },
       fetchPolicy: 'cache-and-network',
