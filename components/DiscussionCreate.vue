@@ -82,7 +82,7 @@ export default {
         .then((result) => {
           const id = _get(result, 'data.createThread.thread.id')
           if (id) {
-            this.$router.push({ name: 'discussions-id', params: { id } })
+            this.$router.push({ name: 'discussion-id', params: { id } })
           } else {
             console.error('Failed to redirect', result)
           }
