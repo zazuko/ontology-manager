@@ -7,23 +7,21 @@
             <h1 class="title">Proposals</h1>
           </a>
         </div>
-        <div class="navbar-menu">
-          <div class="navbar-end">
-            <span class="navbar-item ">
-              <nuxt-link
-                :to="{ name: 'proposals-new-class', query: { iri: iri } }"
-                class="button is-primary is-inverted">
-                Request New Class
-              </nuxt-link>
-            </span>
-            <span class="navbar-item ">
-              <nuxt-link
-                :to="{ name: 'proposals-new-property', query: { iri: iri } }"
-                class="button is-primary is-inverted">
-                Request New Property
-              </nuxt-link>
-            </span>
-          </div>
+        <div class="navbar-end">
+          <span class="navbar-item">
+            <nuxt-link
+              :to="{ name: 'proposals-new-class', query: { iri: iri } }"
+              class="button is-primary is-inverted">
+              Request New Class
+            </nuxt-link>
+          </span>
+          <span class="navbar-item">
+            <nuxt-link
+              :to="{ name: 'proposals-new-property', query: { iri: iri } }"
+              class="button is-primary is-inverted">
+              Request New Property
+            </nuxt-link>
+          </span>
         </div>
       </nav>
     </div>
