@@ -160,6 +160,7 @@
                   </ul>
                 </td>
                 <td>
+                  <!-- TODO: what would 'edit' do here? -->
                   <!-- <span
                     class="panel-icon">
                     <i class="mdi mdi-pencil" />
@@ -191,7 +192,7 @@
             <div class="control">
               <textarea
                 class="textarea"
-                placeholder="" />
+                placeholder="this won't get saved for now" />
             </div>
           </div>
         </div>
@@ -285,8 +286,8 @@ export default {
     async createProposal () {
       const fileContent = await this.cls.toNT(window.ontology)
       const body = {
-        title: `New property '${this.cls.name}' on '${this.iri}'`,
-        message: `add property '${this.cls.name}' to '${this.iri}'`,
+        title: `New class '${this.cls.name}'`,
+        message: `add class '${this.cls.name}'`,
         body: this.motivation,
         iri: this.iri,
         content: fileContent

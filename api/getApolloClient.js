@@ -148,7 +148,8 @@ function createApolloClient ({
 }
 
 // Config
-const defaultOptions = {
+const nuxtOptions = require('../nuxt.config').apollo.clientConfigs.default
+const defaultOptions = Object.assign({
   // You can use `https` for secure connection (recommended in production)
   httpEndpoint: null,
   // You can use `wss` for secure connection (recommended in production)
@@ -170,9 +171,7 @@ const defaultOptions = {
   getAuth: (tokenName) => {
     return ''
   }
-}
-
-const nuxtOptions = require('../nuxt.config').apollo.clientConfigs.default
+}, nuxtOptions)
 
 let clients = {}
 module.exports = (options = nuxtOptions) => {

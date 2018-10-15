@@ -19,7 +19,7 @@ const stringIRI = {
   range: 'http://schema.org/rangeIncludes'
 }
 
-const termIRI = Object
+export const termIRI = Object
   .entries(stringIRI)
   .reduce((acc, [key, val]) => {
     acc[key] = rdf.namedNode(val)
@@ -242,14 +242,14 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
       })
 
     if (resultType === 'Property') {
+      // For existing properties we wanna know to what Classes they apply
+      // and their type/range
       return results.map((elem) => {
         const subject = elem.domain.subject
         elem.usedOn = dataset
           .match(subject, termIRI.domain)
           .toArray()
-          .filter(({ object }) => {
-            return dataset.match(object, termIRI.a, termIRI.Class).length
-          })
+          .filter(({ object }) => dataset.match(object, termIRI.a, termIRI.Class).length)
         elem.range = dataset
           .match(subject, termIRI.range)
           .toArray()
