@@ -5,7 +5,6 @@ services:
     image: bitnami/postgresql:10
     volumes:
       - ./.pgdata:/bitnami
-      - ./migrations:/migrations
     ports:
       - "5432:5432"
     env_file: docker-app-dev/.env
