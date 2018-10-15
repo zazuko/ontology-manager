@@ -20,7 +20,7 @@
       </p>
       <div
         class="dropdown"
-        :class="{'is-active': hasFocus && inputString.length >= minLength}">
+        :class="{'is-active': inputString.length >= minLength || (inputString.length >= minLength && hasFocus)}">
         <div
           class="dropdown-menu">
           <div class="dropdown-content">

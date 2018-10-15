@@ -5,7 +5,10 @@
       <div class="container">
 
         <h1 class="title">
-          Request New Class
+          New Class Request<span
+            v-show="cls.name">:
+            "{{ cls.name }}"
+          </span>
         </h1>
         <h2 class="subtitle">
           On <code>{{ iri }}</code>
@@ -24,10 +27,9 @@
               <div class="column">
                 <div class="control">
                   <textarea
+                    v-model="motivation"
                     class="textarea"
-                    placeholder="">
-                    NOT RDF
-                  </textarea>
+                    placeholder="" />
                 </div>
               </div>
               <div class="column">
@@ -46,12 +48,14 @@
           <div class="columns">
             <div class="column">
               <div class="field">
-                <label class="label">Suggested Class Name</label>
+                <label class="label">Class Name</label>
                 <div class="control">
                   <input
+                    :class="{'is-danger': !cls.name}"
                     class="input"
+                    autocomplete="new-password"
                     type="text"
-                    value="rdfs:Class">
+                    v-model="cls.name">
                 </div>
               </div>
             </div>
@@ -66,9 +70,8 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    placeholder="">
-                    rdfs:label
-                  </textarea>
+                    :class="{'is-danger': !cls.shortDescription}"
+                    v-model="cls.shortDescription" />
                 </div>
               </div>
             </div>
@@ -78,9 +81,7 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    placeholder="">
-                    rdfs:comment
-                  </textarea>
+                    v-model="cls.longDescription" />
                 </div>
               </div>
             </div>
@@ -90,44 +91,98 @@
 
           <div class="columns">
             <div class="column">
-              <div class="field">
-                <label class="label">Has the Following Properties</label>
-                <div class="control">
-                  <!--
-                  if click on 'add as new property',
-                  we add a box and add it to the progression
-                -->
-                  <input
-                    class="input"
-                    type="text"
-                    value="weight schema:domainIncludes MyNewClass">
-                </div>
+              <div
+                v-if="renderTypeahead">
+                <typeahead
+                  :search-function="sfn"
+                  label="Has the Following Properties"
+                  @selectionChanged="addDomain" />
               </div>
+              <div v-else />
             </div>
             <div class="column" />
           </div>
 
-          <table class="table is-fullwidth">
+          <table
+            slot="selected-list"
+            class="table is-fullwidth">
             <thead>
               <tr>
-                <th>Property</th>
-                <th>Expected Type</th>
-                <th>Description</th>
-                <th>Used On</th>
-                <th>foo</th>
+                <th>
+                  Property
+                </th>
+                <th>
+                  Type
+                </th>
+                <th>
+                  Description
+                  <br>
+                  <small>short description</small>
+                </th>
+                <th>
+                  Used On
+                  <br>
+                  <small>these classes</small>
+                </th>
+                <th>
+                  Remove
+                  <br>
+                  <small>from class being created</small>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>38</td>
-                <td>23</td>
-                <td>12</td>
-                <td>3</td>
-                <td>edit remove</td>
+              <tr
+                v-for="(property, index) in domains"
+                :key="index">
+                <td>
+                  <small>
+                    <code>{{ property.domain.subject.value }}</code>
+                  </small>
+                </td>
+                <td>
+                  <small>
+                    <code>{{ property.range }}</code>
+                  </small>
+                </td>
+                <td>
+                  {{ property.label }}
+                </td>
+                <td>
+                  <ul>
+                    <li
+                      v-for="otherClass in property.usedOn"
+                      :key="otherClass.object.value">
+                      <small>
+                        <code>{{ otherClass.object.value }}</code>
+                      </small>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <!-- <span
+                    class="panel-icon">
+                    <i class="mdi mdi-pencil" />
+                  </span> -->
+                  <span
+                    class="panel-icon"
+                    @click.prevent="removeDomain(index)">
+                    <i class="mdi mdi-close-circle" />
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
 
+        </div>
+
+        <div class="box">
+          <div class="field">
+            <label class="label">NT so far</label>
+            <div class="control">
+              <pre>{{ nt }}</pre>
+            </div>
+          </div>
         </div>
 
         <div class="box">
@@ -166,6 +221,8 @@
 import axios from 'axios'
 import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
+import { Cls, domainsSearchFactory } from '@/libs/rdf'
+import Typeahead from '@/components/Typeahead'
 
 export default {
   async asyncData ({ query }) {
@@ -174,16 +231,72 @@ export default {
     }
   },
   middleware: 'authenticated',
+  components: {
+    Typeahead
+  },
   async created () {
     await datasetsSetup(this.$store)
   },
+  mounted () {
+    let i = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        clearInterval(i)
+
+        this.ontology = window.ontology
+        this.sfn = domainsSearchFactory(this.ontology, 'Property', false)
+      }
+    })
+  },
+  data () {
+    return {
+      currentLabel: '',
+      cls: new Cls(),
+      sfn: () => ([]),
+      domains: [],
+      contentNT: '',
+      motivation: '',
+      renderTypeahead: process.client
+    }
+  },
+  computed: {
+    nt () {
+      this.setNT()
+      return this.contentNT
+    }
+  },
   methods: {
+    async setNT () {
+      try {
+        this.contentNT = await this.cls.toNT()
+      } catch (err) {
+        this.contentNT = err.message
+      }
+    },
+    addDomain (domain) {
+      if (!this.cls.domains.includes(domain.domain.subject)) {
+        this.domains.push(domain)
+        this.cls.domains.push(domain.domain.subject)
+      }
+    },
+    removeDomain (index) {
+      this.domains.splice(index, 1)
+      this.cls.domains.splice(index, 1)
+    },
     async createProposal () {
+      const fileContent = await this.cls.toNT(window.ontology)
+      const body = {
+        title: `New property '${this.cls.name}' on '${this.iri}'`,
+        message: `add property '${this.cls.name}' to '${this.iri}'`,
+        body: this.motivation,
+        iri: this.iri,
+        content: fileContent
+      }
+
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        const result = await axios.post('/api/proposals/new', { iri: this.iri }, headers)
+        const result = await axios.post('/api/proposals/new', body, headers)
 
-        const id = _get(result, 'createThread.thread.id')
+        const id = _get(result, 'data.createThread.thread.id')
         if (id) {
           this.$router.push({ name: 'proposals-id', params: { id } })
         } else {

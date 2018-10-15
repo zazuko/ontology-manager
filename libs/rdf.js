@@ -4,7 +4,7 @@ import rdf from 'rdf-ext'
 import { compareTwoStrings } from 'string-similarity'
 
 import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { propertyBaseUrl } from '@/trifid/trifid.config.json'
+import { propertyBaseUrl, classBaseUrl } from '@/trifid/trifid.config.json'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -63,10 +63,6 @@ export class Property {
       throw new Error("Property 'shortDescription' missing")
     }
 
-    if (!this.longDescription) {
-      throw new Error("Property 'longDescription' missing")
-    }
-
     if (this.type) {
       if (!(this.type instanceof NamedNode)) {
         throw new Error(`Type '${this.type}' should be a rdf.namedNode`)
@@ -123,6 +119,75 @@ export class Property {
   }
 }
 
+export class Cls {
+  constructor () {
+    this.baseIRI = classBaseUrl
+    this.motivation = ''
+    this.name = ''             // IRI
+    this.shortDescription = '' // label
+    this.longDescription = ''  // comment
+    this.domains = []          // domainIncludes
+  }
+
+  validate () {
+    if (!this.name) {
+      throw new Error('Property `name` missing')
+    }
+
+    if (!/^([A-Z])/.test(this.name)) {
+      throw new Error("Property 'name' should start with an uppercase letter")
+    }
+
+    if (!this.shortDescription) {
+      throw new Error("Property 'shortDescription' missing")
+    }
+
+    if (this.domains.length) {
+      this.domains.forEach((domain) => {
+        if (!(domain instanceof NamedNode)) {
+          throw new Error(`Class '${domain}' should be a rdf.namedNode`)
+        }
+      })
+    }
+  }
+
+  get quads () {
+    this.validate()
+    const iri = rdf.namedNode(this.baseIRI + this.name)
+    const quads = [
+      rdf.quad(iri, termIRI.a, termIRI.Property),
+      rdf.quad(iri, termIRI.label, rdf.literal(this.shortDescription)),
+      rdf.quad(iri, termIRI.comment, rdf.literal(this.longDescription))
+    ]
+
+    if (this.domains.length) {
+      quads.push(
+        ...this.domains
+          .map((domain) => rdf.quad(domain, termIRI.domain, iri))
+      )
+    }
+
+    return quads
+  }
+
+  toNT (_dataset) {
+    const serializerNtriples = new SerializerNtriples()
+    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).addAll(this.quads)
+    const stream = dataset.toStream()
+    const output = serializerNtriples.import(stream)
+
+    return new Promise((resolve) => {
+      const outputLines = []
+      output.on('data', (ntriples) => {
+        outputLines.push(ntriples.toString())
+      })
+      output.on('end', () => {
+        resolve(outputLines.join(''))
+      })
+    })
+  }
+}
+
 function toObject (domain, dataset) {
   let label = dataset.match(domain.subject, termIRI.label).toArray()
   if (Array.isArray(label)) {
@@ -146,10 +211,17 @@ function toObject (domain, dataset) {
   }
 }
 
-export function domainsSearchFactory (dataset) {
+export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) {
+  if (!['Class', 'Property'].includes(resultType)) {
+    throw new Error(`Cannot search for unknown type '${resultType}'`)
+  }
+
   const domainsDataset = dataset
-    .match(null, termIRI.a, termIRI.Class)
-    .addAll(xsdTypes)
+    .match(null, termIRI.a, termIRI[resultType])
+
+  if (addXSDTypes) {
+    domainsDataset.addAll(xsdTypes)
+  }
 
   return (searchInput = '') => {
     if (!searchInput) return []
@@ -168,6 +240,23 @@ export function domainsSearchFactory (dataset) {
         // `TrackUpdate` and such when searching for `date`
         return compareTwoStrings(b.matched, searchInput) - compareTwoStrings(a.matched, searchInput)
       })
+
+    if (resultType === 'Property') {
+      return results.map((elem) => {
+        const subject = elem.domain.subject
+        elem.usedOn = dataset
+          .match(subject, termIRI.domain)
+          .toArray()
+          .filter(({ object }) => {
+            return dataset.match(object, termIRI.a, termIRI.Class).length
+          })
+        elem.range = dataset
+          .match(subject, termIRI.range)
+          .toArray()
+          .reduce((str, { object }) => object.value, '')
+        return elem
+      })
+    }
 
     return results
   }
