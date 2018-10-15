@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <section class="main-content columns is-fullheight">
+    <section
+      v-if="iri"
+      class="main-content columns is-fullheight">
       <script
         v-if="jsonld"
         id="data"
@@ -10,10 +12,11 @@
       <side-nav :current-iri="iri" />
 
       <div class="container column is-10">
-        <div class="section">
+        <div
+          v-if="subtree"
+          class="section">
 
           <structure
-            v-if="subtree"
             :obj="subtree"
             :name="subtree.label" />
 

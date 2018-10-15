@@ -1,13 +1,13 @@
 <template>
   <div
     :class="{
-      'is-ancestor': Object.keys(parent).length === 0,
+      'is-ancestor': Object.keys(parent || {}).length === 0,
       [color]: true
     }"
     class="tile notification">
     <div
       :class="{
-        'is-child': Boolean(Object.keys(parent).length),
+        'is-child': Boolean(Object.keys(parent || {}).length),
         'is-parent': true || Boolean(obj.children && obj.children.length)
       }"
       class="tile is-vertical">
@@ -32,9 +32,9 @@
       <structure
         v-for="child in obj.children"
         :key="child.iri"
+        :name="child.label"
         :obj="child"
         :parent="obj"
-        :name="child.label"
         :depth="depth + 1"
         class="is-child" />
     </div>
