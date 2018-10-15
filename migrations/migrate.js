@@ -29,7 +29,22 @@ async function up (env = 'dev') {
     return obj
   }, {})
 
-  await run(stringsToReplace)
+  const wait = setInterval(attempts, 1000 * 5)
+
+  async function attempts () {
+    try {
+      await run(stringsToReplace)
+      clearInterval(wait)
+      console.warn('Successfully migrated!')
+      return true
+    } catch (err) {
+      console.warn(`  * Err: ${err.message}`)
+      console.warn('    * … waiting 5s before retrying')
+    }
+  }
+  if (await attempts()) {
+    console.warn('Successfully migrated!')
+  }
 }
 
 async function run (stringsToReplace) {
@@ -42,6 +57,9 @@ async function run (stringsToReplace) {
       password: process.env.POSTGRESQL_PASSWORD
     }
   })
+
+  // if this doesn't throw, we're connected!
+  await client.select(client.raw('1'))
 
   const files = await glob(`${__dirname}/sql/*.sql`)
 
@@ -58,25 +76,19 @@ async function run (stringsToReplace) {
     console.warn('  * Found migrations table!')
   }
 
-  try {
-    for (const file of files) {
-      const filename = path.basename(file)
-      const done = await client.select('succeeded').from('__migrations').where({ filename })
+  for (const file of files) {
+    const filename = path.basename(file)
+    const done = await client.select('succeeded').from('__migrations').where({ filename })
 
-      if (!done.length) {
-        await client('__migrations').insert({ filename })
-      }
-      if (!done.length || !done[0].succeeded) {
-        console.warn('    *', filename, 'running')
-        await execute(file, client, stringsToReplace)
-      } else {
-        console.warn('    *', filename, 'already applied')
-      }
+    if (!done.length) {
+      await client('__migrations').insert({ filename })
     }
-  } catch (err) {
-    console.error(err)
-    client.destroy()
-    process.exit(1)
+    if (!done.length || !done[0].succeeded) {
+      console.warn('    *', filename, 'running')
+      await execute(file, client, stringsToReplace)
+    } else {
+      console.warn('    *', filename, 'already applied')
+    }
   }
   client.destroy()
 }
