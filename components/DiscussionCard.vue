@@ -25,7 +25,7 @@
             {{ discussion.externalId }}
             <br>
             <a
-              :href="githubLink(discussion.externalId)"
+              :href="discussion.externalId | forgeLink"
               target="_blank">See on GitHub</a>
           </td>
           <td>{{ discussion.headline }}</td>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-const ontologyConfig = require('~/ontology.config')
+const ontologyConfig = require('@/ontology.config')
 
 export default {
   name: 'DiscussionCard',

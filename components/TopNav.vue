@@ -31,7 +31,7 @@
             Home
           </nuxt-link>
           <nuxt-link
-            :to="{ name: 'discussions', params: {} }"
+            :to="{ name: 'discussion', params: {} }"
             class="navbar-item">
             Discussions
           </nuxt-link>

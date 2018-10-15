@@ -17,7 +17,7 @@
         v-for="discussion in discussions"
         :key="discussion.id">
         <td>
-          <nuxt-link :to="{ name: 'discussions-id', params: { id: discussion.id } }">
+          <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
             {{ discussion.id }}
           </nuxt-link>
         </td>
@@ -27,7 +27,7 @@
           {{ discussion.externalId }}
           <br>
           <a
-            :href="githubLink(discussion.externalId)"
+            :href="discussion.externalId | forgeLink"
             target="_blank">See on GitHub</a>
         </td>
         <td>{{ discussion.headline }}</td>
@@ -40,10 +40,10 @@
 </template>
 
 <script>
-const ontologyConfig = require('~/ontology.config')
+const ontologyConfig = require('@/ontology.config')
 
 export default {
-  name: 'DiscussionsList',
+  name: 'DiscussionList',
   props: ['discussions'],
   methods: {
     githubLink (id) {

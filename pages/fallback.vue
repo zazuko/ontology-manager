@@ -24,7 +24,7 @@
             :iri="iri"
             :is-class="isClass()" />
 
-          <discussions
+          <discussion
             v-if="isClass()"
             :iri="iri" />
         </div>
@@ -37,7 +37,7 @@
 import rdf from 'rdf-ext'
 import Structure from '@/components/Structure'
 import SideNav from '@/components/SideNav'
-import Discussions from '@/components/Discussions'
+import Discussion from '@/components/Discussion'
 import Proposals from '@/components/Proposals'
 import { datasetsSetup, findSubtreeInForest } from '@/libs/utils'
 import { termIRI } from '@/libs/rdf'
@@ -54,7 +54,7 @@ export default {
   components: {
     SideNav,
     Structure,
-    Discussions,
+    Discussion,
     Proposals
   },
   computed: {

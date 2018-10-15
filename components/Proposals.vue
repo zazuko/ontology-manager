@@ -11,7 +11,7 @@
           <span class="navbar-item">
             <nuxt-link
               v-if="!isClass"
-              :to="{ name: 'proposals-new-class', query: { iri: iri } }"
+              :to="{ name: 'proposal-new-class', query: { iri: iri } }"
               class="button is-primary is-inverted">
               Request New Class
             </nuxt-link>
@@ -20,7 +20,7 @@
             v-if="isClass"
             class="navbar-item">
             <nuxt-link
-              :to="{ name: 'proposals-new-property', query: { iri: iri } }"
+              :to="{ name: 'proposal-new-property', query: { iri: iri } }"
               class="button is-primary is-inverted">
               Request New Property
             </nuxt-link>
@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="media-right">
-            <!-- <nuxt-link :to="{ name: 'proposals-id', params: { id: proposal.id } }">
+            <!-- <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
               <span class="icon is-small">
                 <i class="mdi mdi-message-reply-text" />
               </span>
