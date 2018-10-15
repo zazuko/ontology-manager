@@ -3,7 +3,7 @@ const Router = require('express').Router
 const axios = require('axios')
 const apicache = require('apicache')
 const gql = require('graphql-tag')
-const { ontology } = require('../../nuxt.config')
+const ontology = require('../../ontology.config')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
