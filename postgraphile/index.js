@@ -50,11 +50,11 @@ const options = {
 }
 
 // https://www.graphile.org/postgraphile/usage-library/
-const postgraphileMiddleware = process.env.BUILT ? postgraphile(
+const postgraphileMiddleware = process.env.BUILDING_WITHOUT_PG_ACCESS ? dummy : postgraphile(
   pgConfig,
   schemaName,
   options
-) : dummy
+)
 
 export default postgraphileMiddleware
 
