@@ -17,7 +17,7 @@
 1. `npm install`
 1. Run the project:
   * Database:
-      * `make up`
+      * `make up` (If the database is booting up for the first time, you'll see migrations being retried until DB is up and they get applied.)
   * Front dev server + watch:
       * If you only want to watch the front (you probably do): `npm run dev`
       * If you want to watch the front AND the API: `npm run dev-api`
