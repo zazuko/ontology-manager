@@ -20,7 +20,10 @@
             :obj="subtree"
             :name="subtree.label" />
 
-          <proposals :iri="iri" />
+          <proposals
+            :iri="iri"
+            :is-class="isClass()" />
+
           <discussions
             v-if="isClass()"
             :iri="iri" />
@@ -37,6 +40,7 @@ import SideNav from '@/components/SideNav'
 import Discussions from '@/components/Discussions'
 import Proposals from '@/components/Proposals'
 import { datasetsSetup, findSubtreeInForest } from '@/libs/utils'
+import { termIRI } from '@/libs/rdf'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
 
@@ -91,11 +95,11 @@ export default {
       if (!this.isStructure) {
         if (this.ontology) {
           const subject = rdf.namedNode(this.iri)
-          const predicate = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-          const object = rdf.namedNode('http://www.w3.org/2002/07/owl#Class')
-          return this.ontology.match(subject, predicate, object).toArray().length
+          const classesFound = this.ontology.match(subject, termIRI.a, termIRI.Class).toArray().length
+          return Boolean(classesFound)
         }
       }
+      return false
     }
   },
   validate ({ params, store, route }) {

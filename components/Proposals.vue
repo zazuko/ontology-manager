@@ -10,12 +10,15 @@
         <div class="navbar-end">
           <span class="navbar-item">
             <nuxt-link
+              v-if="!isClass"
               :to="{ name: 'proposals-new-class', query: { iri: iri } }"
               class="button is-primary is-inverted">
               Request New Class
             </nuxt-link>
           </span>
-          <span class="navbar-item">
+          <span
+            v-if="isClass"
+            class="navbar-item">
             <nuxt-link
               :to="{ name: 'proposals-new-property', query: { iri: iri } }"
               class="button is-primary is-inverted">
@@ -76,6 +79,10 @@ export default {
     iri: {
       type: String,
       required: true
+    },
+    isClass: {
+      type: Boolean,
+      required: true
     }
   },
   methods: {
@@ -99,6 +106,9 @@ export default {
       },
       fetchPolicy: 'cache-and-network'
     }
+  },
+  validate () {
+
   }
 }
 </script>
