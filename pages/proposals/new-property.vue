@@ -81,7 +81,6 @@
                 <div class="control">
                   <textarea
                     class="textarea"
-                    :class="{'is-danger': !property.longDescription}"
                     v-model="property.longDescription" />
                 </div>
               </div>
@@ -101,7 +100,9 @@
                   <nav
                     slot="selected-list"
                     class="panel">
-                    <a class="panel-block" title="New property is getting created on this class!">
+                    <a
+                      class="panel-block"
+                      title="New property is getting created on this class!">
                       <span class="panel-icon">
                         <i class="mdi mdi-close-circle" />
                       </span>
@@ -226,7 +227,7 @@ export default {
         clearInterval(i)
 
         this.ontology = window.ontology
-        this.sfn = domainsSearchFactory(this.ontology)
+        this.sfn = domainsSearchFactory(this.ontology, 'Class', true)
         const currentLableQuad = labelQuadForIRI(this.iri, this.ontology)
         this.currentLabel = currentLableQuad.object.value
         this.property.domains.push(currentLableQuad.subject)

@@ -2,6 +2,7 @@
   "baseConfig": "cwd:trifid/trifid.config-base.json",
   "datasetBaseUrl": "http://example.com/",
   "propertyBaseUrl": "http://example.com/schema/",
+  "classBaseUrl": "http://example.com/schema/",
   "patchHeaders": {
     "root": {
       "static": {
