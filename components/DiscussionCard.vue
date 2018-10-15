@@ -21,7 +21,13 @@
           <td>{{ discussion.author.avatar }}</td>
           <td>{{ discussion.author.name }}</td>
           <td>{{ discussion.hat }}</td>
-          <td>{{ discussion.externalId }}</td>
+          <td>
+            {{ discussion.externalId }}
+            <br>
+            <a
+              :href="githubLink(discussion.externalId)"
+              target="_blank">See on GitHub</a>
+          </td>
           <td>{{ discussion.headline }}</td>
           <td>{{ discussion.iri }}</td>
           <td>{{ discussion.body }}</td>
@@ -57,8 +63,16 @@
 </template>
 
 <script>
+const ontologyConfig = require('~/ontology.config')
+
 export default {
   name: 'DiscussionCard',
-  props: ['discussion']
+  props: ['discussion'],
+  methods: {
+    githubLink (id) {
+      const { owner, repo } = ontologyConfig.github
+      return `https://github.com/${owner}/${repo}/pull/${id}`
+    }
+  }
 }
 </script>

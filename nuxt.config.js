@@ -6,26 +6,6 @@ const env = process.env.NODE_TEST ? `${__dirname}/test/.env` : `${__dirname}/doc
 dotenv.config({ path: env })
 
 module.exports = {
-  ontology: {
-    github: {
-      repo: 'o',
-      owner: 'vhf',
-      branch: 'example-com',
-      files: {
-        structure: 'structure.nt',
-        ontology: 'ontology.nt'
-      },
-      committer: {
-        // system user, the git identity of the committer who attributes commits
-        // to the ontology editor user
-        name: 'Ontology Editor',
-        email: 'victor.felder@zazuko.com',
-        get date () {
-          return (new Date()).toISOString()
-        }
-      }
-    }
-  },
   mode: 'universal',
 
   /*
