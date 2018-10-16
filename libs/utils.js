@@ -124,7 +124,7 @@ class Node {
 }
 
 export function hasCreativeWorkChild (obj) {
-  if (!obj.children.length) {
+  if (!obj || !obj.children || !obj.children.length) {
     return false
   }
 
