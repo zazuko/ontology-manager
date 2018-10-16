@@ -1,46 +1,67 @@
 <template>
-  <div
-    :class="{
-      'is-ancestor': Object.keys(parent || {}).length === 0,
-      [color]: true
-    }"
-    class="tile notification">
+  <div class="">
     <div
-      :class="{
-        'is-child': Boolean(Object.keys(parent || {}).length),
-        'is-parent': true || Boolean(obj.children && obj.children.length)
-      }"
-      class="tile is-vertical">
+      class="tile is-vertical is-12">
+      <div class="tile is-parent">
+        <article
+          class="tile is-child notification is-danger">
+          <p class="title">
+            <nuxt-link
+              v-if="obj.path"
+              :to="{ path: obj.path, params: {} }">
+              {{ name }}
+            </nuxt-link>
+            <span
+              v-else>
+              {{ name }}
+            </span>
+          </p>
+          <p
+            v-if="true || obj.type === 'class'"
+            class="subtitle">
+            {{ childClassesCount(obj) }} classes
+            <br>
+            {{ childPropertiesCount(obj) }} properties
+          </p>
 
-      <h1 class="title">
-        <nuxt-link
-          v-if="obj.path"
-          :to="{ path: obj.path, params: {} }">
-          {{ name }}
-        </nuxt-link>
-        <span
-          v-else>
-          {{ name }}
-        </span>
-      </h1>
-      <h2
-        v-if="true || obj.type === 'class'"
-        class="subtitle">
-        {{ childClassesCount(obj) }} classes
-        <br>
-        {{ childPropertiesCount(obj) }} properties
-      </h2>
-
-      <div
-        v-if="hasCreativeWorkChild(obj)"
-        class="is-child">
-        <structure-home
-          v-for="child in obj.children"
-          :key="child.iri"
-          :name="child.label"
-          :obj="child"
-          :parent="obj"
-          :depth="depth + 1" />
+          <div
+            v-if="hasCreativeWorkChild(obj)"
+            class="content">
+            <div
+              v-for="(group, index) in split(obj)"
+              :key="index"
+              class="tile is-ancestor">
+              <div
+                class="tile is-parent">
+                <div
+                  v-for="child in group"
+                  :key="child.path"
+                  class="tile is-parent">
+                  <article class="tile is-child box  notification is-warning">
+                    <p class="title">
+                      <nuxt-link
+                        v-if="child.path"
+                        :to="{ path: child.path, params: {} }">
+                        {{ child.label }}
+                      </nuxt-link>
+                      <span
+                        v-else>
+                        {{ child.label }}
+                      </span>
+                    </p>
+                    <p
+                      v-if="true || child.type === 'class'"
+                      class="subtitle">
+                      {{ childClassesCount(child) }} classes
+                      <br>
+                      {{ childPropertiesCount(child) }} properties
+                    </p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </div>
@@ -48,13 +69,6 @@
 
 <script>
 import { hasCreativeWorkChild } from '@/libs/utils'
-
-const depths = [
-  'is-warning',
-  'is-danger',
-  'is-primary',
-  'is-info'
-]
 
 export default {
   name: 'StructureHome',
@@ -79,11 +93,6 @@ export default {
       default: 0
     }
   },
-  data () {
-    return {
-      color: depths[this.depth]
-    }
-  },
   methods: {
     hasCreativeWorkChild,
     childPropertiesCount (obj) {
@@ -99,6 +108,16 @@ export default {
         return (obj.type === 'class' ? 1 : 0) + obj.children.reduce((acc, child) => this.childClassesCount(child, acc), sum)
       }
       return sum + (obj.type === 'class' ? 1 : 0)
+    },
+    split (obj) {
+      return obj.children.reduce((groups, obj, i) => {
+        const group = Math.floor(i / 4)
+        if (!Array.isArray(groups[group])) {
+          groups[group] = []
+        }
+        groups[group].push(obj)
+        return groups
+      }, [])
     }
   }
 }
@@ -111,5 +130,4 @@ function childPropertiesCount (obj, properties = []) {
   }
   return obj.properties.toArray()
 }
-
 </script>
