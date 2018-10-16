@@ -24,11 +24,11 @@
     </section>
 
     <section
-      v-for="(tree, index) in forest"
+      v-for="(tree, index) in forest[0].children"
       :key="index"
       class="container"
       style="margin-bottom: 25px;">
-      <structure
+      <structure-home
         :obj="tree"
         :name="tree.label" />
     </section>
@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import Structure from '@/components/Structure'
+import StructureHome from '@/components/StructureHome'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {
-    Structure
+    StructureHome
   },
   data () {
     return {
