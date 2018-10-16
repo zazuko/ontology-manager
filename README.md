@@ -56,14 +56,11 @@ Whenever you feel like it:
     1. Create a commit attributed to the original author, push the branch to the origin.
     1. Open a PR targeting `master`, retrieve the PR `id`, store it as `thread.external_id`.
 
-### To Consider
+### Resources
 
-* ~~Should the forge-specific functionalities be implemented as a GraphQL endpoint?~~
-  * How does Apollo support multiple endpoints?
-    * GitHub GraphQL API is not complete enough anyway.
-  * https://www.prisma.io/blog/how-to-wrap-a-rest-api-with-graphql-8bf3fb17547d/
-  * https://medium.com/@sastraxi/authenticated-and-stitched-schemas-with-postgraphile-passport-and-stripe-a51490a858a2
-  * https://www.apollographql.com/docs/graphql-tools/schema-stitching.html
+- https://github.com/Akryum/vue-apollo/blob/master/tests/demo/src/components/ChannelView.vue
+- https://github.com/Akryum/vue-apollo/tree/master/tests/demo/src/graphql
+
 
 ### Helpful Tools
 
