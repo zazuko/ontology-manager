@@ -13,7 +13,6 @@ query GetDiscussion ($id: Int!) {
     iri,
     threadType,
     authorId,
-    externalId,
     answers: messagesByThreadId {
       messages: nodes {
         id,
