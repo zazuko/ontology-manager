@@ -1,5 +1,5 @@
 query GetUserContent ($iri: String!) {
-  proposals: proposalsByIri (iri: $iri) {
+  proposals: allThreads (condition: {iri: $iri, threadType: PROPOSAL}) {
     proposals: nodes {
       id,
       headline,

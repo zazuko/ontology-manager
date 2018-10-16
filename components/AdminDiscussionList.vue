@@ -19,10 +19,6 @@
           <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
             {{ discussion.headline }}
           </nuxt-link>
-          <br>
-          <a
-            :href="discussion.externalId | forgeLink"
-            target="_blank">See on GitHub</a>
         </td>
         <td>
           {{ discussion.author.name }}
