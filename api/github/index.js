@@ -53,6 +53,7 @@ router.post('/link', async (req, res, next) => {
   const {
     email: clientEmail,
     name: clientName,
+    username: clientUsername,
     id: clientId
   } = req.body
 
@@ -65,6 +66,7 @@ router.post('/link', async (req, res, next) => {
 
   const variables = {
     name: clientName,
+    username: clientUsername,
     email: clientEmail,
     avatar: avatarUrl,
     providedId: clientId,
@@ -73,9 +75,10 @@ router.post('/link', async (req, res, next) => {
 
   try {
     const r = await anonApolloClient.mutate({
-      mutation: gql`mutation ($name: String!, $email: String!, $avatar: String!, $token: String!, $providedId: Int!) {
+      mutation: gql`mutation ($name: String!, $username: String!, $email: String!, $avatar: String!, $token: String!, $providedId: Int!) {
         upsertPerson (input: {
           name: $name,
+          username: $username,
           email: $email,
           avatar: $avatar,
           token: $token,
@@ -157,9 +160,9 @@ router.post('/proposals/new', async (req, res, next) => {
         }
       `,
       variables: {
+        iri,
+        body,
         headline: title,
-        iri: iri,
-        body: body,
         externalId: number,
         threadType: 'PROPOSAL'
       }

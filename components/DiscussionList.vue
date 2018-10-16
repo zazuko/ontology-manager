@@ -5,7 +5,6 @@
         <th>id</th>
         <th>author name</th>
         <th>hat</th>
-        <th>externalId</th>
         <th>headline</th>
         <th>iri</th>
         <th>body</th>
@@ -23,13 +22,6 @@
         </td>
         <td>{{ discussion.author.name }}</td>
         <td>{{ discussion.hat }}</td>
-        <td>
-          {{ discussion.externalId }}
-          <br>
-          <a
-            :href="discussion.externalId | forgeLink"
-            target="_blank">See on GitHub</a>
-        </td>
         <td>{{ discussion.headline }}</td>
         <td>{{ discussion.iri }}</td>
         <td>{{ discussion.body }}</td>

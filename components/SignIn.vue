@@ -50,15 +50,27 @@ export default {
     },
     async authenticate (loggedIn) {
       if (!loggedIn && Object.keys(this.$store.state.auth || {}).length) {
-        const email = _get(this, '$store.state.auth.user.email', '')
         const name = _get(this, '$store.state.auth.user.name', '')
+        const username = _get(this, '$store.state.auth.user.login', '')
         const id = _get(this, '$store.state.auth.user.id', '')
+        let email = _get(this, '$store.state.auth.user.email', '')
 
-        if ([email, name, id].every(Boolean)) {
+        if ([name, id].every(Boolean)) {
           try {
+            // if github user set their email as 'private', email ends up 'null' here
+            // so we have to fetch it via the API
+            if (!email) {
+              const headers = { headers: { authorization: this.$auth.getToken('github') } }
+              const result = await axios.get('https://api.github.com/user/emails', headers)
+              email = _get(result, 'data[0].email')
+              if (!email) {
+                throw new Error('OAuth login failed: email not found')
+              }
+            }
+
             // check token then link oauth account/token to local account/token
             const headers = { headers: { authorization: this.$auth.getToken('github') } }
-            const result = await axios.post('/api/link', { email, name, id }, headers)
+            const result = await axios.post('/api/link', { email, name, id, username }, headers)
               .catch((err) => {
                 this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
               })
@@ -71,6 +83,7 @@ export default {
             this.$apolloHelpers.onLogin(jwtToken)
           } catch (err) {
             this.$toast.error(err, toastClose)
+            await this.$apolloHelpers.onLogout()
           }
         }
       }
