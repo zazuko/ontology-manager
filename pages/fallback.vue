@@ -18,7 +18,8 @@
 
           <structure
             :obj="subtree"
-            :name="subtree.label" />
+            :name="subtree.label"
+            class="tile is-ancestor" />
 
           <proposals
             :iri="iri"
