@@ -27,10 +27,11 @@
       v-for="(tree, index) in forest[0].children"
       :key="index"
       class="container"
-      style="margin-bottom: 25px;">
+      style="margin-top: 25px;">
       <structure-home
         :obj="tree"
-        :name="tree.label" />
+        :name="tree.label"
+        class="tile is-ancestor" />
     </section>
   </div>
 </template>
