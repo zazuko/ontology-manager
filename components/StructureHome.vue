@@ -1,10 +1,8 @@
 <template>
-  <div class="">
-    <div
-      class="tile is-vertical is-12">
+  <div>
+    <div class="tile is-vertical is-12">
       <div class="tile is-parent">
-        <article
-          class="tile is-child notification is-danger">
+        <article class="tile is-child notification is-danger">
           <p class="title">
             <nuxt-link
               v-if="obj.path"
@@ -28,36 +26,33 @@
             v-if="hasCreativeWorkChild(obj)"
             class="content">
             <div
-              v-for="(group, index) in split(obj)"
+              v-for="(group, index) in arrayToGroups(obj)"
               :key="index"
               class="tile is-ancestor">
               <div
-                class="tile is-parent">
-                <div
-                  v-for="child in group"
-                  :key="child.path"
-                  class="tile is-parent">
-                  <article class="tile is-child box  notification is-warning">
-                    <p class="title">
-                      <nuxt-link
-                        v-if="child.path"
-                        :to="{ path: child.path, params: {} }">
-                        {{ child.label }}
-                      </nuxt-link>
-                      <span
-                        v-else>
-                        {{ child.label }}
-                      </span>
-                    </p>
-                    <p
-                      v-if="true || child.type === 'class'"
-                      class="subtitle">
-                      {{ childClassesCount(child) }} classes
-                      <br>
-                      {{ childPropertiesCount(child) }} properties
-                    </p>
-                  </article>
-                </div>
+                v-for="child in group"
+                :key="child.path"
+                class="tile is-parent is-3">
+                <article class="tile is-child box notification is-warning">
+                  <p class="title">
+                    <nuxt-link
+                      v-if="child.path"
+                      :to="{ path: child.path, params: {} }">
+                      {{ child.label }}
+                    </nuxt-link>
+                    <span
+                      v-else>
+                      {{ child.label }}
+                    </span>
+                  </p>
+                  <p
+                    v-if="true || child.type === 'class'"
+                    class="subtitle">
+                    {{ childClassesCount(child) }} classes
+                    <br>
+                    {{ childPropertiesCount(child) }} properties
+                  </p>
+                </article>
               </div>
             </div>
           </div>
@@ -68,7 +63,7 @@
 </template>
 
 <script>
-import { hasCreativeWorkChild } from '@/libs/utils'
+import { hasCreativeWorkChild, arrayToGroups } from '@/libs/utils'
 
 export default {
   name: 'StructureHome',
@@ -95,6 +90,7 @@ export default {
   },
   methods: {
     hasCreativeWorkChild,
+    arrayToGroups,
     childPropertiesCount (obj) {
       const properties = childPropertiesCount(obj)
         .reduce((obj, p) => {
@@ -108,16 +104,6 @@ export default {
         return (obj.type === 'class' ? 1 : 0) + obj.children.reduce((acc, child) => this.childClassesCount(child, acc), sum)
       }
       return sum + (obj.type === 'class' ? 1 : 0)
-    },
-    split (obj) {
-      return obj.children.reduce((groups, obj, i) => {
-        const group = Math.floor(i / 4)
-        if (!Array.isArray(groups[group])) {
-          groups[group] = []
-        }
-        groups[group].push(obj)
-        return groups
-      }, [])
     }
   }
 }

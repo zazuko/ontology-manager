@@ -25,6 +25,17 @@ export async function datasetsSetup (store) {
   }
 }
 
+export function arrayToGroups (obj, groupSize = 4) {
+  return obj.children.reduce((groups, obj, i) => {
+    const group = Math.floor(i / groupSize)
+    if (!Array.isArray(groups[group])) {
+      groups[group] = []
+    }
+    groups[group].push(obj)
+    return groups
+  }, [])
+}
+
 async function deserialize (string) {
   const parser = new N3Parser({ factory: rdf })
 
