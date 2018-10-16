@@ -3,6 +3,7 @@ import { quadToNTriples } from '@rdfjs/to-ntriples'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
 import { datasetBaseUrl } from '@/trifid/trifid.config.json'
+import { termIRI } from '@/libs/rdf'
 
 export const toastClose = {
   action: {
@@ -114,18 +115,35 @@ class Node {
     this.parent = parent
     this.quads = quads
     this.children = children
+    this.isCreativeWork = !!quads.match(
+      rdf.namedNode(this.iri),
+      termIRI.a,
+      rdf.namedNode('http://schema.org/CreativeWork')
+    ).length
+  }
+}
+
+export function hasCreativeWorkChild (obj) {
+  if (!obj.children.length) {
+    return false
+  }
+
+  for (const child of obj.children) {
+    if (child.isCreativeWork) {
+      return true
+    }
+    return !!hasCreativeWorkChild(child)
   }
 }
 
 export function findClassProperties (classIRI, dataset) {
-  const type = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-  const object = rdf.namedNode('http://www.w3.org/2002/07/owl#ObjectProperty')
+  const type = termIRI.a
+  const object = termIRI.Property
 
-  const domain = rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#domain')
+  const domain = termIRI.domain
   const classToSearchFor = rdf.namedNode(classIRI)
 
   return dataset
     .match(null, domain, classToSearchFor)
     .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
-    // .map(({ subject }) => dataset.match(subject))
 }
