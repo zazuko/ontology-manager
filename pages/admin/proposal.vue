@@ -27,6 +27,7 @@ import AdminDiscussionList from '@/components/AdminDiscussionList.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
+  middleware: 'authenticatedAdmin',
   components: {
     AdminDiscussionList
   },

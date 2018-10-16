@@ -62,7 +62,11 @@ export default {
               .catch((err) => {
                 this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
               })
+
             const jwtToken = _get(result, 'data.jwtToken')
+            const isAdmin = _get(result, 'data.isAdmin')
+            this.$store.state.user = Object.assign(this.$store.state.auth.user, { isAdmin })
+
             if (!jwtToken) throw new Error('Account linking failed.')
             this.$apolloHelpers.onLogin(jwtToken)
           } catch (err) {
