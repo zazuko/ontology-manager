@@ -35,6 +35,11 @@
             class="navbar-item">
             Discussions
           </nuxt-link>
+          <nuxt-link
+            :to="{ name: 'admin-proposal', params: {} }"
+            class="navbar-item">
+            Admin
+          </nuxt-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
