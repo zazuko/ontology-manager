@@ -57,6 +57,11 @@
                     type="text"
                     v-model="cls.name">
                 </div>
+                <p
+                  v-if="cls.name && invalidClassname(cls.name)"
+                  class="help is-danger">
+                  Class name must start with an Uppercase letter!
+                </p>
               </div>
             </div>
             <div class="column" />
@@ -94,7 +99,7 @@
               <div
                 v-if="renderTypeahead">
                 <typeahead
-                  :search-function="sfn"
+                  :search-function="searchFunction"
                   label="Has the Following Properties"
                   @selectionChanged="addDomain" />
               </div>
@@ -103,87 +108,12 @@
             <div class="column" />
           </div>
 
-          <table
+          <properties-table
+            v-if="domains.length"
             slot="selected-list"
-            class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>
-                  Property
-                </th>
-                <th>
-                  Type
-                </th>
-                <th>
-                  Description
-                  <br>
-                  <small>short description</small>
-                </th>
-                <th>
-                  Used On
-                  <br>
-                  <small>these classes</small>
-                </th>
-                <th>
-                  Remove
-                  <br>
-                  <small>from class being created</small>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(property, index) in domains"
-                :key="index">
-                <td>
-                  <small>
-                    <code>{{ property.domain.subject.value }}</code>
-                  </small>
-                </td>
-                <td>
-                  <small>
-                    <code>{{ property.range }}</code>
-                  </small>
-                </td>
-                <td>
-                  {{ property.label }}
-                </td>
-                <td>
-                  <ul>
-                    <li
-                      v-for="otherClass in property.usedOn"
-                      :key="otherClass.object.value">
-                      <small>
-                        <code>{{ otherClass.object.value }}</code>
-                      </small>
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <!-- TODO: what would 'edit' do here? -->
-                  <!-- <span
-                    class="panel-icon">
-                    <i class="mdi mdi-pencil" />
-                  </span> -->
-                  <span
-                    class="panel-icon"
-                    @click.prevent="removeDomain(index)">
-                    <i class="mdi mdi-close-circle" />
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            :properties="domains"
+            @delete="removeDomain" />
 
-        </div>
-
-        <div class="box">
-          <div class="field">
-            <label class="label">NT so far</label>
-            <div class="control">
-              <pre>{{ nt }}</pre>
-            </div>
-          </div>
         </div>
 
         <div class="box">
@@ -197,11 +127,20 @@
           </div>
         </div>
 
+        <div
+          v-if="error"
+          class="field">
+          <p
+            class="help is-danger">
+            {{ error }}
+          </p>
+        </div>
         <div class="field is-grouped">
           <p class="control">
             <button
               class="button is-primary"
-              @click="createProposal">
+              @click="createProposal"
+              :disabled="!!error">
               Submit Proposal
             </button>
           </p>
@@ -210,6 +149,17 @@
               Cancel
             </button>
           </p>
+        </div>
+
+        <div
+          v-show="!error"
+          class="box">
+          <div class="field">
+            <label class="label">NTriples preview</label>
+            <div class="control">
+              <pre>{{ nt }}</pre>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -224,6 +174,7 @@ import _get from 'lodash/get'
 import { datasetsSetup } from '@/libs/utils'
 import { Cls, domainsSearchFactory } from '@/libs/rdf'
 import Typeahead from '@/components/Typeahead'
+import PropertiesTable from '@/components/PropertiesTable'
 
 export default {
   async asyncData ({ query }) {
@@ -233,7 +184,8 @@ export default {
   },
   middleware: 'authenticated',
   components: {
-    Typeahead
+    Typeahead,
+    PropertiesTable
   },
   async created () {
     await datasetsSetup(this.$store)
@@ -244,7 +196,7 @@ export default {
         clearInterval(i)
 
         this.ontology = window.ontology
-        this.sfn = domainsSearchFactory(this.ontology, 'Property', false)
+        this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
       }
     })
   },
@@ -252,11 +204,12 @@ export default {
     return {
       currentLabel: '',
       cls: new Cls(),
-      sfn: () => ([]),
+      searchFunction: () => ([]),
       domains: [],
       contentNT: '',
       motivation: '',
-      renderTypeahead: process.client
+      renderTypeahead: process.client,
+      error: 'Some required fields are empty!'
     }
   },
   computed: {
@@ -269,8 +222,10 @@ export default {
     async setNT () {
       try {
         this.contentNT = await this.cls.toNT()
+        this.error = ''
       } catch (err) {
         this.contentNT = err.message
+        this.error = err.message
       }
     },
     addDomain (domain) {
@@ -306,6 +261,9 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    invalidClassname (name) {
+      return !/^([A-Z])/.test(name)
     }
   },
   validate ({ query }) {

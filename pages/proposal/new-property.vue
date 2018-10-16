@@ -94,7 +94,7 @@
               <div
                 v-if="renderTypeahead">
                 <typeahead
-                  :search-function="sfn"
+                  :search-function="searchFunction"
                   label="Applies to the Following Classes"
                   @selectionChanged="addDomain">
                   <nav
@@ -132,7 +132,7 @@
               <div
                 v-if="renderTypeahead">
                 <typeahead
-                  :search-function="sfn"
+                  :search-function="searchFunction"
                   label="Expected Type"
                   @selectionChanged="addType">
                   <nav
@@ -227,7 +227,7 @@ export default {
         clearInterval(i)
 
         this.ontology = window.ontology
-        this.sfn = domainsSearchFactory(this.ontology, 'Class', true)
+        this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
         const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
         this.currentLabel = currentLabelQuad.object.value
         this.property.domains.push(currentLabelQuad.subject)
@@ -238,7 +238,7 @@ export default {
     return {
       currentLabel: '',
       property: new Property(),
-      sfn: () => ([]),
+      searchFunction: () => ([]),
       domains: [],
       contentNT: '',
       motivation: '',
