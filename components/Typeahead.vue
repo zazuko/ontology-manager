@@ -20,7 +20,7 @@
       </p>
       <div
         class="dropdown"
-        :class="{'is-active': inputString.length >= minLength || (inputString.length >= minLength && hasFocus)}">
+        :class="{'is-active': showDropdown}">
         <div
           class="dropdown-menu">
           <div class="dropdown-content">
@@ -28,9 +28,13 @@
               :inputString="inputString"
               :unfocus="unfocus"
               name="custom-options" />
-            <!-- <hr class="dropdown-divider"> -->
             <div
-              v-for="option in searchResults()"
+              v-show="searchResults.length === 0"
+              class="dropdown-item">
+              <em>No result</em>
+            </div>
+            <div
+              v-for="option in searchResults"
               :key="option.key"
               class="dropdown-item">
               <a
@@ -71,13 +75,23 @@ export default {
   data () {
     return {
       hasFocus: false,
-      inputString: ''
+      inputString: '',
+      searchResults: []
     }
   },
+  computed: {
+    showDropdown () {
+      const inputLength = this.inputString.length
+      const inputLongEnough = inputLength >= this.minLength
+      return inputLongEnough || (inputLongEnough && this.hasFocus)
+    }
+  },
+  watch: {
+    inputString: 'doSearch'
+  },
   methods: {
-    searchResults () {
-      const results = this.searchFunction(this.inputString).slice(0, this.limit)
-      return results
+    doSearch () {
+      this.searchResults = this.searchFunction(this.inputString).slice(0, this.limit)
     },
     unfocus () {
       // Suggested entries are out of the input, so clicking on them triggers
