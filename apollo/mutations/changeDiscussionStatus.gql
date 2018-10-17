@@ -1,0 +1,10 @@
+mutation ($threadId: Int!, $newStatus: Status!) {
+  changeThreadStatus (input: {
+    threadId: $threadId,
+    newStatus: $newStatus
+  }) {
+    thread {
+      id
+    }
+  }
+}

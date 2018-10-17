@@ -16,7 +16,8 @@
     </div>
 
     <admin-discussion-list
-      :discussions="discussions.nodes" />
+      :discussions="discussions.nodes"
+      @updated="refetch()" />
 
   </section>
 </template>
@@ -38,6 +39,11 @@ export default {
   }),
   async created () {
     await datasetsSetup(this.$store)
+  },
+  methods: {
+    refetch () {
+      this.$apollo.queries.discussions.refetch()
+    }
   },
   apollo: {
     discussions: {
