@@ -1,19 +1,6 @@
 <template>
   <section class="container">
-    <div class="tabs is-boxed is-large">
-      <ul>
-        <li class="is-active">
-          <nuxt-link :to="{ name: 'admin-proposal' }">
-            Proposals
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link :to="{ name: 'admin-discussion' }">
-            Discussions
-          </nuxt-link>
-        </li>
-      </ul>
-    </div>
+    <admin-menu />
 
     <admin-proposal-list
       :proposals="discussions.nodes"
@@ -25,12 +12,14 @@
 <script>
 import allDiscussions from '@/apollo/queries/adminWorklist'
 import AdminProposalList from '@/components/AdminProposalList.vue'
+import AdminMenu from '@/components/AdminMenu.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
   components: {
-    AdminProposalList
+    AdminProposalList,
+    AdminMenu
   },
   data: () => ({
     discussions: {
