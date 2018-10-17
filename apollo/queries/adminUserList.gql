@@ -1,0 +1,10 @@
+query GetAllUsers {
+  users: allPeople {
+    nodes {
+      id,
+      name,
+      username,
+      isAdmin
+    }
+  }
+}
