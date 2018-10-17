@@ -41,16 +41,22 @@
         </td>
         <td>
           <button
-            class="button is-small is-success"
-            :disabled="discussion.status !== 'OPEN'"
-            @click="approve(discussion.id)">
-            Approve
+            v-show="discussion.status !== 'OPEN'"
+            class="button is-small is-primary"
+            @click="reopen(discussion.id)">
+            Reopen
           </button>
           <button
+            v-show="discussion.status === 'OPEN'"
+            class="button is-small is-success"
+            @click="resolve(discussion.id)">
+            Resolve
+          </button>
+          <button
+            v-show="discussion.status === 'OPEN'"
             class="button is-small is-danger"
-            :disabled="discussion.status !== 'OPEN'"
-            @click="reject(discussion.id)">
-            Reject
+            @click="hide(discussion.id)">
+            Hide / Close
           </button>
         </td>
       </tr>
@@ -59,16 +65,53 @@
 </template>
 
 <script>
+import mutation from '@/apollo/mutations/changeDiscussionStatus'
 
 export default {
   name: 'AdminDiscussionList',
   props: ['discussions'],
   methods: {
-    approve (id) {
+    async resolve (threadId) {
+      const variables = {
+        threadId,
+        newStatus: 'RESOLVED'
+      }
 
+      this.$apollo.mutate({ mutation, variables })
+        .then((data) => {
+          this.$emit('updated', threadId)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
-    reject (id) {
+    async hide (threadId) {
+      const variables = {
+        threadId,
+        newStatus: 'HIDDEN'
+      }
 
+      this.$apollo.mutate({ mutation, variables })
+        .then((data) => {
+          this.$emit('updated', threadId)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    },
+    async reopen (threadId) {
+      const variables = {
+        threadId,
+        newStatus: 'OPEN'
+      }
+
+      this.$apollo.mutate({ mutation, variables })
+        .then((data) => {
+          this.$emit('updated', threadId)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 }
