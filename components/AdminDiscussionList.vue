@@ -72,46 +72,25 @@ export default {
   props: ['discussions'],
   methods: {
     async resolve (threadId) {
-      const variables = {
-        threadId,
-        newStatus: 'RESOLVED'
-      }
-
-      this.$apollo.mutate({ mutation, variables })
-        .then((data) => {
-          this.$emit('updated', threadId)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      this.mutate(threadId, 'RESOLVED')
     },
     async hide (threadId) {
-      const variables = {
-        threadId,
-        newStatus: 'HIDDEN'
-      }
-
-      this.$apollo.mutate({ mutation, variables })
-        .then((data) => {
-          this.$emit('updated', threadId)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      this.mutate(threadId, 'HIDDEN')
     },
     async reopen (threadId) {
+      this.mutate(threadId, 'OPEN')
+    },
+    async mutate (threadId, newStatus) {
       const variables = {
         threadId,
-        newStatus: 'OPEN'
+        newStatus
       }
-
-      this.$apollo.mutate({ mutation, variables })
-        .then((data) => {
-          this.$emit('updated', threadId)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      try {
+        await this.$apollo.mutate({ mutation, variables })
+        this.$emit('updated', threadId)
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 }
