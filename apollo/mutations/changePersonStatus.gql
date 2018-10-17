@@ -1,0 +1,11 @@
+mutation ($userId: Int!, $adminFlag: Boolean!) {
+  changePersonStatus (input: {
+    userId: $userId,
+    adminFlag: $adminFlag
+  }) {
+    person {
+      id,
+      isAdmin
+    }
+  }
+}
