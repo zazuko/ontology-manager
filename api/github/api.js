@@ -99,4 +99,35 @@ module.exports = class GitHubAPIv3 {
       number: result.data.number
     }
   }
+
+  async mergePR ({ number, sha } = {}) {
+    const owner = this.owner
+    const repo = this.repo
+
+    const result = await octokit.pullRequests.merge({
+      owner,
+      repo,
+      number,
+      sha
+    })
+
+    return {
+      success: !!result.data.merged, // true | undefined => bool
+      message: result.data.message
+    }
+  }
+
+  async closePR ({ number } = {}) {
+    const owner = this.owner
+    const repo = this.repo
+
+    await octokit.pullRequests.update({
+      owner,
+      repo,
+      number,
+      state: 'closed'
+    })
+
+    return {}
+  }
 }

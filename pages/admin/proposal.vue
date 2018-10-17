@@ -15,21 +15,22 @@
       </ul>
     </div>
 
-    <admin-discussion-list
-      :discussions="discussions.nodes" />
+    <admin-proposal-list
+      :proposals="discussions.nodes"
+      @updated="refetch()" />
 
   </section>
 </template>
 
 <script>
 import allDiscussions from '@/apollo/queries/adminWorklist'
-import AdminDiscussionList from '@/components/AdminDiscussionList.vue'
+import AdminProposalList from '@/components/AdminProposalList.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
   components: {
-    AdminDiscussionList
+    AdminProposalList
   },
   data: () => ({
     discussions: {
@@ -38,6 +39,11 @@ export default {
   }),
   async created () {
     await datasetsSetup(this.$store)
+  },
+  methods: {
+    refetch () {
+      this.$apollo.queries.discussions.refetch()
+    }
   },
   apollo: {
     discussions: {

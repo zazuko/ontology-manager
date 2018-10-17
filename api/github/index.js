@@ -127,7 +127,7 @@ router.post('/link', async (req, res, next) => {
   res.status(500).send()
 })
 
-router.post('/proposals/new', async (req, res, next) => {
+router.post('/proposal/new', async (req, res, next) => {
   const { title, body, message, content, iri } = req.body
 
   const author = { name: req.user.name, email: req.user.email }
@@ -165,6 +165,78 @@ router.post('/proposals/new', async (req, res, next) => {
         headline: title,
         externalId: number,
         threadType: 'PROPOSAL'
+      }
+    })
+
+    res.json(result.data)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
+
+router.post('/proposal/merge', async (req, res, next) => {
+  const { threadId, number } = req.body
+
+  try {
+    const { success, message } = await api.mergePR({ number })
+
+    if (!success) {
+      throw new Error(`Merge failed: ${message}`)
+    }
+
+    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
+
+    const result = await userApolloClient.mutate({
+      mutation: gql`
+      mutation ($threadId: Int!, $newStatus: Status!) {
+        changeThreadStatus (input: {
+          threadId: $threadId,
+          newStatus: $newStatus
+        }) {
+          thread {
+            id
+          }
+        }
+      }`,
+      variables: {
+        threadId: parseInt(threadId, 10),
+        newStatus: 'RESOLVED'
+      }
+    })
+
+    res.json(result.data)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
+
+router.post('/proposal/close', async (req, res, next) => {
+  const { threadId, number, status } = req.body
+
+  try {
+    if (!['resolved', 'hidden'].includes(status.toLowerCase())) {
+      throw new Error(`Cannot set unknown status '${status}'`)
+    }
+
+    await api.closePR({ number })
+
+    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
+
+    const result = await userApolloClient.mutate({
+      mutation: gql`
+      mutation ($threadId: Int!, $newStatus: Status!) {
+        changeThreadStatus (input: {
+          threadId: $threadId,
+          newStatus: $newStatus
+        }) {
+          thread {
+            id
+          }
+        }
+      }`,
+      variables: {
+        threadId: parseInt(threadId, 10),
+        newStatus: status.toUpperCase()
       }
     })
 

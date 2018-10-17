@@ -286,7 +286,7 @@ export default {
 
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        const result = await axios.post('/api/proposals/new', body, headers)
+        const result = await axios.post('/api/proposal/new', body, headers)
 
         const id = _get(result, 'data.createThread.thread.id')
         if (id) {
