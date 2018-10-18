@@ -20,7 +20,8 @@ module.exports = class GitHubAPIv3 {
     this.owner = owner
     this.repo = repo
     this.committer = committer
-    this.path = files.ontology
+    this.ontologyPath = files.ontology
+    this.structurePath = files.structure
   }
 
   async createBranch () {
@@ -45,7 +46,7 @@ module.exports = class GitHubAPIv3 {
     }
   }
 
-  async getFile ({ path, branch } = { path: this.path, branch: this.branch }) {
+  async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
     const owner = this.owner
     const repo = this.repo
     const ref = `heads/${this.branch}`
@@ -54,21 +55,22 @@ module.exports = class GitHubAPIv3 {
     return content
   }
 
-  async updateFile ({ message, content, branch, author } = {}) {
+  async updateFile ({ message, content, branch, author, structure = false }) {
     const owner = this.owner
     const repo = this.repo
     const committer = this.committer
+    const path = structure ? this.structurePath : this.ontologyPath
 
     const sha = await getFileSHA({
-      path: this.path,
       ref: `refs/heads/${branch}`,
+      path,
       owner,
       repo
     })
 
     const result = await octokit.repos.updateFile({
-      path: this.path,
       content: Buffer.from(content).toString('base64'),
+      path,
       owner,
       repo,
       message,

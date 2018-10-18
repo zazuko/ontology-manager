@@ -136,14 +136,15 @@ router.post('/link', async (req, res, next) => {
 })
 
 router.post('/proposal/new', async (req, res, next) => {
-  const { title, body, message, content, iri } = req.body
+  const { title, body, message, ontologyContent, structureContent, iri } = req.body
 
   const author = { name: req.user.name, email: req.user.email }
 
   try {
     const { name: branch } = await api.createBranch()
 
-    await api.updateFile({ message, content, branch, author })
+    await api.updateFile({ message, content: ontologyContent, branch, author })
+    await api.updateFile({ message, content: structureContent, branch, author, structure: true })
 
     const { number } = await api.createPR({ title, body, branch })
 

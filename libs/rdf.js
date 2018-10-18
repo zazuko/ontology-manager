@@ -16,7 +16,9 @@ const stringIRI = {
   comment: 'http://www.w3.org/2000/01/rdf-schema#comment',
 
   domain: 'http://schema.org/domainIncludes',
-  range: 'http://schema.org/rangeIncludes'
+  range: 'http://schema.org/rangeIncludes',
+
+  hasPart: 'http://schema.org/hasPart'
 }
 
 export const termIRI = Object
@@ -48,6 +50,7 @@ export class Property {
     this.longDescription = ''  // comment
     this.type = ''             // range
     this.domains = []          // domainIncludes
+    this.parentStructureIRI = ''
   }
 
   validate () {
@@ -173,6 +176,27 @@ export class Cls {
   toNT (_dataset) {
     const serializerNtriples = new SerializerNtriples()
     const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).addAll(this.quads)
+    const stream = dataset.toStream()
+    const output = serializerNtriples.import(stream)
+
+    return new Promise((resolve) => {
+      const outputLines = []
+      output.on('data', (ntriples) => {
+        outputLines.push(ntriples.toString())
+      })
+      output.on('end', () => {
+        resolve(outputLines.join(''))
+      })
+    })
+  }
+
+  toStructureNT (_dataset) {
+    const parentIRI = rdf.namedNode(this.parentStructureIRI)
+    const iri = rdf.namedNode(this.baseIRI + this.name)
+    const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
+
+    const serializerNtriples = new SerializerNtriples()
+    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).add(quad)
     const stream = dataset.toStream()
     const output = serializerNtriples.import(stream)
 
