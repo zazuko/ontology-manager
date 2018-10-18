@@ -16,8 +16,10 @@ const onlyStatus200 = (req, res) => res.statusCode === 200
 const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
 const anonApolloClient = apolloClientFactory()
-const getAuthenticatedApolloClient = (token) => apolloClientFactory({
-  getAuth: () => token,
+const getApolloClientForUser = (req) => apolloClientFactory({
+  user: req.user.person_id,
+  token: req.get('Authorization'),
+  getAuth: () => req.get('Authorization'),
   ssr: true
 })
 // const githubApolloClient = apolloClientFactory({
@@ -145,7 +147,7 @@ router.post('/proposal/new', async (req, res, next) => {
 
     const { number } = await api.createPR({ title, body, branch })
 
-    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
+    const userApolloClient = getApolloClientForUser(req)
 
     const result = await userApolloClient.mutate({
       mutation: gql`
@@ -191,7 +193,7 @@ router.post('/proposal/merge', async (req, res, next) => {
       throw new Error(`Merge failed: ${message}`)
     }
 
-    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
+    const userApolloClient = getApolloClientForUser(req)
 
     const result = await userApolloClient.mutate({
       mutation: gql`
@@ -228,7 +230,7 @@ router.post('/proposal/close', async (req, res, next) => {
 
     await api.closePR({ number })
 
-    const userApolloClient = getAuthenticatedApolloClient(_.get(req, 'headers.authorization'))
+    const userApolloClient = getApolloClientForUser(req)
 
     const result = await userApolloClient.mutate({
       mutation: gql`
@@ -256,7 +258,7 @@ router.post('/proposal/close', async (req, res, next) => {
 
 // TODO: factor these out
 function getToken (req) {
-  if (!_.get(req, 'headers.authorization')) return
+  if (!req.get('Authorization')) return
 
   const parts = req.headers.authorization.split(' ')
   if (parts.length === 2 && parts[0] === 'Bearer') {
