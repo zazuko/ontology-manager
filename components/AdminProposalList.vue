@@ -76,7 +76,7 @@ export default {
         const result = await axios.post('/api/proposal/merge', body, headers)
         console.log(result)
         this.$emit('updated', proposal.id)
-        this.$toast.success(`Proposal approved!`, toastClose)
+        this.$toast.success('Proposal approved!', toastClose)
       } catch (err) {
         console.error(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
@@ -92,7 +92,7 @@ export default {
       try {
         await axios.post('/api/proposal/close', body, headers)
         this.$emit('updated', proposal.id)
-        this.$toast.success(`Proposal rejected!`, toastClose)
+        this.$toast.success('Proposal rejected!', toastClose)
       } catch (err) {
         console.error(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)

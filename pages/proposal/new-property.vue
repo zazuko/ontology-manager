@@ -97,6 +97,17 @@
                   :search-function="searchFunction"
                   label="Applies to the Following Classes"
                   @selectionChanged="addDomain">
+                  <div
+                    v-if="typeahead.inputString && validClassname(typeahead.inputString)"
+                    slot="custom-options"
+                    slot-scope="typeahead"
+                    class="dropdown-item">
+                    Create <a
+                      title="Add as a new class"
+                      @click.prevent="createClass(typeahead.inputString)">
+                      class "{{ typeahead.inputString }}" ?
+                    </a>
+                  </div>
                   <nav
                     slot="selected-list"
                     class="panel">
@@ -297,6 +308,9 @@ export default {
       } catch (err) {
         console.error(err)
       }
+    },
+    validClassname (name) {
+      return /^([A-Z])/.test(name)
     }
   },
   validate ({ query }) {

@@ -24,8 +24,7 @@ app.use(
   jwt({ secret: process.env.POSTGRAPHILE_TOKEN_SECRET })
     .unless({ path: unprotectedRoutes }))
 
-app.use(bodyParser({limit: '2mb'}))
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '2mb' }))
 app.use('/', apiMiddleware())
 
 module.exports = { path: '/api', handler: app }
