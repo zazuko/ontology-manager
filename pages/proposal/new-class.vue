@@ -157,7 +157,8 @@
           <div class="field">
             <label class="label">NTriples preview</label>
             <div class="control">
-              <pre>{{ nt }}</pre>
+              <pre>{{ nt1 }}</pre>
+              <pre>{{ nt2 }}</pre>
             </div>
           </div>
         </div>
@@ -206,25 +207,31 @@ export default {
       cls: new Cls(),
       searchFunction: () => ([]),
       domains: [],
-      contentNT: '',
+      contentNT1: '',
+      contentNT2: '',
       motivation: '',
       renderTypeahead: process.client,
       error: 'Some required fields are empty!'
     }
   },
   computed: {
-    nt () {
+    nt1 () {
       this.setNT()
-      return this.contentNT
+      return this.contentNT1
+    },
+    nt2 () {
+      return this.contentNT2
     }
   },
   methods: {
     async setNT () {
+      this.cls.parentStructureIRI = this.iri
       try {
-        this.contentNT = await this.cls.toNT()
+        this.contentNT1 = await this.cls.toNT()
+        this.contentNT2 = await this.cls.toStructureNT()
         this.error = ''
       } catch (err) {
-        this.contentNT = err.message
+        this.contentNT1 = err.message
         this.error = err.message
       }
     },
@@ -239,13 +246,16 @@ export default {
       this.cls.domains.splice(index, 1)
     },
     async createProposal () {
-      const fileContent = await this.cls.toNT(window.ontology)
+      const ontologyContent = await this.cls.toNT(window.ontology)
+      const structureContent = await this.cls.toStructureNT(window.structure)
+
       const body = {
         title: `New class '${this.cls.name}'`,
         message: `add class '${this.cls.name}'`,
         body: this.motivation,
         iri: this.iri,
-        content: fileContent
+        ontologyContent,
+        structureContent
       }
 
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
