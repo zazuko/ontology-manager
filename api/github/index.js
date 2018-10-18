@@ -12,7 +12,8 @@ const router = Router()
 module.exports = router
 
 const api = new GitHubAPIv3(ontology.github)
-const cache = apicache.middleware
+const onlyStatus200 = (req, res) => res.statusCode === 200
+const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
 const anonApolloClient = apolloClientFactory()
 const getAuthenticatedApolloClient = (token) => apolloClientFactory({
@@ -33,16 +34,21 @@ router.get('/', (req, res, next) => {
   res.send('Ontology Editor currently using GitHub')
 })
 
-router.get('/blob/:branch/:file', cache('5 minutes'), (req, res, next) => {
+router.get('/blob/:branch/:file', cache('5 minutes'), async (req, res, next) => {
   const path = req.params.file
   const branch = req.params.branch
-  const content = api.getFile({ path, branch })
+  const content = await api.getFile({ path, branch })
+  res.type('application/n-triples')
+
   res.send(content)
 })
 
-router.get('/blob/:file', cache('5 minutes'), (req, res, next) => {
+router.get('/blob/:file', cache('5 minutes'), async (req, res, next) => {
+  req.apicacheGroup = 'files'
   const path = req.params.file
-  const content = api.getFile({ path })
+  const content = await api.getFile({ path })
+  res.type('application/n-triples')
+
   res.send(content)
 })
 
@@ -175,6 +181,7 @@ router.post('/proposal/new', async (req, res, next) => {
 })
 
 router.post('/proposal/merge', async (req, res, next) => {
+  apicache.clear('files')
   const { threadId, number } = req.body
 
   try {
@@ -211,6 +218,7 @@ router.post('/proposal/merge', async (req, res, next) => {
 })
 
 router.post('/proposal/close', async (req, res, next) => {
+  apicache.clear('files')
   const { threadId, number, status } = req.body
 
   try {
