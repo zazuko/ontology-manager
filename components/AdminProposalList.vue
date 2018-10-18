@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios'
+import { toastClose } from '@/libs/utils'
 
 export default {
   name: 'AdminDiscussionList',
@@ -73,13 +74,15 @@ export default {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
         const result = await axios.post('/api/proposal/merge', body, headers)
-        this.$emit('updated', proposal.id)
         console.log(result)
+        this.$emit('updated', proposal.id)
+        this.$toast.success(`Proposal approved!`, toastClose)
       } catch (err) {
         console.error(err)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     },
-    async reject (proposal, status = 'hidden') {
+    async reject (proposal, status = 'RESOLVED') {
       const body = {
         threadId: proposal.id,
         number: proposal.externalId,
@@ -87,11 +90,12 @@ export default {
       }
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        const result = await axios.post('/api/proposal/close', body, headers)
+        await axios.post('/api/proposal/close', body, headers)
         this.$emit('updated', proposal.id)
-        console.log(result)
+        this.$toast.success(`Proposal rejected!`, toastClose)
       } catch (err) {
         console.error(err)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     }
   }
