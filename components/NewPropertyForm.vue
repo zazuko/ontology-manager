@@ -181,27 +181,12 @@ export default {
       currentLabel: '',
       searchFunction: () => ([]),
       domains: [],
-      contentNT: '',
-      motivation: '',
       renderTypeahead: process.client
     }
   },
-  computed: {
-    nt () {
-      this.setNT()
-      return this.contentNT
-    }
-  },
   methods: {
-    async setNT () {
-      try {
-        this.contentNT = await this.property.toNT()
-      } catch (err) {
-        this.contentNT = err.message
-      }
-    },
     addDomain (domain) {
-      const domainIRI = domain.domain.subject.value
+      const domainIRI = domain.key
       if (!this.property.domains.find(({ value }) => value === domainIRI) && this.iri !== domainIRI) {
         this.domains.push(domain)
         this.property.domains.push(domain.domain.subject)

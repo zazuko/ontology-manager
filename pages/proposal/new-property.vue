@@ -112,6 +112,7 @@ export default {
   data () {
     return {
       property: new Property(),
+      motivation: ''
     }
   },
   computed: {
