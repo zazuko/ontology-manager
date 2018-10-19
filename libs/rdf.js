@@ -256,6 +256,7 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
         if (!match) {
           return acc
         }
+        match.key = elem.subject.value
         acc.push(match)
         return acc
       }, [])
