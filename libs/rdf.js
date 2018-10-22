@@ -1,10 +1,6 @@
-import NamedNode from '@rdfjs/data-model/lib/named-node'
 import Literal from '@rdfjs/data-model/lib/literal'
 import rdf from 'rdf-ext'
 import { compareTwoStrings } from 'string-similarity'
-
-import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { propertyBaseUrl, classBaseUrl } from '@/trifid/trifid.config.json'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -40,177 +36,6 @@ const xsdTypes = [
   ['http://www.w3.org/2001/XMLSchema#string', 'String'],
   ['http://www.w3.org/2001/XMLSchema#time', 'Time']
 ].map(createXsdType)
-
-export class Property {
-  constructor () {
-    this.baseIRI = propertyBaseUrl
-    this.motivation = ''
-    this.name = ''             // IRI
-    this.shortDescription = '' // label
-    this.longDescription = ''  // comment
-    this.type = ''             // range
-    this.domains = []          // domainIncludes
-    this.parentStructureIRI = ''
-  }
-
-  validate () {
-    if (!this.name) {
-      throw new Error('Property `name` missing')
-    }
-
-    if (!/^([a-z])/.test(this.name)) {
-      throw new Error("Property 'name' should start with a lowercase letter")
-    }
-
-    if (!this.shortDescription) {
-      throw new Error("Property 'shortDescription' missing")
-    }
-
-    if (this.type) {
-      if (!(this.type instanceof NamedNode)) {
-        throw new Error(`Type '${this.type}' should be a rdf.namedNode`)
-      }
-    }
-
-    if (this.domains.length) {
-      this.domains.forEach((domain) => {
-        if (!(domain instanceof NamedNode)) {
-          throw new Error(`Class '${domain}' should be a rdf.namedNode`)
-        }
-      })
-    }
-  }
-
-  get quads () {
-    this.validate()
-    const iri = rdf.namedNode(this.baseIRI + this.name)
-    const quads = [
-      rdf.quad(iri, termIRI.a, termIRI.Property),
-      rdf.quad(iri, termIRI.label, rdf.literal(this.shortDescription)),
-      rdf.quad(iri, termIRI.comment, rdf.literal(this.longDescription))
-    ]
-
-    if (this.type) {
-      quads.push(rdf.quad(iri, termIRI.range, this.type))
-    }
-
-    if (this.domains.length) {
-      quads.push(
-        ...this.domains
-          .map((domain) => rdf.quad(iri, termIRI.domain, domain))
-      )
-    }
-
-    return quads
-  }
-
-  toNT (_dataset) {
-    const serializerNtriples = new SerializerNtriples()
-    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).addAll(this.quads)
-    const stream = dataset.toStream()
-    const output = serializerNtriples.import(stream)
-
-    return new Promise((resolve) => {
-      const outputLines = []
-      output.on('data', (ntriples) => {
-        outputLines.push(ntriples.toString())
-      })
-      output.on('end', () => {
-        resolve(outputLines.join(''))
-      })
-    })
-  }
-}
-
-export class Cls {
-  constructor () {
-    this.baseIRI = classBaseUrl
-    this.motivation = ''
-    this.name = ''             // IRI
-    this.shortDescription = '' // label
-    this.longDescription = ''  // comment
-    this.domains = []          // domainIncludes
-  }
-
-  validate () {
-    if (!this.name) {
-      throw new Error('Property `name` missing')
-    }
-
-    if (!/^([A-Z])/.test(this.name)) {
-      throw new Error("Property 'name' should start with an uppercase letter")
-    }
-
-    if (!this.shortDescription) {
-      throw new Error("Property 'shortDescription' missing")
-    }
-
-    if (this.domains.length) {
-      this.domains.forEach((domain) => {
-        if (!(domain instanceof NamedNode)) {
-          throw new Error(`Class '${domain}' should be a rdf.namedNode`)
-        }
-      })
-    }
-  }
-
-  get quads () {
-    this.validate()
-    const iri = rdf.namedNode(this.baseIRI + this.name)
-    const quads = [
-      rdf.quad(iri, termIRI.a, termIRI.Property),
-      rdf.quad(iri, termIRI.label, rdf.literal(this.shortDescription)),
-      rdf.quad(iri, termIRI.comment, rdf.literal(this.longDescription))
-    ]
-
-    if (this.domains.length) {
-      quads.push(
-        ...this.domains
-          .map((domain) => rdf.quad(domain, termIRI.domain, iri))
-      )
-    }
-
-    return quads
-  }
-
-  toNT (_dataset) {
-    const serializerNtriples = new SerializerNtriples()
-    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).addAll(this.quads)
-    const stream = dataset.toStream()
-    const output = serializerNtriples.import(stream)
-
-    return new Promise((resolve) => {
-      const outputLines = []
-      output.on('data', (ntriples) => {
-        outputLines.push(ntriples.toString())
-      })
-      output.on('end', () => {
-        resolve(outputLines.join(''))
-      })
-    })
-  }
-
-  toStructureNT (_dataset) {
-    const parentIRI = rdf.namedNode(this.parentStructureIRI)
-    const iri = rdf.namedNode(this.baseIRI + this.name)
-    const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
-
-    const serializerNtriples = new SerializerNtriples()
-    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).add(quad)
-    const stream = dataset.toStream()
-    const output = serializerNtriples.import(stream)
-
-    return new Promise((resolve) => {
-      const outputLines = []
-      output.on('data', (ntriples) => {
-        outputLines.push(ntriples.toString())
-      })
-      output.on('end', () => {
-        resolve(outputLines.join(''))
-      })
-    })
-  }
-}
 
 function toObject (domain, dataset) {
   let label = dataset.match(domain.subject, termIRI.label).toArray()
@@ -357,4 +182,17 @@ export function labelQuadForIRI (iri, dataset) {
     return matches[0]
   }
   return {}
+}
+
+function iri (o) {
+  return o.iri ? o.iri().value : o.toString()
+}
+export function term (o) {
+  if (!o) {
+    return undefined
+  }
+
+  const oIri = iri(o)
+
+  return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
 }
