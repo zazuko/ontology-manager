@@ -13894,6 +13894,11 @@ vue@^2.5.17:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
   integrity sha512-mFbcWoDIJi0w0Za4emyLiW72Jae0yjANHbCVquMKijcavBGypqlF7zHRgMa5k4sesdv7hv2rB4JPdZfR+TPfhQ==
 
+vuex-map-fields@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/vuex-map-fields/-/vuex-map-fields-1.3.1.tgz#2a045db8baf2e34823d3f896d91266691c21b3d3"
+  integrity sha512-pmp3585SF223ogMHZ8qMVdOWIxxOEB2Eg7JZO0MqWVxcKCli2o+aRew6oEcFO4zwekBmq07cez4/Ud0nhiQZxg==
+
 vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"

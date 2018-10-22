@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="section">
+    <!--<section class="section">
 
       <div class="container">
 
@@ -89,98 +89,72 @@
       </div>
 
     </section>
+  -->
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import _get from 'lodash/get'
-import { datasetsSetup } from '@/libs/utils'
-import { Cls } from '@/libs/rdf'
-import NewClassForm from '@/components/NewClassForm'
-
-export default {
-  async asyncData ({ query }) {
-    return {
-      iri: query.iri
-    }
-  },
-  middleware: 'authenticated',
-  components: {
-    NewClassForm
-  },
-  async created () {
-    await datasetsSetup(this.$store)
-  },
-  mounted () {
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        clearInterval(i)
-
-        this.ontology = window.ontology
-      }
-    })
-  },
-  data () {
-    return {
-      cls: new Cls(),
-      contentNT1: '',
-      contentNT2: '',
-      motivation: '',
-      error: 'Some required fields are empty!'
-    }
-  },
-  computed: {
-    nt1 () {
-      this.setNT()
-      return this.contentNT1
-    },
-    nt2 () {
-      return this.contentNT2
-    }
-  },
-  methods: {
-    async setNT () {
-      this.cls.parentStructureIRI = this.iri
-      try {
-        this.contentNT1 = await this.cls.toNT()
-        this.contentNT2 = await this.cls.toStructureNT()
-        this.error = ''
-      } catch (err) {
-        this.contentNT1 = err.message
-        this.error = err.message
-      }
-    },
-    async createProposal () {
-      const ontologyContent = await this.cls.toNT(window.ontology)
-      const structureContent = await this.cls.toStructureNT(window.structure)
-
-      const body = {
-        title: `New class '${this.cls.name}'`,
-        message: `add class '${this.cls.name}'`,
-        body: this.motivation,
-        iri: this.iri,
-        ontologyContent,
-        structureContent
-      }
-
-      const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
-      try {
-        const result = await axios.post('/api/proposal/new', body, headers)
-
-        const id = _get(result, 'data.createThread.thread.id')
-        if (id) {
-          this.$router.push({ name: 'proposal-id', params: { id } })
-        } else {
-          console.error('Failed to redirect', result)
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-  },
-  validate ({ query }) {
-    return !!query.iri
-  }
-}
+// import axios from 'axios'
+// import _get from 'lodash/get'
+// import { datasetsSetup } from '@/libs/utils'
+// import { Cls } from '@/libs/rdf'
+// import NewClassForm from '@/components/NewClassForm'
+//
+// export default {
+//   async asyncData ({ query }) {
+//     return {
+//       iri: query.iri
+//     }
+//   },
+//   middleware: 'authenticated',
+//   components: {
+//     NewClassForm
+//   },
+//   async created () {
+//     await datasetsSetup(this.$store)
+//   },
+//   mounted () {
+//     let i = setInterval(() => {
+//       if (typeof window !== 'undefined') {
+//         clearInterval(i)
+//
+//         this.ontology = window.ontology
+//       }
+//     })
+//   },
+//   data () {
+//     return {
+//       cls: new Cls(),
+//       contentNT1: '',
+//       contentNT2: '',
+//       motivation: '',
+//       error: 'Some required fields are empty!'
+//     }
+//   },
+//   computed: {
+//     nt1 () {
+//       this.setNT()
+//       return this.contentNT1
+//     },
+//     nt2 () {
+//       return this.contentNT2
+//     }
+//   },
+//   methods: {
+//     async setNT () {
+//       this.cls.parentStructureIRI = this.iri
+//       try {
+//         this.contentNT1 = await this.cls.toNT()
+//         this.contentNT2 = await this.cls.toStructureNT()
+//         this.error = ''
+//       } catch (err) {
+//         this.contentNT1 = err.message
+//         this.error = err.message
+//       }
+//     }
+//   },
+//   validate ({ query }) {
+//     return !!query.iri
+//   }
+// }
 </script>
