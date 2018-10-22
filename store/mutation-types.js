@@ -1,0 +1,11 @@
+export const ADD_DOMAIN = 'ADD_DOMAIN'
+export const DELETE_DOMAIN = 'DELETE_DOMAIN'
+
+export const ADD_RANGE = 'ADD_RANGE'
+export const DELETE_RANGE = 'DELETE_RANGE'
+
+export const NEW_PROPERTY_IN_CLASS = 'NEW_PROPERTY_IN_CLASS'
+export const NEW_CLASS_IN_PROPERTY = 'NEW_CLASS_IN_PROPERTY'
+
+export const ERROR = 'ERROR'
+export const SUCCESS = 'SUCCESS'

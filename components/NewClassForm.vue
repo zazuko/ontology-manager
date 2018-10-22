@@ -57,7 +57,19 @@
             <typeahead
               :search-function="searchFunction"
               label="Has the Following Properties"
-              @selectionChanged="addDomain" />
+              @selectionChanged="addDomain">
+              <div
+                v-if="typeahead.inputString && couldCreateProperty(typeahead.inputString)"
+                slot="custom-options"
+                slot-scope="typeahead"
+                class="dropdown-item">
+                Create <a
+                  title="Add as a new property"
+                  @click.prevent="createProperty(typeahead.inputString)">
+                  property "{{ typeahead.inputString }}" ?
+                </a>
+              </div>
+            </typeahead>
           </div>
           <div v-else />
         </div>
@@ -65,9 +77,9 @@
       </div>
 
       <properties-table
-        v-if="domains.length"
+        v-if="_domains.length"
         slot="selected-list"
-        :properties="domains"
+        :properties="_domains"
         @delete="removeDomain" />
 
     </div>
@@ -103,6 +115,16 @@ export default {
     cls: {
       type: Object,
       required: true
+    },
+    domainPrefill: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    ontology: {
+      type: [Object, Boolean],
+      required: false,
+      default: () => false
     }
   },
   components: {
@@ -114,8 +136,8 @@ export default {
       if (typeof window !== 'undefined') {
         clearInterval(i)
 
-        this.ontology = window.ontology
-        this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
+        this._ontology = this.ontology || window.ontology
+        this.searchFunction = domainsSearchFactory(this._ontology, 'Property', false)
       }
     })
   },
@@ -126,6 +148,14 @@ export default {
       domains: [],
       motivation: '',
       renderTypeahead: process.client
+    }
+  },
+  computed: {
+    _domains () {
+      if (!this.domainPrefill) {
+        return this.domains
+      }
+      return this.domainPrefill.concat(this.domains)
     }
   },
   methods: {
@@ -152,16 +182,10 @@ export default {
     },
     invalidClassname (name) {
       return !/^([A-Z])/.test(name)
+    },
+    couldCreateProperty (name) {
+      return /^([a-z])/.test(name)
     }
-    // couldCreateClass (name) {
-    //   if (this.cls.domains.includes(name)) {
-    //     return false
-    //   }
-    //   if (this.iri === name) {
-    //     return false
-    //   }
-    //   return /^([A-Z])/.test(name)
-    // }
   }
 }
 </script>
