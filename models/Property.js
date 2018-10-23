@@ -65,14 +65,14 @@ function toDataset (property) {
   if (property.ranges.length) {
     quads.push(
       ...property.ranges
-        .map((range) => rdf.quad(iri, termIRI.range, range))
+        .map(({ subject }) => rdf.quad(iri, termIRI.range, subject))
     )
   }
 
   if (property.domains.length) {
     quads.push(
       ...property.domains
-        .map((domain) => rdf.quad(iri, termIRI.domain, domain))
+        .map(({ subject }) => rdf.quad(iri, termIRI.domain, subject))
     )
   }
 

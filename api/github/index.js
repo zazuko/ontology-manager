@@ -132,6 +132,7 @@ router.post('/link', async (req, res, next) => {
       console.error(err)
     }
   }
+
   res.status(500).send()
 })
 
@@ -139,12 +140,15 @@ router.post('/proposal/new', async (req, res, next) => {
   const { title, body, message, ontologyContent, structureContent, iri } = req.body
 
   const author = { name: req.user.name, email: req.user.email }
+  console.log('c', (ontologyContent || '').length)
 
   try {
     const { name: branch } = await api.createBranch()
 
     await api.updateFile({ message, content: ontologyContent, branch, author })
-    await api.updateFile({ message, content: structureContent, branch, author, structure: true })
+    if (structureContent) {
+      await api.updateFile({ message, content: structureContent, branch, author, structure: true })
+    }
 
     const { number } = await api.createPR({ title, body, branch })
 
@@ -179,6 +183,7 @@ router.post('/proposal/new', async (req, res, next) => {
 
     res.json(result.data)
   } catch (err) {
+    console.error(err)
     res.status(500).json(err)
   }
 })
@@ -216,6 +221,7 @@ router.post('/proposal/merge', async (req, res, next) => {
 
     res.json(result.data)
   } catch (err) {
+    console.error(err)
     res.status(500).json(err)
   }
 })
@@ -253,6 +259,7 @@ router.post('/proposal/close', async (req, res, next) => {
 
     res.json(result.data)
   } catch (err) {
+    console.error(err)
     res.status(500).json(err)
   }
 })
@@ -271,6 +278,7 @@ function getToken (req) {
 async function checkToken (req, res) {
   const bearerToken = getToken(req)
   if (!bearerToken) {
+    console.error(err)
     res.status(500).send({ message: 'Missing Bearer token!' })
     return false
   }
@@ -282,6 +290,7 @@ async function checkToken (req, res) {
   }
 
   if (!auth.username || !auth.password) {
+    console.error(err)
     res.status(500).send({ message: 'Missing env vars!' })
     return false
   }
@@ -299,6 +308,7 @@ async function checkToken (req, res) {
     // check that the client gave us the correct token
     if (!bearerToken || bearerToken !== serverToken) {
       const err = new Error(`Bearer token ${bearerToken} differs from the token GitHub gave us`)
+      console.error(err)
       res.status(500).send({ message: err.message })
       return false
     }

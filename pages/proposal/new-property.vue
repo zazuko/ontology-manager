@@ -45,16 +45,19 @@
         <new-property-form
           :iri="iri">
 
+          <p v-show="error">{{ error }}</p>
           <div class="field is-grouped">
             <p class="control">
               <button
                 class="button is-primary"
-                @click="submit">
+                @click.prevent="sendProposal">
                 Submit Proposal
               </button>
             </p>
             <p class="control">
-              <button class="button">
+              <button
+                class="button"
+                @click.prevent="clear">
                 Cancel
               </button>
             </p>
@@ -69,14 +72,15 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
+import { createNamespacedHelpers, mapGetters } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'
-import { NEW, SUBMIT } from '@/store/action-types'
+import { SUBMIT, NEW } from '@/store/action-types'
 
 const {
-  mapActions: mapPropertyActions
+  mapActions: propertyActions,
+  mapGetters: propertyGetters
 } = createNamespacedHelpers('prop')
 
 export default {
@@ -90,19 +94,30 @@ export default {
     NewPropertyForm
   },
   async created () {
-    await this.new()
     await datasetsSetup(this.$store)
   },
   computed: {
     prop () {
       return this.$deepModel('prop.prop')
     },
+    ...propertyGetters(['success', 'error'])
+  },
+  watch: {
+    success () {
+      if (!this.error && this.success) {
+        this.$router.push({ name: 'proposal-id', params: { id: this.success } })
+      }
+    }
   },
   methods: {
-    ...mapPropertyActions({
-      new: NEW,
+    ...propertyActions({
+      clear: NEW,
       submit: SUBMIT
-    })
+    }),
+    sendProposal () {
+      const token = this.$apolloHelpers.getToken()
+      this.submit(token)
+    }
   },
   validate ({ query }) {
     return !!query.iri
