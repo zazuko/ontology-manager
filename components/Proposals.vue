@@ -9,11 +9,18 @@
         </div>
         <div class="navbar-end">
           <span class="navbar-item">
-            <nuxt-link
+            <!--<nuxt-link
               v-if="!isClass"
               :to="{ name: 'proposal-new-class', query: { iri: iri } }"
               class="button is-primary is-inverted">
               Request New Class
+            </nuxt-link>-->
+            <nuxt-link
+              v-if="!isClass"
+              to="#"
+              class="button is-primary is-inverted">
+              Request New Class
+              (<small>not implemented</small>)
             </nuxt-link>
           </span>
           <span
