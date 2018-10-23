@@ -8,11 +8,11 @@
             <label class="label">Property Name</label>
             <div class="control">
               <input
-                :class="{'is-danger': !name}"
+                :class="{'is-danger': !prop['name']}"
                 class="input"
                 autocomplete="new-password"
                 type="text"
-                v-model="name">
+                v-model="prop['name']">
             </div>
           </div>
         </div>
@@ -27,8 +27,8 @@
             <div class="control">
               <textarea
                 class="textarea"
-                :class="{'is-danger': !label}"
-                v-model="label" />
+                :class="{'is-danger': !prop['label']}"
+                v-model="prop['label']" />
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="control">
               <textarea
                 class="textarea"
-                v-model="comment" />
+                v-model="prop['comment']" />
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@
                 slot="selected-list"
                 class="panel">
                 <a
-                  v-for="(domain, index) in domains"
+                  v-for="(domain, index) in prop['domains']"
                   :key="index"
                   class:="{ 'is-active': index > 0 }"
                   class="panel-block">
@@ -107,7 +107,7 @@
                 slot="selected-list"
                 class="panel">
                 <a
-                  v-for="(range, index) in ranges"
+                  v-for="(range, index) in prop['ranges']"
                   :key="index"
                   class="panel-block is-active">
                   <span
@@ -127,7 +127,7 @@
     </div>
 
     <new-class-form
-      v-for="(newClass, index) in newClasses"
+      v-for="(newClass, index) in prop['classChildren']"
       :key="index"
       :iri="iri"
       :cls="newClass.cls"
@@ -151,33 +151,12 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-import { createHelpers } from 'vuex-map-fields'
 import rdf from 'rdf-ext'
-
 import { domainsSearchFactory, labelQuadForIRI, term } from '@/libs/rdf'
 import { datasetsSetup } from '@/libs/utils'
 import { Class } from '@/models/Class'
 import Typeahead from '@/components/Typeahead'
 import NewClassForm from '@/components/NewClassForm'
-import { ADD_DOMAIN, DELETE_DOMAIN, ADD_RANGE, DELETE_RANGE } from '@/store/mutation-types'
-import {
-  mapDomainsMultiRowFields,
-  mapRangesMultiRowFields
-} from '@/store/property'
-
-const { mapFields: mapPropertyFields } = createHelpers({
-  getterType: 'property/getField',
-  mutationType: 'property/updateField'
-})
-
-const {
-  mapMutations: mapDomainMutations
-} = createNamespacedHelpers('domains')
-
-const {
-  mapMutations: mapRangeMutations
-} = createNamespacedHelpers('ranges')
 
 export default {
   name: 'NewPropertyForm',
@@ -206,9 +185,9 @@ export default {
 
         this._ontology = this.ontology || window.ontology
         this.searchFunction = domainsSearchFactory(this._ontology, 'Class', true)
-        if (this.domains.length === 0) {
+        if (this.prop['domains'].length === 0) {
           const currentLabelQuad = labelQuadForIRI(this.iri, this._ontology)
-          this.addDomain(currentLabelQuad)
+          this.$vuexPush('domains', currentLabelQuad)
         }
       }
     })
@@ -221,49 +200,49 @@ export default {
     }
   },
   computed: {
-    ...mapPropertyFields(['property.name', 'property.comment', 'property.label']),
-    ...mapDomainsMultiRowFields({ domains: 'domains' }),
-    ...mapRangesMultiRowFields({ ranges: 'ranges' }),
+    prop () {
+      return this.$deepModel('prop.prop')
+    },
     mergedOntology () {
       return this.dataset.clone().merge(this._ontology)
     }
   },
   methods: {
+    $vuexPush (path, ...values) {
+      const currentValues = this.prop[path]
+      this.$vuexSet(`prop.prop.${path}`, currentValues.concat(values))
+    },
+    $vuexDeleteAtIndex (path, index) {
+      const currentValues = this.prop[path]
+      this.$vuexSet(`prop.prop.${path}`, currentValues.filter((nothing, i) => i !== index))
+    },
     term,
-    ...mapDomainMutations({
-      addDomain: ADD_DOMAIN,
-      deleteDomain: DELETE_DOMAIN
-    }),
-    ...mapRangeMutations({
-      addRange: ADD_RANGE,
-      deleteRange: DELETE_RANGE
-    }),
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => this.term(subject) === this.term(domain.subject)
-      if (this.domains.find(isSelected) || this.iri === this.term(domain.subject)) {
+      if (this.prop['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
         return
       }
-      this.addDomain(labelQuadForIRI(searchResult.key, this._ontology))
+      this.$vuexPush('domains', labelQuadForIRI(searchResult.key, this._ontology))
     },
     unselectDomain (index) {
-      this.deleteDomain(index)
+      this.$vuexDeleteAtIndex('domains', index)
     },
     selectRange (searchResult) {
       const range = searchResult.domain
       // don't add if already in there
       const isSelected = ({ subject }) => this.term(subject) === this.term(range.subject)
-      if (this.ranges.find(isSelected)) {
+      if (this.prop['ranges'].find(isSelected)) {
         return
       }
-      this.addRange(range)
+      this.$vuexPush('ranges', range)
     },
     unselectRange (index) {
-      this.deleteRange(index)
+      this.$vuexDeleteAtIndex('ranges', index)
     },
     canCreateDomain (name) {
-      if (this.domains.includes(name)) {
+      if (this.prop['domains'].includes(name)) {
         return false
       }
       if (this.iri === name) {

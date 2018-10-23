@@ -6,8 +6,8 @@
 
         <h1 class="title">
           Property Request<span
-            v-show="name">:
-            "{{ name }}"
+            v-show="prop.name">:
+            "{{ prop.name }}"
           </span>
         </h1>
         <h2 class="subtitle">
@@ -26,7 +26,7 @@
               <div class="column">
                 <div class="control">
                   <textarea
-                    v-model="motivation"
+                    v-model="prop.motivation"
                     class="textarea"
                     placeholder="" />
                 </div>
@@ -70,7 +70,6 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { createHelpers } from 'vuex-map-fields'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'
@@ -78,12 +77,7 @@ import { NEW, SUBMIT } from '@/store/action-types'
 
 const {
   mapActions: mapPropertyActions
-} = createNamespacedHelpers('property')
-
-const { mapFields: mapPropertyFields } = createHelpers({
-  getterType: 'property/getField',
-  mutationType: 'property/updateField'
-})
+} = createNamespacedHelpers('prop')
 
 export default {
   async asyncData ({ query }) {
@@ -100,7 +94,9 @@ export default {
     await datasetsSetup(this.$store)
   },
   computed: {
-    ...mapPropertyFields(['property.name', 'property.motivation']),
+    prop () {
+      return this.$deepModel('prop.prop')
+    },
   },
   methods: {
     ...mapPropertyActions({
