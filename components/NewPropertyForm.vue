@@ -164,11 +164,6 @@ export default {
     iri: {
       type: String,
       required: true
-    },
-    ontology: {
-      type: [Object, Boolean],
-      required: false,
-      default: () => false
     }
   },
   components: {
@@ -183,10 +178,11 @@ export default {
       if (typeof window !== 'undefined') {
         clearInterval(i)
 
-        this._ontology = this.ontology || window.ontology
-        this.searchFunction = domainsSearchFactory(this._ontology, 'Class', true)
+        this.ontology = window.ontology
+        this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
+        this.$vuexSet('prop.prop.parentStructureIRI', this.iri)
         if (this.prop['domains'].length === 0) {
-          const currentLabelQuad = labelQuadForIRI(this.iri, this._ontology)
+          const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
           this.$vuexPush('domains', currentLabelQuad)
         }
       }
@@ -204,7 +200,7 @@ export default {
       return this.$deepModel('prop.prop')
     },
     mergedOntology () {
-      return this.dataset.clone().merge(this._ontology)
+      return this.dataset.clone().merge(this.ontology)
     }
   },
   methods: {
@@ -224,7 +220,7 @@ export default {
       if (this.prop['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
         return
       }
-      this.$vuexPush('domains', labelQuadForIRI(searchResult.key, this._ontology))
+      this.$vuexPush('domains', labelQuadForIRI(searchResult.key, this.ontology))
     },
     unselectDomain (index) {
       this.$vuexDeleteAtIndex('domains', index)

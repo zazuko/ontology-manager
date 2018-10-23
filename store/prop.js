@@ -1,4 +1,7 @@
+// import Vue from 'vue'
+import * as VueDeepSet from 'vue-deepset'
 import _cloneDeep from 'lodash'
+
 import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 
 import { generatePropertyProposal } from '@/models/Property'
@@ -10,7 +13,7 @@ import { ERROR, SUCCESS } from '@/store/mutation-types'
 const propBase = () => _cloneDeep({
   baseIRI: propertyBaseUrl,
   motivation: '',
-  name: '',             // IRI
+  name: '',
   label: '',            // label
   comment: '',          // comment
   ranges: [],           // rangeIncludes
@@ -22,10 +25,15 @@ const propBase = () => _cloneDeep({
 export const state = () => ({
   prop: propBase(),
   error: false,
-  success: false,
+  success: false
 })
 
-export const mutations = {
+export const getters = {
+  error: (state) => state.error,
+  success: (state) => state.success
+}
+
+export const mutations = VueDeepSet.extendMutation({
   [ERROR] (state, error) {
     state.error = error
     state.success = false
@@ -33,25 +41,29 @@ export const mutations = {
   [SUCCESS] (state, id) {
     state.error = false
     state.success = id
+  },
+  [NEW] (state) {
+    throw new Error('not implemented')
   }
-}
+})
 
 export const actions = {
-  async [SUBMIT] ({ commit, state }) {
+  async [SUBMIT] ({ commit, state }, token) {
     try {
       const propertyProposalData = await generatePropertyProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
-        property: state.property
+        property: state.prop
       })
 
       const id = await createPropertyProposal({
-        property: state.property,
+        property: state.prop,
         ontologyFileContent: propertyProposalData,
-        token: 'token'
+        token
       })
 
       commit(SUCCESS, id)
     } catch (error) {
+      console.error(error)
       commit(ERROR, error.message)
     }
   },
