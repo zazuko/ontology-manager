@@ -46,6 +46,7 @@
           :iri="iri">
 
           <p v-show="error">{{ error }}</p>
+
           <div class="field is-grouped">
             <p class="control">
               <button
@@ -72,7 +73,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers, mapGetters } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'

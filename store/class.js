@@ -1,97 +1,74 @@
-// import { createHelpers } from 'vuex-map-fields'
-//
-// // The API util is used to send the
-// // data the user enters to our server.
-// import api from '../../utils/api'
-//
-// // Models are used to prepare
-// // store data to be sent to an API.
-// import { createCustomer } from '../../models/Customer'
-// import { createRequest } from '../../models/Request'
-//
-// import { SUBMIT } from '../action-types'
-// import { ERROR, SUCCESS } from '../mutation-types'
-//
-// // We're using reusable form modules
-// // to store the data of our forms.
-// import address from './forms/address'
-// import contact from './forms/contact'
-// import name from './forms/name'
-//
-// const actions = {
-//   async [SUBMIT] ({ commit, state }) {
-//     try {
-//       const customerData = createCustomer({
-//         // We take only the first row here
-//         // because the user is not allowed
-//         // to enter more than one address
-//         // (or name).
-//         address: state.address.rows[0],
-//         // Because we allow the user to enter
-//         // multiple contacts, we're sending
-//         // all rows to the API.
-//         contacts: state.contact.rows,
-//         name: state.name.rows[0]
-//       })
-//       const requestData = createRequest(customerData)
-//
-//       await api(requestData)
-//
-//       commit(SUCCESS)
-//     } catch (error) {
-//       commit(ERROR, error.message)
-//     }
-//   }
-// }
-//
-// const mutations = {
-//   [ERROR] (state, error) {
-//     // eslint-disable-next-line no-param-reassign
-//     state.error = error
-//     // eslint-disable-next-line no-param-reassign
-//     state.success = false
-//   },
-//   [SUCCESS] (state) {
-//     // eslint-disable-next-line no-param-reassign
-//     state.error = false
-//     // eslint-disable-next-line no-param-reassign
-//     state.success = true
-//   }
-// }
-//
-// const state = () => ({
-//   error: false,
-//   success: false
-// })
-//
-// const modules = {
-//   address,
-//   contact,
-//   name
-// }
-//
-// // We're exporting customer field mapper
-// // functions for mapping form fields to Vuex.
-// // See: https://github.com/maoberlehner/vuex-map-fields#custom-getters-and-mutations
-// export const { mapFields: mapAddressFields } = createHelpers({
-//   getterType: 'customer/address/getField',
-//   mutationType: 'customer/address/updateField'
-// })
-//
-// export const { mapMultiRowFields: mapContactMultiRowFields } = createHelpers({
-//   getterType: 'customer/contact/getField',
-//   mutationType: 'customer/contact/updateField'
-// })
-//
-// export const { mapFields: mapNameFields } = createHelpers({
-//   getterType: 'customer/name/getField',
-//   mutationType: 'customer/name/updateField'
-// })
-//
-// export const customer = {
-//   namespaced: true,
-//   actions,
-//   mutations,
-//   state,
-//   modules
-// }
+import * as VueDeepSet from 'vue-deepset'
+import _cloneDeep from 'lodash'
+
+import { classBaseUrl } from '@/trifid/trifid.config.json'
+
+import { generateClassProposal } from '@/models/Class'
+import { createClassProposal } from '@/libs/proposals'
+
+import { SUBMIT, NEW } from '@/store/action-types'
+import { ERROR, SUCCESS } from '@/store/mutation-types'
+
+export const classBase = () => _cloneDeep({
+  baseIRI: classBaseUrl,
+  motivation: '',
+  name: '',    // IRI
+  label: '',   // label
+  comment: '', // comment
+  domains: [], // domainIncludes
+  parentStructureIRI: '',
+  propChildren: []
+})
+
+export const state = () => ({
+  clss: classBase(),
+  error: false,
+  success: false
+})
+
+export const getters = {
+  error: (state) => state.error,
+  success: (state) => state.success
+}
+
+export const mutations = VueDeepSet.extendMutation({
+  [ERROR] (state, error) {
+    state.error = error
+    state.success = false
+  },
+  [SUCCESS] (state, id) {
+    state.error = false
+    state.success = id
+  },
+  [NEW] (state) {
+    throw new Error('not implemented')
+  }
+})
+
+export const actions = {
+  async [SUBMIT] ({ commit, state }, token) {
+    try {
+      const classProposalData = await generateClassProposal({
+        ontology: typeof window !== 'undefined' ? window.ontology : {},
+        structure: typeof window !== 'undefined' ? window.structure : {},
+        clss: state.clss
+      })
+
+      const id = await createClassProposal({
+        clss: state.clss,
+        ontologyFileContent: classProposalData.ontologyContent,
+        structureFileContent: classProposalData.structureContent,
+        token
+      })
+
+      commit(SUCCESS, id)
+    } catch (error) {
+      console.error(error)
+      commit(ERROR, error.message)
+    }
+  },
+
+  [NEW] ({ commit }) {
+    commit(NEW)
+  }
+}

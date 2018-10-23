@@ -14,6 +14,16 @@
                 type="text"
                 v-model="prop['name']">
             </div>
+            <p
+              v-if="prop['name'] && invalidPropname(prop['name'])"
+              class="help is-danger">
+              Property name must start with a <strong>lowercase</strong> letter!
+            </p>
+            <p
+              v-else-if="!prop['name']"
+              class="help is-danger">
+              Please enter the property name.
+            </p>
           </div>
         </div>
         <div class="column" />
@@ -30,6 +40,11 @@
                 :class="{'is-danger': !prop['label']}"
                 v-model="prop['label']" />
             </div>
+            <p
+              v-if="!prop['label']"
+              class="help is-danger">
+              Please write a short description.
+            </p>
           </div>
         </div>
         <div class="column">
@@ -130,8 +145,8 @@
       v-for="(newClass, index) in prop['classChildren']"
       :key="index"
       :iri="iri"
-      :cls="newClass.cls"
-      :ontology="mergedOntology"
+      :store-path="`${storePath}.classChildren[${index}]`"
+      :ontology-base="mergedOntology"
       :domain-prefill="newClass.domainPrefill" />
 
     <div class="box">
@@ -151,12 +166,17 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
 import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term } from '@/libs/rdf'
 import { datasetsSetup } from '@/libs/utils'
-import { Class } from '@/models/Class'
 import Typeahead from '@/components/Typeahead'
 import NewClassForm from '@/components/NewClassForm'
+import { classBase } from '@/store/class'
+
+const {
+  mapGetters: propertyGetters
+} = createNamespacedHelpers('prop')
 
 export default {
   name: 'NewPropertyForm',
@@ -164,6 +184,16 @@ export default {
     iri: {
       type: String,
       required: true
+    },
+    storePath: {
+      type: String,
+      required: false,
+      default: () => 'prop.prop'
+    },
+    ontologyBase: {
+      type: [Object, Boolean],
+      required: false,
+      default: () => false
     }
   },
   components: {
@@ -178,9 +208,9 @@ export default {
       if (typeof window !== 'undefined') {
         clearInterval(i)
 
-        this.ontology = window.ontology
+        this.ontology = this.ontologyBase || window.ontology
         this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
-        this.$vuexSet('prop.prop.parentStructureIRI', this.iri)
+        this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
         if (this.prop['domains'].length === 0) {
           const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
           this.$vuexPush('domains', currentLabelQuad)
@@ -191,27 +221,27 @@ export default {
   data () {
     return {
       searchFunction: () => ([]),
-      renderTypeahead: process.client,
-      newClasses: []
+      renderTypeahead: process.client
     }
   },
   computed: {
     prop () {
-      return this.$deepModel('prop.prop')
+      return this.$deepModel(this.storePath)
     },
     mergedOntology () {
-      return this.dataset.clone().merge(this.ontology)
+      return this.dataset().clone().merge(this.ontology)
     }
   },
   methods: {
     $vuexPush (path, ...values) {
       const currentValues = this.prop[path]
-      this.$vuexSet(`prop.prop.${path}`, currentValues.concat(values))
+      this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
     },
     $vuexDeleteAtIndex (path, index) {
       const currentValues = this.prop[path]
-      this.$vuexSet(`prop.prop.${path}`, currentValues.filter((nothing, i) => i !== index))
+      this.$vuexSet(`${this.storePath}.${path}`, currentValues.filter((nothing, i) => i !== index))
     },
+    ...propertyGetters(['dataset']),
     term,
     selectDomain (searchResult) {
       const domain = searchResult.domain
@@ -250,14 +280,21 @@ export default {
       return /^([A-Z])/.test(name)
     },
     createRange (name) {
-      const newClass = new Class()
-      newClass.name = name
-      const domainSearch = domainsSearchFactory(this.mergedOntology, 'Property', false)
-      newClass.domains.push(rdf.namedNode(this.name))
-      this.newClasses.push({
-        cls: newClass,
-        domainPrefill: domainSearch(this.name)
-      })
+      const clss = classBase()
+      this.$vuexPush('classChildren', clss)
+      if (!String(12)) {
+        const newClass = {} // new Class()
+        newClass.name = name
+        const domainSearch = domainsSearchFactory(this.mergedOntology, 'Property', false)
+        newClass.domains.push(rdf.namedNode(this.name))
+        this.newClasses.push({
+          cls: newClass,
+          domainPrefill: domainSearch(this.name)
+        })
+      }
+    },
+    invalidPropname (name) {
+      return !/^([a-z])/.test(name)
     }
   }
 }

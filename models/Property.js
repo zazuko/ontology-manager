@@ -1,60 +1,54 @@
 import rdf from 'rdf-ext'
-import NamedNode from '@rdfjs/data-model/lib/named-node'
+import QuadExt from 'rdf-ext/lib/Quad'
 import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
 
-export class Property {
-  constructor () {
-    this.baseIRI = propertyBaseUrl
-    this.motivation = ''
-    this.name = ''             // IRI
-    this.label = ''            // label
-    this.comment = ''          // comment
-    this.ranges = []           // rangeIncludes
-    this.domains = []          // domainIncludes
-    this.parentStructureIRI = ''
+function validate (prop) {
+  if (!prop.baseIRI) {
+    throw new Error('Property `baseIRI` missing')
   }
 
-  validate () {
-    if (!this.name) {
-      throw new Error('Property `name` missing')
-    }
+  if (!prop.name) {
+    throw new Error('Property `name` missing')
+  }
 
-    if (!/^([a-z])/.test(this.name)) {
-      throw new Error(`Property 'name' ${this.name} should start with a lowercase letter`)
-    }
+  if (!/^([a-z])/.test(prop.name)) {
+    throw new Error(`Property 'name' ${prop.name} should start with a lowercase letter`)
+  }
 
-    if (!this.label) {
-      throw new Error("Property 'label' missing")
-    }
+  if (!prop.label) {
+    throw new Error('Property `label` missing')
+  }
 
-    if (this.ranges.length) {
-      this.ranges.forEach((range) => {
-        if (!(range instanceof NamedNode)) {
-          throw new Error(`Range '${range}' should be a rdf.namedNode`)
-        }
-      })
-    }
+  if (prop.ranges.length) {
+    prop.ranges.forEach((range) => {
+      if (!(range instanceof QuadExt)) {
+        throw new Error(`Class '${range}' should be a rdf-ext QuadExt`)
+      }
+    })
+  }
 
-    if (this.domains.length) {
-      this.domains.forEach((domain) => {
-        if (!(domain instanceof NamedNode)) {
-          throw new Error(`Domain '${domain}' should be a rdf.namedNode`)
-        }
-      })
-    }
+  if (prop.domains.length) {
+    prop.domains.forEach((domain) => {
+      if (!(domain instanceof QuadExt)) {
+        throw new Error(`Class '${domain}' should be a rdf-ext QuadExt`)
+      }
+    })
   }
 }
 
 export async function generatePropertyProposal (data) {
-  const ontology = data.ontology
   const property = data.property
+  const ontology = data.ontology
   const dataset = toDataset(property)
   return toNT(ontology, dataset)
 }
 
-function toDataset (property) {
+export function toDataset (property, validation = true) {
+  if (validation) {
+    validate(property)
+  }
+
   const iri = rdf.namedNode(property.baseIRI + property.name)
   const quads = [
     rdf.quad(iri, termIRI.a, termIRI.Property),
