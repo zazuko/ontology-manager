@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!--<section class="section">
+    <section class="section">
 
       <div class="container">
 
         <h1 class="title">
           New Class Request<span
-            v-show="cls.name">:
-            "{{ cls.name }}"
+            v-show="clss.name">:
+            "{{ clss.name }}"
           </span>
         </h1>
         <h2 class="subtitle">
@@ -27,7 +27,7 @@
               <div class="column">
                 <div class="control">
                   <textarea
-                    v-model="motivation"
+                    v-model="clss.motivation"
                     class="textarea"
                     placeholder="" />
                 </div>
@@ -44,44 +44,25 @@
         </div>
 
         <new-class-form
-          :iri="iri"
-          :cls="cls"
-          @submitClass="createProposal">
+          :iri="iri">
 
-          <div
-            v-if="error"
-            class="field">
-            <p
-              class="help is-danger">
-              {{ error }}
-            </p>
-          </div>
+          <p v-show="error">{{ error }}</p>
+
           <div class="field is-grouped">
             <p class="control">
               <button
                 class="button is-primary"
-                @click="createProposal"
-                :disabled="!!error">
+                @click="sendProposal">
                 Submit Proposal
               </button>
             </p>
             <p class="control">
-              <button class="button">
+              <button
+                class="button"
+                @click.prevent="clear">
                 Cancel
               </button>
             </p>
-          </div>
-
-          <div
-            v-show="!error"
-            class="box">
-            <div class="field">
-              <label class="label">NTriples preview</label>
-              <div class="control">
-                <pre>{{ nt1 }}</pre>
-                <pre>{{ nt2 }}</pre>
-              </div>
-            </div>
           </div>
 
         </new-class-form>
@@ -89,72 +70,59 @@
       </div>
 
     </section>
-  -->
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
-// import _get from 'lodash/get'
-// import { datasetsSetup } from '@/libs/utils'
-// import { Cls } from '@/libs/rdf'
-// import NewClassForm from '@/components/NewClassForm'
-//
-// export default {
-//   async asyncData ({ query }) {
-//     return {
-//       iri: query.iri
-//     }
-//   },
-//   middleware: 'authenticated',
-//   components: {
-//     NewClassForm
-//   },
-//   async created () {
-//     await datasetsSetup(this.$store)
-//   },
-//   mounted () {
-//     let i = setInterval(() => {
-//       if (typeof window !== 'undefined') {
-//         clearInterval(i)
-//
-//         this.ontology = window.ontology
-//       }
-//     })
-//   },
-//   data () {
-//     return {
-//       cls: new Cls(),
-//       contentNT1: '',
-//       contentNT2: '',
-//       motivation: '',
-//       error: 'Some required fields are empty!'
-//     }
-//   },
-//   computed: {
-//     nt1 () {
-//       this.setNT()
-//       return this.contentNT1
-//     },
-//     nt2 () {
-//       return this.contentNT2
-//     }
-//   },
-//   methods: {
-//     async setNT () {
-//       this.cls.parentStructureIRI = this.iri
-//       try {
-//         this.contentNT1 = await this.cls.toNT()
-//         this.contentNT2 = await this.cls.toStructureNT()
-//         this.error = ''
-//       } catch (err) {
-//         this.contentNT1 = err.message
-//         this.error = err.message
-//       }
-//     }
-//   },
-//   validate ({ query }) {
-//     return !!query.iri
-//   }
-// }
+import { createNamespacedHelpers } from 'vuex'
+
+import { datasetsSetup } from '@/libs/utils'
+import NewClassForm from '@/components/NewClassForm'
+import { SUBMIT, NEW } from '@/store/action-types'
+
+const {
+  mapActions: classActions,
+  mapGetters: classGetters
+} = createNamespacedHelpers('class')
+
+export default {
+  async asyncData ({ query }) {
+    return {
+      iri: query.iri
+    }
+  },
+  middleware: 'authenticated',
+  components: {
+    NewClassForm
+  },
+  async created () {
+    await datasetsSetup(this.$store)
+  },
+  computed: {
+    clss () {
+      return this.$deepModel('class.clss')
+    },
+    ...classGetters(['success', 'error'])
+  },
+  watch: {
+    success () {
+      if (!this.error && this.success) {
+        this.$router.push({ name: 'proposal-id', params: { id: this.success } })
+      }
+    }
+  },
+  methods: {
+    ...classActions({
+      clear: NEW,
+      submit: SUBMIT
+    }),
+    sendProposal () {
+      const token = this.$apolloHelpers.getToken()
+      this.submit(token)
+    }
+  },
+  validate ({ query }) {
+    return !!query.iri
+  }
+}
 </script>

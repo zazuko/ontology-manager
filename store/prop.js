@@ -1,16 +1,15 @@
-// import Vue from 'vue'
 import * as VueDeepSet from 'vue-deepset'
 import _cloneDeep from 'lodash'
 
 import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 
-import { generatePropertyProposal } from '@/models/Property'
+import { generatePropertyProposal, toDataset } from '@/models/Property'
 import { createPropertyProposal } from '@/libs/proposals'
 
 import { SUBMIT, NEW } from '@/store/action-types'
 import { ERROR, SUCCESS } from '@/store/mutation-types'
 
-const propBase = () => _cloneDeep({
+export const propBase = () => _cloneDeep({
   baseIRI: propertyBaseUrl,
   motivation: '',
   name: '',
@@ -30,7 +29,8 @@ export const state = () => ({
 
 export const getters = {
   error: (state) => state.error,
-  success: (state) => state.success
+  success: (state) => state.success,
+  dataset: (state) => toDataset(state.prop, false)
 }
 
 export const mutations = VueDeepSet.extendMutation({

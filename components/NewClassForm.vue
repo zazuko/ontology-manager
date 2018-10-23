@@ -7,16 +7,21 @@
             <label class="label">Class Name</label>
             <div class="control">
               <input
-                :class="{'is-danger': !cls.name}"
+                :class="{'is-danger': !clss['name']}"
                 class="input"
                 autocomplete="new-password"
                 type="text"
-                v-model="cls.name">
+                v-model="clss['name']">
             </div>
             <p
-              v-if="cls.name && invalidClassname(cls.name)"
+              v-if="clss['name'] && invalidClassname(clss['name'])"
               class="help is-danger">
-              Class name must start with an Uppercase letter!
+              Class name must start with an <strong>Uppercase</strong> letter!
+            </p>
+            <p
+              v-else-if="!clss['name']"
+              class="help is-danger">
+              Please enter the class name.
             </p>
           </div>
         </div>
@@ -31,9 +36,14 @@
             <div class="control">
               <textarea
                 class="textarea"
-                :class="{'is-danger': !cls.shortDescription}"
-                v-model="cls.shortDescription" />
+                :class="{'is-danger': !clss['label']}"
+                v-model="clss['label']" />
             </div>
+            <p
+              v-if="!clss['label']"
+              class="help is-danger">
+              Please write a short description.
+            </p>
           </div>
         </div>
         <div class="column">
@@ -42,7 +52,7 @@
             <div class="control">
               <textarea
                 class="textarea"
-                v-model="cls.longDescription" />
+                v-model="clss['comment']" />
             </div>
           </div>
         </div>
@@ -57,9 +67,9 @@
             <typeahead
               :search-function="searchFunction"
               label="Has the Following Properties"
-              @selectionChanged="addDomain">
+              @selectionChanged="selectDomain">
               <div
-                v-if="typeahead.inputString && couldCreateProperty(typeahead.inputString)"
+                v-if="typeahead.inputString && canCreateProperty(typeahead.inputString)"
                 slot="custom-options"
                 slot-scope="typeahead"
                 class="dropdown-item">
@@ -77,12 +87,20 @@
       </div>
 
       <properties-table
-        v-if="_domains.length"
+        v-if="clss['domains'] && clss['domains'].length"
         slot="selected-list"
-        :properties="_domains"
-        @delete="removeDomain" />
+        :properties="clss['domains']"
+        @delete="unselectDomain" />
 
     </div>
+
+    <new-property-form
+      v-for="(newProp, index) in clss['propChildren']"
+      :key="index"
+      :iri="iri"
+      :store-path="`${storePath}.propChildren[${index}]`"
+      :ontology-base="mergedOntology"
+      :domain-prefill="newProp.domainPrefill" />
 
     <div class="box">
       <div class="field">
@@ -101,9 +119,16 @@
 </template>
 
 <script>
-import { domainsSearchFactory } from '@/libs/rdf'
+import { createNamespacedHelpers } from 'vuex'
+import { domainsSearchFactory, term } from '@/libs/rdf'
+import { datasetsSetup } from '@/libs/utils'
+import NewPropertyForm from '@/components/NewPropertyForm'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
+
+const {
+  mapGetters: clssGetters
+} = createNamespacedHelpers('class')
 
 export default {
   name: 'NewClassForm',
@@ -112,16 +137,17 @@ export default {
       type: String,
       required: true
     },
-    cls: {
-      type: Object,
-      required: true
+    storePath: {
+      type: String,
+      required: false,
+      default: () => 'class.clss'
     },
     domainPrefill: {
       type: Array,
       required: false,
       default: () => []
     },
-    ontology: {
+    ontologyBase: {
       type: [Object, Boolean],
       required: false,
       default: () => false
@@ -129,62 +155,71 @@ export default {
   },
   components: {
     PropertiesTable,
-    Typeahead
+    Typeahead,
+    NewPropertyForm
+  },
+  async created () {
+    await datasetsSetup(this.$store)
   },
   mounted () {
     let i = setInterval(() => {
       if (typeof window !== 'undefined') {
         clearInterval(i)
 
-        this._ontology = this.ontology || window.ontology
-        this.searchFunction = domainsSearchFactory(this._ontology, 'Property', false)
+        this.ontology = this.ontologyBase || window.ontology
+        this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
       }
     })
   },
   data () {
     return {
-      currentLabel: '',
       searchFunction: () => ([]),
-      domains: [],
-      motivation: '',
       renderTypeahead: process.client
     }
   },
   computed: {
-    _domains () {
-      if (!this.domainPrefill) {
-        return this.domains
-      }
-      return this.domainPrefill.concat(this.domains)
+    clss () {
+      return this.$deepModel(this.storePath)
+    },
+    mergedOntology () {
+      return this.dataset().clone().merge(this.ontology)
     }
   },
   methods: {
-    addDomain (domain) {
-      const domainIRI = domain.key
-      if (!this.cls.domains.find(({ value }) => value === domainIRI) && this.iri !== domainIRI) {
-        this.domains.push(domain)
-        this.cls.domains.push(domain.domain.subject)
+    $vuexPush (path, ...values) {
+      const currentValues = this.clss[path]
+      this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
+    },
+    $vuexDeleteAtIndex (path, index) {
+      const currentValues = this.clss[path]
+      this.$vuexSet(`${this.storePath}.${path}`, currentValues.filter((nothing, i) => i !== index))
+    },
+    ...clssGetters(['dataset']),
+    term,
+    selectDomain (searchResult) {
+      const domain = searchResult.domain
+      // don't add if already in there or same as the container
+      const isSelected = ({ subject }) => this.term(subject) === this.term(domain.subject)
+      if (this.clss['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
+        return
       }
+      // this.$vuexPush('domains', labelQuadForIRI(searchResult.key, this.ontology))
+      this.$vuexPush('domains', searchResult)
     },
-    removeDomain (index) {
-      this.domains.splice(index, 1)
-      this.cls.domains.splice(index, 1)
+    unselectDomain (index) {
+      this.$vuexDeleteAtIndex('domains', index)
     },
-    addType (type) {
-      type.domain.subject.label = type.label
-      this.cls.type = type.domain.subject
-    },
-    removeType () {
-      this.cls.type = ''
-    },
-    createProposal () {
-      this.$emit('submitClass')
+    canCreateProperty (name) {
+      // if (this.clss['domains'].includes(name)) {
+      //   return false
+      // }
+      // if (this.iri === name) {
+      //   return false
+      // }
+      // return /^([A-Z])/.test(name)
     },
     invalidClassname (name) {
       return !/^([A-Z])/.test(name)
-    },
-    couldCreateProperty (name) {
-      return /^([a-z])/.test(name)
     }
   }
 }

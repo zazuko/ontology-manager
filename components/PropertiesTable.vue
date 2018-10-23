@@ -9,11 +9,6 @@
           Type
         </th>
         <th>
-          Description
-          <br>
-          <small>short description</small>
-        </th>
-        <th>
           Used On
           <br>
           <small>these classes</small>
@@ -30,17 +25,14 @@
         v-for="(property, index) in properties"
         :key="index">
         <td>
-          <small>
-            <code>{{ property.domain.subject.value }}</code>
-          </small>
+          <a :href="rebaseIRI(property.key)">
+            {{ property.label }}
+          </a>
         </td>
         <td>
-          <small>
-            <code>{{ property.range }}</code>
-          </small>
-        </td>
-        <td>
-          {{ property.label }}
+          <a :href="rebaseIRI(property.range)">
+            {{ term(property.range) }}
+          </a>
         </td>
         <td>
           <ul>
@@ -48,7 +40,7 @@
               v-for="otherClass in property.usedOn"
               :key="otherClass.object.value">
               <small>
-                <code>{{ otherClass.object.value }}</code>
+                <code>{{ term(otherClass.object) }}</code>
               </small>
             </li>
           </ul>
@@ -71,6 +63,8 @@
 </template>
 
 <script>
+import { term, rebaseIRI } from '@/libs/rdf'
+
 export default {
   name: 'PropertiesTable',
   props: {
@@ -78,6 +72,10 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    term,
+    rebaseIRI
   }
 }
 </script>

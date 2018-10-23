@@ -25,20 +25,18 @@ export async function createPropertyProposal (data) {
 }
 
 export async function createClassProposal (data) {
-  if (!data.cls) throw new Error('missing data.cls')
+  if (!data.clss) throw new Error('missing data.clss')
   if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
   if (!data.structureContent) throw new Error('missing data.structureContent')
-  if (!data.iri) throw new Error('missing data.iri')
-  if (!data.motivation) throw new Error('missing data.motivation')
   if (!data.token) throw new Error('missing data.token')
 
   const token = data.token
 
   const body = {
-    title: `New class '${data.cls.name}'`,
-    message: `add class '${data.cls.name}'`,
-    body: data.motivation,
-    iri: data.iri,
+    title: `New class '${data.clss.name}'`,
+    message: `add class '${data.clss.name}'`,
+    body: data.clss.motivation,
+    iri: data.clss.iri,
     ontologyContent: data.ontologyContent,
     structureContent: data.structureContent
   }
