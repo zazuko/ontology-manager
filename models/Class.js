@@ -1,95 +1,98 @@
 import rdf from 'rdf-ext'
-import NamedNode from '@rdfjs/data-model/lib/named-node'
+import QuadExt from 'rdf-ext/lib/Quad'
 import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { classBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
 
-export class Class {
-  constructor () {
-    this.baseIRI = classBaseUrl
-    this.motivation = ''
-    this.name = ''             // IRI
-    this.shortDescription = '' // label
-    this.longDescription = ''  // comment
-    this.domains = []          // domainIncludes
+function validate (clss) {
+  if (!clss.baseIRI) {
+    throw new Error('Class `baseIRI` missing')
   }
 
-  validate () {
-    if (!this.name) {
-      throw new Error('Property `name` missing')
-    }
-
-    if (!/^([A-Z])/.test(this.name)) {
-      throw new Error("Property 'name' should start with an uppercase letter")
-    }
-
-    if (!this.shortDescription) {
-      throw new Error("Property 'shortDescription' missing")
-    }
-
-    if (this.domains.length) {
-      this.domains.forEach((domain) => {
-        if (!(domain instanceof NamedNode)) {
-          throw new Error(`Class '${domain}' should be a rdf.namedNode`)
-        }
-      })
-    }
+  if (!clss.name) {
+    throw new Error('Class `name` missing')
   }
 
-  get dataset () {
-    this.validate()
-    const iri = rdf.namedNode(this.baseIRI + this.name)
-    const quads = [
-      rdf.quad(iri, termIRI.a, termIRI.Property),
-      rdf.quad(iri, termIRI.label, rdf.literal(this.shortDescription)),
-      rdf.quad(iri, termIRI.comment, rdf.literal(this.longDescription))
-    ]
-
-    if (this.domains.length) {
-      quads.push(
-        ...this.domains
-          .map((domain) => rdf.quad(domain, termIRI.domain, iri))
-      )
-    }
-
-    return rdf.dataset().addAll(quads)
+  if (!/^([A-Z])/.test(clss.name)) {
+    throw new Error('Class `name` should start with an uppercase letter')
   }
 
-  toNT (_dataset) {
-    const serializerNtriples = new SerializerNtriples()
-    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).merge(this.dataset)
-    const stream = dataset.toStream()
-    const output = serializerNtriples.import(stream)
+  if (!clss.label) {
+    throw new Error('Class `label` missing')
+  }
 
-    return new Promise((resolve) => {
-      const outputLines = []
-      output.on('data', (ntriples) => {
-        outputLines.push(ntriples.toString())
-      })
-      output.on('end', () => {
-        resolve(outputLines.join(''))
-      })
+  if (clss.domains.length) {
+    clss.domains.forEach((domain) => {
+      if (!(domain instanceof QuadExt)) {
+        throw new Error(`Class '${domain}' should be a rdf-ext QuadExt`)
+      }
     })
   }
+}
 
-  toStructureNT (_dataset) {
-    const parentIRI = rdf.namedNode(this.parentStructureIRI)
-    const iri = rdf.namedNode(this.baseIRI + this.name)
-    const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
-
-    const serializerNtriples = new SerializerNtriples()
-    const dataset = (_dataset ? _dataset.clone() : rdf.dataset()).add(quad)
-    const stream = dataset.toStream()
-    const output = serializerNtriples.import(stream)
-
-    return new Promise((resolve) => {
-      const outputLines = []
-      output.on('data', (ntriples) => {
-        outputLines.push(ntriples.toString())
-      })
-      output.on('end', () => {
-        resolve(outputLines.join(''))
-      })
-    })
+export async function generateClassProposal (data) {
+  const ontology = data.ontology
+  const structure = data.structure
+  const clss = data.clss
+  const dataset = toDataset(clss)
+  return {
+    ontologyContent: toNT(ontology, dataset),
+    structureContent: toStructureNT(structure)
   }
+}
+
+export function toDataset (clss) {
+  validate(clss)
+  const iri = rdf.namedNode(clss.baseIRI + clss.name)
+  const quads = [
+    rdf.quad(iri, termIRI.a, termIRI.Property),
+    rdf.quad(iri, termIRI.label, rdf.literal(clss.label)),
+    rdf.quad(iri, termIRI.comment, rdf.literal(clss.comment))
+  ]
+
+  if (clss.domains.length) {
+    quads.push(
+      ...clss.domains
+        .map(({ subject }) => rdf.quad(subject, termIRI.domain, iri))
+    )
+  }
+
+  return rdf.dataset().addAll(quads)
+}
+
+async function toNT (baseDataset, newQuadsDataset) {
+  const serializerNtriples = new SerializerNtriples()
+  const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
+  const stream = dataset.toStream()
+  const output = serializerNtriples.import(stream)
+
+  return new Promise((resolve) => {
+    const outputLines = []
+    output.on('data', (ntriples) => {
+      outputLines.push(ntriples.toString())
+    })
+    output.on('end', () => {
+      resolve(outputLines.join(''))
+    })
+  })
+}
+
+async function toStructureNT (baseDataset, clss) {
+  const parentIRI = rdf.namedNode(clss.parentStructureIRI)
+  const iri = rdf.namedNode(clss.baseIRI + clss.name)
+  const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
+
+  const serializerNtriples = new SerializerNtriples()
+  const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).add(quad)
+  const stream = dataset.toStream()
+  const output = serializerNtriples.import(stream)
+
+  return new Promise((resolve) => {
+    const outputLines = []
+    output.on('data', (ntriples) => {
+      outputLines.push(ntriples.toString())
+    })
+    output.on('end', () => {
+      resolve(outputLines.join(''))
+    })
+  })
 }

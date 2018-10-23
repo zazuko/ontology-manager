@@ -1,3 +1,4 @@
+import { datasetBaseUrl } from '@/trifid/trifid.config.json'
 import Literal from '@rdfjs/data-model/lib/literal'
 import rdf from 'rdf-ext'
 import { compareTwoStrings } from 'string-similarity'
@@ -187,6 +188,7 @@ export function labelQuadForIRI (iri, dataset) {
 function iri (o) {
   return o.iri ? o.iri().value : o.toString()
 }
+
 export function term (o) {
   if (!o) {
     return undefined
@@ -195,4 +197,17 @@ export function term (o) {
   const oIri = iri(o)
 
   return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
+}
+
+export function rebaseIRI (iri) {
+  if (typeof iri !== 'string') {
+    throw new Error(`rebaseIRI() excepts a string, not a '${typeof iri}'`)
+  }
+  if (iri.startsWith(datasetBaseUrl)) {
+    if (datasetBaseUrl.endsWith('/')) {
+      return iri.replace(datasetBaseUrl, '/')
+    }
+    return iri.replace(datasetBaseUrl, '')
+  }
+  return iri
 }
