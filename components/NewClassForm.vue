@@ -168,6 +168,7 @@ export default {
 
         this.ontology = this.ontologyBase || window.ontology
         this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
+        this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
       }
     })
   },

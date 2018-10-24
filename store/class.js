@@ -56,8 +56,8 @@ export const actions = {
 
       const id = await createClassProposal({
         clss: state.clss,
-        ontologyFileContent: classProposalData.ontologyContent,
-        structureFileContent: classProposalData.structureContent,
+        ontologyContent: classProposalData.ontologyContent,
+        structureContent: classProposalData.structureContent,
         token
       })
 

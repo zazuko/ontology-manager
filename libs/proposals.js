@@ -3,7 +3,7 @@ import _get from 'lodash/get'
 
 export async function createPropertyProposal (data) {
   if (!data.property) throw new Error('missing data.property')
-  if (!data.ontologyFileContent) throw new Error('missing data.ontologyFileContent')
+  if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
   if (!data.token) throw new Error('missing data.token')
 
   const token = data.token
@@ -13,7 +13,7 @@ export async function createPropertyProposal (data) {
     message: `add property '${data.property.name}' to '${data.property.parentStructureIRI}'`,
     body: data.property.motivation,
     iri: data.property.parentStructureIRI,
-    ontologyContent: data.ontologyFileContent
+    ontologyContent: data.ontologyContent
   }
 
   const headers = { headers: { authorization: `Bearer ${token}` } }
@@ -36,7 +36,7 @@ export async function createClassProposal (data) {
     title: `New class '${data.clss.name}'`,
     message: `add class '${data.clss.name}'`,
     body: data.clss.motivation,
-    iri: data.clss.iri,
+    iri: data.clss.parentStructureIRI,
     ontologyContent: data.ontologyContent,
     structureContent: data.structureContent
   }
