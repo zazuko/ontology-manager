@@ -21,7 +21,7 @@ function validate (clss) {
   }
 
   if (clss.domains.length) {
-    clss.domains.forEach((domain) => {
+    clss.domains.forEach(({ domain }) => {
       if (!(domain instanceof QuadExt)) {
         throw new Error(`Class '${domain}' should be a rdf-ext QuadExt`)
       }
@@ -34,9 +34,13 @@ export async function generateClassProposal (data) {
   const structure = data.structure
   const clss = data.clss
   const dataset = toDataset(clss)
+  const [ontologyContent, structureContent] = await Promise.all([
+    toNT(ontology, dataset),
+    toStructureNT(structure, clss)
+  ])
   return {
-    ontologyContent: toNT(ontology, dataset),
-    structureContent: toStructureNT(structure)
+    ontologyContent,
+    structureContent
   }
 }
 
@@ -52,7 +56,7 @@ export function toDataset (clss) {
   if (clss.domains.length) {
     quads.push(
       ...clss.domains
-        .map(({ subject }) => rdf.quad(subject, termIRI.domain, iri))
+        .map(({ domain }) => rdf.quad(domain.subject, termIRI.domain, iri))
     )
   }
 
@@ -92,6 +96,7 @@ async function toStructureNT (baseDataset, clss) {
       outputLines.push(ntriples.toString())
     })
     output.on('end', () => {
+      outputLines.sort()
       resolve(outputLines.join(''))
     })
   })

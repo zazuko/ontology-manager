@@ -57,7 +57,7 @@ export const actions = {
 
       const id = await createPropertyProposal({
         property: state.prop,
-        ontologyFileContent: propertyProposalData,
+        ontologyContent: propertyProposalData,
         token
       })
 
