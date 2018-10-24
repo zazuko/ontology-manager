@@ -1,28 +1,13 @@
 import * as VueDeepSet from 'vue-deepset'
-import _cloneDeep from 'lodash'
 
-import { propertyBaseUrl } from '@/trifid/trifid.config.json'
-
-import { generatePropertyProposal, toDataset } from '@/models/Property'
+import { Property, generatePropertyProposal, toDataset } from '@/models/Property'
 import { createPropertyProposal } from '@/libs/proposals'
 
 import { SUBMIT, NEW } from '@/store/action-types'
 import { ERROR, SUCCESS } from '@/store/mutation-types'
 
-export const propBase = () => _cloneDeep({
-  baseIRI: propertyBaseUrl,
-  motivation: '',
-  name: '',
-  label: '',            // label
-  comment: '',          // comment
-  ranges: [],           // rangeIncludes
-  domains: [],          // domainIncludes
-  parentStructureIRI: '',
-  classChildren: []
-})
-
 export const state = () => ({
-  prop: propBase(),
+  prop: new Property(),
   error: false,
   success: false
 })

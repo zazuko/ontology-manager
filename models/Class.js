@@ -1,6 +1,19 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
-import { termIRI, datasetToCanonicalN3} from '@/libs/rdf'
+import { classBaseUrl } from '@/trifid/trifid.config.json'
+import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
+
+export function Class () {
+  this.baseIRI = classBaseUrl
+  this.motivation = ''
+  this.name = ''
+  this.label = ''
+  this.comment = ''
+  this.domains = []
+  this.parentStructureIRI = ''
+  this.propChildren = []
+  return this
+}
 
 function validate (clss) {
   if (!clss.baseIRI) {
@@ -40,8 +53,11 @@ export function generateClassProposal (data) {
   }
 }
 
-export function toDataset (clss) {
-  validate(clss)
+export function toDataset (clss, validation = true) {
+  if (validation) {
+    validate(clss)
+  }
+
   const iri = rdf.namedNode(clss.baseIRI + clss.name)
   const quads = [
     rdf.quad(iri, termIRI.a, termIRI.Property),

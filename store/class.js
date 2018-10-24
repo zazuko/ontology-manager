@@ -1,34 +1,21 @@
 import * as VueDeepSet from 'vue-deepset'
-import _cloneDeep from 'lodash'
 
-import { classBaseUrl } from '@/trifid/trifid.config.json'
-
-import { generateClassProposal } from '@/models/Class'
+import { Class, generateClassProposal, toDataset } from '@/models/Class'
 import { createClassProposal } from '@/libs/proposals'
 
 import { SUBMIT, NEW } from '@/store/action-types'
 import { ERROR, SUCCESS } from '@/store/mutation-types'
 
-export const classBase = () => _cloneDeep({
-  baseIRI: classBaseUrl,
-  motivation: '',
-  name: '',    // IRI
-  label: '',   // label
-  comment: '', // comment
-  domains: [], // domainIncludes
-  parentStructureIRI: '',
-  propChildren: []
-})
-
 export const state = () => ({
-  clss: classBase(),
+  clss: new Class(),
   error: false,
   success: false
 })
 
 export const getters = {
   error: (state) => state.error,
-  success: (state) => state.success
+  success: (state) => state.success,
+  dataset: (state) => toDataset(state.clss, false)
 }
 
 export const mutations = VueDeepSet.extendMutation({
