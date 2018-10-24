@@ -1,6 +1,8 @@
 <template>
-  <div>
+  <div
+    :class="{ subform }">
     <div class="box">
+
       <div class="columns">
         <div class="column">
           <div class="field">
@@ -41,7 +43,7 @@
                 v-model="clss['label']" />
             </div>
             <p
-              v-if="!clss['label']"
+              v-show="!clss['label']"
               class="help is-danger">
               Please write a short description.
             </p>
@@ -88,7 +90,7 @@
       </div>
 
       <properties-table
-        v-if="clss['domains'] && clss['domains'].length"
+        v-if="clss['domains.length']"
         slot="selected-list"
         :properties="clss['domains']"
         @delete="unselectDomain" />
@@ -98,6 +100,7 @@
     <new-property-form
       v-for="(newProp, index) in clss['propChildren']"
       :key="index"
+      :subform="true"
       :iri="iri"
       :store-path="`${storePath}.propChildren[${index}]`"
       :ontology-base="mergedOntology" />
@@ -125,6 +128,7 @@ import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
+import { Property } from '@/models/Property'
 
 const {
   mapGetters: clssGetters
@@ -149,6 +153,11 @@ export default {
     },
     ontologyBase: {
       type: [Object, Boolean],
+      required: false,
+      default: () => false
+    },
+    subform: {
+      type: Boolean,
       required: false,
       default: () => false
     }
@@ -204,20 +213,19 @@ export default {
       if (this.clss['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
         return
       }
-      // this.$vuexPush('domains', labelQuadForIRI(searchResult.key, this.ontology))
+
       this.$vuexPush('domains', searchResult)
     },
     unselectDomain (index) {
       this.$vuexDeleteAtIndex('domains', index)
     },
     canCreateProperty (name) {
-      // if (this.clss['domains'].includes(name)) {
-      //   return false
-      // }
-      // if (this.iri === name) {
-      //   return false
-      // }
-      // return /^([A-Z])/.test(name)
+      return /^([a-z])/.test(name)
+    },
+    createProperty (name) {
+      const prop = new Property()
+      prop.name = name
+      this.$vuexPush('propChildren', prop)
     },
     invalidClassname (name) {
       return !/^([A-Z])/.test(name)
