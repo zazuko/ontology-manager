@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div
+    :class="{ subform }">
     <div class="box">
 
       <div class="columns">
@@ -42,7 +43,7 @@
                 v-model="prop['label']" />
             </div>
             <p
-              v-if="!prop['label']"
+              v-show="!prop['label']"
               class="help is-danger">
               Please write a short description.
             </p>
@@ -145,6 +146,7 @@
     <new-class-form
       v-for="(newClass, index) in prop['classChildren']"
       :key="index"
+      :subform="true"
       :iri="iri"
       :store-path="`${storePath}.classChildren[${index}]`"
       :ontology-base="mergedOntology" />
@@ -167,12 +169,11 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term } from '@/libs/rdf'
 import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import NewClassForm from '@/components/NewClassForm'
-import { classBase } from '@/store/class'
+import { Class } from '@/models/Class'
 
 const {
   mapGetters: propertyGetters
@@ -194,6 +195,11 @@ export default {
       type: [Object, Boolean],
       required: false,
       default: () => false
+    },
+    subform: {
+      type: Boolean,
+      required: false,
+      default: () => false
     }
   },
   components: {
@@ -211,7 +217,7 @@ export default {
         this.ontology = this.ontologyBase || window.ontology
         this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
         this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-        if (this.prop['domains'].length === 0) {
+        if (this.prop['domains.length'] === 0) {
           const currentLabelQuad = labelQuadForIRI(this.iri, this.ontology)
           this.$vuexPush('domains', currentLabelQuad)
         }
@@ -280,18 +286,9 @@ export default {
       return /^([A-Z])/.test(name)
     },
     createRange (name) {
-      const clss = classBase()
+      const clss = new Class()
+      clss.name = name
       this.$vuexPush('classChildren', clss)
-      if (!String(12)) {
-        const newClass = {} // new Class()
-        newClass.name = name
-        const domainSearch = domainsSearchFactory(this.mergedOntology, 'Property', false)
-        newClass.domains.push(rdf.namedNode(this.name))
-        this.newClasses.push({
-          cls: newClass,
-          domainPrefill: domainSearch(this.name)
-        })
-      }
     },
     invalidPropname (name) {
       return !/^([a-z])/.test(name)

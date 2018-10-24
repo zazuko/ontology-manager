@@ -1,6 +1,20 @@
+import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
+
+export function Property () {
+  this.baseIRI = propertyBaseUrl
+  this.motivation = ''
+  this.name = ''
+  this.label = ''
+  this.comment = ''
+  this.ranges = []
+  this.domains = []
+  this.parentStructureIRI = ''
+  this.classChildren = []
+  return this
+}
 
 function validate (prop) {
   if (!prop.baseIRI) {
