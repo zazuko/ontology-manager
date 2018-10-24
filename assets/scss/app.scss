@@ -49,3 +49,8 @@ $primary-invert: $pink-invert;
     @extend .has-background-success;
   }
 }
+
+body {
+  background-color: #F2F3F7;
+  min-height: 100vh;
+}

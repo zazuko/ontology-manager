@@ -24,6 +24,7 @@
               class="help is-danger">
               Please enter the property name.
             </p>
+            <p v-else />
           </div>
         </div>
         <div class="column" />
@@ -146,8 +147,7 @@
       :key="index"
       :iri="iri"
       :store-path="`${storePath}.classChildren[${index}]`"
-      :ontology-base="mergedOntology"
-      :domain-prefill="newClass.domainPrefill" />
+      :ontology-base="mergedOntology" />
 
     <div class="box">
       <div class="field">

@@ -1,7 +1,6 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
-import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { termIRI } from '@/libs/rdf'
+import { termIRI, datasetToCanonicalN3} from '@/libs/rdf'
 
 function validate (clss) {
   if (!clss.baseIRI) {
@@ -29,18 +28,15 @@ function validate (clss) {
   }
 }
 
-export async function generateClassProposal (data) {
+export function generateClassProposal (data) {
   const ontology = data.ontology
   const structure = data.structure
   const clss = data.clss
   const dataset = toDataset(clss)
-  const [ontologyContent, structureContent] = await Promise.all([
-    toNT(ontology, dataset),
-    toStructureNT(structure, clss)
-  ])
+
   return {
-    ontologyContent,
-    structureContent
+    ontologyContent: toNT(ontology, dataset),
+    structureContent: toStructureNT(structure, clss)
   }
 }
 
@@ -63,41 +59,18 @@ export function toDataset (clss) {
   return rdf.dataset().addAll(quads)
 }
 
-async function toNT (baseDataset, newQuadsDataset) {
-  const serializerNtriples = new SerializerNtriples()
+function toNT (baseDataset, newQuadsDataset) {
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
-  const stream = dataset.toStream()
-  const output = serializerNtriples.import(stream)
 
-  return new Promise((resolve) => {
-    const outputLines = []
-    output.on('data', (ntriples) => {
-      outputLines.push(ntriples.toString())
-    })
-    output.on('end', () => {
-      resolve(outputLines.join(''))
-    })
-  })
+  return datasetToCanonicalN3(dataset)
 }
 
-async function toStructureNT (baseDataset, clss) {
+function toStructureNT (baseDataset, clss) {
   const parentIRI = rdf.namedNode(clss.parentStructureIRI)
   const iri = rdf.namedNode(clss.baseIRI + clss.name)
   const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
 
-  const serializerNtriples = new SerializerNtriples()
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).add(quad)
-  const stream = dataset.toStream()
-  const output = serializerNtriples.import(stream)
 
-  return new Promise((resolve) => {
-    const outputLines = []
-    output.on('data', (ntriples) => {
-      outputLines.push(ntriples.toString())
-    })
-    output.on('end', () => {
-      outputLines.sort()
-      resolve(outputLines.join(''))
-    })
-  })
+  return datasetToCanonicalN3(dataset)
 }

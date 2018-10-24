@@ -14,7 +14,7 @@
     "test": "node -r dotenv/config node_modules/.bin/jest . dotenv_config_path=test/.env"
   },
   "dependencies": {
-    "@mdi/font": "^2.8.94",
+    "@mdi/font": "3.0.39",
     "@nuxtjs/apollo": "^4.0.0-rc3",
     "@nuxtjs/auth": "^4.5.2",
     "@nuxtjs/axios": "^5.3.3",

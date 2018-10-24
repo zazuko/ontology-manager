@@ -1,16 +1,16 @@
 <template>
-  <section class="container">
+  <div class="container">
+    <section class="section">
+      <nuxt-link
+        :to="{ name: 'discussion-new', query: { iri: 'http://example.org/foo' } }"
+        class="button is-link">
+        New Thread
+      </nuxt-link>
 
-    <nuxt-link
-      :to="{ name: 'discussion-new', query: { iri: 'http://example.org/foo' } }"
-      class="button is-link">
-      New Thread
-    </nuxt-link>
-
-    <discussion-list
-      :discussions="discussions.nodes" />
-
-  </section>
+      <discussion-list
+        :discussions="discussions.nodes" />
+    </section>
+  </div>
 </template>
 
 <script>
@@ -29,6 +29,10 @@ export default {
   }),
   async created () {
     await datasetsSetup(this.$store)
+  },
+  mounted () {
+    // triggers the error
+    this.$apollo.queries.discussions.refetch()
   },
   apollo: {
     discussions: {
