@@ -288,7 +288,6 @@ function getToken (req) {
 async function checkToken (req, res) {
   const bearerToken = getToken(req)
   if (!bearerToken) {
-    console.error(err)
     res.status(500).send({ message: 'Missing Bearer token!' })
     return false
   }
@@ -300,7 +299,6 @@ async function checkToken (req, res) {
   }
 
   if (!auth.username || !auth.password) {
-    console.error(err)
     res.status(500).send({ message: 'Missing env vars!' })
     return false
   }

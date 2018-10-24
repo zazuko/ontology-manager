@@ -48,7 +48,7 @@ export const mutations = VueDeepSet.extendMutation({
 export const actions = {
   async [SUBMIT] ({ commit, state }, token) {
     try {
-      const classProposalData = await generateClassProposal({
+      const classProposalData = generateClassProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
         structure: typeof window !== 'undefined' ? window.structure : {},
         clss: state.clss

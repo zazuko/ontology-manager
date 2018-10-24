@@ -50,7 +50,7 @@ export const mutations = VueDeepSet.extendMutation({
 export const actions = {
   async [SUBMIT] ({ commit, state }, token) {
     try {
-      const propertyProposalData = await generatePropertyProposal({
+      const propertyProposalData = generatePropertyProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
         property: state.prop
       })

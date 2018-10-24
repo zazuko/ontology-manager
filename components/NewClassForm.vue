@@ -23,6 +23,7 @@
               class="help is-danger">
               Please enter the class name.
             </p>
+            <p v-else />
           </div>
         </div>
         <div class="column" />
@@ -99,8 +100,7 @@
       :key="index"
       :iri="iri"
       :store-path="`${storePath}.propChildren[${index}]`"
-      :ontology-base="mergedOntology"
-      :domain-prefill="newProp.domainPrefill" />
+      :ontology-base="mergedOntology" />
 
     <div class="box">
       <div class="field">

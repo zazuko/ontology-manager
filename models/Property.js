@@ -1,7 +1,6 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
-import SerializerNtriples from '@rdfjs/serializer-ntriples'
-import { termIRI } from '@/libs/rdf'
+import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
 
 function validate (prop) {
   if (!prop.baseIRI) {
@@ -37,7 +36,7 @@ function validate (prop) {
   }
 }
 
-export async function generatePropertyProposal (data) {
+export function generatePropertyProposal (data) {
   const property = data.property
   const ontology = data.ontology
   const dataset = toDataset(property)
@@ -73,19 +72,8 @@ export function toDataset (property, validation = true) {
   return rdf.dataset().addAll(quads)
 }
 
-async function toNT (baseDataset, newQuadsDataset) {
-  const serializerNtriples = new SerializerNtriples()
+function toNT (baseDataset, newQuadsDataset) {
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
-  const stream = dataset.toStream()
-  const output = serializerNtriples.import(stream)
 
-  return new Promise((resolve) => {
-    const outputLines = []
-    output.on('data', (ntriples) => {
-      outputLines.push(ntriples.toString())
-    })
-    output.on('end', () => {
-      resolve(outputLines.join(''))
-    })
-  })
+  return datasetToCanonicalN3(dataset)
 }
