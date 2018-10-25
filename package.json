@@ -73,7 +73,7 @@
   "resolutions": {
     "graphql": "0.13.2",
     "vue-cli-plugin-apollo": "0.16.6",
-    "apollo-utilities": "1.0.23"
+    "apollo-utilities": "1.0.21"
   },
   "engines": {
     "node": ">=8.6"

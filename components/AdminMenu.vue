@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs is-boxed is-large">
+  <nav class="tabs is-boxed is-large">
     <ul>
       <li
         :class="{ 'is-active': currentRoute === 'admin-proposal'}">
@@ -20,7 +20,7 @@
         </nuxt-link>
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <script>
