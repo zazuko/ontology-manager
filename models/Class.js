@@ -6,10 +6,15 @@ import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
 export function Class () {
   this.baseIRI = classBaseUrl
   this.motivation = ''
-  this.name = ''
-  this.label = ''
-  this.comment = ''
+
+  this.iri = ''
+
+  this.label = 'My Class'
+  this.comment = 'My nice class'
+  this.description = 'This is My Class!'
+  this.example = 'Look here!'
   this.domains = []
+
   this.parentStructureIRI = ''
   this.propChildren = []
   return this
@@ -58,7 +63,7 @@ export function toDataset (clss, validation = true) {
     validate(clss)
   }
 
-  const iri = rdf.namedNode(clss.baseIRI + clss.name)
+  const iri = rdf.namedNode(clss.iri)
   const quads = [
     rdf.quad(iri, termIRI.a, termIRI.Property),
     rdf.quad(iri, termIRI.label, rdf.literal(clss.label)),
@@ -66,10 +71,18 @@ export function toDataset (clss, validation = true) {
   ]
 
   if (clss.domains.length) {
-    quads.push(
-      ...clss.domains
-        .map(({ domain }) => rdf.quad(domain.subject, termIRI.domain, iri))
-    )
+    console.log(clss.domains)
+    const existingDomainsQuads = clss.domains.reduce((xs, domain) => {
+      let subject
+      if (domain.hasOwnProperty('domain')) {
+        subject = domain.domain.subject
+      } else {
+        subject = rdf.namedNode(domain.iri)
+      }
+      xs.push(rdf.quad(subject, termIRI.domain, iri))
+      return xs
+    }, [])
+    quads.push(...existingDomainsQuads)
   }
 
   return rdf.dataset().addAll(quads)
