@@ -13,7 +13,7 @@
                 class="input"
                 autocomplete="new-password"
                 type="text"
-                v-model="prop['label']">
+                v-model.lazy="prop['label']">
             </div>
             <p
               v-if="prop['label'] && invalidPropname(prop['label'])"
@@ -47,7 +47,7 @@
               <textarea
                 class="textarea"
                 :class="{'is-danger': !prop['comment']}"
-                v-model="prop['comment']" />
+                v-model.lazy="prop['comment']" />
             </div>
             <p
               v-show="!prop['comment']"
@@ -62,7 +62,7 @@
             <div class="control">
               <textarea
                 class="textarea"
-                v-model="prop['description']" />
+                v-model.lazy="prop['description']" />
             </div>
           </div>
         </div>
@@ -139,7 +139,7 @@
                     @click.prevent="unselectRange(index)">
                     <i class="mdi mdi-close-circle" />
                   </span>
-                  {{ (range.object && term(range.object)) || range.label }}
+                  {{ (range.subject && term(range.subject)) || range.label }}
                 </a>
               </nav>
             </typeahead>
@@ -164,7 +164,7 @@
         <label class="label">Example</label>
         <div class="control">
           <textarea
-            v-model="prop['example']"
+            v-model.lazy="prop['example']"
             class="textarea"
             placeholder="" />
         </div>
@@ -308,6 +308,7 @@ export default {
     createRange (label) {
       const clss = new Class()
       clss.label = label
+      clss.iri = clss.baseIRI + normalizeLabel(clss.label, 'pascal')
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true

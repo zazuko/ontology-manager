@@ -75,17 +75,31 @@ export function toDataset (property, validation = true) {
   ]
 
   if (property.ranges.length) {
-    quads.push(
-      ...property.ranges
-        .map(({ subject }) => rdf.quad(iri, termIRI.range, subject))
-    )
+    const existingRangesQuads = property.ranges.reduce((xs, domain) => {
+      let subject
+      if (domain.hasOwnProperty('domain')) {
+        subject = domain.domain.subject
+      } else {
+        subject = rdf.namedNode(domain.iri)
+      }
+      xs.push(rdf.quad(subject, termIRI.range, iri))
+      return xs
+    }, [])
+    quads.push(...existingRangesQuads)
   }
 
   if (property.domains.length) {
-    quads.push(
-      ...property.domains
-        .map(({ subject }) => rdf.quad(iri, termIRI.domain, subject))
-    )
+    const existingDomainsQuads = property.domains.reduce((xs, domain) => {
+      let subject
+      if (domain.hasOwnProperty('domain')) {
+        subject = domain.domain.subject
+      } else {
+        subject = rdf.namedNode(domain.iri)
+      }
+      xs.push(rdf.quad(subject, termIRI.domain, iri))
+      return xs
+    }, [])
+    quads.push(...existingDomainsQuads)
   }
 
   return rdf.dataset().addAll(quads)
