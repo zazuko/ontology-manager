@@ -1777,20 +1777,12 @@ apollo-upload-client@^8.1.0:
     apollo-link-http-common "^0.2.4"
     extract-files "^3.1.0"
 
-apollo-utilities@1.0.22, apollo-utilities@^1.0.0, apollo-utilities@^1.0.21, apollo-utilities@^1.0.22:
-  version "1.0.22"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.22.tgz#0e11350d1220d83ae1c784115d0fa18bdc549a60"
-  integrity sha512-6+78Woy+js6LrMrI/TS3Lbdti7D8LhgZnVANSGfsPqjVlEkMnl0p7XSfpEFfX69hDN04wf43+BnqgS2cgJkiMA==
+apollo-utilities@1.0.22, apollo-utilities@1.0.23, apollo-utilities@^1.0.0, apollo-utilities@^1.0.1, apollo-utilities@^1.0.21, apollo-utilities@^1.0.22, apollo-utilities@^1.0.8:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.23.tgz#9416e5da31cc8d9d46502de6f90aa1447cd368c6"
+  integrity sha512-RW65kZZxSEysvzm5YBrNU6SvE+Z62VQ+lpxYX/3d9pZYsMBkaMdfr3OnUwGKt/MqUsDfUb/LLoXpMRhKukMpeQ==
   dependencies:
     fast-json-stable-stringify "^2.0.0"
-
-apollo-utilities@^1.0.1, apollo-utilities@^1.0.8:
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.21.tgz#cb8b5779fe275850b16046ff8373f4af2de90765"
-  integrity sha512-ZcxELlEl+sDCYBgEMdNXJAsZtRVm8wk4HIA58bMsqYfd1DSAJQEtZ93F0GZgYNAGy3QyaoBeZtbb0/01++G8JQ==
-  dependencies:
-    fast-json-stable-stringify "^2.0.0"
-    fclone "^1.0.11"
 
 append-transform@^0.4.0:
   version "0.4.0"
@@ -5285,9 +5277,9 @@ eslint-plugin-import@^2.14.0:
     resolve "^1.6.0"
 
 eslint-plugin-jest@^21.24.1:
-  version "21.26.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.26.0.tgz#3375de090cdd43af1971a4a93f5d332a13c10a6d"
-  integrity sha512-zYePgbZaJsTfiJMb6XcsrrqgDpUB40AmGjjlwMZPEgVstrAsDNW8z7qQggD1lC24yR9h9VxTTb8qu6HRq3n6eg==
+  version "21.26.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.26.1.tgz#73c5d6838d384fe6a9644077c27011bd99665ff2"
+  integrity sha512-utdtKV04jP8ZXnqbsrArI/7m0Bg819JYnP/f6zP3gwnU7hHGdUzlYPNW73wShVFIDmllgHnkpo49kOPNhbQwrg==
 
 eslint-plugin-node@^7.0.1:
   version "7.0.1"
@@ -5776,11 +5768,6 @@ fb-watchman@^2.0.0:
   integrity sha1-VOmr99+i8mzZsWNsWIwa/AXeXVg=
   dependencies:
     bser "^2.0.0"
-
-fclone@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/fclone/-/fclone-1.0.11.tgz#10e85da38bfea7fc599341c296ee1d77266ee640"
-  integrity sha1-EOhdo4v+p/xZk0HClu4ddyZu5kA=
 
 fd-slicer@~1.0.1:
   version "1.0.1"
