@@ -5,37 +5,39 @@
 
       <div class="columns">
         <div class="column">
-          <div class="field">
-            <label class="label">Class Name</label>
-            <div class="control">
-              <input
-                :class="{'is-danger': !clss['label']}"
-                class="input"
-                autocomplete="new-password"
-                type="text"
-                v-debounce
-                v-model.lazy="clss['label']">
-            </div>
-            <p
-              v-if="clss['label'] && invalidClassname(clss['label'])"
-              class="help is-danger">
-              Class name must start with an <strong>Uppercase</strong> letter!
-            </p>
-            <p
-              v-else-if="!clss['label']"
-              class="help is-danger">
-              Please enter the class name.
-            </p>
-            <p v-else />
-          </div>
-        </div>
-        <div class="column">
+
+          <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
           <p
-            v-if="clss['label'] && !invalidClassname(clss['label'])">
-            <code>
-              {{ clss['iri'] }}
-            </code>
+            v-show="clss['iri']"
+            class="subtitle">
+            <code>{{ clss['iri'] }}</code>
           </p>
+
+          <div class="columns">
+            <div class="column is-6 field">
+              <label class="label">Class Name</label>
+              <div class="control">
+                <input
+                  :class="{'is-danger': !clss['label']}"
+                  class="input"
+                  autocomplete="new-password"
+                  type="text"
+                  v-debounce
+                  v-model.lazy="clss['label']">
+              </div>
+              <p
+                v-if="clss['label'] && invalidClassname(clss['label'])"
+                class="help is-danger">
+                Class name must start with an <strong>Uppercase</strong> letter!
+              </p>
+              <p
+                v-else-if="!clss['label']"
+                class="help is-danger">
+                Please enter the class name.
+              </p>
+              <p v-else />
+            </div>
+          </div>
         </div>
       </div>
 
