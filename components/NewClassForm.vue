@@ -13,7 +13,8 @@
                 class="input"
                 autocomplete="new-password"
                 type="text"
-                v-model="clss['label']">
+                v-debounce
+                v-model.lazy="clss['label']">
             </div>
             <p
               v-if="clss['label'] && invalidClassname(clss['label'])"
@@ -47,7 +48,8 @@
               <textarea
                 class="textarea"
                 :class="{'is-danger': !clss['comment']}"
-                v-model="clss['comment']" />
+                v-debounce
+                v-model.lazy="clss['comment']" />
             </div>
             <p
               v-show="!clss['comment']"
@@ -62,7 +64,8 @@
             <div class="control">
               <textarea
                 class="textarea"
-                v-model="clss['description']" />
+                v-debounce
+                v-model.lazy="clss['description']" />
             </div>
           </div>
         </div>
@@ -119,7 +122,8 @@
         <label class="label">Example</label>
         <div class="control">
           <textarea
-            v-model="clss['example']"
+            v-debounce
+            v-model.lazy="clss['example']"
             class="textarea"
             placeholder="" />
         </div>
@@ -239,6 +243,7 @@ export default {
     createProperty (label) {
       const prop = new Property()
       prop.label = label
+      prop.iri = prop.baseIRI + normalizeLabel(prop.label, 'camel')
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true

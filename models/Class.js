@@ -71,7 +71,6 @@ export function toDataset (clss, validation = true) {
   ]
 
   if (clss.domains.length) {
-    console.log(clss.domains)
     const existingDomainsQuads = clss.domains.reduce((xs, domain) => {
       let subject
       if (domain.hasOwnProperty('domain')) {
