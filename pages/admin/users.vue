@@ -1,11 +1,14 @@
 <template>
-  <section class="container">
-    <admin-menu />
+  <section class="section">
+    <div class="container">
 
-    <admin-user-list
-      :users="users.nodes"
-      @updated="refetch()" />
+      <admin-menu />
 
+      <admin-user-list
+        :users="users.nodes"
+        @updated="refetch()" />
+
+    </div>
   </section>
 </template>
 
