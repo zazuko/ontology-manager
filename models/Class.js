@@ -1,15 +1,16 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { classBaseUrl } from '@/trifid/trifid.config.json'
-import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
+import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
+import { toDataset as propToDataset } from '@/models/Property'
 
-export function Class () {
+export function Class (label = 'My Class') {
   this.baseIRI = classBaseUrl
   this.motivation = ''
 
-  this.iri = ''
+  this.iri = classBaseUrl + normalizeLabel(label, 'pascal')
 
-  this.label = 'My Class'
+  this.label = label
   this.comment = 'My nice class'
   this.description = 'This is My Class!'
   this.example = 'Look here!'
@@ -25,16 +26,16 @@ function validate (clss) {
     throw new Error('Class `baseIRI` missing')
   }
 
-  if (!clss.name) {
-    throw new Error('Class `name` missing')
-  }
-
-  if (!/^([A-Z])/.test(clss.name)) {
-    throw new Error('Class `name` should start with an uppercase letter')
-  }
-
   if (!clss.label) {
     throw new Error('Class `label` missing')
+  }
+
+  if (!/^([A-Z])/.test(clss.label)) {
+    throw new Error('Class `label` should start with an uppercase letter')
+  }
+
+  if (!clss.comment) {
+    throw new Error('Class `comment` missing')
   }
 
   if (clss.domains.length) {
@@ -73,8 +74,8 @@ export function toDataset (clss, validation = true) {
   if (clss.domains.length) {
     const existingDomainsQuads = clss.domains.reduce((xs, domain) => {
       let subject
-      if (domain.hasOwnProperty('domain')) {
-        subject = domain.domain.subject
+      if (domain instanceof QuadExt) {
+        subject = domain.subject
       } else {
         subject = rdf.namedNode(domain.iri)
       }
@@ -84,18 +85,25 @@ export function toDataset (clss, validation = true) {
     quads.push(...existingDomainsQuads)
   }
 
-  return rdf.dataset().addAll(quads)
+  const dataset = rdf.dataset().addAll(quads)
+
+  const childrenDataset = clss.propChildren.reduce((acc, propChild) => {
+    const childDataset = propToDataset(propChild, validation)
+    return rdf.dataset().merge(childDataset)
+  }, rdf.dataset())
+
+  return dataset.merge(childrenDataset)
 }
 
-function toNT (baseDataset, newQuadsDataset) {
+export function toNT (baseDataset, newQuadsDataset) {
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
 
   return datasetToCanonicalN3(dataset)
 }
 
-function toStructureNT (baseDataset, clss) {
+export function toStructureNT (baseDataset, clss) {
   const parentIRI = rdf.namedNode(clss.parentStructureIRI)
-  const iri = rdf.namedNode(clss.baseIRI + clss.name)
+  const iri = rdf.namedNode(clss.iri)
   const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
 
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).add(quad)

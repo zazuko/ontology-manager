@@ -9,8 +9,8 @@ export async function createPropertyProposal (data) {
   const token = data.token
 
   const body = {
-    title: `New property '${data.property.name}' on '${data.property.parentStructureIRI}'`,
-    message: `add property '${data.property.name}' to '${data.property.parentStructureIRI}'`,
+    title: `New property '${data.property.label}' on '${data.property.parentStructureIRI}'`,
+    message: `add property '${data.property.label}' to '${data.property.parentStructureIRI}'`,
     body: data.property.motivation,
     iri: data.property.parentStructureIRI,
     ontologyContent: data.ontologyContent
@@ -33,8 +33,8 @@ export async function createClassProposal (data) {
   const token = data.token
 
   const body = {
-    title: `New class '${data.clss.name}'`,
-    message: `add class '${data.clss.name}'`,
+    title: `New class '${data.clss.label}'`,
+    message: `add class '${data.clss.label}'`,
     body: data.clss.motivation,
     iri: data.clss.parentStructureIRI,
     ontologyContent: data.ontologyContent,
