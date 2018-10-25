@@ -25,19 +25,22 @@
         v-for="(property, index) in properties"
         :key="index">
         <td>
-          <a :href="rebaseIRI(property.key)">
+          <a :href="rebaseIRI(property.iri)">
             {{ property.label }}
           </a>
         </td>
         <td>
-          <a :href="rebaseIRI(property.range)">
-            {{ term(property.range) }}
+          <a
+            v-for="range in rangeOf(property.iri, dataset)"
+            :key="range.value"
+            :href="rebaseIRI(range.value)">
+            {{ term(range.value) }}
           </a>
         </td>
         <td>
           <ul>
             <li
-              v-for="otherClass in property.usedOn"
+              v-for="otherClass in usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
               <small>
                 <code>{{ term(otherClass.object) }}</code>
@@ -46,11 +49,6 @@
           </ul>
         </td>
         <td>
-          <!-- TODO: what would 'edit' do here? -->
-          <!-- <span
-            class="panel-icon">
-            <i class="mdi mdi-pencil" />
-          </span> -->
           <span
             class="panel-icon"
             @click.prevent="$emit('delete', index)">
@@ -63,7 +61,7 @@
 </template>
 
 <script>
-import { term, rebaseIRI } from '@/libs/rdf'
+import { term, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 
 export default {
   name: 'PropertiesTable',
@@ -71,11 +69,17 @@ export default {
     properties: {
       type: Array,
       required: true
+    },
+    dataset: {
+      type: Object,
+      required: true
     }
   },
   methods: {
     term,
-    rebaseIRI
+    rebaseIRI,
+    usedOnClasses,
+    rangeOf
   }
 }
 </script>
