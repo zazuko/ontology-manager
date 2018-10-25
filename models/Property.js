@@ -1,13 +1,14 @@
 import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
-import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
+import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
+import { toDataset as classToDataset } from '@/models/Class'
 
-export function Property () {
+export function Property (label = 'my prop') {
   this.baseIRI = propertyBaseUrl
   this.motivation = ''
 
-  this.iri = ''
+  this.iri = propertyBaseUrl + normalizeLabel(label, 'camel')
 
   this.label = 'my prop'
   this.comment = 'my property'
@@ -26,16 +27,16 @@ function validate (prop) {
     throw new Error('Property `baseIRI` missing')
   }
 
-  if (!prop.name) {
-    throw new Error('Property `name` missing')
-  }
-
-  if (!/^([a-z])/.test(prop.name)) {
-    throw new Error(`Property 'name' ${prop.name} should start with a lowercase letter`)
-  }
-
   if (!prop.label) {
     throw new Error('Property `label` missing')
+  }
+
+  if (!/^([a-z])/.test(prop.label)) {
+    throw new Error(`Property 'label' ${prop.label} should start with a lowercase letter`)
+  }
+
+  if (!prop.comment) {
+    throw new Error('Property `comment` missing')
   }
 
   if (prop.ranges.length) {
@@ -77,8 +78,8 @@ export function toDataset (property, validation = true) {
   if (property.ranges.length) {
     const existingRangesQuads = property.ranges.reduce((xs, domain) => {
       let subject
-      if (domain.hasOwnProperty('domain')) {
-        subject = domain.domain.subject
+      if (domain instanceof QuadExt) {
+        subject = domain.subject
       } else {
         subject = rdf.namedNode(domain.iri)
       }
@@ -91,8 +92,8 @@ export function toDataset (property, validation = true) {
   if (property.domains.length) {
     const existingDomainsQuads = property.domains.reduce((xs, domain) => {
       let subject
-      if (domain.hasOwnProperty('domain')) {
-        subject = domain.domain.subject
+      if (domain instanceof QuadExt) {
+        subject = domain.subject
       } else {
         subject = rdf.namedNode(domain.iri)
       }
@@ -102,10 +103,17 @@ export function toDataset (property, validation = true) {
     quads.push(...existingDomainsQuads)
   }
 
-  return rdf.dataset().addAll(quads)
+  const dataset = rdf.dataset().addAll(quads)
+
+  const childrenDataset = property.classChildren.reduce((acc, classChild) => {
+    const childDataset = classToDataset(classChild, validation)
+    return rdf.dataset().merge(childDataset)
+  }, rdf.dataset())
+
+  return dataset.merge(childrenDataset)
 }
 
-function toNT (baseDataset, newQuadsDataset) {
+export function toNT (baseDataset, newQuadsDataset) {
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
 
   return datasetToCanonicalN3(dataset)
