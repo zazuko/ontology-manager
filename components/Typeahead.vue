@@ -26,7 +26,7 @@
           <div class="dropdown-content">
             <slot
               :inputString="inputString"
-              :unfocus="unfocus"
+              :hide="clear"
               name="custom-options" />
             <div
               v-show="searchResults.length === 0"
@@ -104,14 +104,13 @@ export default {
     focus () {
       this.hasFocus = true
     },
-    selection (option) {
+    clear () {
       this.inputString = ''
       this.hasFocus = false
-
-      this.$emit('selectionChanged', option)
     },
-    rand () {
-      return String(Date.now())
+    selection (option) {
+      this.clear()
+      this.$emit('selectionChanged', option)
     }
   }
 }

@@ -6,11 +6,16 @@ import { termIRI, datasetToCanonicalN3 } from '@/libs/rdf'
 export function Property () {
   this.baseIRI = propertyBaseUrl
   this.motivation = ''
-  this.name = ''
-  this.label = ''
-  this.comment = ''
+
+  this.iri = ''
+
+  this.label = 'my prop'
+  this.comment = 'my property'
+  this.description = 'This is My Prop!'
+  this.example = 'Look here!'
   this.ranges = []
   this.domains = []
+
   this.parentStructureIRI = ''
   this.classChildren = []
   return this
@@ -62,7 +67,7 @@ export function toDataset (property, validation = true) {
     validate(property)
   }
 
-  const iri = rdf.namedNode(property.baseIRI + property.name)
+  const iri = rdf.namedNode(property.iri)
   const quads = [
     rdf.quad(iri, termIRI.a, termIRI.Property),
     rdf.quad(iri, termIRI.label, rdf.literal(property.label)),

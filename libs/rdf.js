@@ -1,7 +1,10 @@
+import { compareTwoStrings } from 'string-similarity'
+import _camelCase from 'lodash/camelCase'
+import _upperFirst from 'lodash/upperFirst'
+import rdf from 'rdf-ext'
+
 import { datasetBaseUrl } from '@/trifid/trifid.config.json'
 import Literal from '@rdfjs/data-model/lib/literal'
-import rdf from 'rdf-ext'
-import { compareTwoStrings } from 'string-similarity'
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -11,6 +14,8 @@ const stringIRI = {
 
   label: 'http://www.w3.org/2000/01/rdf-schema#label',
   comment: 'http://www.w3.org/2000/01/rdf-schema#comment',
+  description: 'http://www.w3.org/2004/02/skos/core#note',
+  example: 'http://www.w3.org/2004/02/skos/core#example',
 
   domain: 'http://schema.org/domainIncludes',
   range: 'http://schema.org/rangeIncludes',
@@ -82,7 +87,7 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
         if (!match) {
           return acc
         }
-        match.key = elem.subject.value
+        match.iri = elem.subject.value
         acc.push(match)
         return acc
       }, [])
@@ -92,27 +97,25 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
         return compareTwoStrings(b.matched, searchInput) - compareTwoStrings(a.matched, searchInput)
       })
 
-    if (resultType === 'Property') {
-      // For existing properties we wanna know to what Classes they apply
-      // and their type/range
-      return results.map((elem) => {
-        const subject = elem.domain.subject
-        elem.usedOn = dataset
-          .match(subject, termIRI.domain)
-          .toArray()
-          .filter(({ object }) => dataset.match(object, termIRI.a, termIRI.Class).length)
-        elem.range = dataset
-          .match(subject, termIRI.range)
-          .toArray()
-          .reduce((str, { object }) => object.value, '')
-        return elem
-      })
-    }
-
     return results
   }
 }
 
+export function usedOnClasses (iri, dataset) {
+  const result = dataset
+    .match(rdf.namedNode(iri), termIRI.domain)
+    .toArray()
+    .filter(({ object }) => dataset.match(object, termIRI.a, termIRI.Class).length)
+  return result
+}
+
+export function rangeOf (iri, dataset) {
+  const result = dataset
+    .match(rdf.namedNode(iri), termIRI.range)
+    .toArray()
+    .map(({ object }) => object)
+  return result
+}
 /**
  * Checks if a quad matches the search string
  * @param QuadExt The quad that might match
@@ -121,9 +124,9 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
  */
 function objectMatch (object, searchInput, detailed = false) {
   const labelMatch = stringMatch(object.label, searchInput)
-  const descMatch = stringMatch(object.description, searchInput)
+  const commentMatch = stringMatch(object.comment, searchInput)
 
-  if (!labelMatch && !descMatch) {
+  if (!labelMatch && !commentMatch) {
     return null
   }
 
@@ -134,19 +137,19 @@ function objectMatch (object, searchInput, detailed = false) {
       labelMatch.index - 2
     )
     object.matched = object.label.substring(index, searchInput.length + 3)
-  } else if (descMatch) {
+  } else if (commentMatch) {
     const index = Math.min(
-      descMatch.index,
-      descMatch.index - 1,
-      descMatch.index - 2
+      commentMatch.index,
+      commentMatch.index - 1,
+      commentMatch.index - 2
     )
-    object.matched = object.description.substring(index, searchInput.length + 3)
+    object.matched = object.comment.substring(index, searchInput.length + 3)
   }
 
   if (detailed) {
     return {
       object,
-      match: labelMatch || descMatch
+      match: labelMatch || commentMatch
     }
   }
 
@@ -177,8 +180,8 @@ function stringMatch (potentialMatch, searchInput) {
   }
 }
 
-export function labelQuadForIRI (iri, dataset) {
-  const matches = dataset.match(rdf.namedNode(iri), termIRI.label).toArray()
+export function labelQuadForIRI (dataset, iri) {
+  const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.label).toArray()
   if (matches.length) {
     return matches[0]
   }
@@ -197,6 +200,11 @@ export function term (o) {
   const oIri = iri(o)
 
   return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
+}
+
+export function normalizeLabel (label, type = 'pascal') {
+  const camel = _camelCase(label)
+  return encodeURIComponent(type === 'pascal' ? _upperFirst(camel) : camel)
 }
 
 export function rebaseIRI (iri) {
