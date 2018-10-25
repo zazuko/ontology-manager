@@ -1,6 +1,39 @@
 <template>
   <div
     :class="{ subform }">
+
+    <div
+      v-show="clss['iri']"
+      class="box debug">
+      <div class="columns">
+        <div class="column">
+          <button
+            class="button is-big is-warning"
+            @click.prevent="debugGenerateNT">
+            debug button: refresh NT
+          </button>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <pre
+            class="is-clearfix"
+            v-show="debugNT">{{ debugNT }}</pre>
+        </div>
+      </div>
+      <div
+        v-show="debugNT"
+        class="columns">
+        <div class="column">
+          <button
+            class="button is-big is-warning"
+            @click.prevent="debugGenerateNT">
+            debug button: refresh NT
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="box">
 
       <div class="columns">
@@ -144,7 +177,7 @@ import NewPropertyForm from '@/components/NewPropertyForm'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
 import { Property } from '@/models/Property'
-import { toDataset } from '@/models/Class'
+import { toDataset, toNT, toStructureNT } from '@/models/Class'
 
 export default {
   name: 'NewClassForm',
@@ -197,7 +230,8 @@ export default {
     return {
       ontology: {},
       searchFunction: () => ([]),
-      renderTypeahead: process.client
+      renderTypeahead: process.client,
+      debugNT: ''
     }
   },
   computed: {
@@ -243,15 +277,18 @@ export default {
       return /^([a-z])/.test(label)
     },
     createProperty (label) {
-      const prop = new Property()
-      prop.label = label
-      prop.iri = prop.baseIRI + normalizeLabel(prop.label, 'camel')
+      const prop = new Property(label)
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true
     },
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
+    },
+    debugGenerateNT () {
+      this.debugNT = toNT(null, toDataset(this.clss, false))
+      this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
+      this.debugNT += toStructureNT(null, this.clss)
     }
   }
 }

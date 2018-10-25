@@ -1,11 +1,43 @@
 <template>
   <div
     :class="{ subform }">
+
+    <div
+      v-show="prop['iri']"
+      class="box debug">
+      <div class="columns">
+        <div class="column">
+          <button
+            class="button is-big is-warning"
+            @click.prevent="debugGenerateNT">
+            debug button: refresh NT
+          </button>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <pre
+            class="is-clearfix"
+            v-show="debugNT">{{ debugNT }}</pre>
+        </div>
+      </div>
+      <div
+        v-show="debugNT"
+        class="columns">
+        <div class="column">
+          <button
+            class="button is-big is-warning"
+            @click.prevent="debugGenerateNT">
+            debug button: refresh NT
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="box">
 
       <div class="columns">
         <div class="column">
-
           <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
           <p
             v-show="prop['iri']"
@@ -188,7 +220,7 @@ import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import NewClassForm from '@/components/NewClassForm'
 import { Class } from '@/models/Class'
-import { toDataset } from '@/models/Property'
+import { toDataset, toNT } from '@/models/Property'
 
 export default {
   name: 'NewPropertyForm',
@@ -243,7 +275,8 @@ export default {
   data () {
     return {
       searchFunction: () => ([]),
-      renderTypeahead: process.client
+      renderTypeahead: process.client,
+      debugNT: ''
     }
   },
   computed: {
@@ -312,15 +345,16 @@ export default {
       return /^([A-Z])/.test(label)
     },
     createRange (label) {
-      const clss = new Class()
-      clss.label = label
-      clss.iri = clss.baseIRI + normalizeLabel(clss.label, 'pascal')
+      const clss = new Class(label)
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true
     },
     invalidPropname (label) {
       return !/^([a-z])/.test(label)
+    },
+    debugGenerateNT () {
+      this.debugNT = toNT(null, toDataset(this.prop, false))
     }
   }
 }

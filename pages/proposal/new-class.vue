@@ -6,8 +6,8 @@
 
         <h1 class="title">
           New Class Request<span
-            v-show="clss.name">:
-            "{{ clss.name }}"
+            v-show="clss.label">:
+            "{{ clss.label }}"
           </span>
         </h1>
         <h2 class="subtitle">
