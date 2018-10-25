@@ -5,36 +5,39 @@
 
       <div class="columns">
         <div class="column">
-          <div class="field">
-            <label class="label">Property Name</label>
-            <div class="control">
-              <input
-                :class="{'is-danger': !prop['label']}"
-                class="input"
-                autocomplete="new-password"
-                type="text"
-                v-model.lazy="prop['label']">
-            </div>
-            <p
-              v-if="prop['label'] && invalidPropname(prop['label'])"
-              class="help is-danger">
-              Property name must start with a <strong>lowercase</strong> letter!
-            </p>
-            <p
-              v-else-if="!prop['label']"
-              class="help is-danger">
-              Please enter the property name.
-            </p>
-            <p v-else />
-          </div>
-        </div>
-        <div class="column">
+
+          <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
           <p
-            v-if="prop['label'] && !invalidPropname(prop['label'])">
-            <code>
-              {{ prop['iri'] }}
-            </code>
+            v-show="prop['iri']"
+            class="subtitle">
+            <code>{{ prop['iri'] }}</code>
           </p>
+
+          <div class="columns">
+            <div class="column is-6 field">
+              <label class="label">Property Name</label>
+              <div class="control">
+                <input
+                  :class="{'is-danger': !prop['label']}"
+                  class="input"
+                  autocomplete="new-password"
+                  type="text"
+                  v-debounce
+                  v-model.lazy="prop['label']">
+              </div>
+              <p
+                v-if="prop['label'] && invalidPropname(prop['label'])"
+                class="help is-danger">
+                Property name must start with a <strong>lowercase</strong> letter!
+              </p>
+              <p
+                v-else-if="!prop['label']"
+                class="help is-danger">
+                Please enter the property name.
+              </p>
+              <p v-else />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -47,6 +50,7 @@
               <textarea
                 class="textarea"
                 :class="{'is-danger': !prop['comment']}"
+                v-debounce
                 v-model.lazy="prop['comment']" />
             </div>
             <p
@@ -62,6 +66,7 @@
             <div class="control">
               <textarea
                 class="textarea"
+                v-debounce
                 v-model.lazy="prop['description']" />
             </div>
           </div>
@@ -164,6 +169,7 @@
         <label class="label">Example</label>
         <div class="control">
           <textarea
+            v-debounce
             v-model.lazy="prop['example']"
             class="textarea"
             placeholder="" />

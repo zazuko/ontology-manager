@@ -27,7 +27,8 @@
               <div class="column">
                 <div class="control">
                   <textarea
-                    v-model="clss.motivation"
+                    v-debounce
+                    v-model.lazy="clss.motivation"
                     class="textarea"
                     placeholder="" />
                 </div>
