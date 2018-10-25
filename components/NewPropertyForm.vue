@@ -216,7 +216,7 @@
 
 <script>
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel } from '@/libs/rdf'
-import { datasetsSetup } from '@/libs/utils'
+import { datasetsSetup, debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import NewClassForm from '@/components/NewClassForm'
 import { Class } from '@/models/Class'
@@ -269,6 +269,7 @@ export default {
           const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
           this.$vuexPush('domains', currentLabelQuad)
         }
+        this.onParentIRIChange()
       }
     })
   },
@@ -284,9 +285,6 @@ export default {
       return toDataset(this.prop, false)
     },
     prop () {
-      if (this.subform) {
-        this.$vuexSet(`${this.storePath}.domains[0]`, labelQuadForIRI(this.parentDataset))
-      }
       return this.$deepModel(this.storePath)
     },
     mergedOntology () {
@@ -296,6 +294,9 @@ export default {
   watch: {
     'prop.label' () {
       this.$vuexSet(`${this.storePath}.iri`, this.prop['baseIRI'] + normalizeLabel(this.prop['label'], 'camel'))
+    },
+    '$parent.clss.label' () {
+      this.onParentIRIChange()
     }
   },
   methods: {
@@ -317,6 +318,11 @@ export default {
       }
       this.$vuexPush('domains', labelQuadForIRI(this.ontology, searchResult.key))
     },
+    onParentIRIChange: debounce(function () {
+      if (this.subform) {
+        this.$vuexSet(`${this.storePath}.domains[0]`, labelQuadForIRI(this.parentDataset))
+      }
+    }, 400),
     unselectDomain (index) {
       this.$vuexDeleteAtIndex('domains', index)
     },
