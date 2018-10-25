@@ -1,16 +1,6 @@
 import Vue from 'vue'
-
+import { debounce } from '@/libs/utils'
 // https://github.com/vuejs-tips/v-debounce
-function debounce (fn, delay) {
-  let timeoutID
-  return function () {
-    clearTimeout(timeoutID)
-    const args = arguments
-    timeoutID = setTimeout(() => {
-      fn.apply(this, args)
-    }, delay)
-  }
-}
 
 Vue.directive('debounce', (el, binding) => {
   const defaultDelay = 330

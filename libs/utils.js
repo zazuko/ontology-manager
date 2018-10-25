@@ -158,3 +158,14 @@ export function findClassProperties (classIRI, dataset) {
     .match(null, domain, classToSearchFor)
     .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
 }
+
+export function debounce (fn, delay) {
+  let timeoutID
+  return function () {
+    clearTimeout(timeoutID)
+    const args = arguments
+    timeoutID = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
