@@ -72,7 +72,7 @@ export default {
   methods: {
     create () {
       const variables = {
-        headline: this.headline,
+        headline: this.headlineModel,
         iri: this.iri,
         body: this.body,
         threadType: 'DISCUSSION'
