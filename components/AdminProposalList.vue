@@ -5,7 +5,6 @@
         <th>Title</th>
         <th>Created by</th>
         <th>Last updated</th>
-        <th>Object</th>
         <th>Status</th>
         <th>Vote</th>
         <th>Actions</th>
@@ -28,11 +27,6 @@
           <br>
           <small>
             (Created: {{ proposal.createdAt|formatDate }})
-          </small>
-        </td>
-        <td>
-          <small>
-            <code>{{ proposal.iri }}</code>
           </small>
         </td>
         <td>{{ proposal.status }}</td>
