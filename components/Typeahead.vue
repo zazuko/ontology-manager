@@ -1,3 +1,8 @@
+<!--
+consider replacing this with:
+https://github.com/buefy/buefy/blob/dev/src/components/autocomplete/Autocomplete.vue
+which seems much more robust
+-->
 <template>
   <div class="configurable-list">
     <div class="field">
