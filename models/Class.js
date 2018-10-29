@@ -4,16 +4,16 @@ import { classBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
 import { toDataset as propToDataset } from '@/models/Property'
 
-export function Class (label = 'My Class') {
+export function Class (label = '') {
   this.baseIRI = classBaseUrl
   this.motivation = ''
 
   this.iri = classBaseUrl + normalizeLabel(label, 'pascal')
 
   this.label = label
-  this.comment = 'My nice class'
-  this.description = 'This is My Class!'
-  this.example = 'Look here!'
+  this.comment = ''
+  this.description = ''
+  this.example = ''
   this.domains = []
 
   this.parentStructureIRI = ''
