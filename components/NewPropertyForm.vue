@@ -37,14 +37,21 @@
     <div class="box">
 
       <div class="columns">
-        <div class="column">
+        <div class="column is-8">
           <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
           <p
             v-show="prop['iri']"
             class="subtitle">
             <code>{{ prop['iri'] }}</code>
           </p>
+        </div>
+        <div class="column">
+          <button class="button is-warning is-pulled-right">Remove</button>
+        </div>
+      </div>
 
+      <div class="columns">
+        <div class="column">
           <div class="columns">
             <div class="column is-6 field">
               <label class="label">Property Name</label>
@@ -336,6 +343,8 @@ export default {
       this.$vuexPush('ranges', range)
     },
     unselectRange (index) {
+      const childIndex = this.prop['classChildren'].indexOf(this.prop[`ranges[${index}]`])
+      this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('ranges', index)
     },
     canCreateDomain (label) {
