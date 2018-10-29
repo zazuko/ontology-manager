@@ -194,12 +194,14 @@
           </div>
         </div>
 
-        <div class="columns">
+        <div
+          v-show="subform"
+          class="columns">
           <div class="column">
             <button
-              class="button is-primary"
+              class="button is-success"
               @click.prevent="$vuexSet(`${storePath}.done`, true)">
-              Done
+              Add "<em>{{ prop['label'] }}</em>" to the proposal
             </button>
           </div>
         </div>
@@ -239,7 +241,7 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
+            <h2 class="subtitle">New Property "<em>{{ prop['label'] }}</em>"</h2>
           </div>
           <div class="column">
             <button
@@ -298,20 +300,7 @@ export default {
     await datasetsSetup(this.$store)
   },
   mounted () {
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        clearInterval(i)
-
-        this.ontology = this.ontologyBase || window.ontology
-        this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
-        this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-        if (!this.subform && this.prop['domains.length'] === 0) {
-          const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
-          this.$vuexPush('domains', currentLabelQuad)
-        }
-        this.onParentIRIChange()
-      }
-    })
+    this.init()
   },
   data () {
     return {
@@ -364,6 +353,8 @@ export default {
       }
     }, 400),
     unselectDomain (index) {
+      const childIndex = this.prop['classChildren'].indexOf(this.prop[`domains[${index}]`])
+      this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
     },
     selectRange (searchResult) {
@@ -400,6 +391,22 @@ export default {
     },
     invalidPropname (label) {
       return !/^([a-z])/.test(label)
+    },
+    init () {
+      let i = setInterval(() => {
+        if (typeof window !== 'undefined') {
+          clearInterval(i)
+
+          this.ontology = this.ontologyBase || window.ontology
+          this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
+          this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
+          if (!this.subform && this.prop['domains.length'] === 0) {
+            const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
+            this.$vuexPush('domains', currentLabelQuad)
+          }
+          this.onParentIRIChange()
+        }
+      })
     },
     debugGenerateNT () {
       this.debugNT = toNT(null, toDataset(this.prop, false))
