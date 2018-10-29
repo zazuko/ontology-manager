@@ -57,6 +57,7 @@
           </div>
         </article>
       </div>
+      <div v-else />
     </div>
   </section>
 </template>

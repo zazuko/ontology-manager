@@ -102,6 +102,7 @@ export function toNT (baseDataset, newQuadsDataset) {
 }
 
 export function toStructureNT (baseDataset, clss) {
+  // TODO this doesn't create the 'structure' quads yet for propChildren and classChildren
   const parentIRI = rdf.namedNode(clss.parentStructureIRI)
   const iri = rdf.namedNode(clss.iri)
   const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
