@@ -134,7 +134,7 @@
                   Create <a
                     title="Add as a new class"
                     @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}" ?
+                    class "{{ typeahead.inputString }}"?
                   </a>
                 </div>
                 <nav
@@ -172,7 +172,7 @@
                   Create <a
                     title="Add as a new class"
                     @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}" ?
+                    class "{{ typeahead.inputString }}"?
                   </a>
                 </div>
                 <nav

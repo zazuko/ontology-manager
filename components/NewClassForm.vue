@@ -140,7 +140,7 @@
                   Create <a
                     title="Add as a new property"
                     @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
-                    property "{{ typeahead.inputString }}" ?
+                    property "{{ typeahead.inputString }}"?
                   </a>
                 </div>
               </typeahead>
