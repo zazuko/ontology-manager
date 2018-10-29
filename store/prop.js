@@ -28,7 +28,7 @@ export const mutations = VueDeepSet.extendMutation({
     state.success = id
   },
   [NEW] (state) {
-    throw new Error('not implemented')
+    state.prop = new Property()
   }
 })
 

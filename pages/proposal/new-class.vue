@@ -99,6 +99,9 @@ export default {
   async created () {
     await datasetsSetup(this.$store)
   },
+  beforeMount () {
+    this.clear()
+  },
   computed: {
     clss () {
       return this.$deepModel('class.clss')
