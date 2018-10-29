@@ -1,6 +1,6 @@
 {
   "name": "ontology-editor",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Semantic Web, RDF ontology editor",
   "author": "Zazuko GmbH",
   "private": true,
