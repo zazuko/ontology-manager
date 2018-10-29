@@ -98,6 +98,9 @@ export default {
   async created () {
     await datasetsSetup(this.$store)
   },
+  beforeMount () {
+    this.clear()
+  },
   computed: {
     prop () {
       return this.$deepModel('prop.prop')

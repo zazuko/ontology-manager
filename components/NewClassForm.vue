@@ -155,6 +155,18 @@
           :dataset="mergedOntology"
           @delete="unselectDomain" />
 
+        <div
+          v-show="subform"
+          class="columns">
+          <div class="column">
+            <button
+              class="button is-success"
+              @click.prevent="$vuexSet(`${storePath}.done`, true)">
+              Add "<em>{{ clss['label'] }}</em>" to the proposal
+            </button>
+          </div>
+        </div>
+
       </div>
 
       <div v-if="clss['propChildren'] && clss['propChildren'].length">
@@ -190,7 +202,7 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
+            <h2 class="subtitle">New Class "<em>{{ clss['label'] }}</em>"</h2>
           </div>
           <div class="column">
             <button
@@ -251,15 +263,7 @@ export default {
     await datasetsSetup(this.$store)
   },
   mounted () {
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        clearInterval(i)
-
-        this.ontology = this.ontologyBase || window.ontology
-        this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
-        this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-      }
-    })
+    this.init()
   },
   data () {
     return {
@@ -306,6 +310,8 @@ export default {
       this.$vuexPush('domains', searchResult)
     },
     unselectDomain (index) {
+      const childIndex = this.clss['propChildren'].indexOf(this.clss[`domains[${index}]`])
+      this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
     },
     canCreateProperty (label) {
@@ -319,6 +325,17 @@ export default {
     },
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
+    },
+    init () {
+      let i = setInterval(() => {
+        if (typeof window !== 'undefined') {
+          clearInterval(i)
+
+          this.ontology = this.ontologyBase || window.ontology
+          this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
+          this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
+        }
+      })
     },
     debugGenerateNT () {
       this.debugNT = toNT(null, toDataset(this.clss, false))
