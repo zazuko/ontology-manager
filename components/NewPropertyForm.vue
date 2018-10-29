@@ -139,7 +139,7 @@
                     @click.prevent="index > 0 && unselectDomain(index)">
                     <i class="mdi mdi-close-circle" />
                   </span>
-                  {{ term(domain.object) }}
+                  {{ (domain.object && term(domain.object)) || domain.label }}
                 </a>
               </nav>
             </typeahead>
@@ -176,7 +176,7 @@
                     @click.prevent="unselectRange(index)">
                     <i class="mdi mdi-close-circle" />
                   </span>
-                  {{ (range.subject && term(range.subject)) || range.label }}
+                  {{ (range.object && term(range.object)) || range.label }}
                 </a>
               </nav>
             </typeahead>
@@ -316,7 +316,7 @@ export default {
       if (this.prop['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
         return
       }
-      this.$vuexPush('domains', labelQuadForIRI(this.ontology, searchResult.key))
+      this.$vuexPush('domains', labelQuadForIRI(this.ontology, searchResult.iri))
     },
     onParentIRIChange: debounce(function () {
       if (this.subform) {

@@ -224,5 +224,5 @@ export function datasetToCanonicalN3 (dataset) {
   return dataset.toArray()
     .map(quad => quad.toString())
     .sort((a, b) => a.localeCompare(b))
-    .join('\n')
+    .join('\n') + '\n' // files should always end with a nl
 }
