@@ -40,7 +40,7 @@
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
+            <h2 class="title">New Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span></h2>
             <p
               v-show="prop['iri']"
               class="subtitle">
@@ -116,7 +116,9 @@
 
         <hr>
 
-        <div class="columns">
+        <div
+          v-show="validBase"
+          class="columns">
           <div class="column">
             <div
               v-if="renderTypeahead">
@@ -200,6 +202,7 @@
           <div class="column">
             <button
               class="button is-success"
+              :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.done`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
             </button>
@@ -220,7 +223,7 @@
       </div>
       <div v-else />
 
-      <div class="box">
+      <!--<div class="box">
         <div class="field">
           <label class="label">Example</label>
           <div class="control">
@@ -231,7 +234,7 @@
               placeholder="" />
           </div>
         </div>
-      </div>
+      </div>-->
 
       <slot />
 
@@ -318,6 +321,15 @@ export default {
     },
     mergedOntology () {
       return this.dataset.clone().merge(this.ontology)
+    },
+    validBase () {
+      try {
+        // this triggers validation
+        toDataset(this.prop)
+        return true
+      } catch (err) {
+        return false
+      }
     }
   },
   watch: {

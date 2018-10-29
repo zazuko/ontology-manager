@@ -105,7 +105,6 @@ export function usedOnClasses (iri, dataset) {
   const result = dataset
     .match(rdf.namedNode(iri), termIRI.domain)
     .toArray()
-    .filter(({ object }) => dataset.match(object, termIRI.a, termIRI.Class).length)
   return result
 }
 

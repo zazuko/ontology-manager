@@ -38,14 +38,14 @@
 
       <div
         :class="{
-          'is-marginless': clss['propChildren'],
-          'has-prop-subform': clss['propChildren'],
+          'is-marginless': clss['propChildren.length'],
+          'has-prop-subform': clss['propChildren.length'],
         }"
         class="box">
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
+            <h2 class="title">New Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
             <p
               v-show="clss['iri']"
               class="subtitle">
@@ -122,7 +122,9 @@
 
         <hr>
 
-        <div class="columns">
+        <div
+          v-show="validBase"
+          class="columns">
           <div class="column">
             <div
               v-if="renderTypeahead">
@@ -161,6 +163,7 @@
           <div class="column">
             <button
               class="button is-success"
+              :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.done`, true)">
               Add "<em>{{ clss['label'] }}</em>" to the proposal
             </button>
@@ -181,7 +184,7 @@
       </div>
       <div v-else />
 
-      <div class="box">
+      <!--<div class="box">
         <div class="field">
           <label class="label">Example</label>
           <div class="control">
@@ -192,7 +195,7 @@
               placeholder="" />
           </div>
         </div>
-      </div>
+      </div>-->
 
       <slot />
 
@@ -282,6 +285,15 @@ export default {
     },
     mergedOntology () {
       return this.dataset.clone().merge(this.ontology)
+    },
+    validBase () {
+      try {
+        // this triggers validation
+        toDataset(this.clss)
+        return true
+      } catch (err) {
+        return false
+      }
     }
   },
   watch: {
