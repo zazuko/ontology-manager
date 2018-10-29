@@ -37,15 +37,21 @@
     <div class="box">
 
       <div class="columns">
-        <div class="column">
-
+        <div class="column is-8">
           <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
           <p
             v-show="clss['iri']"
             class="subtitle">
             <code>{{ clss['iri'] }}</code>
           </p>
+        </div>
+        <div class="column">
+          <button class="button is-warning is-pulled-right">Remove</button>
+        </div>
+      </div>
 
+      <div class="columns">
+        <div class="column">
           <div class="columns">
             <div class="column is-6 field">
               <label class="label">Class Name</label>
