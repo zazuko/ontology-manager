@@ -1,186 +1,214 @@
 <template>
   <div
-    :class="{ subform }">
+    :class="{ 'is-class-subform': subform }">
 
     <div
-      v-show="clss['iri']"
-      class="box debug">
-      <div class="columns">
-        <div class="column">
-          <button
-            class="button is-big is-warning"
-            @click.prevent="debugGenerateNT">
-            debug button: refresh NT
-          </button>
-        </div>
-      </div>
-      <div class="columns">
-        <div class="column">
-          <pre
-            class="is-clearfix"
-            v-show="debugNT">{{ debugNT }}</pre>
-        </div>
-      </div>
+      v-if="!clss['done']">
       <div
-        v-show="debugNT"
-        class="columns">
-        <div class="column">
-          <button
-            class="button is-big is-warning"
-            @click.prevent="debugGenerateNT">
-            debug button: refresh NT
-          </button>
+        v-show="!subform && clss['iri']"
+        class="box debug">
+        <div class="columns">
+          <div class="column">
+            <button
+              class="button is-big is-warning"
+              @click.prevent="debugGenerateNT">
+              debug button: refresh NT
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="box">
-
-      <div class="columns">
-        <div class="column is-8">
-          <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
-          <p
-            v-show="clss['iri']"
-            class="subtitle">
-            <code>{{ clss['iri'] }}</code>
-          </p>
+        <div class="columns">
+          <div class="column">
+            <pre
+              class="is-clearfix"
+              v-show="debugNT">{{ debugNT }}</pre>
+          </div>
         </div>
-        <div class="column">
-          <button class="button is-warning is-pulled-right">Remove</button>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column">
-          <div class="columns">
-            <div class="column is-6 field">
-              <label class="label">Class Name</label>
-              <div class="control">
-                <input
-                  :class="{'is-danger': !clss['label']}"
-                  class="input"
-                  autocomplete="new-password"
-                  type="text"
-                  v-debounce
-                  v-model.lazy="clss['label']">
-              </div>
-              <p
-                v-if="clss['label'] && invalidClassname(clss['label'])"
-                class="help is-danger">
-                Class name must start with an <strong>Uppercase</strong> letter!
-              </p>
-              <p
-                v-else-if="!clss['label']"
-                class="help is-danger">
-                Please enter the class name.
-              </p>
-              <p v-else />
-            </div>
+        <div
+          v-show="debugNT"
+          class="columns">
+          <div class="column">
+            <button
+              class="button is-big is-warning"
+              @click.prevent="debugGenerateNT">
+              debug button: refresh NT
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="columns">
+      <div
+        :class="{
+          'is-marginless': clss['propChildren'],
+          'has-prop-subform': clss['propChildren'],
+        }"
+        class="box">
 
-        <div class="column">
-          <div class="field">
-            <label class="label">Short Description</label>
-            <div class="control">
-              <textarea
-                class="textarea"
-                :class="{'is-danger': !clss['comment']}"
-                v-debounce
-                v-model.lazy="clss['comment']" />
-            </div>
+        <div class="columns">
+          <div class="column is-8">
+            <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
             <p
-              v-show="!clss['comment']"
-              class="help is-danger">
-              Please write a short description.
+              v-show="clss['iri']"
+              class="subtitle">
+              <code>{{ clss['iri'] }}</code>
             </p>
           </div>
+          <!--<div class="column">
+            <button class="button is-warning is-pulled-right">Remove</button>
+          </div>-->
         </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Long Description (optional)</label>
-            <div class="control">
-              <textarea
-                class="textarea"
-                v-debounce
-                v-model.lazy="clss['description']" />
+
+        <div class="columns">
+          <div class="column">
+            <div class="columns">
+              <div class="column is-6 field">
+                <label class="label">Class Name</label>
+                <div class="control">
+                  <input
+                    :class="{'is-danger': !clss['label']}"
+                    class="input"
+                    autocomplete="new-password"
+                    type="text"
+                    v-debounce
+                    v-model.lazy="clss['label']">
+                </div>
+                <p
+                  v-if="clss['label'] && invalidClassname(clss['label'])"
+                  class="help is-danger">
+                  Class name must start with an <strong>Uppercase</strong> letter!
+                </p>
+                <p
+                  v-else-if="!clss['label']"
+                  class="help is-danger">
+                  Please enter the class name.
+                </p>
+                <p v-else />
+              </div>
             </div>
           </div>
         </div>
 
-      </div>
+        <div class="columns">
 
-      <hr>
-
-      <div class="columns">
-        <div class="column">
-          <div
-            v-if="renderTypeahead">
-            <typeahead
-              :search-function="searchFunction"
-              label="Has the Following Properties"
-              @selectionChanged="selectDomain">
-              <div
-                v-if="typeahead.inputString && canCreateProperty(typeahead.inputString)"
-                slot="custom-options"
-                slot-scope="typeahead"
-                class="dropdown-item">
-                Create <a
-                  title="Add as a new property"
-                  @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
-                  property "{{ typeahead.inputString }}" ?
-                </a>
+          <div class="column">
+            <div class="field">
+              <label class="label">Short Description</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  :class="{'is-danger': !clss['comment']}"
+                  v-debounce
+                  v-model.lazy="clss['comment']" />
               </div>
-            </typeahead>
+              <p
+                v-show="!clss['comment']"
+                class="help is-danger">
+                Please write a short description.
+              </p>
+            </div>
           </div>
-          <div v-else />
+          <div class="column">
+            <div class="field">
+              <label class="label">Long Description (optional)</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  v-debounce
+                  v-model.lazy="clss['description']" />
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="column" />
+
+        <hr>
+
+        <div class="columns">
+          <div class="column">
+            <div
+              v-if="renderTypeahead">
+              <typeahead
+                :search-function="searchFunction"
+                label="Has the Following Properties"
+                @selectionChanged="selectDomain">
+                <div
+                  v-if="typeahead.inputString && canCreateProperty(typeahead.inputString)"
+                  slot="custom-options"
+                  slot-scope="typeahead"
+                  class="dropdown-item">
+                  Create <a
+                    title="Add as a new property"
+                    @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
+                    property "{{ typeahead.inputString }}" ?
+                  </a>
+                </div>
+              </typeahead>
+            </div>
+            <div v-else />
+          </div>
+          <div class="column" />
+        </div>
+
+        <properties-table
+          v-if="clss['domains.length']"
+          slot="selected-list"
+          :properties="clss['domains']"
+          :dataset="mergedOntology"
+          @delete="unselectDomain" />
+
       </div>
 
-      <properties-table
-        v-if="clss['domains.length']"
-        slot="selected-list"
-        :properties="clss['domains']"
-        :dataset="mergedOntology"
-        @delete="unselectDomain" />
+      <div v-if="clss['propChildren'] && clss['propChildren'].length">
+        <new-property-form
+          v-for="(newProp, index) in clss['propChildren']"
+          :key="index"
+          :subform="true"
+          :iri="iri"
+          :parent-dataset="dataset"
+          :store-path="`${storePath}.propChildren[${index}]`"
+          :ontology-base="mergedOntology" />
+      </div>
+      <div v-else />
 
-    </div>
-
-    <new-property-form
-      v-for="(newProp, index) in clss['propChildren']"
-      :key="index"
-      :subform="true"
-      :iri="iri"
-      :parent-dataset="dataset"
-      :store-path="`${storePath}.propChildren[${index}]`"
-      :ontology-base="mergedOntology" />
-
-    <div class="box">
-      <div class="field">
-        <label class="label">Example</label>
-        <div class="control">
-          <textarea
-            v-debounce
-            v-model.lazy="clss['example']"
-            class="textarea"
-            placeholder="" />
+      <div class="box">
+        <div class="field">
+          <label class="label">Example</label>
+          <div class="control">
+            <textarea
+              v-debounce
+              v-model.lazy="clss['example']"
+              class="textarea"
+              placeholder="" />
+          </div>
         </div>
       </div>
+
+      <slot />
+
     </div>
+    <div v-else>
 
-    <slot />
+      <div class="box">
+        <div class="columns">
+          <div class="column is-8">
+            <h2 class="title">New Class "<em>{{ clss['label'] }}</em>"</h2>
+          </div>
+          <div class="column">
+            <button
+              @click.prevent="$vuexSet(`${storePath}.done`, false)"
+              class="button is-info is-pulled-right">
+              Reopen
+            </button>
+          </div>
+        </div>
+      </div>
 
+    </div>
   </div>
 </template>
 
 <script>
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import { datasetsSetup } from '@/libs/utils'
-import NewPropertyForm from '@/components/NewPropertyForm'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
 import { Property } from '@/models/Property'
@@ -215,9 +243,9 @@ export default {
     }
   },
   components: {
+    NewPropertyForm: () => import('@/components/NewPropertyForm'),
     PropertiesTable,
-    Typeahead,
-    NewPropertyForm
+    Typeahead
   },
   async created () {
     await datasetsSetup(this.$store)

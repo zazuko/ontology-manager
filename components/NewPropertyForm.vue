@@ -1,223 +1,257 @@
 <template>
   <div
-    :class="{ subform }">
+    :class="{ 'is-prop-subform': subform }">
 
     <div
-      v-show="prop['iri']"
-      class="box debug">
-      <div class="columns">
-        <div class="column">
-          <button
-            class="button is-big is-warning"
-            @click.prevent="debugGenerateNT">
-            debug button: refresh NT
-          </button>
-        </div>
-      </div>
-      <div class="columns">
-        <div class="column">
-          <pre
-            class="is-clearfix"
-            v-show="debugNT">{{ debugNT }}</pre>
-        </div>
-      </div>
+      v-if="!prop['done']">
       <div
-        v-show="debugNT"
-        class="columns">
-        <div class="column">
-          <button
-            class="button is-big is-warning"
-            @click.prevent="debugGenerateNT">
-            debug button: refresh NT
-          </button>
+        v-show="!subform && prop['iri']"
+        class="box debug">
+        <div class="columns">
+          <div class="column">
+            <button
+              class="button is-big is-warning"
+              @click.prevent="debugGenerateNT">
+              debug button: refresh NT
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="box">
-
-      <div class="columns">
-        <div class="column is-8">
-          <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
-          <p
-            v-show="prop['iri']"
-            class="subtitle">
-            <code>{{ prop['iri'] }}</code>
-          </p>
+        <div class="columns">
+          <div class="column">
+            <pre
+              class="is-clearfix"
+              v-show="debugNT">{{ debugNT }}</pre>
+          </div>
         </div>
-        <div class="column">
-          <button class="button is-warning is-pulled-right">Remove</button>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column">
-          <div class="columns">
-            <div class="column is-6 field">
-              <label class="label">Property Name</label>
-              <div class="control">
-                <input
-                  :class="{'is-danger': !prop['label']}"
-                  class="input"
-                  autocomplete="new-password"
-                  type="text"
-                  v-debounce
-                  v-model.lazy="prop['label']">
-              </div>
-              <p
-                v-if="prop['label'] && invalidPropname(prop['label'])"
-                class="help is-danger">
-                Property name must start with a <strong>lowercase</strong> letter!
-              </p>
-              <p
-                v-else-if="!prop['label']"
-                class="help is-danger">
-                Please enter the property name.
-              </p>
-              <p v-else />
-            </div>
+        <div
+          v-show="debugNT"
+          class="columns">
+          <div class="column">
+            <button
+              class="button is-big is-warning"
+              @click.prevent="debugGenerateNT">
+              debug button: refresh NT
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="columns">
+      <div class="box">
 
-        <div class="column">
-          <div class="field">
-            <label class="label">Short Description</label>
-            <div class="control">
-              <textarea
-                class="textarea"
-                :class="{'is-danger': !prop['comment']}"
-                v-debounce
-                v-model.lazy="prop['comment']" />
-            </div>
+        <div class="columns">
+          <div class="column is-8">
+            <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
             <p
-              v-show="!prop['comment']"
-              class="help is-danger">
-              Please write a short description.
+              v-show="prop['iri']"
+              class="subtitle">
+              <code>{{ prop['iri'] }}</code>
             </p>
           </div>
+          <!--<div class="column">
+            <button class="button is-warning is-pulled-right">Remove</button>
+          </div>-->
         </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Long Description (optional)</label>
-            <div class="control">
-              <textarea
-                class="textarea"
-                v-debounce
-                v-model.lazy="prop['description']" />
+
+        <div class="columns">
+          <div class="column">
+            <div class="columns">
+              <div class="column is-6 field">
+                <label class="label">Property Name</label>
+                <div class="control">
+                  <input
+                    :class="{'is-danger': !prop['label']}"
+                    class="input"
+                    autocomplete="new-password"
+                    type="text"
+                    v-debounce
+                    v-model.lazy="prop['label']">
+                </div>
+                <p
+                  v-if="prop['label'] && invalidPropname(prop['label'])"
+                  class="help is-danger">
+                  Property name must start with a <strong>lowercase</strong> letter!
+                </p>
+                <p
+                  v-else-if="!prop['label']"
+                  class="help is-danger">
+                  Please enter the property name.
+                </p>
+                <p v-else />
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="columns">
+
+          <div class="column">
+            <div class="field">
+              <label class="label">Short Description</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  :class="{'is-danger': !prop['comment']}"
+                  v-debounce
+                  v-model.lazy="prop['comment']" />
+              </div>
+              <p
+                v-show="!prop['comment']"
+                class="help is-danger">
+                Please write a short description.
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Long Description (optional)</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  v-debounce
+                  v-model.lazy="prop['description']" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="columns">
+          <div class="column">
+            <div
+              v-if="renderTypeahead">
+              <typeahead
+                :search-function="searchFunction"
+                label="Applies to the Following Classes"
+                @selectionChanged="selectDomain">
+                <div
+                  v-if="typeahead.inputString && canCreateDomain(typeahead.inputString)"
+                  slot="custom-options"
+                  slot-scope="typeahead"
+                  class="dropdown-item">
+                  Create <a
+                    title="Add as a new class"
+                    @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
+                    class "{{ typeahead.inputString }}" ?
+                  </a>
+                </div>
+                <nav
+                  slot="selected-list"
+                  class="panel">
+                  <a
+                    v-for="(domain, index) in prop['domains']"
+                    :key="index"
+                    class:="{ 'is-active': index > 0 }"
+                    class="panel-block">
+                    <span
+                      class="panel-icon"
+                      @click.prevent="index > 0 && unselectDomain(index)">
+                      <i class="mdi mdi-close-circle" />
+                    </span>
+                    {{ (domain.object && term(domain.object)) || domain.label }}
+                  </a>
+                </nav>
+              </typeahead>
+            </div>
+            <div v-else />
+          </div>
+          <div class="column">
+            <div
+              v-if="renderTypeahead">
+              <typeahead
+                :search-function="searchFunction"
+                label="Expected Type"
+                @selectionChanged="selectRange">
+                <div
+                  v-if="typeahead.inputString && canCreateRange(typeahead.inputString)"
+                  slot="custom-options"
+                  slot-scope="typeahead"
+                  class="dropdown-item">
+                  Create <a
+                    title="Add as a new class"
+                    @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
+                    class "{{ typeahead.inputString }}" ?
+                  </a>
+                </div>
+                <nav
+                  slot="selected-list"
+                  class="panel">
+                  <a
+                    v-for="(range, index) in prop['ranges']"
+                    :key="index"
+                    class="panel-block is-active">
+                    <span
+                      class="panel-icon"
+                      @click.prevent="unselectRange(index)">
+                      <i class="mdi mdi-close-circle" />
+                    </span>
+                    {{ (range.object && term(range.object)) || range.label }}
+                  </a>
+                </nav>
+              </typeahead>
+            </div>
+            <div v-else />
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <button
+              class="button is-primary"
+              @click.prevent="$vuexSet(`${storePath}.done`, true)">
+              Done
+            </button>
+          </div>
+        </div>
+
       </div>
 
-      <hr>
+      <div v-if="prop['classChildren'] && prop['classChildren'].length">
+        <new-class-form
+          v-for="(newClass, index) in prop['classChildren']"
+          :key="index"
+          :subform="true"
+          :iri="iri"
+          :parent-dataset="dataset"
+          :store-path="`${storePath}.classChildren[${index}]`"
+          :ontology-base="mergedOntology" />
+      </div>
+      <div v-else />
 
-      <div class="columns">
-        <div class="column">
-          <div
-            v-if="renderTypeahead">
-            <typeahead
-              :search-function="searchFunction"
-              label="Applies to the Following Classes"
-              @selectionChanged="selectDomain">
-              <div
-                v-if="typeahead.inputString && canCreateDomain(typeahead.inputString)"
-                slot="custom-options"
-                slot-scope="typeahead"
-                class="dropdown-item">
-                Create <a
-                  title="Add as a new class"
-                  @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
-                  class "{{ typeahead.inputString }}" ?
-                </a>
-              </div>
-              <nav
-                slot="selected-list"
-                class="panel">
-                <a
-                  v-for="(domain, index) in prop['domains']"
-                  :key="index"
-                  class:="{ 'is-active': index > 0 }"
-                  class="panel-block">
-                  <span
-                    class="panel-icon"
-                    @click.prevent="index > 0 && unselectDomain(index)">
-                    <i class="mdi mdi-close-circle" />
-                  </span>
-                  {{ (domain.object && term(domain.object)) || domain.label }}
-                </a>
-              </nav>
-            </typeahead>
+      <div class="box">
+        <div class="field">
+          <label class="label">Example</label>
+          <div class="control">
+            <textarea
+              v-debounce
+              v-model.lazy="prop['example']"
+              class="textarea"
+              placeholder="" />
           </div>
-          <div v-else />
         </div>
-        <div class="column">
-          <div
-            v-if="renderTypeahead">
-            <typeahead
-              :search-function="searchFunction"
-              label="Expected Type"
-              @selectionChanged="selectRange">
-              <div
-                v-if="typeahead.inputString && canCreateRange(typeahead.inputString)"
-                slot="custom-options"
-                slot-scope="typeahead"
-                class="dropdown-item">
-                Create <a
-                  title="Add as a new class"
-                  @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
-                  class "{{ typeahead.inputString }}" ?
-                </a>
-              </div>
-              <nav
-                slot="selected-list"
-                class="panel">
-                <a
-                  v-for="(range, index) in prop['ranges']"
-                  :key="index"
-                  class="panel-block is-active">
-                  <span
-                    class="panel-icon"
-                    @click.prevent="unselectRange(index)">
-                    <i class="mdi mdi-close-circle" />
-                  </span>
-                  {{ (range.object && term(range.object)) || range.label }}
-                </a>
-              </nav>
-            </typeahead>
+      </div>
+
+      <slot />
+
+    </div>
+    <div v-else>
+
+      <div class="box">
+        <div class="columns">
+          <div class="column is-8">
+            <h2 class="title">New Property "<em>{{ prop['label'] }}</em>"</h2>
           </div>
-          <div v-else />
+          <div class="column">
+            <button
+              @click.prevent="$vuexSet(`${storePath}.done`, false)"
+              class="button is-info is-pulled-right">
+              Reopen
+            </button>
+          </div>
         </div>
       </div>
 
     </div>
-
-    <new-class-form
-      v-for="(newClass, index) in prop['classChildren']"
-      :key="index"
-      :subform="true"
-      :iri="iri"
-      :parent-dataset="dataset"
-      :store-path="`${storePath}.classChildren[${index}]`"
-      :ontology-base="mergedOntology" />
-
-    <div class="box">
-      <div class="field">
-        <label class="label">Example</label>
-        <div class="control">
-          <textarea
-            v-debounce
-            v-model.lazy="prop['example']"
-            class="textarea"
-            placeholder="" />
-        </div>
-      </div>
-    </div>
-
-    <slot />
-
   </div>
 </template>
 
@@ -225,7 +259,6 @@
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel } from '@/libs/rdf'
 import { datasetsSetup, debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
-import NewClassForm from '@/components/NewClassForm'
 import { Class } from '@/models/Class'
 import { toDataset, toNT } from '@/models/Property'
 
@@ -258,7 +291,7 @@ export default {
     }
   },
   components: {
-    NewClassForm,
+    NewClassForm: () => import('@/components/NewClassForm'),
     Typeahead
   },
   async created () {

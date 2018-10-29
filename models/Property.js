@@ -19,6 +19,8 @@ export function Property (label = 'my prop') {
 
   this.parentStructureIRI = ''
   this.classChildren = []
+
+  this.done = false
   return this
 }
 
