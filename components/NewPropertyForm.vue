@@ -339,13 +339,13 @@ export default {
       this.$vuexDeleteAtIndex('ranges', index)
     },
     canCreateDomain (label) {
-      if (this.prop['domains'].includes(label)) {
-        return false
-      }
-      if (this.iri === label) {
-        return false
-      }
       return /^([A-Z])/.test(label)
+    },
+    createDomain (label) {
+      const clss = new Class(label)
+      this.$vuexPush('domains', clss)
+      this.$vuexPush('classChildren', clss)
+      return true
     },
     canCreateRange (label) {
       return /^([A-Z])/.test(label)
