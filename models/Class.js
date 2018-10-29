@@ -18,6 +18,8 @@ export function Class (label = 'My Class') {
 
   this.parentStructureIRI = ''
   this.propChildren = []
+
+  this.done = false
   return this
 }
 
