@@ -4,16 +4,16 @@ import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
 import { toDataset as classToDataset } from '@/models/Class'
 
-export function Property (label = 'my prop') {
+export function Property (label = '') {
   this.baseIRI = propertyBaseUrl
   this.motivation = ''
 
   this.iri = propertyBaseUrl + normalizeLabel(label, 'camel')
 
-  this.label = 'my prop'
-  this.comment = 'my property'
-  this.description = 'This is My Prop!'
-  this.example = 'Look here!'
+  this.label = label
+  this.comment = ''
+  this.description = ''
+  this.example = ''
   this.ranges = []
   this.domains = []
 
@@ -78,14 +78,14 @@ export function toDataset (property, validation = true) {
   ]
 
   if (property.ranges.length) {
-    const existingRangesQuads = property.ranges.reduce((xs, domain) => {
+    const existingRangesQuads = property.ranges.reduce((xs, range) => {
       let subject
-      if (domain instanceof QuadExt) {
-        subject = domain.subject
+      if (range instanceof QuadExt) {
+        subject = range.subject
       } else {
-        subject = rdf.namedNode(domain.iri)
+        subject = rdf.namedNode(range.iri)
       }
-      xs.push(rdf.quad(subject, termIRI.range, iri))
+      xs.push(rdf.quad(iri, termIRI.range, subject))
       return xs
     }, [])
     quads.push(...existingRangesQuads)
