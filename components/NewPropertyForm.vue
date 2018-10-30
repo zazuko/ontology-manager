@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="prop['label']"
     :class="{ 'is-prop-subform': subform }">
 
     <div
@@ -273,7 +274,7 @@ import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } 
 import { datasetsSetup, debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import { Class } from '@/models/Class'
-import { toDataset, toNT } from '@/models/Property'
+import { toDataset, toNT, validate } from '@/models/Property'
 
 export default {
   name: 'NewPropertyForm',
@@ -332,7 +333,7 @@ export default {
     validBase () {
       try {
         // this triggers validation
-        toDataset(this.prop)
+        validate(this.prop)
         return true
       } catch (err) {
         return false
@@ -396,6 +397,7 @@ export default {
     },
     createDomain (label) {
       const clss = new Class(label)
+      clss.isNew = true
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
       return true
@@ -405,6 +407,7 @@ export default {
     },
     createRange (label) {
       const clss = new Class(label)
+      clss.isNew = true
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true
