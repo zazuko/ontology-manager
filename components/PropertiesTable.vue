@@ -25,7 +25,14 @@
         v-for="(property, index) in properties"
         :key="index">
         <td>
-          <a :href="rebaseIRI(property.iri)">
+          <a
+            v-if="property.isNew"
+            :href="`#${property.label}`">
+            {{ property.label }}
+          </a>
+          <a
+            v-else
+            :href="rebaseIRI(property.iri)">
             {{ property.label }}
           </a>
         </td>
@@ -48,6 +55,12 @@
               v-for="otherClass in usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
               <a
+                v-if="classIsNew(otherClass)"
+                :href="`#${ term(otherClass.object) }`">
+                {{ term(otherClass.object) }}
+              </a>
+              <a
+                v-else
                 :href="rebaseIRI(otherClass.object.value)"
                 target="_blank">
                 {{ term(otherClass.object) }}
@@ -56,11 +69,15 @@
           </ul>
         </td>
         <td>
-          <span
-            class="panel-icon"
-            @click.prevent="$emit('delete', index)">
-            <i class="mdi mdi-close-circle" />
-          </span>
+          <button class="button is-small is-danger is-outlined" @click.prevent="$emit('delete', index)">
+            Remove
+          </button>
+          <button
+          class="button is-small is-success is-outlined"
+            v-show="property.isNew"
+            :href="`#${property.label}`">
+            Edit
+          </button>
         </td>
       </tr>
     </tbody>
@@ -68,7 +85,7 @@
 </template>
 
 <script>
-import { term, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
+import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 
 export default {
   name: 'PropertiesTable',
@@ -86,7 +103,10 @@ export default {
     term,
     rebaseIRI,
     usedOnClasses,
-    rangeOf
+    rangeOf,
+    classIsNew ({ object }) {
+      return !window.ontology.match(object, termIRI.a, termIRI.class).toArray().length
+    }
   }
 }
 </script>
