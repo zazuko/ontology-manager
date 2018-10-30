@@ -81,3 +81,9 @@ ul.progression {
     }
   }
 }
+
+table.table ul {
+  li::before {
+    content: "–";
+  }
+}

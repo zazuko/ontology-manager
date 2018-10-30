@@ -20,6 +20,9 @@ const stringIRI = {
   domain: 'http://schema.org/domainIncludes',
   range: 'http://schema.org/rangeIncludes',
 
+  // created: 'http://purl.org/dc/terms/created',
+  modified: 'http://purl.org/dc/terms/modified',
+
   hasPart: 'http://schema.org/hasPart'
 }
 

@@ -59,10 +59,15 @@ function validate (prop) {
 }
 
 export function generatePropertyProposal (data) {
-  const property = data.property
   const ontology = data.ontology
-  const dataset = toDataset(property)
-  return toNT(ontology, dataset)
+  const structure = data.structure
+  const property = data.property
+  const datasets = toDataset(property)
+
+  return {
+    ontologyContent: toNT(ontology, datasets.ontology),
+    structureContent: toNT(structure, datasets.structure)
+  }
 }
 
 export function toDataset (property, validation = true) {
@@ -76,6 +81,13 @@ export function toDataset (property, validation = true) {
     rdf.quad(iri, termIRI.label, rdf.literal(property.label)),
     rdf.quad(iri, termIRI.comment, rdf.literal(property.comment))
   ]
+
+  if (property.description) {
+    quads.push(rdf.quad(iri, termIRI.description, rdf.literal(property.description)))
+  }
+  if (property.example) {
+    quads.push(rdf.quad(iri, termIRI.example, rdf.literal(property.example)))
+  }
 
   if (property.ranges.length) {
     const existingRangesQuads = property.ranges.reduce((xs, range) => {
@@ -105,14 +117,13 @@ export function toDataset (property, validation = true) {
     quads.push(...existingDomainsQuads)
   }
 
-  const dataset = rdf.dataset().addAll(quads)
-
-  const childrenDataset = property.classChildren.reduce((acc, classChild) => {
-    const childDataset = classToDataset(classChild, validation)
-    return rdf.dataset().merge(childDataset)
-  }, rdf.dataset())
-
-  return dataset.merge(childrenDataset)
+  return property.classChildren.reduce((acc, classChild) => {
+    const childDatasets = classToDataset(classChild, validation)
+    return {
+      ontology: acc.ontology.merge(childDatasets.ontology),
+      structure: acc.structure.merge(childDatasets.structure)
+    }
+  }, { ontology: rdf.dataset().addAll(quads), structure: rdf.dataset() })
 }
 
 export function toNT (baseDataset, newQuadsDataset) {
