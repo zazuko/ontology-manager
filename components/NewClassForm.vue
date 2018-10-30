@@ -354,10 +354,14 @@ export default {
       })
     },
     debugGenerateNT () {
-      const datasets = toDataset(this.clss, false)
-      this.debugNT = toNT(null, datasets.ontology)
-      this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-      this.debugNT += toNT(null, datasets.structure)
+      try {
+        const datasets = toDataset(this.clss)
+        this.debugNT = toNT(null, datasets.ontology)
+        this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
+        this.debugNT += toNT(null, datasets.structure)
+      } catch (err) {
+        this.debugNT = err.message
+      }
     }
   }
 }

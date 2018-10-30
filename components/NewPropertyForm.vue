@@ -187,7 +187,13 @@
                       @click.prevent="unselectRange(index)">
                       <i class="mdi mdi-close-circle" />
                     </span>
-                    {{ (range.object && term(range.object)) || range.label }}
+                    <span
+                      v-if="!range.label && range.predicate.value === termIRI.a.value">
+                      {{ term(range.subject) }}
+                    </span>
+                    <span v-else>
+                      {{ (range.object && term(range.object)) || range.label }}
+                    </span>
                   </a>
                 </nav>
               </typeahead>
@@ -260,7 +266,7 @@
 </template>
 
 <script>
-import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel } from '@/libs/rdf'
+import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
 import { datasetsSetup, debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import { Class } from '@/models/Class'
@@ -302,7 +308,8 @@ export default {
       renderTypeahead: process.client,
       ontology: null,
       structure: null,
-      debugNT: ''
+      debugNT: '',
+      termIRI
     }
   },
   computed: {
@@ -358,7 +365,8 @@ export default {
     },
     onParentIRIChange: debounce(function () {
       if (this.subform) {
-        this.$vuexSet(`${this.storePath}.domains[0]`, labelQuadForIRI(this.datasets.ontology))
+        const parentLabelQuad = labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.clss.iri)
+        this.$vuexSet(`${this.storePath}.domains[0]`, parentLabelQuad)
       }
     }, 400),
     unselectDomain (index) {
@@ -426,10 +434,14 @@ export default {
       })
     },
     debugGenerateNT () {
-      const datasets = toDataset(this.prop, false)
-      this.debugNT = toNT(null, datasets.ontology)
-      this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-      this.debugNT += toNT(null, datasets.structure)
+      try {
+        const datasets = toDataset(this.prop)
+        this.debugNT = toNT(null, datasets.ontology)
+        this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
+        this.debugNT += toNT(null, datasets.structure)
+      } catch (err) {
+        this.debugNT = err.message
+      }
     }
   }
 }

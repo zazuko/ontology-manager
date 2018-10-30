@@ -39,14 +39,6 @@ function validate (clss) {
   if (!clss.comment) {
     throw new Error('Class `comment` missing')
   }
-
-  if (clss.domains.length) {
-    clss.domains.forEach(({ domain }) => {
-      if (!(domain instanceof QuadExt)) {
-        throw new Error(`Class '${domain}' should be a rdf-ext QuadExt`)
-      }
-    })
-  }
 }
 
 export function generateClassProposal (data) {

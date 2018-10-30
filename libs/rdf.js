@@ -108,6 +108,7 @@ export function usedOnClasses (iri, dataset) {
   const result = dataset
     .match(rdf.namedNode(iri), termIRI.domain)
     .toArray()
+    .filter(({ object }) => dataset.match(object, termIRI.a, termIRI.Class).toArray().length)
   return result
 }
 
@@ -183,7 +184,7 @@ function stringMatch (potentialMatch, searchInput) {
 }
 
 export function labelQuadForIRI (dataset, iri) {
-  const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.label).toArray()
+  const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.label, null).toArray()
   if (matches.length) {
     return matches[0]
   }
