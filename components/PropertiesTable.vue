@@ -13,11 +13,7 @@
           <br>
           <small>these classes</small>
         </th>
-        <th>
-          Remove
-          <br>
-          <small>from class being created</small>
-        </th>
+        <th />
       </tr>
     </thead>
     <tbody>
@@ -69,15 +65,17 @@
           </ul>
         </td>
         <td>
-          <button class="button is-small is-danger is-outlined" @click.prevent="$emit('delete', index)">
+          <button
+            class="button is-small is-danger is-outlined"
+            @click.prevent="$emit('delete', index)">
             Remove
           </button>
-          <button
-          class="button is-small is-success is-outlined"
+          <a
+            class="button is-small is-success is-outlined"
             v-show="property.isNew"
             :href="`#${property.label}`">
             Edit
-          </button>
+          </a>
         </td>
       </tr>
     </tbody>
