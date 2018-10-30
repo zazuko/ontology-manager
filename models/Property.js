@@ -40,22 +40,6 @@ function validate (prop) {
   if (!prop.comment) {
     throw new Error('Property `comment` missing')
   }
-
-  if (prop.ranges.length) {
-    prop.ranges.forEach((range) => {
-      if (!(range instanceof QuadExt)) {
-        throw new Error(`Class '${range}' should be a rdf-ext QuadExt`)
-      }
-    })
-  }
-
-  if (prop.domains.length) {
-    prop.domains.forEach((domain) => {
-      if (!(domain instanceof QuadExt)) {
-        throw new Error(`Class '${domain}' should be a rdf-ext QuadExt`)
-      }
-    })
-  }
 }
 
 export function generatePropertyProposal (data) {
@@ -111,7 +95,7 @@ export function toDataset (property, validation = true) {
       } else {
         subject = rdf.namedNode(domain.iri)
       }
-      xs.push(rdf.quad(subject, termIRI.domain, iri))
+      xs.push(rdf.quad(iri, termIRI.domain, subject))
       return xs
     }, [])
     quads.push(...existingDomainsQuads)
