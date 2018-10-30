@@ -4,6 +4,7 @@ import _get from 'lodash/get'
 export async function createPropertyProposal (data) {
   if (!data.property) throw new Error('missing data.property')
   if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
+  if (!data.structureContent) throw new Error('missing data.structureContent')
   if (!data.token) throw new Error('missing data.token')
 
   const token = data.token
@@ -13,7 +14,8 @@ export async function createPropertyProposal (data) {
     message: `add property '${data.property.label}' to '${data.property.parentStructureIRI}'`,
     body: data.property.motivation,
     iri: data.property.parentStructureIRI,
-    ontologyContent: data.ontologyContent
+    ontologyContent: data.ontologyContent,
+    structureContent: data.structureContent
   }
 
   const headers = { headers: { authorization: `Bearer ${token}` } }
