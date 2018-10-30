@@ -4,7 +4,7 @@
 
     <div
       v-if="!clss['done']">
-      <div
+      <!-- <div
         v-show="!subform && clss['iri']"
         class="box debug">
         <div class="columns">
@@ -34,7 +34,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div
         :class="{
@@ -120,6 +120,21 @@
 
         </div>
 
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Example</label>
+              <div class="control">
+                <textarea
+                  v-debounce
+                  v-model.lazy="clss['example']"
+                  class="textarea"
+                  placeholder="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <hr>
 
         <div
@@ -182,19 +197,6 @@
           :base-datasets="mergedDatasets" />
       </div>
       <div v-else />
-
-      <!--<div class="box">
-        <div class="field">
-          <label class="label">Example</label>
-          <div class="control">
-            <textarea
-              v-debounce
-              v-model.lazy="clss['example']"
-              class="textarea"
-              placeholder="" />
-          </div>
-        </div>
-      </div>-->
 
       <slot />
 
