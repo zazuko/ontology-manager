@@ -30,21 +30,28 @@
           </a>
         </td>
         <td>
-          <a
-            v-for="range in rangeOf(property.iri, dataset)"
-            :key="range.value"
-            :href="rebaseIRI(range.value)">
-            {{ term(range.value) }}
-          </a>
+          <ul>
+            <li
+              v-for="range in rangeOf(property.iri, dataset)"
+              :key="range.value">
+              <a
+                :href="rebaseIRI(range.value)"
+                target="_blank">
+                {{ term(range.value) }}
+              </a>
+            </li>
+          </ul>
         </td>
         <td>
           <ul>
             <li
               v-for="otherClass in usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
-              <small>
-                <code>{{ term(otherClass.object) }}</code>
-              </small>
+              <a
+                :href="rebaseIRI(otherClass.object.value)"
+                target="_blank">
+                {{ term(otherClass.object) }}
+              </a>
             </li>
           </ul>
         </td>

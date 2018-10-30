@@ -217,9 +217,8 @@
           :key="index"
           :subform="true"
           :iri="iri"
-          :parent-dataset="dataset"
           :store-path="`${storePath}.classChildren[${index}]`"
-          :ontology-base="mergedOntology" />
+          :base-datasets="mergedDatasets" />
       </div>
       <div v-else />
 
@@ -274,17 +273,12 @@ export default {
       type: String,
       required: true
     },
-    parentDataset: {
-      type: Object,
-      required: false,
-      default: () => ({})
-    },
     storePath: {
       type: String,
       required: false,
       default: () => 'prop.prop'
     },
-    ontologyBase: {
+    baseDatasets: {
       type: [Object, Boolean],
       required: false,
       default: () => false
@@ -299,28 +293,31 @@ export default {
     NewClassForm: () => import('@/components/NewClassForm'),
     Typeahead
   },
-  async created () {
-    await datasetsSetup(this.$store)
-  },
-  mounted () {
-    this.init()
+  async mounted () {
+    await this.init()
   },
   data () {
     return {
       searchFunction: () => ([]),
       renderTypeahead: process.client,
+      ontology: null,
+      structure: null,
       debugNT: ''
     }
   },
   computed: {
-    dataset () {
+    datasets () {
       return toDataset(this.prop, false)
     },
     prop () {
       return this.$deepModel(this.storePath)
     },
-    mergedOntology () {
-      return this.dataset.clone().merge(this.ontology)
+    mergedDatasets () {
+      const datasets = this.datasets
+      return {
+        ontology: datasets.ontology.clone().merge(this.ontology),
+        structure: datasets.structure.clone().merge(this.structure)
+      }
     },
     validBase () {
       try {
@@ -361,7 +358,7 @@ export default {
     },
     onParentIRIChange: debounce(function () {
       if (this.subform) {
-        this.$vuexSet(`${this.storePath}.domains[0]`, labelQuadForIRI(this.parentDataset))
+        this.$vuexSet(`${this.storePath}.domains[0]`, labelQuadForIRI(this.datasets.ontology))
       }
     }, 400),
     unselectDomain (index) {
@@ -404,12 +401,20 @@ export default {
     invalidPropname (label) {
       return !/^([a-z])/.test(label)
     },
-    init () {
+    async init () {
+      await datasetsSetup(this.$store)
+
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {
           clearInterval(i)
 
-          this.ontology = this.ontologyBase || window.ontology
+          if (this.baseDatasets) {
+            this.ontology = this.baseDatasets.ontology
+            this.structure = this.baseDatasets.structure
+          } else {
+            this.ontology = window.ontology
+            this.structure = window.structure
+          }
           this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
           this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
           if (!this.subform && this.prop['domains.length'] === 0) {
@@ -421,7 +426,10 @@ export default {
       })
     },
     debugGenerateNT () {
-      this.debugNT = toNT(null, toDataset(this.prop, false))
+      const datasets = toDataset(this.prop, false)
+      this.debugNT = toNT(null, datasets.ontology)
+      this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
+      this.debugNT += toNT(null, datasets.structure)
     }
   }
 }

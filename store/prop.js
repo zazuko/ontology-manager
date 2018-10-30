@@ -37,12 +37,14 @@ export const actions = {
     try {
       const propertyProposalData = generatePropertyProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
+        structure: typeof window !== 'undefined' ? window.structure : {},
         property: state.prop
       })
 
       const id = await createPropertyProposal({
         property: state.prop,
-        ontologyContent: propertyProposalData,
+        ontologyContent: propertyProposalData.ontologyContent,
+        structureContent: propertyProposalData.structureContent,
         token
       })
 

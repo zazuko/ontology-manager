@@ -154,7 +154,7 @@
           v-if="clss['domains.length']"
           slot="selected-list"
           :properties="clss['domains']"
-          :dataset="mergedOntology"
+          :dataset="mergedDatasets.ontology"
           @delete="unselectDomain" />
 
         <div
@@ -178,9 +178,8 @@
           :key="index"
           :subform="true"
           :iri="iri"
-          :parent-dataset="dataset"
           :store-path="`${storePath}.propChildren[${index}]`"
-          :ontology-base="mergedOntology" />
+          :base-datasets="mergedDatasets" />
       </div>
       <div v-else />
 
@@ -227,7 +226,7 @@ import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
 import { Property } from '@/models/Property'
-import { toDataset, toNT, toStructureNT } from '@/models/Class'
+import { toDataset, toNT } from '@/models/Class'
 
 export default {
   name: 'NewClassForm',
@@ -236,17 +235,12 @@ export default {
       type: String,
       required: true
     },
-    parentDataset: {
-      type: Object,
-      required: false,
-      default: () => ({})
-    },
     storePath: {
       type: String,
       required: false,
       default: () => 'class.clss'
     },
-    ontologyBase: {
+    baseDatasets: {
       type: [Object, Boolean],
       required: false,
       default: () => false
@@ -262,29 +256,31 @@ export default {
     PropertiesTable,
     Typeahead
   },
-  async created () {
-    await datasetsSetup(this.$store)
-  },
-  mounted () {
-    this.init()
+  async mounted () {
+    await this.init()
   },
   data () {
     return {
-      ontology: {},
       searchFunction: () => ([]),
       renderTypeahead: process.client,
+      ontology: null,
+      structure: null,
       debugNT: ''
     }
   },
   computed: {
-    dataset () {
+    datasets () {
       return toDataset(this.clss, false)
     },
     clss () {
       return this.$deepModel(this.storePath)
     },
-    mergedOntology () {
-      return this.dataset.clone().merge(this.ontology)
+    mergedDatasets () {
+      const datasets = this.datasets
+      return {
+        ontology: datasets.ontology.clone().merge(this.ontology),
+        structure: datasets.structure.clone().merge(this.structure)
+      }
     },
     validBase () {
       try {
@@ -338,21 +334,30 @@ export default {
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
     },
-    init () {
+    async init () {
+      await datasetsSetup(this.$store)
+
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {
           clearInterval(i)
 
-          this.ontology = this.ontologyBase || window.ontology
+          if (this.baseDatasets) {
+            this.ontology = this.baseDatasets.ontology
+            this.structure = this.baseDatasets.structure
+          } else {
+            this.ontology = window.ontology
+            this.structure = window.structure
+          }
           this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
           this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
         }
       })
     },
     debugGenerateNT () {
-      this.debugNT = toNT(null, toDataset(this.clss, false))
+      const datasets = toDataset(this.clss, false)
+      this.debugNT = toNT(null, datasets.ontology)
       this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-      this.debugNT += toStructureNT(null, this.clss)
+      this.debugNT += toNT(null, datasets.structure)
     }
   }
 }

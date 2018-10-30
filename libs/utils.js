@@ -16,10 +16,10 @@ export const toastClose = {
 
 export async function datasetsSetup (store) {
   if (process.client) {
-    if (!window.ontology) {
+    if (!(window.ontology instanceof rdf.defaults.Dataset)) {
       window.ontology = await deserialize(store.state.graph.ontologySerialized)
     }
-    if (!window.structure) {
+    if (!(window.structure instanceof rdf.defaults.Dataset)) {
       window.structure = await deserialize(store.state.graph.structureSerialized)
     }
   }

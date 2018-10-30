@@ -53,11 +53,11 @@ export function generateClassProposal (data) {
   const ontology = data.ontology
   const structure = data.structure
   const clss = data.clss
-  const dataset = toDataset(clss)
+  const datasets = toDataset(clss)
 
   return {
-    ontologyContent: toNT(ontology, dataset),
-    structureContent: toStructureNT(structure, clss)
+    ontologyContent: toNT(ontology, datasets.ontology),
+    structureContent: toNT(structure, datasets.structure)
   }
 }
 
@@ -68,10 +68,17 @@ export function toDataset (clss, validation = true) {
 
   const iri = rdf.namedNode(clss.iri)
   const quads = [
-    rdf.quad(iri, termIRI.a, termIRI.Property),
+    rdf.quad(iri, termIRI.a, termIRI.Class),
     rdf.quad(iri, termIRI.label, rdf.literal(clss.label)),
     rdf.quad(iri, termIRI.comment, rdf.literal(clss.comment))
   ]
+
+  if (clss.description) {
+    quads.push(rdf.quad(iri, termIRI.description, rdf.literal(clss.description)))
+  }
+  if (clss.example) {
+    quads.push(rdf.quad(iri, termIRI.example, rdf.literal(clss.example)))
+  }
 
   if (clss.domains.length) {
     const existingDomainsQuads = clss.domains.reduce((xs, domain) => {
@@ -87,29 +94,21 @@ export function toDataset (clss, validation = true) {
     quads.push(...existingDomainsQuads)
   }
 
-  const dataset = rdf.dataset().addAll(quads)
+  const structureQuads = [
+    rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, iri)
+  ]
 
-  const childrenDataset = clss.propChildren.reduce((acc, propChild) => {
-    const childDataset = propToDataset(propChild, validation)
-    return rdf.dataset().merge(childDataset)
-  }, rdf.dataset())
-
-  return dataset.merge(childrenDataset)
+  return clss.propChildren.reduce((acc, propChild) => {
+    const childDatasets = propToDataset(propChild, validation)
+    return {
+      ontology: acc.ontology.merge(childDatasets.ontology),
+      structure: acc.structure.merge(childDatasets.structure)
+    }
+  }, { ontology: rdf.dataset().addAll(quads), structure: rdf.dataset().addAll(structureQuads) })
 }
 
 export function toNT (baseDataset, newQuadsDataset) {
   const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
-
-  return datasetToCanonicalN3(dataset)
-}
-
-export function toStructureNT (baseDataset, clss) {
-  // TODO this doesn't create the 'structure' quads yet for propChildren and classChildren
-  const parentIRI = rdf.namedNode(clss.parentStructureIRI)
-  const iri = rdf.namedNode(clss.iri)
-  const quad = rdf.quad(parentIRI, termIRI.hasPart, iri)
-
-  const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).add(quad)
 
   return datasetToCanonicalN3(dataset)
 }
