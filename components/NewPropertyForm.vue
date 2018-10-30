@@ -4,7 +4,7 @@
 
     <div
       v-if="!prop['done']">
-      <div
+      <!-- <div
         v-show="!subform && prop['iri']"
         class="box debug">
         <div class="columns">
@@ -34,7 +34,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="box">
 
@@ -109,6 +109,22 @@
                   class="textarea"
                   v-debounce
                   v-model.lazy="prop['description']" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Example</label>
+              <div class="control">
+                <textarea
+                  v-debounce
+                  v-model.lazy="prop['example']"
+                  class="textarea"
+                  placeholder="" />
               </div>
             </div>
           </div>
@@ -227,19 +243,6 @@
           :base-datasets="mergedDatasets" />
       </div>
       <div v-else />
-
-      <!--<div class="box">
-        <div class="field">
-          <label class="label">Example</label>
-          <div class="control">
-            <textarea
-              v-debounce
-              v-model.lazy="prop['example']"
-              class="textarea"
-              placeholder="" />
-          </div>
-        </div>
-      </div>-->
 
       <slot />
 
