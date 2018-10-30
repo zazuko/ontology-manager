@@ -23,7 +23,7 @@ export function Class (label = '') {
   return this
 }
 
-function validate (clss) {
+export function validate (clss) {
   if (!clss.baseIRI) {
     throw new Error('Class `baseIRI` missing')
   }

@@ -90,17 +90,17 @@
 
               <div
                 id="submit"
-                class="field is-grouped">
+                class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
-                    class="button is-primary"
+                    class="button is-primary is-medium"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
                 </p>
                 <p class="control">
                   <button
-                    class="button"
+                    class="button is-medium"
                     @click.prevent="clear">
                     Cancel
                   </button>

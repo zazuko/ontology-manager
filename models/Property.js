@@ -24,7 +24,7 @@ export function Property (label = '') {
   return this
 }
 
-function validate (prop) {
+export function validate (prop) {
   if (!prop.baseIRI) {
     throw new Error('Property `baseIRI` missing')
   }

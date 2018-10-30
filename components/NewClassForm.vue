@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="clss['label']"
     :class="{ 'is-class-subform': subform }">
 
     <div
@@ -228,7 +229,7 @@ import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
 import { Property } from '@/models/Property'
-import { toDataset, toNT } from '@/models/Class'
+import { toDataset, toNT, validate } from '@/models/Class'
 
 export default {
   name: 'NewClassForm',
@@ -287,7 +288,7 @@ export default {
     validBase () {
       try {
         // this triggers validation
-        toDataset(this.clss)
+        validate(this.clss)
         return true
       } catch (err) {
         return false
@@ -329,6 +330,7 @@ export default {
     },
     createProperty (label) {
       const prop = new Property(label)
+      prop.isNew = true
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true
