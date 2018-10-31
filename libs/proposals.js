@@ -1,8 +1,15 @@
 import axios from 'axios'
 import _get from 'lodash/get'
+import { parse, stringify } from 'flatted/cjs'
+import { Class } from '@/models/Class'
+import { Property } from '@/models/Property'
 
-export async function createPropertyProposal (data) {
-  if (!data.property) throw new Error('missing data.property')
+const ObjectTypes = { Class, Property }
+
+export async function submitProposal (data) {
+  if (!data.object) throw new Error('missing data.object')
+  if (!data.title) throw new Error('missing data.title')
+  if (!data.message) throw new Error('missing data.message')
   if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
   if (!data.structureContent) throw new Error('missing data.structureContent')
   if (!data.token) throw new Error('missing data.token')
@@ -10,43 +17,44 @@ export async function createPropertyProposal (data) {
   const token = data.token
 
   const body = {
-    title: `New property '${data.property.label}' on '${data.property.parentStructureIRI}'`,
-    message: `add property '${data.property.label}' to '${data.property.parentStructureIRI}'`,
-    body: data.property.motivation,
-    iri: data.property.parentStructureIRI,
+    title: data.title,
+    message: data.message,
+    body: data.object.motivation,
+    iri: data.object.parentStructureIRI,
     ontologyContent: data.ontologyContent,
     structureContent: data.structureContent
   }
 
   const headers = { headers: { authorization: `Bearer ${token}` } }
 
-  const result = await axios.post('/api/proposal/new', body, headers)
+  const result = await axios.post('/api/proposal/submit', body, headers)
 
   const id = _get(result, 'data.createThread.thread.id')
   return id
 }
 
-export async function createClassProposal (data) {
-  if (!data.clss) throw new Error('missing data.clss')
-  if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
-  if (!data.structureContent) throw new Error('missing data.structureContent')
-  if (!data.token) throw new Error('missing data.token')
-
-  const token = data.token
-
-  const body = {
-    title: `New class '${data.clss.label}'`,
-    message: `add class '${data.clss.label}'`,
-    body: data.clss.motivation,
-    iri: data.clss.parentStructureIRI,
-    ontologyContent: data.ontologyContent,
-    structureContent: data.structureContent
+// proposal serializing and deserializing
+function proposalReviver () {
+  const seen = new Map()
+  return (key, value) => {
+    if (typeof value === 'object' && value.proposalType) {
+      if (seen.has(value)) {
+        const obj = seen.get(value)
+        return obj
+      }
+      const obj = new ObjectTypes[value.proposalType](value)
+      seen.set(value, obj)
+      return obj
+    }
+    return value
   }
+}
 
-  const headers = { headers: { authorization: `Bearer ${token}` } }
+export function proposalSerializer (proposalObject) {
+  return stringify(proposalObject)
+}
 
-  const result = await axios.post('/api/proposal/new', body, headers)
-
-  const id = _get(result, 'data.createThread.thread.id')
-  return id
+export function proposalDeserializer (proposalObject) {
+  const reviver = proposalReviver()
+  return parse(proposalObject, reviver)
 }

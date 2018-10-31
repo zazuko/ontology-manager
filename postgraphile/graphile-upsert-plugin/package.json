@@ -1,0 +1,14 @@
+{
+  "name": "graphile-upsert-plugin",
+  "version": "1.0.0",
+  "description": "A plugin for Graphile to generate upsert mutations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Einar Jegorov",
+  "license": "MIT",
+  "dependencies": {
+    "graphile-build-pg": "^4.0.0-alpha.5"
+  }
+}

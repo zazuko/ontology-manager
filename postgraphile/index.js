@@ -1,4 +1,5 @@
 import { postgraphile } from 'postgraphile'
+import PgMutationUpsertPlugin from './graphile-upsert-plugin'
 
 // https://node-postgres.com/api/client
 const pgConfig = {
@@ -42,6 +43,7 @@ const options = {
   jwtSecret: process.env.POSTGRAPHILE_TOKEN_SECRET,
   jwtPgTypeIdentifier: 'ontology_editor.jwt_token',
   simpleSubscriptions: false,
+  appendPlugins: [PgMutationUpsertPlugin],
   dynamicJson: true,
   // all the following options can be helpful in dev or debug mode
   graphiql: true,
