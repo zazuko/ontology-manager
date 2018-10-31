@@ -95,13 +95,21 @@ async function run (stringsToReplace) {
 
 async function execute (file, client, stringsToReplace) {
   const filename = path.basename(file)
+
+  let sql = fs.readFileSync(file).toString()
+
+  Object.entries(stringsToReplace).forEach(([key, value]) => {
+    sql = sql.replace(new RegExp(`\\$${key}`, 'g'), `${value}`)
+  })
+
+  if (filename.includes('.no-transaction')) {
+    await client.raw(sql)
+    return client('__migrations')
+      .where({ filename })
+      .update({ succeeded: true })
+  }
+
   return client.transaction(async (trx) => {
-    let sql = fs.readFileSync(file).toString()
-
-    Object.entries(stringsToReplace).forEach(([key, value]) => {
-      sql = sql.replace(new RegExp(`\\$${key}`, 'g'), `${value}`)
-    })
-
     await trx.raw(sql)
     return trx('__migrations')
       .where({ filename })

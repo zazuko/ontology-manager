@@ -213,7 +213,7 @@ comment on column ontology_editor_private.person_account.oauth_provided_id is 'T
 -- $$ language plpgsql strict security definer;
 -- comment on function ontology_editor.register_person(text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
-create function ontology_editor.upsert_person(
+create function ontology_editor.register_person(
   name text,
   username text,
   email text,
@@ -246,7 +246,7 @@ begin
   return person;
 end;
 $$ language plpgsql strict security definer;
-comment on function ontology_editor.upsert_person(text, text, text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
+comment on function ontology_editor.register_person(text, text, text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
 create role ontology_editor_postgraphile login password '$POSTGRESQL_POSTGRAPHILE_PASSWORD';
 
@@ -312,7 +312,7 @@ grant execute on function ontology_editor.authenticate(text, integer) to ontolog
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
 -- grant execute on function ontology_editor.register_person(text, text, text, integer) to ontology_editor_anonymous;
-grant execute on function ontology_editor.upsert_person(text, text, text, text, text, integer) to ontology_editor_anonymous;
+grant execute on function ontology_editor.register_person(text, text, text, text, text, integer) to ontology_editor_anonymous;
 
 alter table ontology_editor.person enable row level security;
 alter table ontology_editor.message enable row level security;
