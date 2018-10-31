@@ -4,7 +4,7 @@
     :class="{ 'is-prop-subform': subform }">
 
     <div
-      v-if="!prop['done']">
+      v-if="!prop['collapsed']">
       <!-- <div
         v-show="!subform && prop['iri']"
         class="box debug">
@@ -226,7 +226,7 @@
             <button
               class="button is-success"
               :disabled="!validBase"
-              @click.prevent="$vuexSet(`${storePath}.done`, true)">
+              @click.prevent="$vuexSet(`${storePath}.collapsed`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
             </button>
           </div>
@@ -257,7 +257,7 @@
           </div>
           <div class="column">
             <button
-              @click.prevent="$vuexSet(`${storePath}.done`, false)"
+              @click.prevent="$vuexSet(`${storePath}.collapsed`, false)"
               class="button is-info is-pulled-right">
               Reopen
             </button>
@@ -396,7 +396,7 @@ export default {
       return /^([A-Z])/.test(label)
     },
     createDomain (label) {
-      const clss = new Class(label)
+      const clss = new Class({ label })
       clss.isNew = true
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
@@ -406,7 +406,7 @@ export default {
       return /^([A-Z])/.test(label)
     },
     createRange (label) {
-      const clss = new Class(label)
+      const clss = new Class({ label })
       clss.isNew = true
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)

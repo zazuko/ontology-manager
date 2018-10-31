@@ -1,7 +1,7 @@
 import * as VueDeepSet from 'vue-deepset'
 
 import { Class, generateClassProposal, toDataset } from '@/models/Class'
-import { createClassProposal } from '@/libs/proposals'
+import { submitProposal } from '@/libs/proposals'
 
 import { SUBMIT, NEW } from '@/store/action-types'
 import { ERROR, SUCCESS } from '@/store/mutation-types'
@@ -41,8 +41,10 @@ export const actions = {
         clss: state.clss
       })
 
-      const id = await createClassProposal({
-        clss: state.clss,
+      const id = await submitProposal({
+        object: state.clss,
+        title: `New class '${state.clss.label}'`,
+        message: `add class '${state.clss.label}'`,
         ontologyContent: classProposalData.ontologyContent,
         structureContent: classProposalData.structureContent,
         token

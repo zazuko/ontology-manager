@@ -6,7 +6,7 @@
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
-
+            <button class="button is-big is-warning" @click="save($apollo)">SAVE</button>
             <h1 class="title">
               Property Request<span
                 v-show="prop.name">:
@@ -123,7 +123,7 @@ import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'
-import { SUBMIT, NEW } from '@/store/action-types'
+import { SAVE, SUBMIT, NEW } from '@/store/action-types'
 
 const {
   mapActions: propertyActions,
@@ -185,7 +185,8 @@ export default {
   methods: {
     ...propertyActions({
       clear: NEW,
-      submit: SUBMIT
+      submit: SUBMIT,
+      save: SAVE
     }),
     sendProposal () {
       const token = this.$apolloHelpers.getToken()

@@ -84,7 +84,7 @@ router.post('/link', async (req, res, next) => {
   try {
     const r = await anonApolloClient.mutate({
       mutation: gql`mutation ($name: String!, $username: String!, $email: String!, $avatar: String!, $token: String!, $providedId: Int!) {
-        upsertPerson (input: {
+        registerPerson (input: {
           name: $name,
           username: $username,
           email: $email,
@@ -100,7 +100,7 @@ router.post('/link', async (req, res, next) => {
       }`,
       variables
     })
-    const isAdmin = _.get(r, 'data.upsertPerson.person.isAdmin')
+    const isAdmin = _.get(r, 'data.registerPerson.person.isAdmin')
 
     // generate the user-specific JWT that Apollo will use to make authenticated
     // graphql queries for this user
@@ -136,8 +136,8 @@ router.post('/link', async (req, res, next) => {
   res.status(500).send()
 })
 
-router.post('/proposal/new', async (req, res, next) => {
-  const { title, body, message, ontologyContent, structureContent, iri } = req.body
+router.post('/proposal/submit', async (req, res, next) => {
+  const { id, title, body, message, ontologyContent, structureContent } = req.body
 
   const author = { name: req.user.name, email: req.user.email }
 
@@ -166,28 +166,25 @@ router.post('/proposal/new', async (req, res, next) => {
 
     const result = await userApolloClient.mutate({
       mutation: gql`
-        mutation ($headline: String!, $body: String!, $iri: String!, $externalId: Int!, $threadType: ThreadType!) {
-          createThread (input: {
-            thread: {
-              headline: $headline,
-              body: $body,
-              iri: $iri,
+        mutation ($id: Int!, $externalId: Int!, $branchName: String!, $status: Status!) {
+          updateThreadById (input: {
+            id: $id,
+            threadPatch: {
               externalId: $externalId,
-              threadType: $threadType
+              branchName: $branchName,
+              status: $status
             }
           }) {
             thread {
               id
             }
           }
-        }
-      `,
+        }`,
       variables: {
-        iri,
-        body,
-        headline: title,
+        id,
+        branchName: branch,
         externalId: number,
-        threadType: 'PROPOSAL'
+        status: 'OPEN'
       }
     })
 
