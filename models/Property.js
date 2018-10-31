@@ -4,23 +4,41 @@ import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
 import { toDataset as classToDataset } from '@/models/Class'
 
-export function Property (label = '') {
-  this.baseIRI = propertyBaseUrl
-  this.motivation = ''
+export function Property ({
+  baseIRI = propertyBaseUrl,
+  motivation = '',
+  threadId = null,
+  iri = false,
+  label = '',
+  comment = '',
+  description = '',
+  example = '',
+  ranges = [],
+  domains = [],
+  parentStructureIRI = '',
+  classChildren = [],
+  collapsed = false
+} = {}) {
+  this.proposalType = 'Property'
 
-  this.iri = propertyBaseUrl + normalizeLabel(label, 'camel')
+  this.baseIRI = baseIRI
+  this.motivation = motivation
+
+  this.threadId = threadId
+
+  this.iri = iri || this.baseIRI + normalizeLabel(label, 'camel')
 
   this.label = label
-  this.comment = ''
-  this.description = ''
-  this.example = ''
-  this.ranges = []
-  this.domains = []
+  this.comment = comment
+  this.description = description
+  this.example = example
+  this.ranges = ranges
+  this.domains = domains
 
-  this.parentStructureIRI = ''
-  this.classChildren = []
+  this.parentStructureIRI = parentStructureIRI
+  this.classChildren = classChildren
 
-  this.done = false
+  this.collapsed = collapsed
   return this
 }
 

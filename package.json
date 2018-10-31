@@ -10,7 +10,7 @@
     "dev-api": "nodemon --watch api --watch trifid --exec 'nuxt dev'",
     "build": "nuxt build",
     "start": "nuxt start",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "eslint --ext .js,.vue .",
     "precommit": "npm run lint",
     "test": "node -r dotenv/config node_modules/.bin/jest . dotenv_config_path=test/.env"
   },
@@ -29,6 +29,8 @@
     "apollo-link": "^1.2.3",
     "apollo-link-http": "^1.5.5",
     "express-jwt": "^5.3.1",
+    "flatted": "^2.0.0",
+    "graphile-build-pg": "^4.0.1",
     "graphql": "^0.13.0",
     "graphql-tag": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",

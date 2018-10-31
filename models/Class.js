@@ -4,22 +4,39 @@ import { classBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
 import { toDataset as propToDataset } from '@/models/Property'
 
-export function Class (label = '') {
-  this.baseIRI = classBaseUrl
-  this.motivation = ''
+export function Class ({
+  baseIRI = classBaseUrl,
+  motivation = '',
+  threadId = null,
+  iri = false,
+  label = '',
+  comment = '',
+  description = '',
+  example = '',
+  domains = [],
+  parentStructureIRI = '',
+  propChildren = [],
+  collapsed = false
+} = {}) {
+  this.proposalType = 'Class'
 
-  this.iri = classBaseUrl + normalizeLabel(label, 'pascal')
+  this.baseIRI = baseIRI
+  this.motivation = motivation
+
+  this.threadId = threadId
+
+  this.iri = iri || this.baseIRI + normalizeLabel(label, 'pascal')
 
   this.label = label
-  this.comment = ''
-  this.description = ''
-  this.example = ''
-  this.domains = []
+  this.comment = comment
+  this.description = description
+  this.example = example
+  this.domains = domains
 
-  this.parentStructureIRI = ''
-  this.propChildren = []
+  this.parentStructureIRI = parentStructureIRI
+  this.propChildren = propChildren
 
-  this.done = false
+  this.collapsed = collapsed
   return this
 }
 
