@@ -3,71 +3,112 @@
     <section class="section">
 
       <div class="container">
+        <div class="columns">
+          <div class="column is-3" />
+          <div class="column">
+            <h1 class="title">
+              New Class Request<span
+                v-show="clss.label">:
+                "{{ clss.label }}"
+              </span>
+            </h1>
+            <h2 class="subtitle">
+              On <code>{{ iri }}</code>
+            </h2>
+            <p>
+              This form allows suggesting new elements to include in the ontology.
+            </p>
+            <p>
+              Once submitted, the proposal will be discussed and eventually accepted or rejected by official team members.
+            </p>
 
-        <h1 class="title">
-          New Class Request<span
-            v-show="clss.label">:
-            "{{ clss.label }}"
-          </span>
-        </h1>
-        <h2 class="subtitle">
-          On <code>{{ iri }}</code>
-        </h2>
-        <p>
-          This form allows suggesting new elements to include in the ontology.
-        </p>
-        <p>
-          Once submitted, the proposal will be discussed and eventually accepted or rejected by official team members.
-        </p>
-
-        <div class="box">
-          <div class="field">
-            <label class="label">Motivation</label>
-            <div class="columns">
-              <div class="column">
-                <div class="control">
-                  <textarea
-                    v-debounce
-                    v-model.lazy="clss.motivation"
-                    class="textarea"
-                    placeholder="" />
-                </div>
-              </div>
-              <div class="column">
-                <p>
-                  In your motivation, please mention involved parties and other supportive
-                  entities, what shortcoming this proposal is expected to overcome
-                  or what purpose it serves.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 
-        <new-class-form
-          :iri="iri">
+        <div class="columns">
+          <div class="column is-3">
+            <div class="box">
+              <p class="label">
+                New Proposal Progression
+              </p>
+              <!-- <progress
+                class="progress is-small is-success"
+                value="15"
+                max="100">15%</progress> -->
+              <ul class="progression">
+                <!-- loop over a computedProperty here, which contains all the steps -->
+                <li
+                  v-for="(step, index) in progressionSteps"
+                  :key="index"
+                  :class="{ done: step.check() }">
+                  <span
+                    v-if="step.html"
+                    v-html="step.html" />
+                  <span v-else>
+                    {{ step.text }}
+                  </span>
+                  <span v-if="step.path">
+                    <br>
+                    {{ clss[step.path] }}
+                  </span>
+                  <span v-else />
+                </li>
+                <!-- … loop over classChildren and get path to check for steps -->
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="box">
+              <div class="field">
+                <label class="label">Motivation</label>
+                <div class="columns">
+                  <div class="column">
+                    <div class="control">
+                      <textarea
+                        v-debounce
+                        v-model.lazy="clss.motivation"
+                        class="textarea"
+                        placeholder="" />
+                    </div>
+                  </div>
+                  <div class="column">
+                    <p>
+                      In your motivation, please mention involved parties and other supportive
+                      entities, what shortcoming this proposal is expected to overcome
+                      or what purpose it serves.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <p v-show="error">{{ error }}</p>
+            <new-class-form
+              :iri="iri">
 
-          <div class="field is-grouped proposal-submit">
-            <p class="control">
-              <button
-                class="button is-primary is-medium"
-                @click="sendProposal">
-                Submit Proposal
-              </button>
-            </p>
-            <p class="control">
-              <button
-                class="button is-medium"
-                @click.prevent="clear">
-                Cancel
-              </button>
-            </p>
+              <p v-show="error">{{ error }}</p>
+
+              <div class="field is-grouped proposal-submit">
+                <p class="control">
+                  <button
+                    class="button is-primary is-medium"
+                    @click="sendProposal">
+                    Submit Proposal
+                  </button>
+                </p>
+                <p class="control">
+                  <button
+                    class="button is-medium"
+                    @click.prevent="clear">
+                    Cancel
+                  </button>
+                </p>
+              </div>
+
+            </new-class-form>
+
           </div>
 
-        </new-class-form>
-
+        </div>
       </div>
 
     </section>
@@ -79,7 +120,7 @@ import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewClassForm from '@/components/NewClassForm'
-import { SUBMIT, NEW } from '@/store/action-types'
+import { SAVE, SUBMIT, NEW } from '@/store/action-types'
 
 const {
   mapActions: classActions,
@@ -96,17 +137,75 @@ export default {
   components: {
     NewClassForm
   },
+  data () {
+    return {
+      saveTmp: '', // only save if this string changed
+      saveInterval: null
+    }
+  },
   async created () {
     await datasetsSetup(this.$store)
   },
+  mounted () {
+    let i = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        clearInterval(i)
+
+        this.saveInterval = setInterval(() => {
+          const serialized = this.serialized
+          if (!this.progressionSteps[0].check()) {
+            // not saving before having a label
+            return
+          }
+          if (!this.progressionSteps[1].check()) {
+            // not saving before having deails
+            return
+          }
+          if (this.saveTmp !== serialized) {
+            this.save()
+            this.saveTmp = serialized
+          }
+        }, 2500)
+      }
+    })
+  },
   beforeMount () {
     this.clear()
+  },
+  beforeDestroy () {
+    if (this.saveInterval) {
+      this.save()
+      clearInterval(this.saveInterval)
+    }
   },
   computed: {
     clss () {
       return this.$deepModel('class.clss')
     },
-    ...classGetters(['success', 'error'])
+    progressionSteps () {
+      const steps = [
+        this.motivationStep(),
+        this.detailsStep()
+      ]
+
+      // const newSteps = this.newSteps()
+      // if (newSteps.length) {
+      //   steps.push(...newSteps)
+      // }
+
+      const lastStep = {
+        check: () => steps.reduce((acc, step, i, col) => {
+          if (i !== col.length - 1) {
+            return acc && step.check()
+          }
+          return acc
+        }, true),
+        html: '<a href="#submit">Finalize and Submit Proposal</a>'
+      }
+      steps.push(lastStep)
+      return steps
+    },
+    ...classGetters(['success', 'error', 'serialized'])
   },
   watch: {
     success () {
@@ -118,11 +217,30 @@ export default {
   methods: {
     ...classActions({
       clear: NEW,
-      submit: SUBMIT
+      submit: SUBMIT,
+      save: SAVE
     }),
     sendProposal () {
       const token = this.$apolloHelpers.getToken()
       this.submit(token)
+    },
+    newSteps (steps = [], path = 'propChildren') {
+      return this.clss[path].reduce((newSteps, child) => {
+
+      }, steps)
+    },
+    motivationStep (path = '') {
+      return {
+        check: () => this.clss[`${path}motivation`],
+        text: 'Enter a Motivation'
+      }
+    },
+    detailsStep (path = '') {
+      return {
+        check: () => this.clss[`${path}label`] && this.clss[`${path}comment`],
+        text: 'Enter New Class Details',
+        path: 'label'
+      }
     }
   },
   validate ({ query }) {
