@@ -17,7 +17,8 @@ export const state = () => ({
 export const getters = {
   dataset: (state) => toDataset(state.prop, false),
   error: (state) => state.error,
-  success: (state) => state.success
+  success: (state) => state.success,
+  serialized: (state) => proposalSerializer(state.prop)
 }
 
 export const mutations = VueDeepSet.extendMutation({
@@ -38,7 +39,7 @@ export const mutations = VueDeepSet.extendMutation({
 })
 
 export const actions = {
-  async [SAVE] ({ commit, state }, token) {
+  async [SAVE] ({ commit, state }) {
     try {
       const threadId = state.prop.threadId
       const mutationParam = threadId ? '$id: Int!, ' : ''
