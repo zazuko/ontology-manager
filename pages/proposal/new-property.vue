@@ -6,7 +6,6 @@
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
-            <button class="button is-big is-warning" @click="save($apollo)">SAVE</button>
             <h1 class="title">
               Property Request<span
                 v-show="prop.name">:
@@ -140,11 +139,46 @@ export default {
   components: {
     NewPropertyForm
   },
+  data () {
+    return {
+      saveTmp: '', // only save if this string changed
+      saveInterval: null
+    }
+  },
   async created () {
     await datasetsSetup(this.$store)
   },
+  mounted () {
+    let i = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        clearInterval(i)
+
+        this.saveInterval = setInterval(() => {
+          const serialized = this.serialized
+          if (!this.progressionSteps[0].check()) {
+            // not saving before having a label
+            return
+          }
+          if (!this.progressionSteps[1].check()) {
+            // not saving before having deails
+            return
+          }
+          if (this.saveTmp !== serialized) {
+            this.save()
+            this.saveTmp = serialized
+          }
+        }, 2500)
+      }
+    })
+  },
   beforeMount () {
     this.clear()
+  },
+  beforeDestroy () {
+    if (this.saveInterval) {
+      this.save()
+      clearInterval(this.saveInterval)
+    }
   },
   computed: {
     prop () {
@@ -173,7 +207,7 @@ export default {
       steps.push(lastStep)
       return steps
     },
-    ...propertyGetters(['success', 'error'])
+    ...propertyGetters(['success', 'error', 'serialized'])
   },
   watch: {
     success () {
