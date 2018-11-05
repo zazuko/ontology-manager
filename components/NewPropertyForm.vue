@@ -437,7 +437,7 @@ export default {
           }
           this.onParentIRIChange()
         }
-      })
+      }, 10)
     },
     debugGenerateNT () {
       try {

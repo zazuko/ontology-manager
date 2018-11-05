@@ -112,7 +112,7 @@ export default {
         this.ontology = window.ontology
         clearInterval(i)
       }
-    })
+    }, 10)
   },
   methods: {
     isClass () {
