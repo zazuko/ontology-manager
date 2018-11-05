@@ -24,7 +24,7 @@
     </section>
 
     <section
-      v-for="(tree, index) in forest[0].children"
+      v-for="(tree, index) in children"
       :key="index"
       class="container"
       style="margin-top: 25px;">
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import StructureHome from '@/components/StructureHome'
 import { datasetsSetup } from '@/libs/utils'
 
@@ -46,7 +47,7 @@ export default {
   },
   data () {
     return {
-      forest: this.$store.state.graph.structureTree
+      children: _get(this, '$store.state.graph.structureTree[0].children', [])
     }
   },
   async created () {

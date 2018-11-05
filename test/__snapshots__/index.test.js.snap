@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`basic dev Renders IRI from dataset wrt Accept header html for nt 1`] = `
-"<http://localhost:4000/pouch/CargoHandlersPouch> <http://purl.org/dc/terms/modified> \\"2017-11-16\\"^^<http://www.w3.org/2001/XMLSchema#date> .
-<http://localhost:4000/pouch/CargoHandlersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
-<http://localhost:4000/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> \\"A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Cargo Handlers Pouch, you will find data typically from the following documents; TBD.\\" .
-<http://localhost:4000/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#label> \\"Cargo Handlers Pouch\\" .
+"<http://localhost:3000/pouch/CargoHandlersPouch> <http://purl.org/dc/terms/modified> \\"2017-11-16\\"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://localhost:3000/pouch/CargoHandlersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://localhost:3000/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> \\"A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Cargo Handlers Pouch, you will find data typically from the following documents; TBD.\\" .
+<http://localhost:3000/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#label> \\"Cargo Handlers Pouch\\" .
 "
 `;
 

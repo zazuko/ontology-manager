@@ -1,7 +1,7 @@
 <template>
   <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
     <object-tree
-      v-for="tree in structureTree[0].children"
+      v-for="tree in children"
       :key="tree.iri"
       :tree="tree"
       :current-iri="currentIri" />
@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import ObjectTree from '@/components/ObjectTree'
 
 export default {
@@ -24,7 +25,7 @@ export default {
   },
   data () {
     return {
-      structureTree: this.$store.state.graph.structureTree
+      children: _get(this, '$store.state.graph.structureTree[0].children', [])
     }
   },
   methods: {

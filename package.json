@@ -11,7 +11,7 @@
     "start": "nuxt start",
     "lint": "eslint --ext .js,.vue .",
     "precommit": "npm run lint",
-    "test": "node -r dotenv/config node_modules/.bin/jest . dotenv_config_path=test/.env"
+    "test": "jest"
   },
   "dependencies": {
     "@mdi/font": "3.0.39",
