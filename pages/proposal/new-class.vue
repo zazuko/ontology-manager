@@ -129,7 +129,9 @@ const {
 
 export default {
   async asyncData ({ query }) {
+    const id = parseInt(query.id, 10)
     return {
+      id: Number.isNaN(id) ? null : id,
       iri: query.iri
     }
   },

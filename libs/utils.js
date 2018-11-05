@@ -1,4 +1,5 @@
 import rdf from 'rdf-ext'
+import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
@@ -18,9 +19,11 @@ export async function datasetsSetup (store) {
   if (process.client) {
     if (!(window.ontology instanceof rdf.defaults.Dataset)) {
       window.ontology = await deserialize(store.state.graph.ontologySerialized)
+      window.ontologyGraph = resourcesToGraph(window.ontology)
     }
     if (!(window.structure instanceof rdf.defaults.Dataset)) {
       window.structure = await deserialize(store.state.graph.structureSerialized)
+      window.structureGraph = resourcesToGraph(window.structure)
     }
   }
 }
