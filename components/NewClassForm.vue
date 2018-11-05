@@ -355,7 +355,7 @@ export default {
           this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
           this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
         }
-      })
+      }, 10)
     },
     debugGenerateNT () {
       try {
