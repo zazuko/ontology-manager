@@ -999,6 +999,14 @@
   resolved "https://registry.yarnpkg.com/@rdfjs/data-model/-/data-model-1.1.0.tgz#15d9c5b7b8166893696565aefb65bad95da3fd99"
   integrity sha512-vK7TlSFBJQihqMoMgXK/VtcRV+rCQSOLB9VGAfv4Pr6BzUbBcR0CeM/RpkD4bHGX3816eaaURH1CNgN7togWdw==
 
+"@rdfjs/serializer-jsonld@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@rdfjs/serializer-jsonld/-/serializer-jsonld-1.2.0.tgz#2c2dd3413486fea79759848ee565c5bbdc2460db"
+  integrity sha512-bKOwvTJHUFajDdoXS7/k92KzUMstVthARRp+OAG0aQiHgq7OHFlVPS+SMn4cejzroPK0joiedETYZaGlYfjx+A==
+  dependencies:
+    "@rdfjs/sink" "^1.0.2"
+    readable-stream "^2.3.6"
+
 "@rdfjs/serializer-ntriples@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@rdfjs/serializer-ntriples/-/serializer-ntriples-1.0.1.tgz#3be0aa826e5d7a12b5182a8ece2b58da836396f7"

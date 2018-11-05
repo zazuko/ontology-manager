@@ -36,6 +36,8 @@
 
 <script>
 import rdf from 'rdf-ext'
+import JsonLdSerializer from 'rdf-serializer-jsonld-ext'
+
 import Structure from '@/components/Structure'
 import SideNav from '@/components/SideNav'
 import Discussions from '@/components/Discussions'
@@ -46,10 +48,41 @@ import { termIRI } from '@/libs/rdf'
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
 
 export default {
-  asyncData ({ route }) {
-    const isStructure = route.path.endsWith('/')
+  async asyncData ({ route, store }) {
+    const params = route.params
+    let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    if (route.path.endsWith('/')) {
+      iri += '/'
+    }
+    let jsonld = ''
+
+    try {
+      jsonld = await new Promise((resolve, reject) => {
+        const dataset = matched(store, iri)
+        if (!dataset) resolve()
+        const quadStream = rdf.graph(dataset).toStream()
+
+        const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
+
+        const jsonStream = serializer.import(quadStream)
+
+        jsonStream.on('error', (err) => {
+          reject(err)
+        })
+        jsonStream.on('data', (jsonld) => {
+          resolve(jsonld)
+        })
+        jsonStream.on('end', () => {
+          resolve()
+        })
+      })
+    } catch (err) {
+      console.error(err)
+    }
+
     return {
-      isStructure
+      iri,
+      jsonld
     }
   },
   components: {
@@ -63,16 +96,6 @@ export default {
       const structureTree = this.$store.state.graph.structureTree
       const tree = findSubtreeInForest(structureTree, this.iri)
       return tree
-    },
-    iri () {
-      const params = this.$route.params
-      let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
-      if (this.isStructure) iri += '/'
-      return iri
-    },
-    jsonld () {
-      // TODO: serialize and put in source here
-      return ''
     }
   },
   async created () {
@@ -93,12 +116,10 @@ export default {
   },
   methods: {
     isClass () {
-      if (!this.isStructure) {
-        if (this.ontology) {
-          const subject = rdf.namedNode(this.iri)
-          const classesFound = this.ontology.match(subject, termIRI.a, termIRI.Class).toArray().length
-          return Boolean(classesFound)
-        }
+      if (this.ontology) {
+        const subject = rdf.namedNode(this.iri)
+        const classesFound = this.ontology.match(subject, termIRI.a, termIRI.Class).toArray().length
+        return Boolean(classesFound)
       }
       return false
     }
@@ -126,7 +147,7 @@ export default {
     // check that either the ontology or the structure contains this IRI
     let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
 
-    // we don't have access to `this.isStructure()` in here
+    // we don't have access to asyncData in here
     if (route.path.endsWith('/')) {
       iri += '/'
     }
@@ -142,5 +163,33 @@ export default {
     // triggers a 404
     return false
   }
+}
+
+function matched (store, iri) {
+  const subject = rdf.namedNode(iri)
+
+  // 1. const dataset = resourceToGraph(…)
+  // 2. const foo = dataset.match(null, null, null, rdf.namedNode(req.iri))
+  // 3. -> jsonld
+
+  if (process.client) {
+    if (window.structure) {
+      const foundInOntology = window.ontologyGraph.match(null, null, null, subject)
+      if (foundInOntology.toArray().length) {
+        return foundInOntology
+      }
+      const foundInStructure = window.structureGraph.match(null, null, null, subject)
+      return foundInStructure
+    }
+  }
+  if (process.server) {
+    const foundInOntology = store.state.graph.ontologyGraph.match(null, null, null, subject)
+    if (foundInOntology.toArray().length) {
+      return foundInOntology
+    }
+    const foundInStructure = store.state.graph.structureGraph.match(null, null, null, subject)
+    return foundInStructure
+  }
+  return false
 }
 </script>
