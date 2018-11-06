@@ -17,7 +17,8 @@ export function Property ({
   domains = [],
   parentStructureIRI = '',
   classChildren = [],
-  collapsed = false
+  collapsed = false,
+  isNew = false
 } = {}) {
   this.proposalType = 'Property'
   this.isDraft = true
@@ -40,6 +41,7 @@ export function Property ({
   this.classChildren = classChildren
 
   this.collapsed = collapsed
+  this.isNew = isNew
   return this
 }
 
