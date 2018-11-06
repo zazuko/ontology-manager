@@ -2,7 +2,7 @@ import * as VueDeepSet from 'vue-deepset'
 import _get from 'lodash/get'
 import gql from 'graphql-tag'
 
-import draftProposalById from '@/apollo/queries/draftProposalById'
+import proposalById from '@/apollo/queries/proposalById'
 
 import { Property, generatePropertyProposal, toDataset } from '@/models/Property'
 import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
@@ -31,7 +31,6 @@ export const mutations = VueDeepSet.extendMutation({
   [SUCCESS] (state, externalId) {
     state.error = false
     state.success = externalId
-    state.prop.isDraft = false
   },
   [SET_ID] (state, threadId) {
     state.prop.threadId = threadId
@@ -50,7 +49,7 @@ export const actions = {
   async [LOAD] ({ commit, state }, id) {
     try {
       const result = await this.app.apolloProvider.defaultClient.query({
-        query: draftProposalById,
+        query: proposalById,
         variables: {
           id
         }
@@ -61,7 +60,7 @@ export const actions = {
 
       commit(LOAD, deserialized)
       commit(SET_ID, proposal.id)
-      return Promise.resolve()
+      return Promise.resolve(proposal.isDraft)
     } catch (error) {
       console.error(error)
       return Promise.reject(error)
@@ -74,7 +73,7 @@ export const actions = {
       const threadInput = threadId ? 'id: $id,' : ''
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isDraft: Boolean!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -82,8 +81,7 @@ export const actions = {
               body: $body,
               iri: $iri,
               proposalObject: $proposalObject,
-              threadType: $threadType,
-              isDraft: $isDraft
+              threadType: $threadType
             }
           }) {
             thread {
@@ -98,8 +96,7 @@ export const actions = {
         body: state.prop.motivation,
         proposalObject: JSON.parse(proposalSerializer(state.prop)),
         headline: `New property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
-        threadType: 'PROPOSAL',
-        isDraft: state.prop.isDraft
+        threadType: 'PROPOSAL'
       }
 
       if (threadId) {
@@ -128,6 +125,7 @@ export const actions = {
       })
 
       const id = await submitProposal({
+        threadId: state.prop.threadId,
         object: state.prop,
         title: `New property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
         message: `add property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
@@ -137,7 +135,6 @@ export const actions = {
       })
 
       commit(SUCCESS, id)
-      dispatch(SAVE)
     } catch (error) {
       console.error(error)
       commit(ERROR, error.message)

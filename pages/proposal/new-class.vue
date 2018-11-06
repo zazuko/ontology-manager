@@ -175,7 +175,15 @@ export default {
     // if we have an ID from the URL here, we load
     if (this.id) {
       this.load(this.id)
-        .then(() => {
+        .then((isDraft) => {
+          if (isDraft !== true) {
+            this.$router.push({
+              name: 'proposal-id',
+              params: { id: this.clss['threadId'] }
+            })
+            return
+          }
+
           if (this.clss['proposalType'] === 'Property') {
             this.$router.push({
               name: 'proposal-new-property',

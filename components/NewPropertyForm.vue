@@ -270,8 +270,9 @@
 </template>
 
 <script>
+import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
-import { debounce } from '@/libs/utils'
+import { datasetsSetup, debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import { Class } from '@/models/Class'
 import { toDataset, toNT, validate } from '@/models/Property'
@@ -310,8 +311,8 @@ export default {
     return {
       searchFunction: () => ([]),
       renderTypeahead: process.client,
-      ontology: null,
-      structure: null,
+      ontology: rdf.dataset(),
+      structure: rdf.dataset(),
       debugNT: '',
       termIRI
     }
@@ -396,8 +397,7 @@ export default {
       return /^([A-Z])/.test(label)
     },
     createDomain (label) {
-      const clss = new Class({ label })
-      clss.isNew = true
+      const clss = new Class({ label, isNew: true })
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
       return true
@@ -406,8 +406,7 @@ export default {
       return /^([A-Z])/.test(label)
     },
     createRange (label) {
-      const clss = new Class({ label })
-      clss.isNew = true
+      const clss = new Class({ label, isNew: true })
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true
@@ -416,7 +415,7 @@ export default {
       return !/^([a-z])/.test(label)
     },
     async init () {
-      // await datasetsSetup(this.$store)
+      await datasetsSetup(this.$store)
 
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {

@@ -225,6 +225,7 @@
 
 <script>
 import rdf from 'rdf-ext'
+import { datasetsSetup } from '@/libs/utils'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
@@ -329,8 +330,7 @@ export default {
       return /^([a-z])/.test(label)
     },
     createProperty (label) {
-      const prop = new Property({ label })
-      prop.isNew = true
+      const prop = new Property({ label, isNew: true })
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true
@@ -339,7 +339,7 @@ export default {
       return !/^([A-Z])/.test(label)
     },
     async init () {
-      // await datasetsSetup(this.$store)
+      await datasetsSetup(this.$store)
 
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {

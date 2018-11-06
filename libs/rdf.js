@@ -117,6 +117,7 @@ export function rangeOf (iri, dataset) {
     .match(rdf.namedNode(iri), termIRI.range)
     .toArray()
     .map(({ object }) => object)
+    .filter(n => n.value)
   return result
 }
 /**
@@ -201,6 +202,9 @@ export function term (o) {
   }
 
   const oIri = iri(o)
+  if (oIri === '[object Object]') {
+    throw new Error(`Cannot call term() on '${JSON.stringify(iri)}'`)
+  }
 
   return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
 }

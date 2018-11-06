@@ -103,7 +103,10 @@ export default {
     usedOnClasses,
     rangeOf,
     classIsNew ({ object }) {
-      return !window.ontology.match(object, termIRI.a, termIRI.class).toArray().length
+      if (window.ontology) {
+        return !window.ontology.match(object, termIRI.a, termIRI.class).toArray().length
+      }
+      return false
     }
   }
 }
