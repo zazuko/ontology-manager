@@ -224,6 +224,7 @@
 </template>
 
 <script>
+import rdf from 'rdf-ext'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
@@ -266,8 +267,8 @@ export default {
     return {
       searchFunction: () => ([]),
       renderTypeahead: process.client,
-      ontology: null,
-      structure: null,
+      ontology: rdf.dataset(),
+      structure: rdf.dataset(),
       debugNT: ''
     }
   },

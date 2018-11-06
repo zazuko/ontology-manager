@@ -16,7 +16,8 @@ query GetAllDiscussions ($threadType: ThreadType!) {
       threadType,
       authorId,
       externalId,
-      status
+      status,
+      proposalObject
     }
   }
 }
