@@ -19,6 +19,7 @@ export function Class ({
   collapsed = false
 } = {}) {
   this.proposalType = 'Class'
+  this.isDraft = true
 
   this.baseIRI = baseIRI
   this.motivation = motivation

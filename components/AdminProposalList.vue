@@ -41,7 +41,7 @@
         </td>
         <td>
           <span
-            v-if="proposal.status !== 'DRAFT'">
+            v-if="!proposal.isDraft">
             <button
               class="button is-small is-success"
               :disabled="proposal.status !== 'OPEN'"

@@ -226,7 +226,6 @@
 <script>
 import rdf from 'rdf-ext'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
-import { datasetsSetup } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import PropertiesTable from '@/components/PropertiesTable'
 import { Property } from '@/models/Property'
@@ -340,7 +339,7 @@ export default {
       return !/^([A-Z])/.test(label)
     },
     async init () {
-      await datasetsSetup(this.$store)
+      // await datasetsSetup(this.$store)
 
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {

@@ -182,7 +182,7 @@ export default {
               query: { id: this.clss['threadId'] }
             })
           }
-      })
+        })
     } else {
       // otherwise we .clear() which creates a new one
       this.clear()

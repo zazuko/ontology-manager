@@ -13,6 +13,7 @@ import _get from 'lodash/get'
 import ObjectTree from '@/components/ObjectTree'
 
 export default {
+  name: 'SideNav',
   components: {
     ObjectTree
   },
