@@ -29,23 +29,46 @@
             (Created: {{ proposal.createdAt|formatDate }})
           </small>
         </td>
-        <td>{{ proposal.status }}</td>
+        <td>
+          {{ proposal.status }}
+          <br>
+          <small>
+            {{ proposalType(proposal.proposalObject) }}
+          </small>
+        </td>
         <td>
           ?
         </td>
         <td>
-          <button
-            class="button is-small is-success"
-            :disabled="proposal.status !== 'OPEN'"
-            @click="approve(proposal)">
-            Approve
-          </button>
-          <button
-            class="button is-small is-danger"
-            :disabled="proposal.status !== 'OPEN'"
-            @click="reject(proposal)">
-            Reject
-          </button>
+          <span
+            v-if="proposal.status !== 'DRAFT'">
+            <button
+              class="button is-small is-success"
+              :disabled="proposal.status !== 'OPEN'"
+              @click="approve(proposal)">
+              Approve
+            </button>
+            <button
+              class="button is-small is-danger"
+              :disabled="proposal.status !== 'OPEN'"
+              @click="reject(proposal)">
+              Reject
+            </button>
+          </span>
+          <span v-else>
+            <nuxt-link
+              v-if="proposalType(proposal.proposalObject) === 'Class'"
+              :to="{ name: 'proposal-new-class', query: { id: proposal.id } }"
+              class="button is-small is-info">
+              See
+            </nuxt-link>
+            <nuxt-link
+              v-if="proposalType(proposal.proposalObject) === 'Property'"
+              :to="{ name: 'proposal-new-property', query: { id: proposal.id } }"
+              class="button is-small is-info">
+              See
+            </nuxt-link>
+          </span>
         </td>
       </tr>
     </tbody>
@@ -55,11 +78,13 @@
 <script>
 import axios from 'axios'
 import { toastClose } from '@/libs/utils'
+import { proposalType } from '@/libs/proposals'
 
 export default {
-  name: 'AdminDiscussionList',
+  name: 'AdminProposalList',
   props: ['proposals'],
   methods: {
+    proposalType,
     async approve (proposal) {
       const body = {
         threadId: proposal.id,

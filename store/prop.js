@@ -2,10 +2,12 @@ import * as VueDeepSet from 'vue-deepset'
 import _get from 'lodash/get'
 import gql from 'graphql-tag'
 
-import { Property, generatePropertyProposal, toDataset } from '@/models/Property'
-import { submitProposal, proposalSerializer } from '@/libs/proposals'
+import draftProposalById from '@/apollo/queries/draftProposalById'
 
-import { SAVE, SUBMIT, NEW } from '@/store/action-types'
+import { Property, generatePropertyProposal, toDataset } from '@/models/Property'
+import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
+
+import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { SET_ID, ERROR, SUCCESS } from '@/store/mutation-types'
 
 export const state = () => ({
@@ -35,10 +37,35 @@ export const mutations = VueDeepSet.extendMutation({
   },
   [NEW] (state) {
     state.prop = new Property()
+    state.error = false
+    state.success = false
+  },
+  [LOAD] (state, prop) {
+    state.prop = prop
   }
 })
 
 export const actions = {
+  async [LOAD] ({ commit, state }, id) {
+    try {
+      const result = await this.app.apolloProvider.defaultClient.query({
+        query: draftProposalById,
+        variables: {
+          id
+        }
+      })
+
+      const proposal = result.data.proposal
+      const deserialized = proposalDeserializer(proposal.proposalObject)
+
+      commit(LOAD, deserialized)
+      commit(SET_ID, proposal.id)
+      return Promise.resolve()
+    } catch (error) {
+      console.error(error)
+      return Promise.reject(error)
+    }
+  },
   async [SAVE] ({ commit, state }) {
     try {
       const threadId = state.prop.threadId

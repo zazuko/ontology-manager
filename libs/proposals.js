@@ -36,15 +36,28 @@ export async function submitProposal (data) {
 // proposal serializing and deserializing
 function proposalReviver () {
   const seen = new Map()
-  return (key, value) => {
-    if (typeof value === 'object' && value.proposalType) {
-      if (seen.has(value)) {
-        const obj = seen.get(value)
-        return obj
-      }
-      const obj = new ObjectTypes[value.proposalType](value)
-      seen.set(value, obj)
+
+  const replaceObject = (value) => {
+    if (seen.has(value)) {
+      const obj = seen.get(value)
       return obj
+    }
+    const obj = new ObjectTypes[value.proposalType](value)
+    seen.set(value, obj)
+    return obj
+  }
+
+  return (key, value) => {
+    if (value && typeof value === 'object' && value.proposalType) {
+      return replaceObject(value)
+    }
+    if (Array.isArray(value)) {
+      return value.map((val) => {
+        if (val && typeof val === 'object' && val.proposalType) {
+          return replaceObject(val)
+        }
+        return val
+      })
     }
     return value
   }
@@ -56,5 +69,17 @@ export function proposalSerializer (proposalObject) {
 
 export function proposalDeserializer (proposalObject) {
   const reviver = proposalReviver()
+  if (typeof proposalObject !== 'string') {
+    return parse(JSON.stringify(proposalObject), reviver)
+  }
   return parse(proposalObject, reviver)
+}
+
+export function proposalType (proposalObject) {
+  if (!Array.isArray(proposalObject)) {
+    return ''
+  }
+  const index = proposalObject[0]
+  const valueAt = _get(index, ['proposalType'], NaN)
+  return _get(proposalObject, valueAt, '')
 }

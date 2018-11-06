@@ -13,7 +13,7 @@
               </span>
             </h1>
             <h2 class="subtitle">
-              On <code>{{ iri }}</code>
+              On <code>{{ _iri }}</code>
             </h2>
             <p>
               This form allows suggesting new elements to include in the ontology.
@@ -83,7 +83,7 @@
             </div>
 
             <new-property-form
-              :iri="iri">
+              :iri="_iri">
 
               <p v-show="error">{{ error }}</p>
 
@@ -122,7 +122,7 @@ import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
 import NewPropertyForm from '@/components/NewPropertyForm'
-import { SAVE, SUBMIT, NEW } from '@/store/action-types'
+import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {
   mapActions: propertyActions,
@@ -131,8 +131,10 @@ const {
 
 export default {
   async asyncData ({ query }) {
+    const id = parseInt(query.id, 10)
     return {
-      iri: query.iri
+      id: Number.isNaN(id) ? null : id,
+      iri: query.iri || ''
     }
   },
   middleware: 'authenticated',
@@ -172,7 +174,21 @@ export default {
     })
   },
   beforeMount () {
-    this.clear()
+    // if we have an ID from the URL here, we load
+    if (this.id) {
+      this.load(this.id)
+        .then(() => {
+          if (this.prop['proposalType'] === 'Class') {
+            this.$router.push({
+              name: 'proposal-new-class',
+              query: { id: this.prop['threadId'] }
+            })
+          }
+      })
+    } else {
+      // otherwise we .clear() which creates a new one
+      this.clear()
+    }
   },
   beforeDestroy () {
     if (this.saveInterval) {
@@ -183,6 +199,12 @@ export default {
   computed: {
     prop () {
       return this.$deepModel('prop.prop')
+    },
+    _iri () {
+      if (this.prop['parentStructureIRI']) {
+        return this.prop['parentStructureIRI']
+      }
+      return this.iri
     },
     progressionSteps () {
       const steps = [
@@ -220,7 +242,8 @@ export default {
     ...propertyActions({
       clear: NEW,
       submit: SUBMIT,
-      save: SAVE
+      save: SAVE,
+      load: LOAD
     }),
     sendProposal () {
       const token = this.$apolloHelpers.getToken()
@@ -246,7 +269,9 @@ export default {
     }
   },
   validate ({ query }) {
-    return !!query.iri
+    if (query.iri) return true
+    if (query.id) return true
+    return false
   }
 }
 </script>
