@@ -139,7 +139,7 @@ router.post('/link', async (req, res, next) => {
 })
 
 router.post('/proposal/submit', async (req, res, next) => {
-  const { id, title, body, message, ontologyContent, structureContent } = req.body
+  const { threadId, title, body, message, ontologyContent, structureContent } = req.body
 
   const author = { name: req.user.name, email: req.user.email }
 
@@ -174,7 +174,8 @@ router.post('/proposal/submit', async (req, res, next) => {
             threadPatch: {
               externalId: $externalId,
               branchName: $branchName,
-              status: $status
+              status: $status,
+              isDraft: false
             }
           }) {
             thread {
@@ -183,7 +184,7 @@ router.post('/proposal/submit', async (req, res, next) => {
           }
         }`,
       variables: {
-        id,
+        id: threadId,
         branchName: branch,
         externalId: number,
         status: 'OPEN'

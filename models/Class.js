@@ -16,7 +16,8 @@ export function Class ({
   domains = [],
   parentStructureIRI = '',
   propChildren = [],
-  collapsed = false
+  collapsed = false,
+  isNew = false
 } = {}) {
   this.proposalType = 'Class'
   this.isDraft = true
@@ -38,6 +39,7 @@ export function Class ({
   this.propChildren = propChildren
 
   this.collapsed = collapsed
+  this.isNew = isNew
   return this
 }
 

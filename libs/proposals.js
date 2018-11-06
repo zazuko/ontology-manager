@@ -1,12 +1,20 @@
 import axios from 'axios'
+import rdf from 'rdf-ext'
 import _get from 'lodash/get'
 import { parse, stringify } from 'flatted/cjs'
 import { Class } from '@/models/Class'
 import { Property } from '@/models/Property'
 
 const ObjectTypes = { Class, Property }
+const termsKeys = ['subject', 'predicate', 'object', 'datatype', 'graph']
+const termsTypes = {
+  DefaultGraph: rdf.defaultGraph,
+  NamedNode: rdf.namedNode,
+  Literal: rdf.literal
+}
 
 export async function submitProposal (data) {
+  if (!data.threadId) throw new Error('missing data.threadId')
   if (!data.object) throw new Error('missing data.object')
   if (!data.title) throw new Error('missing data.title')
   if (!data.message) throw new Error('missing data.message')
@@ -17,6 +25,7 @@ export async function submitProposal (data) {
   const token = data.token
 
   const body = {
+    threadId: data.threadId,
     title: data.title,
     message: data.message,
     body: data.object.motivation,
@@ -28,8 +37,7 @@ export async function submitProposal (data) {
   const headers = { headers: { authorization: `Bearer ${token}` } }
 
   const result = await axios.post('/api/proposal/submit', body, headers)
-
-  const id = _get(result, 'data.createThread.thread.id')
+  const id = _get(result, 'data.updateThreadById.thread.id')
   return id
 }
 
@@ -48,9 +56,6 @@ function proposalReviver () {
   }
 
   return (key, value) => {
-    if (value && typeof value === 'object' && value.proposalType) {
-      return replaceObject(value)
-    }
     if (Array.isArray(value)) {
       return value.map((val) => {
         if (val && typeof val === 'object' && val.proposalType) {
@@ -58,6 +63,31 @@ function proposalReviver () {
         }
         return val
       })
+    }
+
+    if (value && typeof value === 'object') {
+      // sub proposal objects are hydrated, respecting circularity
+      if (value.hasOwnProperty('proposalType')) {
+        return replaceObject(value)
+      }
+
+      // create rdf terms out of SPOs
+      if (termsKeys.includes(key)) {
+        if (value.hasOwnProperty('termType') && value.hasOwnProperty('value')) {
+          if (termsTypes.hasOwnProperty(value.termType)) {
+            return termsTypes[value.termType](value.value)
+          }
+        }
+      }
+
+      // create quads out of quad objects
+      if (value.subject && value.predicate && value.object) {
+        const { subject, predicate, object, graph } = value
+        if (graph) {
+          return rdf.quad(subject, predicate, object, graph)
+        }
+        return rdf.quad(subject, predicate, object)
+      }
     }
     return value
   }

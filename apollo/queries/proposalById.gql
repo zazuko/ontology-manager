@@ -1,6 +1,7 @@
 query GetProposal ($id: Int!) {
   proposal: threadById (id: $id) {
     id,
-    proposalObject
+    proposalObject,
+    isDraft
   }
 }
