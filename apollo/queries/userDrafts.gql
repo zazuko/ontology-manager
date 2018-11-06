@@ -1,0 +1,10 @@
+query GetUserContent ($authorId: Int!) {
+  proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true}) {
+    drafts: nodes {
+      id,
+      headline,
+      iri,
+      proposalObject
+    }
+  }
+}

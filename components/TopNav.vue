@@ -35,6 +35,7 @@
             class="navbar-item">
             Discussions
           </nuxt-link>
+          <draft-tab class="navbar-item" />
           <nuxt-link
             :to="{ name: 'admin-proposal', params: {} }"
             class="navbar-item">
@@ -57,12 +58,15 @@
 </template>
 
 <script>
-import SignIn from '@/components/SignIn.vue'
 import { toastClose } from '@/libs/utils'
+import SignIn from '@/components/SignIn.vue'
+import DraftTab from '@/components/DraftTab.vue'
 
 export default {
+  name: 'TopNav',
   components: {
-    SignIn
+    SignIn,
+    DraftTab
   },
   data () {
     return {

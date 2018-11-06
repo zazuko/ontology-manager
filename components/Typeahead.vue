@@ -56,6 +56,7 @@ which seems much more robust
 
 <script>
 export default {
+  name: 'Typeahead',
   props: {
     searchFunction: {
       type: Function,

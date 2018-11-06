@@ -101,6 +101,7 @@ router.post('/link', async (req, res, next) => {
       variables
     })
     const isAdmin = _.get(r, 'data.registerPerson.person.isAdmin')
+    const personId = _.get(r, 'data.registerPerson.person.id')
 
     // generate the user-specific JWT that Apollo will use to make authenticated
     // graphql queries for this user
@@ -123,6 +124,7 @@ router.post('/link', async (req, res, next) => {
       throw new Error('Authentication failed.')
     }
     result.data.authenticate.isAdmin = isAdmin
+    result.data.authenticate.personId = personId
     res.json(result.data.authenticate)
     return
   } catch (err) {

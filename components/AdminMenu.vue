@@ -27,6 +27,7 @@
 import _get from 'lodash/get'
 
 export default {
+  name: 'AdminMenu',
   computed: {
     currentRoute () {
       return _get(this, '$router.currentRoute.name', '')

@@ -31,6 +31,7 @@ export const mutations = VueDeepSet.extendMutation({
   [SUCCESS] (state, id) {
     state.error = false
     state.success = id
+    state.clss.isDraft = false
   },
   [SET_ID] (state, threadId) {
     state.clss.threadId = threadId
@@ -74,7 +75,7 @@ export const actions = {
       const threadInput = threadId ? 'id: $id,' : ''
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $status: Status!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isDraft: Boolean) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -83,7 +84,7 @@ export const actions = {
               iri: $iri,
               proposalObject: $proposalObject,
               threadType: $threadType,
-              status: $status
+              isDraft: $isDraft
             }
           }) {
             thread {
@@ -99,7 +100,7 @@ export const actions = {
         proposalObject: JSON.parse(proposalSerializer(state.clss)),
         headline: `New class '${state.clss.label}'`,
         threadType: 'PROPOSAL',
-        status: 'DRAFT'
+        isDraft: state.clss.isDraft
       }
 
       if (threadId) {
@@ -119,7 +120,7 @@ export const actions = {
     }
   },
 
-  async [SUBMIT] ({ commit, state }, token) {
+  async [SUBMIT] ({ dispatch, commit, state }, token) {
     try {
       const classProposalData = generateClassProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
@@ -137,6 +138,7 @@ export const actions = {
       })
 
       commit(SUCCESS, id)
+      dispatch(SAVE)
     } catch (error) {
       console.error(error)
       commit(ERROR, error.message)

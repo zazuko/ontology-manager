@@ -20,6 +20,7 @@ export function Property ({
   collapsed = false
 } = {}) {
   this.proposalType = 'Property'
+  this.isDraft = true
 
   this.baseIRI = baseIRI
   this.motivation = motivation
