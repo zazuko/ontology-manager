@@ -1,5 +1,5 @@
 query GetAllDiscussions {
-  discussions: allThreads {
+  discussions: allThreads (condition: { isDraft: false }) {
     nodes {
       id,
       headline,

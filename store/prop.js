@@ -31,6 +31,7 @@ export const mutations = VueDeepSet.extendMutation({
   [SUCCESS] (state, externalId) {
     state.error = false
     state.success = externalId
+    state.prop.isDraft = false
   },
   [SET_ID] (state, threadId) {
     state.prop.threadId = threadId
@@ -73,7 +74,7 @@ export const actions = {
       const threadInput = threadId ? 'id: $id,' : ''
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $status: Status!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isDraft: Boolean!) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -82,7 +83,7 @@ export const actions = {
               iri: $iri,
               proposalObject: $proposalObject,
               threadType: $threadType,
-              status: $status
+              isDraft: $isDraft
             }
           }) {
             thread {
@@ -98,7 +99,7 @@ export const actions = {
         proposalObject: JSON.parse(proposalSerializer(state.prop)),
         headline: `New property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
         threadType: 'PROPOSAL',
-        status: 'DRAFT'
+        isDraft: state.prop.isDraft
       }
 
       if (threadId) {
@@ -118,7 +119,7 @@ export const actions = {
     }
   },
 
-  async [SUBMIT] ({ commit, state }, token) {
+  async [SUBMIT] ({ dispatch, commit, state }, token) {
     try {
       const propertyProposalData = generatePropertyProposal({
         ontology: typeof window !== 'undefined' ? window.ontology : {},
@@ -136,6 +137,7 @@ export const actions = {
       })
 
       commit(SUCCESS, id)
+      dispatch(SAVE)
     } catch (error) {
       console.error(error)
       commit(ERROR, error.message)

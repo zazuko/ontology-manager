@@ -271,7 +271,7 @@
 
 <script>
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
-import { datasetsSetup, debounce } from '@/libs/utils'
+import { debounce } from '@/libs/utils'
 import Typeahead from '@/components/Typeahead'
 import { Class } from '@/models/Class'
 import { toDataset, toNT, validate } from '@/models/Property'
@@ -416,7 +416,7 @@ export default {
       return !/^([a-z])/.test(label)
     },
     async init () {
-      await datasetsSetup(this.$store)
+      // await datasetsSetup(this.$store)
 
       let i = setInterval(() => {
         if (typeof window !== 'undefined') {

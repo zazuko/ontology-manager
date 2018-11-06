@@ -184,7 +184,7 @@ export default {
               query: { id: this.prop['threadId'] }
             })
           }
-      })
+        })
     } else {
       // otherwise we .clear() which creates a new one
       this.clear()
