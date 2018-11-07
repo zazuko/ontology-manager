@@ -5,36 +5,33 @@
       :to="{ name: 'proposal-drafts', params: {} }">
       Drafts
       <span
-        v-if="!skipped && counter"
+        v-if="counter"
         class="tag is-info">
         {{ counter }}
       </span>
+      <span v-else />
     </nuxt-link>
-
+    <span v-else />
   </span>
 </template>
 
 <script>
-import _get from 'lodash/get'
-import userDrafts from '@/apollo/queries/userDrafts'
+import { createNamespacedHelpers } from 'vuex'
+
+const {
+  mapGetters: draftsGetters
+} = createNamespacedHelpers('drafts')
 
 export default {
   name: 'DraftTab',
-  computed: {
-    loggedIn () {
-      const loggedIn = this.$auth && this.$auth.$state.loggedIn
-      return loggedIn
-    },
-    skipped () {
-      return !this.loggedIn || !this.personId
-    },
-    counter () {
-      return _get(this, 'proposals.drafts.length', 0)
-    }
-  },
   data () {
     return {
-      personId: 0
+      personId: undefined
+    }
+  },
+  watch: {
+    personId () {
+      this.$store.dispatch('drafts/LOAD')
     }
   },
   mounted () {
@@ -45,19 +42,14 @@ export default {
       }, 100)
     })
   },
-  apollo: {
-    proposals: {
-      prefetch: false,
-      query: userDrafts,
-      variables () {
-        return {
-          authorId: this.personId
-        }
-      },
-      skip () {
-        return this.skipped
-      },
-      fetchPolicy: 'cache-and-network'
+  computed: {
+    ...draftsGetters(['drafts']),
+    loggedIn () {
+      const loggedIn = this.$auth && this.$auth.$state.loggedIn
+      return loggedIn
+    },
+    counter () {
+      return this.drafts.length
     }
   }
 }

@@ -327,7 +327,7 @@ create policy select_person on ontology_editor.person for select
 create policy update_person on ontology_editor.person for update to ontology_editor_person
   using (id = current_setting('jwt.claims.person_id')::integer);
 create policy delete_person on ontology_editor.person for delete to ontology_editor_person
-  using (id = current_setting('jwt.claims.person_id')::integer);
+  using (ontology_editor.current_person_is_admin());
 
 -- CRUD
 -- message
@@ -349,7 +349,7 @@ create policy select_thread on ontology_editor.thread for select
 create policy update_thread on ontology_editor.thread for update to ontology_editor_person
   using (author_id = current_setting('jwt.claims.person_id')::integer or ontology_editor.current_person_is_admin());
 create policy delete_thread on ontology_editor.thread for delete to ontology_editor_person
-  using (author_id = current_setting('jwt.claims.person_id')::integer or ontology_editor.current_person_is_admin());
+  using (ontology_editor.current_person_is_admin());
 
 -- R
 -- hat
