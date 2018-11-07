@@ -25,10 +25,10 @@
 
           <proposals
             :iri="iri"
-            :is-class="isClass()" />
+            :is-class="termIRI.Class.equals(objectType)" />
 
           <discussions
-            v-if="isClass()"
+            v-if="termIRI.Class.equals(objectType)"
             :iri="iri" />
         </div>
       </div>
@@ -107,32 +107,41 @@ export default {
   },
   data () {
     return {
+      termIRI,
+      objectType: '',
       ontology: rdf.dataset(),
       structure: rdf.dataset()
+    }
+  },
+  methods: {
+    setObjectType () {
+      if (this.structure) {
+        const subject = rdf.namedNode(this.iri)
+        const ontologyMatches = this.ontology.match(subject, termIRI.a).toArray()
+        if (ontologyMatches.length === 1) {
+          this.objectType = ontologyMatches[0].object
+        }
+        const structureMatches = this.structure.match(subject, termIRI.a).toArray()
+        if (structureMatches.length === 1) {
+          this.objectType = structureMatches[0].object
+        }
+      }
     }
   },
   mounted () {
     if (process.server) {
       this.ontology = this.$store.state.graph.ontology
       this.structure = this.$store.state.graph.structure
+      this.setObjectType()
     }
     let i = setInterval(() => {
       if (typeof window !== 'undefined') {
         this.ontology = window.ontology
         this.structure = window.structure
+        this.setObjectType()
         clearInterval(i)
       }
     }, 10)
-  },
-  methods: {
-    isClass () {
-      if (this.ontology) {
-        const subject = rdf.namedNode(this.iri)
-        const classesFound = this.ontology.match(subject, termIRI.a, termIRI.Class).toArray().length
-        return Boolean(classesFound)
-      }
-      return false
-    }
   },
   validate ({ params, store, route }) {
     let ontology

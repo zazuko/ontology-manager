@@ -23,7 +23,8 @@ const stringIRI = {
   // created: 'http://purl.org/dc/terms/created',
   modified: 'http://purl.org/dc/terms/modified',
 
-  hasPart: 'http://schema.org/hasPart'
+  hasPart: 'http://schema.org/hasPart',
+  creativeWork: 'http://schema.org/CreativeWork'
 }
 
 export const termIRI = Object
@@ -184,12 +185,21 @@ function stringMatch (potentialMatch, searchInput) {
   }
 }
 
+// TODO: labelQuadForIRI and commentQuadForIRI should be auto generated from termIRI
 export function labelQuadForIRI (dataset, iri) {
   const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.label, null).toArray()
   if (matches.length) {
     return matches[0]
   }
-  return {}
+  return { object: { value: '' } }
+}
+
+export function commentQuadForIRI (dataset, iri) {
+  const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.comment, null).toArray()
+  if (matches.length) {
+    return matches[0]
+  }
+  return { object: { value: '' } }
 }
 
 function iri (o) {
@@ -203,7 +213,7 @@ export function term (o) {
 
   const oIri = iri(o)
   if (oIri === '[object Object]') {
-    throw new Error(`Cannot call term() on '${JSON.stringify(iri)}'`)
+    throw new Error(`Cannot call term() on '${JSON.stringify(o)}'`)
   }
 
   return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
@@ -214,7 +224,7 @@ export function normalizeLabel (label, type = 'pascal') {
   return encodeURIComponent(type === 'pascal' ? _upperFirst(camel) : camel)
 }
 
-export function rebaseIRI (iri) {
+export function rebaseIRI (iri, relative = false) {
   if (typeof iri !== 'string') {
     throw new Error(`rebaseIRI() excepts a string, not a '${typeof iri}'`)
   }
