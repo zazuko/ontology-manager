@@ -94,7 +94,8 @@ module.exports = {
   ** Internal API
   */
   serverMiddleware: [
-    '@/postgraphile/',
+    '@/postgraphile/limit',
+    '@/postgraphile/graphile',
     '@/api/',
     // always keep trifid as last serverMiddleware, otherwise it will swallow
     // errors and logs from previous middlewares!
