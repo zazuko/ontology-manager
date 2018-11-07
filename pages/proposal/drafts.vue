@@ -39,7 +39,7 @@ export default {
       prefetch: true,
       query: gql`
         query GetUserContent ($authorId: Int!) {
-          proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true}) {
+          proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true, status: OPEN}) {
             drafts: nodes {
               id,
               headline,

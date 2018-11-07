@@ -13,7 +13,7 @@ module.exports = { path: '/graphql', handler: app }
 function limit (req, res, next) {
   if (req.body && req.body.query) {
     const depth = req.body.query.split('{').length
-    if (depth > 15) {
+    if (depth > 15 && !req.body.query.trim().startsWith('query IntrospectionQuery')) {
       res.status(400)
       console.error(`Query limit reached! (depth was: ${depth})`)
       console.error(req.body.query)
