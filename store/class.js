@@ -67,7 +67,7 @@ export const actions = {
     }
   },
 
-  async [SAVE] ({ commit, state }) {
+  async [SAVE] ({ dispatch, commit, state }) {
     try {
       const threadId = state.clss.threadId
       const mutationParam = threadId ? '$id: Int!, ' : ''
@@ -107,6 +107,10 @@ export const actions = {
         mutation,
         variables
       })
+      if (!threadId) {
+        // this means that the UPSERT did an INSERT and not an UPDATE
+        dispatch('drafts/LOAD', null, { root: true })
+      }
 
       const threadIdFromResult = _get(result, 'data.upsertThread.thread.id')
 
