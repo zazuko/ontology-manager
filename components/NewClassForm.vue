@@ -166,9 +166,8 @@
           <div class="column" />
         </div>
 
-        <properties-table
+        <proposal-properties-table
           v-if="clss['domains.length']"
-          slot="selected-list"
           :properties="clss['domains']"
           :dataset="mergedDatasets.ontology"
           @delete="unselectDomain" />
