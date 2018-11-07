@@ -154,19 +154,11 @@ export default {
         clearInterval(i)
 
         this.saveInterval = setInterval(() => {
-          const serialized = this.serialized
-          if (!this.progressionSteps[0].check()) {
-            // not saving before having a label
+          if (this.clss['isDraft'] === false) {
+            clearInterval(this.saveInterval)
             return
           }
-          if (!this.progressionSteps[1].check()) {
-            // not saving before having deails
-            return
-          }
-          if (this.saveTmp !== serialized) {
-            this.save()
-            this.saveTmp = serialized
-          }
+          this.saveDraft()
         }, 2500)
       }
     })
@@ -198,7 +190,7 @@ export default {
   },
   beforeDestroy () {
     if (this.saveInterval) {
-      this.save()
+      this.saveDraft()
       clearInterval(this.saveInterval)
     }
   },
@@ -252,8 +244,27 @@ export default {
       load: LOAD
     }),
     sendProposal () {
-      const token = this.$apolloHelpers.getToken()
-      this.submit(token)
+      // TODO: send a splash screen
+      // remove draft status from the json proposalObject
+      this.$vuexSet('isDraft', false)
+      // save the changes
+      this.saveDraft()
+        .then(() => {
+          const token = this.$apolloHelpers.getToken()
+          // create the PR etc
+          this.submit(token)
+        })
+    },
+    saveDraft () {
+      const serialized = this.serialized
+      if (!this.detailsStep().check()) {
+        return Promise.resolve()
+      }
+      if (this.saveTmp !== serialized) {
+        this.saveTmp = serialized
+        return this.save()
+      }
+      return Promise.resolve()
     },
     newSteps (steps = [], path = 'propChildren') {
       return this.clss[path].reduce((newSteps, child) => {

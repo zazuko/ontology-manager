@@ -1,5 +1,5 @@
 query GetUserContent ($iri: String!) {
-  discussions: allThreads (condition: {iri: $iri, threadType: DISCUSSION, status: OPEN}) {
+  discussions: allThreads (condition: {iri: $iri, threadType: DISCUSSION, status: OPEN, isDraft: false}) {
     discussions: nodes {
       id,
       headline,
