@@ -8,6 +8,9 @@
               Property
             </th>
             <th>
+              Comment
+            </th>
+            <th>
               Type
             </th>
           </tr>
@@ -17,21 +20,15 @@
             v-for="(property, index) in properties"
             :key="index">
             <td>
-              <a
-                :href="rebaseIRI(property.subject.value)">
-                {{ _get(getLabel(property.subject.value), 'object.value') }}
-              </a>
+              <link-to-IRI :term="property.subject" />
             </td>
+            <td>{{ getComment(property.subject.value).object.value }}</td>
             <td>
               <ul>
                 <li
                   v-for="range in rangeOf(property.subject.value, ontology)"
                   :key="range.value">
-                  <a
-                    :href="rebaseIRI(range.value)"
-                    target="_blank">
-                    {{ term(range.value) }}
-                  </a>
+                  <link-to-IRI :term="range" />
                 </li>
               </ul>
             </td>
@@ -46,7 +43,8 @@
 
 <script>
 import _get from 'lodash/get'
-import { term, labelQuadForIRI, rebaseIRI, rangeOf } from '@/libs/rdf'
+import { term, commentQuadForIRI, rebaseIRI, rangeOf } from '@/libs/rdf'
+import LinkToIRI from './LinkToIRI'
 
 export default {
   name: 'PropertiesTable',
@@ -64,13 +62,16 @@ export default {
       required: true
     }
   },
+  components: {
+    LinkToIRI
+  },
   methods: {
     _get,
     term,
     rebaseIRI,
     rangeOf,
-    getLabel (iri) {
-      return labelQuadForIRI(this.ontology, iri)
+    getComment (iri) {
+      return commentQuadForIRI(this.ontology, iri)
     }
   }
 }
