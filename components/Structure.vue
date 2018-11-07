@@ -19,6 +19,14 @@
             class="subtitle">
             {{ obj.properties.length }} properties
           </p>
+          <p v-else />
+
+          <properties-table
+            v-if="obj.type === 'class' && obj.properties.length"
+            :properties="obj.properties"
+            :ontology="ontology"
+            :structure="structure" />
+          <div v-else />
 
           <div class="content">
             <div
@@ -55,10 +63,15 @@
 </template>
 
 <script>
+import rdf from 'rdf-ext'
 import { arrayToGroups } from '@/libs/utils'
+import PropertiesTable from '@/components/PropertiesTable'
 
 export default {
   name: 'Structure',
+  components: {
+    PropertiesTable
+  },
   props: {
     name: {
       type: String,
@@ -77,7 +90,17 @@ export default {
     depth: {
       type: Number,
       required: false,
-      default: 0
+      default: () => 0
+    },
+    ontology: {
+      type: Object,
+      required: true,
+      default: () => rdf.dataset()
+    },
+    structure: {
+      type: Object,
+      required: true,
+      default: () => rdf.dataset()
     }
   },
   methods: {

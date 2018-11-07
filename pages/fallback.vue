@@ -19,6 +19,8 @@
           <structure
             :obj="subtree"
             :name="subtree.label"
+            :ontology="ontology"
+            :structure="structure"
             class="tile is-ancestor" />
 
           <proposals
@@ -54,13 +56,14 @@ export default {
     if (route.path.endsWith('/')) {
       iri += '/'
     }
-    let jsonld = ''
 
+    let iriDataset = rdf.dataset()
+    let jsonld = ''
     try {
       jsonld = await new Promise((resolve, reject) => {
-        const dataset = matched(store, iri)
-        if (!dataset) resolve()
-        const quadStream = rdf.graph(dataset).toStream()
+        iriDataset = matched(store, iri)
+        if (!iriDataset) resolve()
+        const quadStream = rdf.graph(iriDataset).toStream()
 
         const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
 
@@ -82,6 +85,7 @@ export default {
 
     return {
       iri,
+      iriDataset,
       jsonld
     }
   },
@@ -103,13 +107,19 @@ export default {
   },
   data () {
     return {
-      ontology: undefined
+      ontology: rdf.dataset(),
+      structure: rdf.dataset()
     }
   },
   mounted () {
+    if (process.server) {
+      this.ontology = this.$store.state.graph.ontology
+      this.structure = this.$store.state.graph.structure
+    }
     let i = setInterval(() => {
       if (typeof window !== 'undefined') {
         this.ontology = window.ontology
+        this.structure = window.structure
         clearInterval(i)
       }
     }, 10)
@@ -167,10 +177,6 @@ export default {
 
 function matched (store, iri) {
   const subject = rdf.namedNode(iri)
-
-  // 1. const dataset = resourceToGraph(…)
-  // 2. const foo = dataset.match(null, null, null, rdf.namedNode(req.iri))
-  // 3. -> jsonld
 
   if (process.client) {
     if (window.structure) {
