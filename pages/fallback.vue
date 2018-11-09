@@ -47,7 +47,7 @@ import Structure from '@/components/fallback/Structure'
 import SideNav from '@/components/fallback/sidenav/SideNav'
 import Discussions from '@/components/fallback/Discussions'
 import Proposals from '@/components/fallback/Proposals'
-import { datasetsSetup, findSubtreeInForest } from '@/libs/utils'
+import { findSubtreeInForest } from '@/libs/utils'
 import { termIRI } from '@/libs/rdf'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
@@ -105,9 +105,6 @@ export default {
       return tree
     }
   },
-  async created () {
-    await datasetsSetup(this.$store)
-  },
   data () {
     return {
       termIRI,
@@ -137,27 +134,15 @@ export default {
       this.structure = this.$store.state.graph.structure
       this.setObjectType()
     }
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        this.ontology = window.ontology
-        this.structure = window.structure
-        this.setObjectType()
-        clearInterval(i)
-      }
-    }, 10)
+
+    this.ontology = this.$store.getters['graph/ontology']
+    this.structure = this.$store.getters['graph/structure']
+    this.setObjectType()
   },
   validate ({ params, store, route }) {
-    let ontology
-    let structure
-    if (typeof window !== 'undefined' && window.ontology) {
-      // we arrived here by navigating from another page
-      ontology = window.ontology
-      structure = window.structure
-    } else {
-      // we arrived here by loading the page, it's an entry page
-      ontology = store.state.graph.ontology
-      structure = store.state.graph.structure
-    }
+    // we arrived here by loading the page, it's an entry page
+    const ontology = store.state.graph.ontology
+    const structure = store.state.graph.structure
 
     // when trifid cannot find the IRI in the dataset, the request goes through
     // nuxt but without `req.dataset`, which means the store is empty and here
@@ -190,24 +175,14 @@ export default {
 function matched (store, iri) {
   const subject = rdf.namedNode(iri)
 
-  if (process.client) {
-    if (window.structure) {
-      const foundInOntology = window.ontologyGraph.match(null, null, null, subject)
-      if (foundInOntology.toArray().length) {
-        return foundInOntology
-      }
-      const foundInStructure = window.structureGraph.match(null, null, null, subject)
-      return foundInStructure
-    }
+  const ontologyGraph = store.getters['graph/ontologyGraph']
+  const structureGraph = store.getters['graph/structureGraph']
+
+  const foundInOntology = ontologyGraph.match(null, null, null, subject)
+  if (foundInOntology.toArray().length) {
+    return foundInOntology
   }
-  if (process.server) {
-    const foundInOntology = store.state.graph.ontologyGraph.match(null, null, null, subject)
-    if (foundInOntology.toArray().length) {
-      return foundInOntology
-    }
-    const foundInStructure = store.state.graph.structureGraph.match(null, null, null, subject)
-    return foundInStructure
-  }
-  return false
+  const foundInStructure = structureGraph.match(null, null, null, subject)
+  return foundInStructure
 }
 </script>

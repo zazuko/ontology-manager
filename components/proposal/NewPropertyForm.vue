@@ -272,7 +272,7 @@
 <script>
 import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
-import { datasetsSetup, debounce } from '@/libs/utils'
+import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import { Class } from '@/models/Class'
 import { toDataset, toNT, validate } from '@/models/Property'
@@ -304,8 +304,8 @@ export default {
     NewClassForm: () => import('@/components/proposal/NewClassForm'),
     Typeahead
   },
-  async mounted () {
-    await this.init()
+  mounted () {
+    this.init()
   },
   data () {
     return {
@@ -414,29 +414,21 @@ export default {
     invalidPropname (label) {
       return !/^([a-z])/.test(label)
     },
-    async init () {
-      await datasetsSetup(this.$store)
-
-      let i = setInterval(() => {
-        if (typeof window !== 'undefined') {
-          clearInterval(i)
-
-          if (this.baseDatasets) {
-            this.ontology = this.baseDatasets.ontology
-            this.structure = this.baseDatasets.structure
-          } else {
-            this.ontology = window.ontology
-            this.structure = window.structure
-          }
-          this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
-          this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-          if (!this.subform && this.prop['domains.length'] === 0) {
-            const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
-            this.$vuexPush('domains', currentLabelQuad)
-          }
-          this.onParentIRIChange()
-        }
-      }, 10)
+    init () {
+      if (this.baseDatasets) {
+        this.ontology = this.baseDatasets.ontology
+        this.structure = this.baseDatasets.structure
+      } else {
+        this.ontology = this.$store.getters['graph/ontology']
+        this.structure = this.$store.getters['graph/structure']
+      }
+      this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
+      this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
+      if (!this.subform && this.prop['domains.length'] === 0) {
+        const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
+        this.$vuexPush('domains', currentLabelQuad)
+      }
+      this.onParentIRIChange()
     },
     debugGenerateNT () {
       try {
