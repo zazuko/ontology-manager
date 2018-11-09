@@ -11,7 +11,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import DraftList from '@/components/DraftList.vue'
+import DraftList from '@/components/proposal/DraftList.vue'
 import { datasetsSetup } from '@/libs/utils'
 import { LOAD } from '@/store/action-types'
 

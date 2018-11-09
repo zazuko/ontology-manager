@@ -10,7 +10,7 @@
 
 <script>
 import _get from 'lodash/get'
-import ObjectTree from '@/components/ObjectTree'
+import ObjectTree from './ObjectTree'
 
 export default {
   name: 'SideNav',

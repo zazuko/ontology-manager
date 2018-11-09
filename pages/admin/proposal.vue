@@ -14,8 +14,8 @@
 
 <script>
 import allDiscussions from '@/apollo/queries/adminWorklist'
-import AdminProposalList from '@/components/AdminProposalList.vue'
-import AdminMenu from '@/components/AdminMenu.vue'
+import AdminProposalList from '@/components/admin/AdminProposalList.vue'
+import AdminMenu from '@/components/admin/AdminMenu.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
