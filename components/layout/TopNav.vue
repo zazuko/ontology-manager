@@ -59,8 +59,8 @@
 
 <script>
 import { toastClose } from '@/libs/utils'
-import SignIn from '@/components/SignIn.vue'
-import DraftTab from '@/components/DraftTab.vue'
+import SignIn from './SignIn.vue'
+import DraftTab from './DraftTab.vue'
 
 export default {
   name: 'TopNav',

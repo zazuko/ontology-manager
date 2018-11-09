@@ -65,7 +65,7 @@
 <script>
 import rdf from 'rdf-ext'
 import { arrayToGroups } from '@/libs/utils'
-import PropertiesTable from '@/components/PropertiesTable'
+import PropertiesTable from './PropertiesTable'
 
 export default {
   name: 'Structure',

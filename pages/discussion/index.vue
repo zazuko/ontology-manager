@@ -15,7 +15,7 @@
 
 <script>
 import allDiscussions from '@/apollo/queries/allDiscussions'
-import DiscussionList from '@/components/DiscussionList.vue'
+import DiscussionList from '@/components/discussion/DiscussionList.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {

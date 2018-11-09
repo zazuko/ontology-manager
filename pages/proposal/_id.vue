@@ -10,8 +10,8 @@
 <script>
 import discussionById from '@/apollo/queries/discussionById'
 import { datasetsSetup, toastClose } from '@/libs/utils'
-import DiscussionCard from '@/components/DiscussionCard.vue'
-import DiscussionReply from '@/components/DiscussionReply.vue'
+import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
+import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 
 export default {
   async asyncData ({ route }) {

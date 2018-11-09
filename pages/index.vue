@@ -38,7 +38,7 @@
 
 <script>
 import _get from 'lodash/get'
-import StructureHome from '@/components/StructureHome'
+import StructureHome from '@/components/home/StructureHome'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {
