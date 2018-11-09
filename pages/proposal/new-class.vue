@@ -119,7 +119,7 @@
 import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
-import NewClassForm from '@/components/NewClassForm'
+import NewClassForm from '@/components/proposal/NewClassForm'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {

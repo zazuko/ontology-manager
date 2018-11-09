@@ -14,8 +14,8 @@
 
 <script>
 import users from '@/apollo/queries/adminUserList'
-import AdminUserList from '@/components/AdminUserList.vue'
-import AdminMenu from '@/components/AdminMenu.vue'
+import AdminUserList from '@/components/admin/AdminUserList.vue'
+import AdminMenu from '@/components/admin/AdminMenu.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {

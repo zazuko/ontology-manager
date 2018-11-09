@@ -121,7 +121,7 @@
 import { createNamespacedHelpers } from 'vuex'
 
 import { datasetsSetup } from '@/libs/utils'
-import NewPropertyForm from '@/components/NewPropertyForm'
+import NewPropertyForm from '@/components/proposal/NewPropertyForm'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {

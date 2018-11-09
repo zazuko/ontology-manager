@@ -1,12 +1,12 @@
 <template>
   <div
-    :id="prop['label']"
-    :class="{ 'is-prop-subform': subform }">
+    :id="clss['label']"
+    :class="{ 'is-class-subform': subform }">
 
     <div
-      v-if="!prop['collapsed']">
+      v-if="!clss['collapsed']">
       <!-- <div
-        v-show="!subform && prop['iri']"
+        v-show="!subform && clss['iri']"
         class="box debug">
         <div class="columns">
           <div class="column">
@@ -37,15 +37,20 @@
         </div>
       </div> -->
 
-      <div class="box">
+      <div
+        :class="{
+          'is-marginless': clss['propChildren.length'],
+          'has-prop-subform': clss['propChildren.length'],
+        }"
+        class="box">
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span></h2>
+            <h2 class="title">New Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
             <p
-              v-show="prop['iri']"
+              v-show="clss['iri']"
               class="subtitle">
-              <code>{{ prop['iri'] }}</code>
+              <code>{{ clss['iri'] }}</code>
             </p>
           </div>
           <!--<div class="column">
@@ -57,25 +62,25 @@
           <div class="column">
             <div class="columns">
               <div class="column is-6 field">
-                <label class="label">Property Name</label>
+                <label class="label">Class Name</label>
                 <div class="control">
                   <input
-                    :class="{'is-danger': !prop['label']}"
+                    :class="{'is-danger': !clss['label']}"
                     class="input"
                     autocomplete="new-password"
                     type="text"
                     v-debounce
-                    v-model.lazy="prop['label']">
+                    v-model.lazy="clss['label']">
                 </div>
                 <p
-                  v-if="prop['label'] && invalidPropname(prop['label'])"
+                  v-if="clss['label'] && invalidClassname(clss['label'])"
                   class="help is-danger">
-                  Property name must start with a <strong>lowercase</strong> letter!
+                  Class name must start with an <strong>Uppercase</strong> letter!
                 </p>
                 <p
-                  v-else-if="!prop['label']"
+                  v-else-if="!clss['label']"
                   class="help is-danger">
-                  Please enter the property name.
+                  Please enter the class name.
                 </p>
                 <p v-else />
               </div>
@@ -91,12 +96,12 @@
               <div class="control">
                 <textarea
                   class="textarea"
-                  :class="{'is-danger': !prop['comment']}"
+                  :class="{'is-danger': !clss['comment']}"
                   v-debounce
-                  v-model.lazy="prop['comment']" />
+                  v-model.lazy="clss['comment']" />
               </div>
               <p
-                v-show="!prop['comment']"
+                v-show="!clss['comment']"
                 class="help is-danger">
                 Please write a short description.
               </p>
@@ -109,7 +114,7 @@
                 <textarea
                   class="textarea"
                   v-debounce
-                  v-model.lazy="prop['description']" />
+                  v-model.lazy="clss['description']" />
               </div>
             </div>
           </div>
@@ -123,7 +128,7 @@
               <div class="control">
                 <textarea
                   v-debounce
-                  v-model.lazy="prop['example']"
+                  v-model.lazy="clss['example']"
                   class="textarea"
                   placeholder="" />
               </div>
@@ -141,83 +146,31 @@
               v-if="renderTypeahead">
               <typeahead
                 :search-function="searchFunction"
-                label="Applies to the Following Classes"
+                label="Has the Following Properties"
                 @selectionChanged="selectDomain">
                 <div
-                  v-if="typeahead.inputString && canCreateDomain(typeahead.inputString)"
+                  v-if="typeahead.inputString && canCreateProperty(typeahead.inputString)"
                   slot="custom-options"
                   slot-scope="typeahead"
                   class="dropdown-item">
                   Create <a
-                    title="Add as a new class"
-                    @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}"?
+                    title="Add as a new property"
+                    @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
+                    property "{{ typeahead.inputString }}"?
                   </a>
                 </div>
-                <nav
-                  slot="selected-list"
-                  class="panel">
-                  <a
-                    v-for="(domain, index) in prop['domains']"
-                    :key="index"
-                    class:="{ 'is-active': index > 0 }"
-                    class="panel-block">
-                    <span
-                      class="panel-icon"
-                      @click.prevent="index > 0 && unselectDomain(index)">
-                      <i class="mdi mdi-close-circle" />
-                    </span>
-                    {{ (domain.object && term(domain.object)) || domain.label }}
-                  </a>
-                </nav>
               </typeahead>
             </div>
             <div v-else />
           </div>
-          <div class="column">
-            <div
-              v-if="renderTypeahead">
-              <typeahead
-                :search-function="searchFunction"
-                label="Expected Type"
-                @selectionChanged="selectRange">
-                <div
-                  v-if="typeahead.inputString && canCreateRange(typeahead.inputString)"
-                  slot="custom-options"
-                  slot-scope="typeahead"
-                  class="dropdown-item">
-                  Create <a
-                    title="Add as a new class"
-                    @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}"?
-                  </a>
-                </div>
-                <nav
-                  slot="selected-list"
-                  class="panel">
-                  <a
-                    v-for="(range, index) in prop['ranges']"
-                    :key="index"
-                    class="panel-block is-active">
-                    <span
-                      class="panel-icon"
-                      @click.prevent="unselectRange(index)">
-                      <i class="mdi mdi-close-circle" />
-                    </span>
-                    <span
-                      v-if="!range.label && range.predicate.value === termIRI.a.value">
-                      {{ term(range.subject) }}
-                    </span>
-                    <span v-else>
-                      {{ (range.object && term(range.object)) || range.label }}
-                    </span>
-                  </a>
-                </nav>
-              </typeahead>
-            </div>
-            <div v-else />
-          </div>
+          <div class="column" />
         </div>
+
+        <proposal-properties-table
+          v-if="clss['domains.length']"
+          :properties="clss['domains']"
+          :dataset="mergedDatasets.ontology"
+          @delete="unselectDomain" />
 
         <div
           v-show="subform"
@@ -227,20 +180,20 @@
               class="button is-success"
               :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.collapsed`, true)">
-              Add "<em>{{ prop['label'] }}</em>" to the proposal
+              Add "<em>{{ clss['label'] }}</em>" to the proposal
             </button>
           </div>
         </div>
 
       </div>
 
-      <div v-if="prop['classChildren'] && prop['classChildren'].length">
-        <new-class-form
-          v-for="(newClass, index) in prop['classChildren']"
+      <div v-if="clss['propChildren'] && clss['propChildren'].length">
+        <new-property-form
+          v-for="(newProp, index) in clss['propChildren']"
           :key="index"
           :subform="true"
           :iri="iri"
-          :store-path="`${storePath}.classChildren[${index}]`"
+          :store-path="`${storePath}.propChildren[${index}]`"
           :base-datasets="mergedDatasets" />
       </div>
       <div v-else />
@@ -253,7 +206,7 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="subtitle">New Property "<em>{{ prop['label'] }}</em>"</h2>
+            <h2 class="subtitle">New Class "<em>{{ clss['label'] }}</em>"</h2>
           </div>
           <div class="column">
             <button
@@ -271,14 +224,15 @@
 
 <script>
 import rdf from 'rdf-ext'
-import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
-import { datasetsSetup, debounce } from '@/libs/utils'
-import Typeahead from '@/components/Typeahead'
-import { Class } from '@/models/Class'
-import { toDataset, toNT, validate } from '@/models/Property'
+import { datasetsSetup } from '@/libs/utils'
+import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
+import Typeahead from './Typeahead'
+import ProposalPropertiesTable from './ProposalPropertiesTable'
+import { Property } from '@/models/Property'
+import { toDataset, toNT, validate } from '@/models/Class'
 
 export default {
-  name: 'NewPropertyForm',
+  name: 'NewClassForm',
   props: {
     iri: {
       type: String,
@@ -287,7 +241,7 @@ export default {
     storePath: {
       type: String,
       required: false,
-      default: () => 'prop.prop'
+      default: () => 'class.clss'
     },
     baseDatasets: {
       type: [Object, Boolean],
@@ -301,7 +255,8 @@ export default {
     }
   },
   components: {
-    NewClassForm: () => import('@/components/NewClassForm'),
+    NewPropertyForm: () => import('@/components/proposal/NewPropertyForm'),
+    ProposalPropertiesTable,
     Typeahead
   },
   async mounted () {
@@ -313,15 +268,14 @@ export default {
       renderTypeahead: process.client,
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
-      debugNT: '',
-      termIRI
+      debugNT: ''
     }
   },
   computed: {
     datasets () {
-      return toDataset(this.prop, false)
+      return toDataset(this.clss, false)
     },
-    prop () {
+    clss () {
       return this.$deepModel(this.storePath)
     },
     mergedDatasets () {
@@ -334,7 +288,7 @@ export default {
     validBase () {
       try {
         // this triggers validation
-        validate(this.prop)
+        validate(this.clss)
         return true
       } catch (err) {
         return false
@@ -342,77 +296,46 @@ export default {
     }
   },
   watch: {
-    'prop.label' () {
-      this.$vuexSet(`${this.storePath}.iri`, this.prop['baseIRI'] + normalizeLabel(this.prop['label'], 'camel'))
-    },
-    '$parent.clss.label' () {
-      this.onParentIRIChange()
+    'clss.label' () {
+      this.$vuexSet(`${this.storePath}.iri`, this.clss['baseIRI'] + normalizeLabel(this.clss['label'], 'pascal'))
     }
   },
   methods: {
     term,
     $vuexPush (path, ...values) {
-      const currentValues = this.prop[path]
+      const currentValues = this.clss[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
     },
     $vuexDeleteAtIndex (path, index) {
-      const currentValues = this.prop[path]
+      const currentValues = this.clss[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.filter((nothing, i) => i !== index))
     },
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => this.term(subject) === this.term(domain.subject)
-      if (this.prop['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
+      if (this.clss['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
         return
       }
-      this.$vuexPush('domains', labelQuadForIRI(this.ontology, searchResult.iri))
+
+      this.$vuexPush('domains', searchResult)
     },
-    onParentIRIChange: debounce(function () {
-      if (this.subform) {
-        const parentLabelQuad = labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.clss.iri)
-        this.$vuexSet(`${this.storePath}.domains[0]`, parentLabelQuad)
-      }
-    }, 400),
     unselectDomain (index) {
-      const childIndex = this.prop['classChildren'].indexOf(this.prop[`domains[${index}]`])
-      this.$vuexDeleteAtIndex('classChildren', childIndex)
+      const childIndex = this.clss['propChildren'].indexOf(this.clss[`domains[${index}]`])
+      this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
     },
-    selectRange (searchResult) {
-      const range = searchResult.domain
-      // don't add if already in there
-      const isSelected = ({ subject }) => this.term(subject) === this.term(range.subject)
-      if (this.prop['ranges'].find(isSelected)) {
-        return
-      }
-      this.$vuexPush('ranges', range)
+    canCreateProperty (label) {
+      return /^([a-z])/.test(label)
     },
-    unselectRange (index) {
-      const childIndex = this.prop['classChildren'].indexOf(this.prop[`ranges[${index}]`])
-      this.$vuexDeleteAtIndex('classChildren', childIndex)
-      this.$vuexDeleteAtIndex('ranges', index)
-    },
-    canCreateDomain (label) {
-      return /^([A-Z])/.test(label)
-    },
-    createDomain (label) {
-      const clss = new Class({ label, isNew: true })
-      this.$vuexPush('domains', clss)
-      this.$vuexPush('classChildren', clss)
+    createProperty (label) {
+      const prop = new Property({ label, isNew: true })
+      this.$vuexPush('domains', prop)
+      this.$vuexPush('propChildren', prop)
       return true
     },
-    canCreateRange (label) {
-      return /^([A-Z])/.test(label)
-    },
-    createRange (label) {
-      const clss = new Class({ label, isNew: true })
-      this.$vuexPush('ranges', clss)
-      this.$vuexPush('classChildren', clss)
-      return true
-    },
-    invalidPropname (label) {
-      return !/^([a-z])/.test(label)
+    invalidClassname (label) {
+      return !/^([A-Z])/.test(label)
     },
     async init () {
       await datasetsSetup(this.$store)
@@ -428,19 +351,14 @@ export default {
             this.ontology = window.ontology
             this.structure = window.structure
           }
-          this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
+          this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
           this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-          if (!this.subform && this.prop['domains.length'] === 0) {
-            const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
-            this.$vuexPush('domains', currentLabelQuad)
-          }
-          this.onParentIRIChange()
         }
       }, 10)
     },
     debugGenerateNT () {
       try {
-        const datasets = toDataset(this.prop)
+        const datasets = toDataset(this.clss)
         this.debugNT = toNT(null, datasets.ontology)
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
         this.debugNT += toNT(null, datasets.structure)

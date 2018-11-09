@@ -6,7 +6,7 @@
 
 <script>
 import _get from 'lodash/get'
-import DiscussionCreate from '@/components/DiscussionCreate.vue'
+import DiscussionCreate from '@/components/discussion/DiscussionCreate.vue'
 import { datasetsSetup } from '@/libs/utils'
 
 export default {

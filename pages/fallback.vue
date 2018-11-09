@@ -12,6 +12,9 @@
       <side-nav :current-iri="iri" />
 
       <div class="container column is-10">
+        <p v-show="termIRI.Class.equals(objectType)">class</p>
+        <p v-show="termIRI.Property.equals(objectType)">property</p>
+        <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>
         <div
           v-if="subtree"
           class="section">
@@ -40,10 +43,10 @@
 import rdf from 'rdf-ext'
 import JsonLdSerializer from 'rdf-serializer-jsonld-ext'
 
-import Structure from '@/components/Structure'
-import SideNav from '@/components/SideNav'
-import Discussions from '@/components/Discussions'
-import Proposals from '@/components/Proposals'
+import Structure from '@/components/fallback/Structure'
+import SideNav from '@/components/fallback/sidenav/SideNav'
+import Discussions from '@/components/fallback/Discussions'
+import Proposals from '@/components/fallback/Proposals'
 import { datasetsSetup, findSubtreeInForest } from '@/libs/utils'
 import { termIRI } from '@/libs/rdf'
 
