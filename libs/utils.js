@@ -1,8 +1,5 @@
 import rdf from 'rdf-ext'
-import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
-import N3Parser from 'rdf-parser-n3'
-import { Readable } from 'readable-stream'
 import { datasetBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
 
@@ -11,19 +8,6 @@ export const toastClose = {
     text: 'Close',
     onClick: (e, toastObject) => {
       toastObject.goAway(0)
-    }
-  }
-}
-
-export async function datasetsSetup (store) {
-  if (process.client) {
-    if (!(window.ontology instanceof rdf.defaults.Dataset)) {
-      window.ontology = await deserialize(store.state.graph.ontologySerialized)
-      window.ontologyGraph = resourcesToGraph(window.ontology)
-    }
-    if (!(window.structure instanceof rdf.defaults.Dataset)) {
-      window.structure = await deserialize(store.state.graph.structureSerialized)
-      window.structureGraph = resourcesToGraph(window.structure)
     }
   }
 }
@@ -37,21 +21,6 @@ export function arrayToGroups (obj, groupSize = 4) {
     groups[group].push(obj)
     return groups
   }, [])
-}
-
-async function deserialize (string) {
-  const parser = new N3Parser({ factory: rdf })
-
-  const input = new Readable({
-    read: () => {
-      input.push(string)
-      input.push(null)
-    }
-  })
-
-  const quadStream = parser.import(input)
-  const dataset = await rdf.dataset().import(quadStream)
-  return dataset
 }
 
 export function serialize (dataset) {

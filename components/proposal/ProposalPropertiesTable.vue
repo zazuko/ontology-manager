@@ -103,10 +103,9 @@ export default {
     usedOnClasses,
     rangeOf,
     classIsNew ({ object }) {
-      if (window.ontology) {
-        return !window.ontology.match(object, termIRI.a, termIRI.class).toArray().length
-      }
-      return false
+      const ontology = this.$store.getters['graph/ontology']
+      const found = ontology.match(object, termIRI.a, termIRI.class).toArray().length
+      return !found
     }
   }
 }

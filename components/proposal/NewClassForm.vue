@@ -224,7 +224,6 @@
 
 <script>
 import rdf from 'rdf-ext'
-import { datasetsSetup } from '@/libs/utils'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
@@ -259,8 +258,8 @@ export default {
     ProposalPropertiesTable,
     Typeahead
   },
-  async mounted () {
-    await this.init()
+  mounted () {
+    this.init()
   },
   data () {
     return {
@@ -337,24 +336,16 @@ export default {
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
     },
-    async init () {
-      await datasetsSetup(this.$store)
-
-      let i = setInterval(() => {
-        if (typeof window !== 'undefined') {
-          clearInterval(i)
-
-          if (this.baseDatasets) {
-            this.ontology = this.baseDatasets.ontology
-            this.structure = this.baseDatasets.structure
-          } else {
-            this.ontology = window.ontology
-            this.structure = window.structure
-          }
-          this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
-          this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-        }
-      }, 10)
+    init () {
+      if (this.baseDatasets) {
+        this.ontology = this.baseDatasets.ontology
+        this.structure = this.baseDatasets.structure
+      } else {
+        this.ontology = this.$store.getters['graph/ontology']
+        this.structure = this.$store.getters['graph/structure']
+      }
+      this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
+      this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
     },
     debugGenerateNT () {
       try {

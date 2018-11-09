@@ -16,7 +16,6 @@
 <script>
 import allDiscussions from '@/apollo/queries/allDiscussions'
 import DiscussionList from '@/components/discussion/DiscussionList.vue'
-import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {
@@ -27,9 +26,6 @@ export default {
       nodes: []
     }
   }),
-  async created () {
-    await datasetsSetup(this.$store)
-  },
   mounted () {
     // triggers the error
     this.$apollo.queries.discussions.refetch()

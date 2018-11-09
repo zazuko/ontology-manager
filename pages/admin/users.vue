@@ -16,7 +16,6 @@
 import users from '@/apollo/queries/adminUserList'
 import AdminUserList from '@/components/admin/AdminUserList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
-import { datasetsSetup } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -29,9 +28,6 @@ export default {
       nodes: []
     }
   }),
-  async created () {
-    await datasetsSetup(this.$store)
-  },
   methods: {
     refetch () {
       this.$apollo.queries.users.refetch()

@@ -118,11 +118,11 @@ export const actions = {
     }
   },
 
-  async [SUBMIT] ({ dispatch, commit, state }, token) {
+  async [SUBMIT] ({ dispatch, commit, state, rootState }, token) {
     try {
       const propertyProposalData = generatePropertyProposal({
-        ontology: typeof window !== 'undefined' ? window.ontology : {},
-        structure: typeof window !== 'undefined' ? window.structure : {},
+        ontology: rootState.graph.ontology,
+        structure: rootState.graph.structure,
         property: state.prop
       })
 

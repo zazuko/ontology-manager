@@ -5,13 +5,7 @@
 </template>
 
 <script>
-import { datasetsSetup } from '@/libs/utils'
-
-export default {
-  async created () {
-    await datasetsSetup(this.$store)
-  }
-}
+export default {}
 </script>
 
 <style>

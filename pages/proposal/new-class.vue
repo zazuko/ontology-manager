@@ -118,7 +118,6 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import { datasetsSetup } from '@/libs/utils'
 import NewClassForm from '@/components/proposal/NewClassForm'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
@@ -144,9 +143,6 @@ export default {
       saveTmp: '', // only save if this string changed
       saveInterval: null
     }
-  },
-  async created () {
-    await datasetsSetup(this.$store)
   },
   mounted () {
     let i = setInterval(() => {
