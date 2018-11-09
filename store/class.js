@@ -123,11 +123,11 @@ export const actions = {
     }
   },
 
-  async [SUBMIT] ({ dispatch, commit, state }, token) {
+  async [SUBMIT] ({ dispatch, commit, state, rootState }, token) {
     try {
       const classProposalData = generateClassProposal({
-        ontology: typeof window !== 'undefined' ? window.ontology : {},
-        structure: typeof window !== 'undefined' ? window.structure : {},
+        ontology: rootState.graph.ontology,
+        structure: rootState.graph.structure,
         clss: state.clss
       })
 

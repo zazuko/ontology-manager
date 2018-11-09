@@ -39,7 +39,6 @@
 <script>
 import _get from 'lodash/get'
 import StructureHome from '@/components/home/StructureHome'
-import { datasetsSetup } from '@/libs/utils'
 
 export default {
   components: {
@@ -49,9 +48,6 @@ export default {
     return {
       children: _get(this, '$store.state.graph.structureTree[0].children', [])
     }
-  },
-  async created () {
-    await datasetsSetup(this.$store)
   }
 }
 </script>

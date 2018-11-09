@@ -12,7 +12,6 @@
 import { createNamespacedHelpers } from 'vuex'
 
 import DraftList from '@/components/proposal/DraftList.vue'
-import { datasetsSetup } from '@/libs/utils'
 import { LOAD } from '@/store/action-types'
 
 const {
@@ -26,9 +25,6 @@ export default {
   },
   computed: {
     ...draftsGetters(['drafts'])
-  },
-  async created () {
-    await datasetsSetup(this.$store)
   },
   methods: {
     ...draftsActions({
