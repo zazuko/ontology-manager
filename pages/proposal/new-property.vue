@@ -113,6 +113,18 @@
         </div>
       </div>
 
+      <div
+        :class="{ 'is-active': isLoading }"
+        class="modal">
+        <div class="modal-background" />
+        <div class="modal-content has-text-centered">
+          <div class="box">
+            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
+            <p class="subtitle">Generating Proposal</p>
+          </div>
+        </div>
+      </div>
+
     </section>
   </div>
 </template>
@@ -143,7 +155,8 @@ export default {
   data () {
     return {
       saveTmp: '', // only save if this string changed
-      saveInterval: null
+      saveInterval: null,
+      isLoading: false
     }
   },
   mounted () {
@@ -242,7 +255,8 @@ export default {
       load: LOAD
     }),
     sendProposal () {
-      // TODO: send a splash screen
+      // Send splash screen
+      this.isLoading = true
       // remove draft status from the json proposalObject
       this.$vuexSet('isDraft', false)
       // save the changes
