@@ -179,3 +179,8 @@ table.table ul {
     transform: rotate(360deg);
   }
 }
+
+// proposals progression box follows scrollY
+.progression-box.top-sticky {
+  margin-top: 10px;
+}
