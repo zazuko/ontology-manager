@@ -205,6 +205,9 @@ export default {
   },
   computed: {
     clss () {
+      if (process.server) {
+        return this.$store.state.class.clss
+      }
       return this.$deepModel('class.clss')
     },
     _iri () {
