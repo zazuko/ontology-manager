@@ -169,6 +169,7 @@
         <proposal-properties-table
           v-if="clss['domains.length']"
           :properties="clss['domains']"
+          :store-path="storePath"
           :dataset="mergedDatasets.ontology"
           @delete="unselectDomain" />
 
@@ -241,17 +242,17 @@ export default {
     storePath: {
       type: String,
       required: false,
-      default: () => 'class.clss'
+      default: 'class.clss'
     },
     baseDatasets: {
       type: [Object, Boolean],
       required: false,
-      default: () => false
+      default: false
     },
     subform: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: false
     }
   },
   components: {
