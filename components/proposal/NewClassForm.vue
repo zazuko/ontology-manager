@@ -223,6 +223,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
@@ -275,6 +276,9 @@ export default {
       return toDataset(this.clss, false)
     },
     clss () {
+      if (process.server) {
+        return _get(this.$store.state, this.storePath, this.$store.state.class.clss)
+      }
       return this.$deepModel(this.storePath)
     },
     mergedDatasets () {
