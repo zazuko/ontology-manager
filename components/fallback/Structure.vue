@@ -90,7 +90,7 @@ export default {
     depth: {
       type: Number,
       required: false,
-      default: () => 0
+      default: 0
     },
     ontology: {
       type: Object,
