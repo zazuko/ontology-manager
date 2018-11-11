@@ -73,7 +73,7 @@
           <a
             class="button is-small is-success is-outlined"
             v-show="property.isNew"
-            :href="`#${property.label}`">
+            @click.prevent="jumpToProperty(property, index)">
             Edit
           </a>
         </td>
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 
 export default {
@@ -95,6 +96,10 @@ export default {
     dataset: {
       type: Object,
       required: true
+    },
+    storePath: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -106,6 +111,16 @@ export default {
       const ontology = this.$store.getters['graph/ontology']
       const found = ontology.match(object, termIRI.a, termIRI.class).toArray().length
       return !found
+    },
+    jumpToProperty (property, index) {
+      if (this.storePath) {
+        this.$vuexSet(`${this.storePath}.domains[${index}].collapsed`, false)
+      }
+      setTimeout(() => {
+        try {
+          document.getElementById(property.label).scrollIntoView()
+        } catch (err) {}
+      }, 25)
     }
   }
 }
