@@ -26,7 +26,7 @@ export default {
     anchor: {
       type: String,
       required: false,
-      default: () => ''
+      default: ''
     }
   },
   data () {

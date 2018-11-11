@@ -288,17 +288,17 @@ export default {
     storePath: {
       type: String,
       required: false,
-      default: () => 'prop.prop'
+      default: 'prop.prop'
     },
     baseDatasets: {
       type: [Object, Boolean],
       required: false,
-      default: () => false
+      default: false
     },
     subform: {
       type: Boolean,
       required: false,
-      default: () => false
+      default: false
     }
   },
   components: {
