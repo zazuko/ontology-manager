@@ -207,6 +207,9 @@ export default {
   },
   computed: {
     prop () {
+      if (process.server) {
+        return this.$store.state.prop.prop
+      }
       return this.$deepModel('prop.prop')
     },
     _iri () {

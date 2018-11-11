@@ -270,6 +270,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
 import { debounce } from '@/libs/utils'
@@ -322,6 +323,9 @@ export default {
       return toDataset(this.prop, false)
     },
     prop () {
+      if (process.server) {
+        return _get(this.$store.state, this.storePath, this.$store.state.prop.prop)
+      }
       return this.$deepModel(this.storePath)
     },
     mergedDatasets () {
