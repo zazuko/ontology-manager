@@ -40,6 +40,7 @@ module.exports = {
   */
   plugins: [
     { src: '@/plugins/nuxt-client-init', ssr: false },
+    { src: '@/plugins/sticky', ssr: false },
     '@/plugins/filters',
     '@/plugins/directives'
   ],

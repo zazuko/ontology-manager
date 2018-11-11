@@ -26,8 +26,13 @@
         </div>
 
         <div class="columns">
-          <div class="column is-3">
-            <div class="box">
+          <div
+            sticky-container
+            class="column is-3">
+            <div
+              class="progression-box box"
+              v-sticky="true"
+              sticky-side="top">
               <p class="label">
                 New Proposal Progression
               </p>

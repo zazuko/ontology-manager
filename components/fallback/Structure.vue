@@ -22,7 +22,7 @@
           <p v-else />
 
           <properties-table
-            v-if="obj.type === 'class' && obj.properties.length"
+            v-if="obj.type === 'class' && Array.isArray(obj.properties)"
             :properties="obj.properties"
             :ontology="ontology"
             :structure="structure" />
