@@ -48,6 +48,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@/modules/vue-deepset',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/apollo',
