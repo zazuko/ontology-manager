@@ -4,7 +4,7 @@
       <nav class="navbar">
         <div class="navbar-brand">
           <a class="navbar-item">
-            <h1 class="title">Conversation</h1>
+            <h1 class="title">Conversations</h1>
           </a>
         </div>
         <div class="navbar-end">
