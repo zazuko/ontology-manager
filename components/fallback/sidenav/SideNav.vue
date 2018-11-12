@@ -1,5 +1,5 @@
 <template>
-  <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+  <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile side-nav-col">
     <object-tree
       v-for="tree in children"
       :key="tree.iri"

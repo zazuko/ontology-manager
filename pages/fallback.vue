@@ -11,31 +11,42 @@
 
       <side-nav :current-iri="iri" />
 
-      <div class="container column is-10 has-background-white-ter">
+      <article class="column is-10">
         <!--<p v-show="termIRI.Class.equals(objectType)">class</p>
         <p v-show="termIRI.Property.equals(objectType)">property</p>
         <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>-->
-        <div
-          v-if="subtree"
-          class="section">
+        <div v-if="subtree">
 
           <structure
+            v-if="subtree.children.length"
             :obj="subtree"
             :name="subtree.label"
             :ontology="ontology"
             :structure="structure"
             :is-class="termIRI.Class.equals(objectType)"
             class="tile is-ancestor" />
+          <object-details
+            v-else
+            :obj="subtree"
+            :name="subtree.label"
+            :ontology="ontology"
+            :structure="structure"
+            :is-class="termIRI.Class.equals(objectType)"
+            :iri="subtree.iri" />
+
+          <hr />
 
           <proposals
             :iri="iri"
             :is-class="termIRI.Class.equals(objectType)" />
-          <hr v-show="termIRI.Class.equals(objectType)" />
+
+          <hr />
+
           <discussions
             v-if="termIRI.Class.equals(objectType)"
             :iri="iri" />
         </div>
-      </div>
+      </article>
     </section>
   </div>
 </template>
@@ -45,6 +56,7 @@ import rdf from 'rdf-ext'
 import JsonLdSerializer from 'rdf-serializer-jsonld-ext'
 
 import Structure from '@/components/fallback/Structure'
+import ObjectDetails from '@/components/fallback/ObjectDetails'
 import SideNav from '@/components/fallback/sidenav/SideNav'
 import Discussions from '@/components/fallback/Discussions'
 import Proposals from '@/components/fallback/Proposals'
@@ -96,6 +108,7 @@ export default {
   components: {
     SideNav,
     Structure,
+    ObjectDetails,
     Discussions,
     Proposals
   },

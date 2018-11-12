@@ -81,11 +81,6 @@ export default {
       type: Object,
       required: false,
       default: () => ({})
-    },
-    depth: {
-      type: Number,
-      required: false,
-      default: 0
     }
   },
   methods: {
