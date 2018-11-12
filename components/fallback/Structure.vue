@@ -15,15 +15,15 @@
             </span>
           </p>
           <p
-            v-if="obj.type === 'class'"
+            v-if="isClass"
             class="subtitle">
-            {{ obj.properties.length }} properties
+            {{ obj.properties.length }} propert{{ obj.properties.length === 1 ? 'y' : 'ies' }}
           </p>
           <p v-else />
 
           <properties-table
-            v-if="obj.type === 'class' && Array.isArray(obj.properties)"
-            :properties="obj.properties"
+            v-if="isClass && obj.properties"
+            :properties="obj.properties.toArray()"
             :ontology="ontology"
             :structure="structure" />
           <div v-else />
@@ -50,7 +50,7 @@
                     </span>
                   </p>
                   <p class="subtitle">
-                    {{ child.properties.length }} properties
+                    {{ child.properties.length }} propert{{ child.properties.length === 1 ? 'y' : 'ies' }}
                   </p>
                 </article>
               </div>
@@ -101,6 +101,11 @@ export default {
       type: Object,
       required: true,
       default: () => rdf.dataset()
+    },
+    isClass: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   methods: {

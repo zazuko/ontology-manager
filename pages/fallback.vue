@@ -12,9 +12,9 @@
       <side-nav :current-iri="iri" />
 
       <div class="container column is-10">
-        <p v-show="termIRI.Class.equals(objectType)">class</p>
+        <!--<p v-show="termIRI.Class.equals(objectType)">class</p>
         <p v-show="termIRI.Property.equals(objectType)">property</p>
-        <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>
+        <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>-->
         <div
           v-if="subtree"
           class="section">
@@ -24,6 +24,7 @@
             :name="subtree.label"
             :ontology="ontology"
             :structure="structure"
+            :is-class="termIRI.Class.equals(objectType)"
             class="tile is-ancestor" />
 
           <proposals
@@ -129,12 +130,6 @@ export default {
     }
   },
   mounted () {
-    if (process.server) {
-      this.ontology = this.$store.state.graph.ontology
-      this.structure = this.$store.state.graph.structure
-      this.setObjectType()
-    }
-
     this.ontology = this.$store.getters['graph/ontology']
     this.structure = this.$store.getters['graph/structure']
     this.setObjectType()

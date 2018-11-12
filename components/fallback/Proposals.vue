@@ -1,6 +1,6 @@
 <template>
-  <section class="hero is-small is-primary">
-    <div class="hero-head">
+  <section>
+    <header>
       <nav class="navbar">
         <div class="navbar-brand">
           <a class="navbar-item">
@@ -8,71 +8,77 @@
           </a>
         </div>
         <div class="navbar-end">
-          <span class="navbar-item">
-            <nuxt-link
-              v-if="!isClass"
-              :to="{ name: 'proposal-new-class', query: { iri: iri } }"
-              class="button is-primary is-inverted">
-              Request New Class
-            </nuxt-link>
-          </span>
           <span
             v-if="isClass"
             class="navbar-item">
             <nuxt-link
               :to="{ name: 'proposal-new-property', query: { iri: iri } }"
-              class="button is-primary is-inverted">
+              class="button is-info">
               Request New Property
+            </nuxt-link>
+          </span>
+          <span
+            v-else
+            class="navbar-item">
+            <nuxt-link
+              :to="{ name: 'proposal-new-class', query: { iri: iri } }"
+              class="button is-info">
+              Request New Class
             </nuxt-link>
           </span>
         </div>
       </nav>
-    </div>
-    <div class="hero-body">
-      <div v-if="proposals">
-        <article
+    </header>
+    <table
+      v-if="proposals"
+      class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>
+            Property
+          </th>
+          <th>
+            Expected<br>Type
+          </th>
+          <th>
+            Description
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
           v-for="proposal in proposals.proposals"
-          :key="proposal.id"
-          class="media">
-          <figure class="media-left">
-            <p class="image is-64x64">
-              <img
-                :src="proposal.author.avatar"
-                :alt="authorsAvatar(proposal.author.name)">
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <h3 class="subtitle">
-                {{ proposal.headline }}
-              </h3>
-              <p>
-                {{ cut(proposal.body) }}
-              </p>
-
-              <p>
-                <strong>{{ proposal.author.name }}</strong> <small>Created {{ proposal.createdAt }}</small>
-              </p>
-            </div>
-          </div>
-          <div class="media-right">
-            <!-- <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
-              <span class="icon is-small">
-                <i class="mdi mdi-message-reply-text" />
-              </span>
-              {{ answersCount(proposal) }}
-            </nuxt-link> -->
-          </div>
-        </article>
-      </div>
-      <div v-else />
-    </div>
+          :key="proposal.id">
+          <td>
+            <nuxt-link :to="{ name: 'proposal-new-property', query: { id: proposal.id } }">
+              {{ proposal.proposalObject.label }}
+            </nuxt-link>
+          </td>
+          <td>
+            <ul>
+              <li
+                v-for="(range, index) in proposal.proposalObject.ranges"
+                :key="index">
+                <link-to-IRI
+                  :term="range.predicate ? range.subject : { value: range.iri }" />
+              </li>
+            </ul>
+          </td>
+          <td>
+            {{ proposal.proposalObject.comment }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else />
   </section>
 </template>
 
 <script>
 import _get from 'lodash/get'
+import LinkToIRI from './LinkToIRI'
 import proposals from '@/apollo/queries/proposalsByIri'
+import { proposalDeserializer } from '@/libs/proposals'
 
 export default {
   name: 'Proposals',
@@ -85,6 +91,9 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  components: {
+    LinkToIRI
   },
   methods: {
     authorsAvatar (name = '') {
@@ -105,11 +114,20 @@ export default {
           iri: this.iri
         }
       },
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      result ({ data, loading }) {
+        if (!loading) {
+          const proposals = _get(data, 'proposals.proposals', [])
+          return proposals.map(proposal => {
+            if (Array.isArray(proposal.proposalObject)) {
+              proposal.proposalObject = proposalDeserializer(proposal.proposalObject)
+            }
+            return proposal
+          })
+        }
+        return []
+      }
     }
-  },
-  validate () {
-
   }
 }
 </script>
