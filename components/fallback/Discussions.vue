@@ -1,9 +1,7 @@
 <template>
   <section class="section has-background-white">
 
-    <div
-      id="conversations"
-      class="level">
+    <div class="level">
       <div class="level-left">
         <h1 class="title">Conversations</h1>
       </div>
