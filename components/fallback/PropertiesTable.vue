@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="_get(ontology, '_quads.length') !== 0">
-      <table class="table is-fullwidth">
+      <table class="table is-fullwidth has-background-white">
         <thead>
           <tr>
             <th>

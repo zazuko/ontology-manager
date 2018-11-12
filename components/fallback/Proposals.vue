@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="has-background-white">
     <header>
       <nav class="navbar">
         <div class="navbar-brand">
