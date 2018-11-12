@@ -16,11 +16,24 @@
             v-show="showPlusSymbol"
             class="mdi mdi-plus" />
         </span>
-        <span
-          v-else
-          class="icon is-small">
-          <i class="mdi" />
-        </span>
+      </span>
+      <span
+        v-else-if="properties.length"
+        class="icon is-small"
+        @click.prevent="toggleCollapse">
+        <i
+          v-show="showMinusSymbol"
+          class="mdi mdi-minus" />
+        <i
+          v-show="showPlusSymbol"
+          class="mdi mdi-plus" />
+      </span>
+      <span
+        v-else
+        class="icon is-small has-text-grey-lighter">
+        <i
+          v-show="showPlusSymbol"
+          class="mdi mdi-plus" />
       </span>
       {{ tree.label }}
     </nuxt-link>
@@ -37,10 +50,10 @@
     </ul>
     <div v-else>
       <ul
-        v-if="tree.properties && tree.properties.length"
+        v-if="properties && properties.length"
         v-show="isActive">
         <li
-          v-for="(property, index) in tree.properties.toArray()"
+          v-for="(property, index) in properties"
           :key="index">
           <link-to-IRI :term="property.subject" />
         </li>
@@ -103,6 +116,15 @@ export default {
     },
     showPlusSymbol () {
       return !this.showMinusSymbol
+    },
+    properties () {
+      if (Array.isArray(this.tree.properties)) {
+        return this.tree.properties
+      }
+      if (this.tree.properties) {
+        return this.tree.properties.toArray()
+      }
+      return []
     }
   },
   beforeCreate () {
