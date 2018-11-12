@@ -8,7 +8,7 @@
               Property
             </th>
             <th>
-              Expected Type
+              Expected&nbsp;Type
             </th>
             <th>
               Description
@@ -23,7 +23,7 @@
               <link-to-IRI :term="property.subject" />
             </td>
             <td>
-              <ul>
+              <ul class="types-list">
                 <li
                   v-for="range in rangeOf(property.subject.value, ontology)"
                   :key="range.value">
