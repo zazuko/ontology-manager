@@ -2,22 +2,33 @@
   <section class="section has-background-white">
     <article>
       <h1 class="title is-1">
-        {{ name }}
+        {{ label(iri) }}
       </h1>
       <div class="content">
         <ul>
-          <li>Go to <a href="#proposals">Proposals</a></li>
+          <li v-show="isClass">Go to <a href="#proposals">Proposals</a></li>
           <li>Go to <a href="#conversations">Conversation</a></li>
         </ul>
-        <p>
-          {{ comment }}
-        </p>
+
+        <div v-show="comment">
+          <p class="title is-5">Short Description</p>
+          <blockquote>
+            {{ comment }}
+          </blockquote>
+        </div>
+
+        <div v-show="description">
+          <p class="title is-5">Long Description</p>
+          <blockquote>
+            {{ description }}
+          </blockquote>
+        </div>
       </div>
 
       <div v-if="isClass">
         <properties-table
-          v-if="obj.properties.length"
-          :properties="obj.properties.toArray()"
+          v-if="properties.length"
+          :properties="properties"
           :ontology="ontology"
           :structure="structure" />
         <div
@@ -28,7 +39,38 @@
           </p>
         </div>
       </div>
-      <div v-else />
+      <div v-else>
+        <section
+          class="content"
+          v-show="rangeOf.length">
+          <h4 class="title is-5">
+            Values are of types
+          </h4>
+          <ul class="types-list">
+            <li
+              v-for="clss in rangeOf"
+              :key="clss.value">
+              <link-to-IRI :term="clss" />
+            </li>
+          </ul>
+        </section>
+        <section
+          class="content"
+          v-show="usedOn.length">
+          <h4 class="title is-5">
+            Used on types
+          </h4>
+          <ul class="types-list">
+            <li
+              v-for="clss in usedOn"
+              :key="clss.url">
+              <nuxt-link :to="clss.url">
+                {{ clss.label }}
+              </nuxt-link>
+            </li>
+          </ul>
+        </section>
+      </div>
     </article>
   </section>
 </template>
@@ -37,26 +79,20 @@
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
-import { commentQuadForIRI } from '@/libs/rdf'
+import LinkToIRI from './LinkToIRI'
+import { termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
+import { findClassProperties } from '@/libs/utils'
 
 export default {
   name: 'ObjectDetails',
   components: {
-    PropertiesTable
+    PropertiesTable,
+    LinkToIRI
   },
   props: {
-    name: {
-      type: String,
-      required: true
-    },
-    obj: {
+    object: {
       type: Object,
-      required: false,
-      default: () => ({})
-    },
-    parent: {
-      type: Object,
-      required: false,
+      required: true,
       default: () => ({})
     },
     ontology: {
@@ -68,17 +104,49 @@ export default {
       type: Object,
       required: true,
       default: () => rdf.dataset()
-    },
-    isClass: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   computed: {
+    iri () {
+      const iri = _get(this.object.toArray(), '[0].subject', { value: '' })
+      return iri
+    },
     comment () {
-      const quad = commentQuadForIRI(this.ontology, this.obj.iri)
-      return _get(quad, 'object.value', '')
+      const label = this.ontology.match(this.iri, termIRI.comment).toArray()
+      return _get(label, '[0].object.value', '')
+    },
+    description () {
+      const label = this.ontology.match(this.iri, termIRI.description).toArray()
+      return _get(label, '[0].object.value', '')
+    },
+    properties () {
+      if (this.isClass) {
+        const properties = findClassProperties(this.iri.value, this.ontology).toArray()
+        return properties
+      }
+      return null
+    },
+    usedOn () {
+      const classes = usedOnClasses(this.iri.value, this.ontology)
+      return classes.map(({ object }) => {
+        return {
+          label: this.label(object),
+          url: rebaseIRI(object.value)
+        }
+      })
+    },
+    rangeOf () {
+      const classes = rangeOf(this.iri.value, this.ontology)
+      return classes
+    },
+    isClass () {
+      return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Class).toArray().length)
+    }
+  },
+  methods: {
+    label (iri) {
+      const label = this.ontology.match(iri, termIRI.label).toArray()
+      return _get(label, '[0].object.value', '')
     }
   }
 }

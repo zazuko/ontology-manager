@@ -35,10 +35,23 @@
         :could-have-children="!!tree.children.find((node) => node.children.length > 0)"
         :current-iri="currentIri" />
     </ul>
+    <div v-else>
+      <ul
+        v-if="tree.properties && tree.properties.length"
+        v-show="isActive">
+        <li
+          v-for="(property, index) in tree.properties.toArray()"
+          :key="index">
+          <link-to-IRI :term="property.subject" />
+        </li>
+      </ul>
+    </div>
   </li>
 </template>
 
 <script>
+import LinkToIRI from '../LinkToIRI'
+
 export default {
   name: 'ObjectNode',
   props: {
@@ -57,6 +70,9 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  components: {
+    LinkToIRI
   },
   data () {
     return {
