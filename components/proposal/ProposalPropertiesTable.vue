@@ -33,7 +33,7 @@
           </a>
         </td>
         <td>
-          <ul>
+          <ul class="types-list">
             <li
               v-for="range in rangeOf(property.iri, dataset)"
               :key="range.value">

@@ -44,7 +44,6 @@ $primary-invert: $pink-invert;
 @import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
 
 body {
-  background-color: #F2F3F7;
   min-height: 100vh;
 }
 
@@ -58,9 +57,14 @@ body {
   border-radius: 6px 6px 0 0;
 }
 
-table.table ul {
-  li::before {
+ul.types-list {
+    list-style-type: none;
+    padding-left: 1em;
+
+  li:before {
     content: "–";
+    position: absolute;
+    margin-left: -1em;
   }
 }
 

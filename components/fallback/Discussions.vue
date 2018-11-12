@@ -1,25 +1,30 @@
 <template>
-  <section class="has-background-white">
-    <header>
-      <nav class="navbar">
-        <div class="navbar-brand">
-          <a class="navbar-item">
-            <h1 class="title">Conversations</h1>
-          </a>
-        </div>
-        <div class="navbar-end">
-          <a class="navbar-item">
-            <nuxt-link
-              :to="{ name: 'discussion-new', query: { iri: iri } }"
-              class="button is-info">
-              New Thread
-            </nuxt-link>
-          </a>
-        </div>
-      </nav>
-    </header>
+  <section class="section has-background-white">
+
     <div
-      v-if="discussions"
+      id="conversations"
+      class="level">
+      <div class="level-left">
+        <h1 class="title">Conversations</h1>
+      </div>
+      <div class="level-right">
+        <nuxt-link
+          :to="{ name: 'discussion-new', query: { iri: iri } }"
+          class="button is-info">
+          New Thread
+        </nuxt-link>
+      </div>
+    </div>
+
+    <div
+      class="content"
+      v-if="_get(discussions, 'discussions.length', 0) === 0">
+      <p>
+        There is no ongoing conversation about this object.
+      </p>
+    </div>
+    <div
+      v-else
       class="section">
       <div
         v-for="(discussion, index) in discussions.discussions"
@@ -86,6 +91,7 @@ export default {
     }
   },
   methods: {
+    _get,
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
     },

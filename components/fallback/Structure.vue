@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section class="section">
     <div class="tile is-vertical is-12">
       <div class="tile is-parent">
         <article class="tile is-child notification is-danger">
@@ -59,7 +59,7 @@
         </article>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -86,11 +86,6 @@ export default {
       type: Object,
       required: false,
       default: () => ({})
-    },
-    depth: {
-      type: Number,
-      required: false,
-      default: 0
     },
     ontology: {
       type: Object,

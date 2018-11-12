@@ -1,36 +1,34 @@
 <template>
-  <section class="has-background-white">
-    <header>
-      <nav class="navbar">
-        <div class="navbar-brand">
-          <a class="navbar-item">
-            <h1 class="title">Proposals</h1>
-          </a>
-        </div>
-        <div class="navbar-end">
-          <span
-            v-if="isClass"
-            class="navbar-item">
-            <nuxt-link
-              :to="{ name: 'proposal-new-property', query: { iri: iri } }"
-              class="button is-info">
-              Request New Property
-            </nuxt-link>
-          </span>
-          <span
-            v-else
-            class="navbar-item">
-            <nuxt-link
-              :to="{ name: 'proposal-new-class', query: { iri: iri } }"
-              class="button is-info">
-              Request New Class
-            </nuxt-link>
-          </span>
-        </div>
-      </nav>
-    </header>
+  <section class="section has-background-white">
+
+    <div class="level">
+      <div class="level-left">
+        <h1 class="title">Proposals</h1>
+      </div>
+      <div class="level-right">
+        <span
+          v-if="isClass"
+          class="navbar-item">
+          <nuxt-link
+            :to="{ name: 'proposal-new-property', query: { iri: iri } }"
+            class="button is-info">
+            Request New Property
+          </nuxt-link>
+        </span>
+        <span
+          v-else
+          class="navbar-item">
+          <nuxt-link
+            :to="{ name: 'proposal-new-class', query: { iri: iri } }"
+            class="button is-info">
+            Request New Class
+          </nuxt-link>
+        </span>
+      </div>
+    </div>
+
     <table
-      v-if="proposals"
+      v-if="_get(proposals, 'proposals.length')"
       class="table is-fullwidth">
       <thead>
         <tr>
@@ -38,7 +36,7 @@
             Property
           </th>
           <th>
-            Expected<br>Type
+            Expected&nbsp;Type
           </th>
           <th>
             Description
@@ -55,7 +53,7 @@
             </nuxt-link>
           </td>
           <td>
-            <ul>
+            <ul class="types-list">
               <li
                 v-for="(range, index) in proposal.proposalObject.ranges"
                 :key="index">
@@ -70,7 +68,9 @@
         </tr>
       </tbody>
     </table>
-    <div v-else />
+    <div v-else>
+      <p>No proposal about this object at the moment.</p>
+    </div>
   </section>
 </template>
 
@@ -96,6 +96,7 @@ export default {
     LinkToIRI
   },
   methods: {
+    _get,
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
     },
