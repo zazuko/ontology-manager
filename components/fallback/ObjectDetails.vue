@@ -5,9 +5,10 @@
         {{ name }}
       </h1>
       <div class="content">
-        <p>
-          <a href="#conversations">Conversation</a>
-        </p>
+        <ul>
+          <li>Go to <a href="#proposals">Proposals</a></li>
+          <li>Go to <a href="#conversations">Conversation</a></li>
+        </ul>
         <p>
           {{ comment }}
         </p>
