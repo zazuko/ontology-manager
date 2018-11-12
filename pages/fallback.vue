@@ -11,7 +11,7 @@
 
       <side-nav :current-iri="iri" />
 
-      <article class="column is-10">
+      <article class="column is-9">
 
         <structure
           v-if="termIRI.creativeWork.equals(objectType)"

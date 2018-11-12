@@ -23,7 +23,7 @@
         class="tile is-ancestor">
         <div class="tile is-vertical is-12">
           <div class="tile is-parent">
-            <article class="tile is-child notification is-danger">
+            <article class="tile is-child container-box">
               <div class="content">
                 <div
                   v-for="(group, i) in arrayToGroups({ children: _get(proposals, 'proposals', []) })"
@@ -33,7 +33,7 @@
                     v-for="(proposal, index) in group"
                     :key="index"
                     class="tile is-parent is-3">
-                    <article class="tile is-child box notification is-warning">
+                    <article class="tile is-child class-box">
                       <p class="title">
                         <nuxt-link
                           :to="{ name: 'proposal-new-class', query: { id: proposal.id } }">
