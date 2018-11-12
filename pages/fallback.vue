@@ -25,14 +25,11 @@
         <object-details
           v-if="object"
           :object="object"
-          :obj="subtree"
-          :name="subtree.label"
           :ontology="ontology"
           :structure="structure"
-          :is-class="termIRI.Class.equals(objectType)"
-          :iri="subtree.iri" />
+          :is-class="termIRI.Class.equals(objectType)" />
 
-        <hr />
+        <hr v-show="termIRI.Class.equals(objectType) || termIRI.creativeWork.equals(objectType)" />
 
         <property-proposals
           v-if="termIRI.Class.equals(objectType)"

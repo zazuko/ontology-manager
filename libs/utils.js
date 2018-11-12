@@ -32,7 +32,7 @@ export function serialize (dataset) {
 export function buildTree (dataset, dataset2) {
   if (!dataset) return {}
 
-  const predicate = rdf.namedNode('http://schema.org/hasPart')
+  const predicate = termIRI.hasPart
 
   // we consider <parentIRI> <givenPredicate> <childIRI>
 
@@ -52,7 +52,7 @@ export function buildTree (dataset, dataset2) {
     .reduce((acc, iri) => {
       const node = nodes[iri]
       node.path = `/${iri.replace(datasetBaseUrl, '')}`
-      let label = dataset.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
+      let label = dataset.match(rdf.namedNode(iri), termIRI.label).toArray()
       node.label = iri
       node.properties = []
       node.type = 'container'
@@ -60,7 +60,7 @@ export function buildTree (dataset, dataset2) {
       if (label.length) {
         node.label = label[0].object.value
       } else {
-        const label = dataset2.match(rdf.namedNode(iri), rdf.namedNode('http://www.w3.org/2000/01/rdf-schema#label')).toArray()
+        const label = dataset2.match(rdf.namedNode(iri), termIRI.label).toArray()
         if (label.length) {
           node.type = 'class'
           node.label = label[0].object.value
@@ -68,8 +68,8 @@ export function buildTree (dataset, dataset2) {
         }
       }
 
-      // then it's a root
       if (!node.parent) {
+        // then it's a root
         acc.push(node)
       }
       node.parent = null

@@ -75,10 +75,6 @@ export default {
     iri: {
       type: String,
       required: true
-    },
-    isClass: {
-      type: Boolean,
-      required: true
     }
   },
   components: {

@@ -9,6 +9,9 @@
       v-else
       :href="url">
       {{ getTerm(term.value) }}
+      <span class="icon is-small" title="Outgoing link will open in new tab">
+        <i class="mdi mdi-open-in-new" />
+      </span>
     </a>
   </span>
 </template>
