@@ -2,7 +2,7 @@
   <section class="section">
     <div class="tile is-vertical is-12">
       <div class="tile is-parent">
-        <article class="tile is-child notification is-danger">
+        <article class="tile is-child container-box">
           <p class="title">
             <nuxt-link
               v-if="obj.path"
@@ -37,7 +37,7 @@
                 v-for="child in group"
                 :key="child.path"
                 class="tile is-parent is-3">
-                <article class="tile is-child box notification is-warning">
+                <article class="tile is-child class-box">
                   <p class="title">
                     <nuxt-link
                       v-if="child.path"
