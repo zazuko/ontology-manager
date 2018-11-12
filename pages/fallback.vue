@@ -11,7 +11,7 @@
 
       <side-nav :current-iri="iri" />
 
-      <div class="container column is-10">
+      <div class="container column is-10 has-background-white-ter">
         <!--<p v-show="termIRI.Class.equals(objectType)">class</p>
         <p v-show="termIRI.Property.equals(objectType)">property</p>
         <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>-->
@@ -30,7 +30,7 @@
           <proposals
             :iri="iri"
             :is-class="termIRI.Class.equals(objectType)" />
-
+          <hr v-show="termIRI.Class.equals(objectType)" />
           <discussions
             v-if="termIRI.Class.equals(objectType)"
             :iri="iri" />

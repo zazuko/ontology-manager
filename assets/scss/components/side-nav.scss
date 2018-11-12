@@ -1,0 +1,10 @@
+// Override for ObjectTree
+.menu-list.side-nav {
+  li ul {
+    margin: 0.2em 0 0.5em 0.75em;
+    padding-left: 0;
+  }
+  a.is-current {
+    @extend .has-background-success;
+  }
+}

@@ -13,6 +13,7 @@
 
 $panel-block-active-border-left-color: $orange;
 $panel-block-active-icon-color: $orange;
+$table-background-color: opacity(0);
 
 @import "../../node_modules/bulma/sass/base/_all";
 @import "../../node_modules/bulma/sass/elements/_all";
@@ -37,18 +38,10 @@ $primary-invert: $pink-invert;
 
 // 4. Import the rest of Bulma
 // @import "../../node_modules/bulma/bulma";
-@import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
 
-// Override for ObjectTree
-.menu-list.side-nav {
-  li ul {
-    margin: 0.2em 0 0.5em 0.75em;
-    padding-left: 0;
-  }
-  a.is-current {
-    @extend .has-background-success;
-  }
-}
+@import "./components/_all";
+
+@import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
 
 body {
   background-color: #F2F3F7;
@@ -65,23 +58,6 @@ body {
   border-radius: 6px 6px 0 0;
 }
 
-ul.progression {
-  list-style-type: disc;
-  margin-left: 20px;
-  li {
-    color: $grey-light;
-    a {
-      color: $grey-light;
-    }
-    &.done {
-      @extend .has-text-info;
-      a {
-        @extend .has-text-info;
-      }
-    }
-  }
-}
-
 table.table ul {
   li::before {
     content: "–";
@@ -92,99 +68,13 @@ table.table ul {
   margin-top: 20px;
 }
 
-/* Splash Loading Spinner */
-.lds-roller {
-  display: inline-block;
-  position: relative;
-  width: 64px;
-  height: 64px;
-
-  div {
-    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    transform-origin: 32px 32px;
-
-    &:after {
-      content: " ";
-      display: block;
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: $info;
-      margin: -3px 0 0 -3px;
-    }
-    &:nth-child(1) {
-      animation-delay: -0.036s;
-    }
-    &:nth-child(1):after {
-      top: 50px;
-      left: 50px;
-    }
-    &:nth-child(2) {
-      animation-delay: -0.072s;
-    }
-    &:nth-child(2):after {
-      top: 54px;
-      left: 45px;
-    }
-    &:nth-child(3) {
-      animation-delay: -0.108s;
-    }
-    &:nth-child(3):after {
-      top: 57px;
-      left: 39px;
-    }
-    &:nth-child(4) {
-      animation-delay: -0.144s;
-    }
-    &:nth-child(4):after {
-      top: 58px;
-      left: 32px;
-    }
-    &:nth-child(5) {
-      animation-delay: -0.18s;
-    }
-    &:nth-child(5):after {
-      top: 57px;
-      left: 25px;
-    }
-    &:nth-child(6) {
-      animation-delay: -0.216s;
-    }
-    &:nth-child(6):after {
-      top: 54px;
-      left: 19px;
-    }
-    &:nth-child(7) {
-      animation-delay: -0.252s;
-    }
-    &:nth-child(7):after {
-      top: 50px;
-      left: 14px;
-    }
-    &:nth-child(8) {
-      animation-delay: -0.288s;
-    }
-    &:nth-child(8):after {
-      top: 45px;
-      left: 10px;
-    }
-  }
-}
-@keyframes lds-roller {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-// proposals progression box follows scrollY
-.progression-box.top-sticky {
-  margin-top: 10px;
-}
-
 table tbody tr td a {
   text-decoration: underline;
+}
+
+section hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
