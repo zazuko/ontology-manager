@@ -8,10 +8,10 @@
               Property
             </th>
             <th>
-              Comment
+              Expected Type
             </th>
             <th>
-              Type
+              Description
             </th>
           </tr>
         </thead>
@@ -22,7 +22,6 @@
             <td>
               <link-to-IRI :term="property.subject" />
             </td>
-            <td>{{ getComment(property.subject.value).object.value }}</td>
             <td>
               <ul>
                 <li
@@ -32,6 +31,7 @@
                 </li>
               </ul>
             </td>
+            <td>{{ getComment(property.subject.value).object.value }}</td>
           </tr>
         </tbody>
       </table>

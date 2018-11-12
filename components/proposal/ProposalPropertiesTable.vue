@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import _get from 'lodash/get'
 import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 
 export default {
