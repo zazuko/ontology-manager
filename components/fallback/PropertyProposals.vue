@@ -6,22 +6,11 @@
         <h1 class="title">Proposals</h1>
       </div>
       <div class="level-right">
-        <span
-          v-if="isClass"
-          class="navbar-item">
+        <span class="navbar-item">
           <nuxt-link
             :to="{ name: 'proposal-new-property', query: { iri: iri } }"
             class="button is-info">
             Request New Property
-          </nuxt-link>
-        </span>
-        <span
-          v-else
-          class="navbar-item">
-          <nuxt-link
-            :to="{ name: 'proposal-new-class', query: { iri: iri } }"
-            class="button is-info">
-            Request New Class
           </nuxt-link>
         </span>
       </div>
@@ -69,7 +58,7 @@
       </tbody>
     </table>
     <div v-else>
-      <p>No proposal about this object at the moment.</p>
+      <p>No proposal on this object at the moment.</p>
     </div>
   </section>
 </template>
@@ -81,7 +70,7 @@ import proposals from '@/apollo/queries/proposalsByIri'
 import { proposalDeserializer } from '@/libs/proposals'
 
 export default {
-  name: 'Proposals',
+  name: 'PropertyProposals',
   props: {
     iri: {
       type: String,

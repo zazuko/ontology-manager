@@ -12,40 +12,43 @@
       <side-nav :current-iri="iri" />
 
       <article class="column is-10">
-        <!--<p v-show="termIRI.Class.equals(objectType)">class</p>
-        <p v-show="termIRI.Property.equals(objectType)">property</p>
-        <p v-show="termIRI.creativeWork.equals(objectType)">creativeWork</p>-->
-        <div v-if="subtree">
 
-          <structure
-            v-if="subtree.children.length"
-            :obj="subtree"
-            :name="subtree.label"
-            :ontology="ontology"
-            :structure="structure"
-            :is-class="termIRI.Class.equals(objectType)"
-            class="tile is-ancestor" />
-          <object-details
-            v-else
-            :obj="subtree"
-            :name="subtree.label"
-            :ontology="ontology"
-            :structure="structure"
-            :is-class="termIRI.Class.equals(objectType)"
-            :iri="subtree.iri" />
+        <structure
+          v-if="termIRI.creativeWork.equals(objectType)"
+          :obj="subtree"
+          :name="subtree.label"
+          :ontology="ontology"
+          :structure="structure"
+          :is-class="termIRI.Class.equals(objectType)"
+          class="tile is-ancestor" />
 
-          <hr />
+        <object-details
+          v-if="object"
+          :object="object"
+          :obj="subtree"
+          :name="subtree.label"
+          :ontology="ontology"
+          :structure="structure"
+          :is-class="termIRI.Class.equals(objectType)"
+          :iri="subtree.iri" />
 
-          <proposals
-            :iri="iri"
-            :is-class="termIRI.Class.equals(objectType)" />
+        <hr />
 
-          <hr />
+        <property-proposals
+          v-if="termIRI.Class.equals(objectType)"
+          id="proposals"
+          :iri="iri" />
+        <class-proposals
+          v-else-if="termIRI.creativeWork.equals(objectType)"
+          id="proposals"
+          :iri="iri" />
+        <div v-else />
 
-          <discussions
-            v-if="termIRI.Class.equals(objectType)"
-            :iri="iri" />
-        </div>
+        <hr />
+
+        <discussions
+          id="conversations"
+          :iri="iri" />
       </article>
     </section>
   </div>
@@ -53,13 +56,15 @@
 
 <script>
 import rdf from 'rdf-ext'
+import _get from 'lodash/get'
 import JsonLdSerializer from 'rdf-serializer-jsonld-ext'
 
 import Structure from '@/components/fallback/Structure'
 import ObjectDetails from '@/components/fallback/ObjectDetails'
 import SideNav from '@/components/fallback/sidenav/SideNav'
 import Discussions from '@/components/fallback/Discussions'
-import Proposals from '@/components/fallback/Proposals'
+import PropertyProposals from '@/components/fallback/PropertyProposals'
+import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest } from '@/libs/utils'
 import { termIRI } from '@/libs/rdf'
 
@@ -110,13 +115,23 @@ export default {
     Structure,
     ObjectDetails,
     Discussions,
-    Proposals
+    PropertyProposals,
+    ClassProposals
   },
   computed: {
     subtree () {
       const structureTree = this.$store.state.graph.structureTree
       const tree = findSubtreeInForest(structureTree, this.iri)
       return tree
+    },
+    object () {
+      if (!(termIRI.Class.equals(this.objectType) || termIRI.Property.equals(this.objectType))) {
+        return null
+      }
+      if (_get(this.subtree, 'children.length', 0) === 0) {
+        return this.ontology.match(rdf.namedNode(this.iri))
+      }
+      return null
     }
   },
   data () {
