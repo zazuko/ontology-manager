@@ -1,6 +1,6 @@
 <template>
-  <section class="hero is-small is-info">
-    <div class="hero-head">
+  <section class="has-background-white">
+    <header>
       <nav class="navbar">
         <div class="navbar-brand">
           <a class="navbar-item">
@@ -11,21 +11,23 @@
           <a class="navbar-item">
             <nuxt-link
               :to="{ name: 'discussion-new', query: { iri: iri } }"
-              class="button is-info is-inverted">
+              class="button is-info">
               New Thread
             </nuxt-link>
           </a>
         </div>
       </nav>
-    </div>
-    <div class="hero-body">
-      <div v-if="discussions">
-        <article
-          v-for="discussion in discussions.discussions"
-          :key="discussion.id"
-          class="media">
+    </header>
+    <div
+      v-if="discussions"
+      class="section">
+      <div
+        v-for="(discussion, index) in discussions.discussions"
+        :key="discussion.id">
+        <hr v-show="index !== 0">
+        <article class="media">
           <figure class="media-left">
-            <p class="image is-64x64">
+            <p class="image is-48x48">
               <img
                 :src="discussion.author.avatar"
                 :alt="authorsAvatar(discussion.author.name)">
@@ -33,32 +35,41 @@
           </figure>
           <div class="media-content">
             <div class="content">
-              <h3 class="subtitle">
+              <h3 class="title is-5">
                 <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
                   {{ discussion.headline }}
                 </nuxt-link>
               </h3>
-              <p>
+              <h6 class="subtitle is-6">
                 {{ cut(discussion.body) }}
-              </p>
+              </h6>
 
-              <p>
+              <!-- <p>
                 <strong>{{ discussion.author.name }}</strong> <small>Created {{ discussion.createdAt }}</small>
-              </p>
+              </p> -->
             </div>
           </div>
-          <div class="media-right">
+          <div class="media-right discussion-info">
             <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-              <span class="icon is-small">
-                <i class="mdi mdi-message-reply-text" />
+              <span class="creation-info">
+                Created {{ discussion.createdAt | formatDate }}
               </span>
-              {{ answersCount(discussion) }}
+              <span class="author-info">
+                by {{ discussion.author.name }}
+              </span>
+              <br>
+              <span class="answers-count">
+                <span class="icon is-small">
+                  <i class="mdi mdi-message-reply-text" />
+                </span>
+                {{ answersCount(discussion) }}
+              </span>
             </nuxt-link>
           </div>
         </article>
       </div>
-      <div v-else />
     </div>
+    <div v-else />
   </section>
 </template>
 

@@ -1,0 +1,21 @@
+ul.progression {
+  list-style-type: disc;
+  margin-left: 20px;
+  li {
+    color: $grey-light;
+    a {
+      color: $grey-light;
+    }
+    &.done {
+      @extend .has-text-info;
+      a {
+        @extend .has-text-info;
+      }
+    }
+  }
+}
+
+// proposals progression box follows scrollY
+.progression-box.top-sticky {
+  margin-top: 10px;
+}
