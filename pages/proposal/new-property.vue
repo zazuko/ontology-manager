@@ -29,42 +29,13 @@
           <div
             sticky-container
             class="column is-3">
-            <div
-              class="progression-box box"
-              v-sticky="true"
-              sticky-side="top">
-              <p class="label">
-                New Proposal Progression
-              </p>
-              <!-- <progress
-                class="progress is-small is-success"
-                value="15"
-                max="100">15%</progress> -->
-              <ul class="progression">
-                <!-- loop over a computedProperty here, which contains all the steps -->
-                <li
-                  v-for="(step, index) in progressionSteps"
-                  :key="index"
-                  :class="{ done: step.check() }">
-                  <span
-                    v-if="step.html"
-                    v-html="step.html" />
-                  <span v-else>
-                    {{ step.text }}
-                  </span>
-                  <span v-if="step.path">
-                    <br>
-                    {{ prop[step.path] }}
-                  </span>
-                  <span v-else />
-                </li>
-                <!-- … loop over classChildren and get path to check for steps -->
-              </ul>
-            </div>
+            <progression-box proposal-path="prop.prop" />
           </div>
           <div class="column">
             <div class="box">
-              <div class="field">
+              <div
+                id="motivation"
+                class="field">
                 <label class="label">Motivation</label>
                 <div class="columns">
                   <div class="column">
@@ -138,6 +109,7 @@
 import { createNamespacedHelpers } from 'vuex'
 
 import NewPropertyForm from '@/components/proposal/NewPropertyForm'
+import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {
@@ -155,7 +127,8 @@ export default {
   },
   middleware: 'authenticated',
   components: {
-    NewPropertyForm
+    NewPropertyForm,
+    ProgressionBox
   },
   data () {
     return {
@@ -185,6 +158,7 @@ export default {
       this.load(this.id)
         .then((isDraft) => {
           if (isDraft !== true) {
+            // TODO should we disable edition here?
             this.$router.push({
               name: 'proposal-id',
               params: { id: this.prop['threadId'] }
@@ -223,29 +197,6 @@ export default {
       }
       return this.iri
     },
-    progressionSteps () {
-      const steps = [
-        this.motivationStep(),
-        this.detailsStep()
-      ]
-
-      // const newSteps = this.newSteps()
-      // if (newSteps.length) {
-      //   steps.push(...newSteps)
-      // }
-
-      const lastStep = {
-        check: () => steps.reduce((acc, step, i, col) => {
-          if (i !== col.length - 1) {
-            return acc && step.check()
-          }
-          return acc
-        }, true),
-        html: '<a href="#submit">Finalize and Submit Proposal</a>'
-      }
-      steps.push(lastStep)
-      return steps
-    },
     ...propertyGetters(['success', 'error', 'serialized'])
   },
   watch: {
@@ -277,7 +228,7 @@ export default {
     },
     saveDraft () {
       const serialized = this.serialized
-      if (!this.detailsStep().check()) {
+      if (!this.prop.label && !this.prop.comment) {
         return Promise.resolve()
       }
       if (this.saveTmp !== serialized) {
@@ -285,24 +236,6 @@ export default {
         return this.save()
       }
       return Promise.resolve()
-    },
-    newSteps (steps = [], path = 'classChildren') {
-      return this.prop[path].reduce((newSteps, child) => {
-
-      }, steps)
-    },
-    motivationStep (path = '') {
-      return {
-        check: () => this.prop[`${path}motivation`],
-        text: 'Enter a Motivation'
-      }
-    },
-    detailsStep (path = '') {
-      return {
-        check: () => this.prop[`${path}label`] && this.prop[`${path}comment`],
-        text: 'Enter New Property Details',
-        path: 'label'
-      }
     }
   },
   validate ({ query }) {
