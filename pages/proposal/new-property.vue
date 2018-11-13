@@ -29,7 +29,9 @@
           <div
             sticky-container
             class="column is-3">
-            <progression-box proposal-path="prop.prop" />
+            <progression-box
+              proposal-path="prop.prop"
+              @step-done="finalize" />
           </div>
           <div class="column">
             <div class="box">
@@ -63,12 +65,12 @@
 
               <p v-show="error">{{ error }}</p>
 
-              <div
-                id="submit"
-                class="field is-grouped proposal-submit">
+              <div class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
+                    id="submit"
                     class="button is-primary is-medium"
+                    :disabled="!isReady"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
@@ -134,7 +136,8 @@ export default {
     return {
       saveTmp: '', // only save if this string changed
       saveInterval: null,
-      isLoading: false
+      isLoading: false,
+      isReady: true
     }
   },
   mounted () {
@@ -213,18 +216,17 @@ export default {
       save: SAVE,
       load: LOAD
     }),
-    sendProposal () {
+    async sendProposal () {
       // Send splash screen
       this.isLoading = true
       // remove draft status from the json proposalObject
       this.$vuexSet('isDraft', false)
       // save the changes
-      this.saveDraft()
-        .then(() => {
-          const token = this.$apolloHelpers.getToken()
-          // create the PR etc
-          this.submit(token)
-        })
+      await this.saveDraft()
+
+      const token = this.$apolloHelpers.getToken()
+      // create the PR etc
+      this.submit(token)
     },
     saveDraft () {
       const serialized = this.serialized
@@ -236,6 +238,9 @@ export default {
         return this.save()
       }
       return Promise.resolve()
+    },
+    finalize (flag) {
+      this.isReady = flag
     }
   },
   validate ({ query }) {
