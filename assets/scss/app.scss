@@ -47,10 +47,12 @@ body {
   min-height: 100vh;
 }
 
-.is-class-subform > div > .box,
-.is-prop-subform > div > .box {
-  background-color: #f3f6f9;
-  border-radius: 0 0 6px 6px;
+.proposal-draft {
+  &.is-class-subform > div > .box,
+  &.is-prop-subform > div > .box {
+    background-color: #f3f6f9;
+    border-radius: 0 0 6px 6px;
+  }
 }
 
 .has-prop-subform {

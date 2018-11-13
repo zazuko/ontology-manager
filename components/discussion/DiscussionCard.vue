@@ -59,7 +59,12 @@ const ontologyConfig = require('@/ontology.config')
 
 export default {
   name: 'DiscussionCard',
-  props: ['discussion'],
+  props: {
+    discussion: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     githubLink (id) {
       const { owner, repo } = ontologyConfig.github
