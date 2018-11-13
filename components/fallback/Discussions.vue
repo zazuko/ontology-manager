@@ -72,7 +72,6 @@
         </article>
       </div>
     </div>
-    <div v-else />
   </section>
 </template>
 
