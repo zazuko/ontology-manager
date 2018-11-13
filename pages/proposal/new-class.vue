@@ -42,6 +42,7 @@
                   <div class="column">
                     <div class="control">
                       <textarea
+                        :disabled="disabled"
                         v-debounce
                         v-model.lazy="clss.motivation"
                         class="textarea"
@@ -60,11 +61,14 @@
             </div>
 
             <new-class-form
+              :disabled="disabled"
               :iri="_iri">
 
               <p v-show="error">{{ error }}</p>
 
-              <div class="field is-grouped proposal-submit">
+              <div
+                v-show="!disabled"
+                class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
                     id="submit"
@@ -135,6 +139,7 @@ export default {
     return {
       saveTmp: '', // only save if this string changed
       saveInterval: null,
+      disabled: false,
       isLoading: false,
       isReady: true
     }
@@ -160,11 +165,7 @@ export default {
       this.load(this.id)
         .then((isDraft) => {
           if (isDraft !== true) {
-            // TODO should we disable edition here?
-            this.$router.push({
-              name: 'proposal-id',
-              params: { id: this.clss['threadId'] }
-            })
+            this.disabled = true
             return
           }
 
