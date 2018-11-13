@@ -102,12 +102,16 @@ export default {
     },
     lastStep (steps) {
       return {
-        check: () => steps.reduce((acc, step, i, col) => {
-          if (i !== col.length - 1) {
-            return acc && step.check()
-          }
-          return acc
-        }, true),
+        check: () => {
+          const flag = steps.reduce((acc, step, i, col) => {
+            if (i !== col.length - 1) {
+              return acc && step.check()
+            }
+            return acc
+          }, true)
+          this.$emit('step-done', flag)
+          return flag
+        },
         textError: 'Finalize and Submit Proposal',
         textSuccess: 'Finalize and Submit Proposal',
         id: 'submit'
