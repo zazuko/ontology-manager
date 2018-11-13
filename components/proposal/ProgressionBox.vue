@@ -54,7 +54,15 @@ export default {
       return this.$deepModel(this.proposalPath)
     },
     flatChildren () {
-      return collectChildren(this.obj.propChildren)
+      if (!this.obj) {
+        return {}
+      }
+      if (this.obj.proposalType === 'Class') {
+        return collectChildren(this.obj.propChildren)
+      }
+      if (this.obj.proposalType === 'Property') {
+        return collectChildren(this.obj.classChildren)
+      }
     },
     progressionSteps () {
       const steps = [
@@ -95,8 +103,8 @@ export default {
 
       return {
         check: () => this.obj[`${path}label`] && this.obj[`${path}comment`],
-        textError: `Enter New ${child.proposalType} Details:`,
-        textSuccess: `New ${child.proposalType}`,
+        textError: `Enter New ${child && child.proposalType} Details:`,
+        textSuccess: `New ${child && child.proposalType}`,
         path: `${path}label`
       }
     },

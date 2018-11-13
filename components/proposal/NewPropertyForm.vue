@@ -1,10 +1,13 @@
 <template>
   <div
     :id="prop['label']"
-    :class="{ 'is-prop-subform': subform }">
+    :class="{
+      'is-prop-subform': subform,
+      'proposal-draft': !disabled
+    }">
 
     <div
-      v-if="!prop['collapsed']">
+      v-if="!prop['collapsed'] || !disabled">
       <!-- <div
         v-show="!subform && prop['iri']"
         class="box debug">
@@ -60,6 +63,7 @@
                 <label class="label">Property Name</label>
                 <div class="control">
                   <input
+                    :disabled="disabled"
                     :class="{'is-danger': !prop['label']}"
                     class="input"
                     autocomplete="new-password"
@@ -90,6 +94,7 @@
               <label class="label">Short Description</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   class="textarea"
                   :class="{'is-danger': !prop['comment']}"
                   v-debounce
@@ -107,6 +112,7 @@
               <label class="label">Long Description (optional)</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   class="textarea"
                   v-debounce
                   v-model.lazy="prop['description']" />
@@ -122,6 +128,7 @@
               <label class="label">Example</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   v-debounce
                   v-model.lazy="prop['example']"
                   class="textarea"
@@ -140,6 +147,7 @@
             <div
               v-if="renderTypeahead">
               <typeahead
+                :disabled="disabled"
                 :search-function="searchFunction"
                 label="Applies to the Following Classes"
                 @selectionChanged="selectDomain">
@@ -163,6 +171,7 @@
                     class:="{ 'is-active': index > 0 }"
                     class="panel-block">
                     <span
+                      v-show="!disabled"
                       class="panel-icon"
                       @click.prevent="index > 0 && unselectDomain(index)">
                       <i class="mdi mdi-close-circle" />
@@ -178,6 +187,7 @@
             <div
               v-if="renderTypeahead">
               <typeahead
+                :disabled="disabled"
                 :search-function="searchFunction"
                 label="Expected Type"
                 @selectionChanged="selectRange">
@@ -200,6 +210,7 @@
                     :key="index"
                     class="panel-block is-active">
                     <span
+                      v-show="!disabled"
                       class="panel-icon"
                       @click.prevent="unselectRange(index)">
                       <i class="mdi mdi-close-circle" />
@@ -220,7 +231,7 @@
         </div>
 
         <div
-          v-show="subform"
+          v-show="subform && !disabled"
           class="columns">
           <div class="column">
             <button
@@ -240,6 +251,7 @@
           :key="index"
           :subform="true"
           :iri="iri"
+          :disabled="disabled"
           :store-path="`${storePath}.classChildren[${index}]`"
           :base-datasets="mergedDatasets" />
       </div>
@@ -289,6 +301,11 @@ export default {
       type: String,
       required: false,
       default: 'prop.prop'
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     baseDatasets: {
       type: [Object, Boolean],

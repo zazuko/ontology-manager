@@ -33,6 +33,7 @@
               proposal-path="prop.prop"
               @step-done="finalize" />
           </div>
+
           <div class="column">
             <div class="box">
               <div
@@ -43,6 +44,7 @@
                   <div class="column">
                     <div class="control">
                       <textarea
+                        :disabled="disabled"
                         v-debounce
                         v-model.lazy="prop.motivation"
                         class="textarea"
@@ -61,11 +63,14 @@
             </div>
 
             <new-property-form
+              :disabled="disabled"
               :iri="_iri">
 
               <p v-show="error">{{ error }}</p>
 
-              <div class="field is-grouped proposal-submit">
+              <div
+                v-show="!disabled"
+                class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
                     id="submit"
@@ -83,9 +88,7 @@
                   </button>
                 </p>
               </div>
-
             </new-property-form>
-
           </div>
 
         </div>
@@ -136,6 +139,7 @@ export default {
     return {
       saveTmp: '', // only save if this string changed
       saveInterval: null,
+      disabled: false,
       isLoading: false,
       isReady: true
     }
@@ -161,11 +165,7 @@ export default {
       this.load(this.id)
         .then((isDraft) => {
           if (isDraft !== true) {
-            // TODO should we disable edition here?
-            this.$router.push({
-              name: 'proposal-id',
-              params: { id: this.prop['threadId'] }
-            })
+            this.disabled = true
             return
           }
 

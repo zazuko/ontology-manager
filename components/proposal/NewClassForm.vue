@@ -1,10 +1,13 @@
 <template>
   <div
     :id="clss['label']"
-    :class="{ 'is-class-subform': subform }">
+    :class="{
+      'is-class-subform': subform,
+      'proposal-draft': !disabled
+    }">
 
     <div
-      v-if="!clss['collapsed']">
+      v-if="!clss['collapsed'] || !disabled">
       <!-- <div
         v-show="!subform && clss['iri']"
         class="box debug">
@@ -65,6 +68,7 @@
                 <label class="label">Class Name</label>
                 <div class="control">
                   <input
+                    :disabled="disabled"
                     :class="{'is-danger': !clss['label']}"
                     class="input"
                     autocomplete="new-password"
@@ -95,6 +99,7 @@
               <label class="label">Short Description</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   class="textarea"
                   :class="{'is-danger': !clss['comment']}"
                   v-debounce
@@ -112,6 +117,7 @@
               <label class="label">Long Description (optional)</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   class="textarea"
                   v-debounce
                   v-model.lazy="clss['description']" />
@@ -127,6 +133,7 @@
               <label class="label">Example</label>
               <div class="control">
                 <textarea
+                  :disabled="disabled"
                   v-debounce
                   v-model.lazy="clss['example']"
                   class="textarea"
@@ -145,6 +152,7 @@
             <div
               v-if="renderTypeahead">
               <typeahead
+                :disabled="disabled"
                 :search-function="searchFunction"
                 label="Has the Following Properties"
                 @selectionChanged="selectDomain">
@@ -168,13 +176,14 @@
 
         <proposal-properties-table
           v-if="clss['domains.length']"
+          :disabled="disabled"
           :properties="clss['domains']"
           :store-path="storePath"
           :dataset="mergedDatasets.ontology"
           @delete="unselectDomain" />
 
         <div
-          v-show="subform"
+          v-show="subform && !disabled"
           class="columns">
           <div class="column">
             <button
@@ -194,6 +203,7 @@
           :key="index"
           :subform="true"
           :iri="iri"
+          :disabled="disabled"
           :store-path="`${storePath}.propChildren[${index}]`"
           :base-datasets="mergedDatasets" />
       </div>
@@ -243,6 +253,11 @@ export default {
       type: String,
       required: false,
       default: 'class.clss'
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     baseDatasets: {
       type: [Object, Boolean],

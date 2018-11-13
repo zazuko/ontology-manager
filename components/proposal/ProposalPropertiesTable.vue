@@ -13,7 +13,7 @@
           <br>
           <small>these classes</small>
         </th>
-        <th />
+        <th v-show="!disabled" />
       </tr>
     </thead>
     <tbody>
@@ -64,7 +64,7 @@
             </li>
           </ul>
         </td>
-        <td>
+        <td v-show="!disabled">
           <button
             class="button is-small is-danger is-outlined"
             @click.prevent="$emit('delete', index)">
@@ -88,6 +88,11 @@ import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 export default {
   name: 'ProposalPropertiesTable',
   props: {
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     properties: {
       type: Array,
       required: true

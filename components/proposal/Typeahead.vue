@@ -11,7 +11,9 @@ which seems much more robust
         class="label">
         {{ label }}
       </label>
-      <p class="control has-icons-left">
+      <p
+        v-show="!disabled"
+        class="control has-icons-left">
         <input
           v-model="inputString"
           autocomplete="new-password"
@@ -71,6 +73,11 @@ export default {
       type: Number,
       required: false,
       default: 5
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     minLength: {
       type: Number,
