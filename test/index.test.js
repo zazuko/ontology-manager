@@ -96,6 +96,17 @@ describe('basic dev', () => {
       expect(result.data).toContain('<!DOCTYPE html>')
     })
 
+    test('jsonld in html', async () => {
+      const result = await getHTML('/pouch/CargoHandlersPouch')
+
+      expect(result.status).toBe(200)
+      const start = '<script id="data" type="application/ld+json">'
+      const end = '"}]}</script>'
+      const a = result.data.indexOf(start) + start.length
+      const b = result.data.indexOf(end) + '"}]}'.length
+      expect(result.data.substring(a, b)).toMatchSnapshot()
+    })
+
     test('json for jsonld', async () => {
       const result = await getJSONLD('/pouch/CargoHandlersPouch')
 
