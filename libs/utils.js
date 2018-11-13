@@ -132,6 +132,22 @@ export function findClassProperties (classIRI, dataset) {
     .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
 }
 
+export function collectChildren (obj, steps = {}, path = 'propChildren') {
+  const nextPath = path.endsWith('propChildren') ? 'classChildren' : 'propChildren'
+
+  if (!Array.isArray(obj)) {
+    return steps
+  }
+  obj.forEach((child, n) => {
+    const thisPath = `${path}[${n}]`
+    steps[thisPath] = child
+    if (Array.isArray(child[nextPath])) {
+      collectChildren(child[nextPath], steps, [thisPath, nextPath].join('.'))
+    }
+  })
+  return steps
+}
+
 export function debounce (fn, delay) {
   let timeoutID
   return function () {

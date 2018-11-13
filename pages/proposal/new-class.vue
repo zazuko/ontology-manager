@@ -21,7 +21,6 @@
             <p>
               Once submitted, the proposal will be discussed and eventually accepted or rejected by official team members.
             </p>
-
           </div>
         </div>
 
@@ -29,42 +28,13 @@
           <div
             sticky-container
             class="column is-3">
-            <div
-              class="progression-box box"
-              v-sticky="true"
-              sticky-side="top">
-              <p class="label">
-                New Proposal Progression
-              </p>
-              <!-- <progress
-                class="progress is-small is-success"
-                value="15"
-                max="100">15%</progress> -->
-              <ul class="progression">
-                <!-- loop over a computedProperty here, which contains all the steps -->
-                <li
-                  v-for="(step, index) in progressionSteps"
-                  :key="index"
-                  :class="{ done: step.check() }">
-                  <span
-                    v-if="step.html"
-                    v-html="step.html" />
-                  <span v-else>
-                    {{ step.text }}
-                  </span>
-                  <span v-if="step.path">
-                    <br>
-                    {{ clss[step.path] }}
-                  </span>
-                  <span v-else />
-                </li>
-                <!-- … loop over classChildren and get path to check for steps -->
-              </ul>
-            </div>
+            <progression-box proposal-path="class.clss" />
           </div>
           <div class="column">
             <div class="box">
-              <div class="field">
+              <div
+                id="motivation"
+                class="field">
                 <label class="label">Motivation</label>
                 <div class="columns">
                   <div class="column">
@@ -95,6 +65,7 @@
               <div class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
+                    id="submit"
                     class="button is-primary is-medium"
                     @click="sendProposal">
                     Submit Proposal
@@ -136,6 +107,7 @@
 import { createNamespacedHelpers } from 'vuex'
 
 import NewClassForm from '@/components/proposal/NewClassForm'
+import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {
@@ -153,7 +125,8 @@ export default {
   },
   middleware: 'authenticated',
   components: {
-    NewClassForm
+    NewClassForm,
+    ProgressionBox
   },
   data () {
     return {
@@ -183,6 +156,7 @@ export default {
       this.load(this.id)
         .then((isDraft) => {
           if (isDraft !== true) {
+            // TODO should we disable edition here?
             this.$router.push({
               name: 'proposal-id',
               params: { id: this.clss['threadId'] }
@@ -221,29 +195,6 @@ export default {
       }
       return this.iri
     },
-    progressionSteps () {
-      const steps = [
-        this.motivationStep(),
-        this.detailsStep()
-      ]
-
-      // const newSteps = this.newSteps()
-      // if (newSteps.length) {
-      //   steps.push(...newSteps)
-      // }
-
-      const lastStep = {
-        check: () => steps.reduce((acc, step, i, col) => {
-          if (i !== col.length - 1) {
-            return acc && step.check()
-          }
-          return acc
-        }, true),
-        html: '<a href="#submit">Finalize and Submit Proposal</a>'
-      }
-      steps.push(lastStep)
-      return steps
-    },
     ...classGetters(['success', 'error', 'serialized'])
   },
   watch: {
@@ -275,7 +226,7 @@ export default {
     },
     saveDraft () {
       const serialized = this.serialized
-      if (!this.detailsStep().check()) {
+      if (!this.clss.label && !this.clss.comment) {
         return Promise.resolve()
       }
       if (this.saveTmp !== serialized) {
@@ -283,24 +234,6 @@ export default {
         return this.save()
       }
       return Promise.resolve()
-    },
-    newSteps (steps = [], path = 'propChildren') {
-      return this.clss[path].reduce((newSteps, child) => {
-
-      }, steps)
-    },
-    motivationStep (path = '') {
-      return {
-        check: () => this.clss[`${path}motivation`],
-        text: 'Enter a Motivation'
-      }
-    },
-    detailsStep (path = '') {
-      return {
-        check: () => this.clss[`${path}label`] && this.clss[`${path}comment`],
-        text: 'Enter New Class Details',
-        path: 'label'
-      }
     }
   },
   validate ({ query }) {
