@@ -41,11 +41,13 @@
           :iri="iri" />
         <div v-else />
 
-        <hr />
+        <div v-show="!termIRI.creativeWork.equals(objectType)">
+          <hr />
 
-        <discussions
-          id="conversations"
-          :iri="iri" />
+          <discussions
+            id="conversations"
+            :iri="iri" />
+        </div>
       </article>
     </section>
   </div>

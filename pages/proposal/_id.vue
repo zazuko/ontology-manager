@@ -1,7 +1,9 @@
 <template>
   <div>
     <section class="section">
-      <div v-if="path" class="container">
+      <div
+        v-if="obj"
+        class="container">
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
@@ -31,7 +33,9 @@
               :proposal-path="path" />
           </div>
           <div class="column">
-            <div id="proposal" class="box">
+            <div
+              id="proposal"
+              class="box">
               <div
                 id="motivation"
                 class="field">
@@ -47,13 +51,7 @@
                         placeholder="" />
                     </div>
                   </div>
-                  <div class="column">
-                    <p>
-                      In your motivation, please mention involved parties and other supportive
-                      entities, what shortcoming this proposal is expected to overcome
-                      or what purpose it serves.
-                    </p>
-                  </div>
+                  <div class="column" />
                 </div>
               </div>
             </div>
@@ -108,11 +106,14 @@
 
     <section class="section">
       <div class="container">
-        <h1 id="conversation" class="title">
+        <h1
+          id="conversation"
+          class="title">
           Conversation
         </h1>
         <div class="box">
-          <discussion-card :discussion="discussion" />
+          <discussion-card
+            :discussion="discussion" />
           <discussion-reply
             :id="id"
             @answerAdded="answerAdded()" />
@@ -134,12 +135,13 @@ import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 import { LOAD } from '@/store/action-types'
 import { proposalType } from '@/libs/proposals'
+import { emptyDiscussion } from '@/libs/fixtures'
 
 const {
-  mapActions: propertyActions,
+  mapActions: propertyActions
 } = createNamespacedHelpers('prop')
 const {
-  mapActions: classActions,
+  mapActions: classActions
 } = createNamespacedHelpers('class')
 
 export default {
@@ -163,11 +165,14 @@ export default {
       disabled: true,
       type: '',
       path: '',
-      discussion: {}
+      discussion: emptyDiscussion
     }
   },
   computed: {
     obj () {
+      if (!this.path) {
+        return null
+      }
       if (process.server) {
         return this.$store.state[this.path]
       }
@@ -189,35 +194,28 @@ export default {
         })
     },
     init () {
-      // if we have an ID from the URL here, we load
-      if (this.id) {
-        this.type = proposalType(this.discussion.proposalObject)
-        let loader
-        if (this.type === 'Class') {
-          loader = this.loadClass
-          this.path = 'class.clss'
-        }
-        if (this.type === 'Property') {
-          loader = this.loadProperty
-          this.path = 'prop.prop'
-        }
-        if (typeof loader !== 'function') {
-          return this.$router.app.error({
-            statusCode: 404,
-            message: 'Not found'
-          })
-        }
-        loader(this.id)
-          .then((isDraft) => {
-            if (isDraft !== true) {
-              this.disabled = true
-              return
-            }
-          })
-      } else {
-        // otherwise we .clear() which creates a new one
-        this.clear()
+      this.type = proposalType(this.discussion.proposalObject)
+      let loader
+      if (this.type === 'Class') {
+        loader = this.loadClass
+        this.path = 'class.clss'
       }
+      if (this.type === 'Property') {
+        loader = this.loadProperty
+        this.path = 'prop.prop'
+      }
+      if (typeof loader !== 'function') {
+        return this.$router.app.error({
+          statusCode: 404,
+          message: 'Not found'
+        })
+      }
+      loader(this.id)
+        .then((isDraft) => {
+          if (isDraft !== true) {
+            this.disabled = true
+          }
+        })
     }
   },
   validate ({ params }) {
@@ -243,12 +241,12 @@ export default {
             })
           }
           if (data.discussion.threadType !== 'PROPOSAL') {
-            this.$router.push({ name: 'discussion-id', params: { id: this.id } })
+            this.$router.push({ name: 'discussion-id', params: { id: this.$route.params.id } })
           }
           this.init()
         }
       }
     }
-  },
+  }
 }
 </script>
