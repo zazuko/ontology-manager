@@ -58,10 +58,10 @@ export default {
         return {}
       }
       if (this.obj.proposalType === 'Class') {
-        return collectChildren(this.obj.propChildren)
+        return collectChildren(this.obj.propChildren, {}, 'propChildren')
       }
       if (this.obj.proposalType === 'Property') {
-        return collectChildren(this.obj.classChildren)
+        return collectChildren(this.obj.classChildren, {}, 'classChildren')
       }
     },
     progressionSteps () {

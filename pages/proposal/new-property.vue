@@ -9,7 +9,7 @@
             <h1 class="title">
               Property Request<span
                 v-show="prop.name">:
-                "{{ prop.name }}"
+              "{{ prop.name }}"
               </span>
             </h1>
             <h2 class="subtitle">
