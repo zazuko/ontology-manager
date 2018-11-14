@@ -36,7 +36,7 @@
                     <article class="tile is-child class-box">
                       <p class="title">
                         <nuxt-link
-                          :to="{ name: 'proposal-new-class', query: { id: proposal.id } }">
+                          :to="{ name: 'proposal-id', params: { id: proposal.id } }">
                           {{ proposal.proposalObject.label }}
                         </nuxt-link>
                       </p>

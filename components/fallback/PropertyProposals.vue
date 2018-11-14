@@ -37,7 +37,7 @@
           v-for="proposal in proposals.proposals"
           :key="proposal.id">
           <td>
-            <nuxt-link :to="{ name: 'proposal-new-property', query: { id: proposal.id } }">
+            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
               {{ proposal.proposalObject.label }}
             </nuxt-link>
           </td>

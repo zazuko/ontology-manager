@@ -4,6 +4,9 @@
       <h1 class="title">
         Conversation
       </h1>
+      <h2 class="subtitle">
+        On <code>{{ discussion.iri }}</code>
+      </h2>
       <div class="box">
         <discussion-card :discussion="discussion" />
       </div>
@@ -21,6 +24,7 @@ import discussionById from '@/apollo/queries/discussionById'
 import { toastClose } from '@/libs/utils'
 import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
+import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {
   async asyncData ({ route }) {
@@ -35,9 +39,11 @@ export default {
     DiscussionCard,
     DiscussionReply
   },
-  data: () => ({
-    discussion: {}
-  }),
+  data () {
+    return {
+      discussion: emptyDiscussion
+    }
+  },
   apollo: {
     discussion: {
       prefetch: true,
