@@ -44,7 +44,7 @@
     </section>
 
     <div>
-      <hr />
+      <hr v-show="discussion.answers.messages.length" />
       <section
         v-for="message in discussion.answers.messages"
         :key="message.id"
