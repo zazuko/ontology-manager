@@ -7,7 +7,7 @@
     }">
 
     <div
-      v-if="!prop['collapsed'] || !disabled">
+      v-if="disabled || !prop['collapsed']">
       <!-- <div
         v-show="!subform && prop['iri']"
         class="box debug">
@@ -419,6 +419,8 @@ export default {
     },
     createDomain (label) {
       const clss = new Class({ label, isNew: true })
+      // should we push 'this.prop' into 'clss' here?
+      // or do something like :parentProp="prop" on <new-class-form in here and display it there?
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
       return true

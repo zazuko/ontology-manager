@@ -7,7 +7,7 @@
     }">
 
     <div
-      v-if="!clss['collapsed'] || !disabled">
+      v-if="disabled || !clss['collapsed']">
       <!-- <div
         v-show="!subform && clss['iri']"
         class="box debug">
