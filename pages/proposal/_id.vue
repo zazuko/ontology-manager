@@ -1,17 +1,146 @@
 <template>
-  <section class="container">
-    <discussion-card :discussion="discussion" />
-    <discussion-reply
-      :id="id"
-      @answerAdded="answerAdded()" />
-  </section>
+  <div>
+    <section class="section">
+      <div v-if="path" class="container">
+        <div class="columns">
+          <div class="column is-3" />
+          <div class="column">
+            <h1 class="title">
+              New {{ type }} Request<span
+                v-show="obj.label">:
+                "{{ obj.label }}"
+              </span>
+            </h1>
+            <h2 class="subtitle">
+              On <code>{{ obj.parentStructureIRI }}</code>
+            </h2>
+            <div class="content">
+              <ul>
+                <li>Go to <a href="#proposal">Proposals</a></li>
+                <li>Go to <a href="#conversation">Conversation</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div
+            sticky-container
+            class="column is-3">
+            <progression-box
+              :proposal-path="path" />
+          </div>
+          <div class="column">
+            <div id="proposal" class="box">
+              <div
+                id="motivation"
+                class="field">
+                <label class="label">Motivation</label>
+                <div class="columns">
+                  <div class="column">
+                    <div class="control">
+                      <textarea
+                        :disabled="disabled"
+                        v-debounce
+                        v-model.lazy="obj.motivation"
+                        class="textarea"
+                        placeholder="" />
+                    </div>
+                  </div>
+                  <div class="column">
+                    <p>
+                      In your motivation, please mention involved parties and other supportive
+                      entities, what shortcoming this proposal is expected to overcome
+                      or what purpose it serves.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <new-class-form
+              v-if="type === 'Class'"
+              :disabled="disabled"
+              :iri="obj.parentStructureIRI" />
+            <new-property-form
+              v-else-if="type === 'Property'"
+              :disabled="disabled"
+              :iri="obj.parentStructureIRI">
+
+              <div
+                v-show="!disabled"
+                class="field is-grouped proposal-submit">
+                <p class="control">
+                  <button
+                    id="submit"
+                    class="button is-primary is-medium">
+                    Submit Proposal
+                  </button>
+                </p>
+                <p class="control">
+                  <button
+                    class="button is-medium">
+                    Cancel
+                  </button>
+                </p>
+              </div>
+
+            </new-property-form>
+            <div v-else />
+
+          </div>
+
+        </div>
+      </div>
+      <div
+        v-else
+        class="modal is-active">
+        <div class="modal-background" />
+        <div class="modal-content has-text-centered">
+          <div class="box">
+            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
+            <p class="subtitle">Loading Proposal</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h1 id="conversation" class="title">
+          Conversation
+        </h1>
+        <div class="box">
+          <discussion-card :discussion="discussion" />
+          <discussion-reply
+            :id="id"
+            @answerAdded="answerAdded()" />
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+
+import NewClassForm from '@/components/proposal/NewClassForm'
+import NewPropertyForm from '@/components/proposal/NewPropertyForm'
+import ProgressionBox from '@/components/proposal/ProgressionBox'
 import discussionById from '@/apollo/queries/discussionById'
 import { toastClose } from '@/libs/utils'
 import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
+import { LOAD } from '@/store/action-types'
+import { proposalType } from '@/libs/proposals'
+
+const {
+  mapActions: propertyActions,
+} = createNamespacedHelpers('prop')
+const {
+  mapActions: classActions,
+} = createNamespacedHelpers('class')
 
 export default {
   async asyncData ({ route }) {
@@ -23,14 +152,81 @@ export default {
   },
   middleware: 'authenticated',
   components: {
+    NewClassForm,
+    NewPropertyForm,
+    ProgressionBox,
     DiscussionCard,
     DiscussionReply
   },
-  data: () => ({
-    discussion: {}
-  }),
+  data () {
+    return {
+      disabled: true,
+      type: '',
+      path: '',
+      discussion: {}
+    }
+  },
+  computed: {
+    obj () {
+      if (process.server) {
+        return this.$store.state[this.path]
+      }
+      return this.$deepModel(this.path)
+    }
+  },
+  methods: {
+    ...classActions({
+      loadClass: LOAD
+    }),
+    ...propertyActions({
+      loadProperty: LOAD
+    }),
+    proposalType,
+    answerAdded () {
+      this.$apollo.queries.discussion.refetch()
+        .then(() => {
+          this.$toast.success('Answer successfully added!', toastClose)
+        })
+    },
+    init () {
+      // if we have an ID from the URL here, we load
+      if (this.id) {
+        this.type = proposalType(this.discussion.proposalObject)
+        let loader
+        if (this.type === 'Class') {
+          loader = this.loadClass
+          this.path = 'class.clss'
+        }
+        if (this.type === 'Property') {
+          loader = this.loadProperty
+          this.path = 'prop.prop'
+        }
+        if (typeof loader !== 'function') {
+          return this.$router.app.error({
+            statusCode: 404,
+            message: 'Not found'
+          })
+        }
+        loader(this.id)
+          .then((isDraft) => {
+            if (isDraft !== true) {
+              this.disabled = true
+              return
+            }
+          })
+      } else {
+        // otherwise we .clear() which creates a new one
+        this.clear()
+      }
+    }
+  },
+  validate ({ params }) {
+    // Must be a number
+    return /^\d+$/.test(params.id)
+  },
   apollo: {
     discussion: {
+      prefetch: true,
       query: discussionById,
       variables () {
         return {
@@ -46,21 +242,13 @@ export default {
               message: 'Not found'
             })
           }
+          if (data.discussion.threadType !== 'PROPOSAL') {
+            this.$router.push({ name: 'discussion-id', params: { id: this.id } })
+          }
+          this.init()
         }
       }
     }
   },
-  methods: {
-    answerAdded () {
-      this.$apollo.queries.discussion.refetch()
-        .then(() => {
-          this.$toast.success('Answer successfully added!', toastClose)
-        })
-    }
-  },
-  validate ({ params }) {
-    // Must be a number
-    return /^\d+$/.test(params.id)
-  }
 }
 </script>

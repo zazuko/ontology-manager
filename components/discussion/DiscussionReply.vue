@@ -1,23 +1,28 @@
 <template>
   <div>
-    <div class="field">
-      <label class="label">Message</label>
-      <div class="control">
-        <textarea
-          v-model="body"
-          class="textarea"
-          placeholder="Content" />
+    <div class="media reply-box">
+      <figure class="media-left">
+        <p
+          v-if="$store.state.auth.user.avatar_url"
+          class="image is-48x48">
+          <img
+            :src="$store.state.auth.user.avatar_url">
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="field">
+          <div class="control">
+            <textarea
+              v-model="body"
+              class="textarea"
+              placeholder="Content" />
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="field is-grouped">
-      <div class="control">
+      <div class="media-right">
         <button
           class="button is-link"
-          @click="create()">Submit</button>
-      </div>
-      <div class="control">
-        <button class="button is-text">Cancel</button>
+          @click="create()">Comment</button>
       </div>
     </div>
   </div>
@@ -51,6 +56,7 @@ export default {
       this.$apollo.mutate({ mutation: answerDiscussion, variables })
         .then((data) => {
           this.$emit('answerAdded')
+          this.body = ''
         })
         .catch((err) => {
           console.error(err)

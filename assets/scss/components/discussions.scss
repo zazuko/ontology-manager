@@ -2,3 +2,40 @@
   text-align: right;
   font-size: 0.9rem;
 }
+
+.topic-box {
+  @extend .box;
+}
+
+.answer-box {
+  @extend .box;
+}
+
+.reply-box {
+  @extend .box;
+  box-shadow: none;
+  margin-top: 10px;
+
+  .media-right {
+    align-self: stretch;
+    display: flex;
+    .button {
+      margin-top: auto;
+    }
+  }
+}
+
+.topic-info {
+  font-size: 0.9rem;
+  .creation-info {
+    color: $grey;
+  }
+}
+
+.answer-info {
+  .creation-info {
+    font-size: 0.9rem;
+    color: $grey;
+  }
+  margin-bottom: 1rem;
+}
