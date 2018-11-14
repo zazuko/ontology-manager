@@ -58,13 +58,13 @@
           <span v-else>
             <nuxt-link
               v-if="proposalType(proposal.proposalObject) === 'Class'"
-              :to="{ name: 'proposal-new-class', query: { id: proposal.id } }"
+              :to="{ name: 'proposal-id', params: { id: proposal.id } }"
               class="button is-small is-info">
               See
             </nuxt-link>
             <nuxt-link
               v-if="proposalType(proposal.proposalObject) === 'Property'"
-              :to="{ name: 'proposal-new-property', query: { id: proposal.id } }"
+              :to="{ name: 'proposal-id', params: { id: proposal.id } }"
               class="button is-small is-info">
               See
             </nuxt-link>
