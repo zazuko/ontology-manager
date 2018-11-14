@@ -18,6 +18,5 @@ export const actions = {
   },
   async nuxtClientInit ({ dispatch }, context) {
     await dispatch('graph/DESERIALIZE')
-    console.log('nuxtClientInit done!')
   }
 }
