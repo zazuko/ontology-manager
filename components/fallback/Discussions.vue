@@ -30,7 +30,7 @@
         <hr v-show="index !== 0">
         <article class="media">
           <figure class="media-left">
-            <p class="image is-48x48">
+            <p class="image is-64x64">
               <img
                 :src="discussion.author.avatar"
                 :alt="authorsAvatar(discussion.author.name)">
@@ -43,23 +43,20 @@
                   {{ discussion.headline }}
                 </nuxt-link>
               </h3>
-              <h6 class="subtitle is-6">
+              <p class="content">
                 {{ cut(discussion.body) }}
-              </h6>
-
-              <!-- <p>
-                <strong>{{ discussion.author.name }}</strong> <small>Created {{ discussion.createdAt }}</small>
-              </p> -->
+              </p>
             </div>
           </div>
           <div class="media-right discussion-info">
             <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-              <span class="creation-info">
-                Created {{ discussion.createdAt | formatDate }}
-              </span>
               <span class="author-info">
-                by {{ discussion.author.name }}
+                {{ discussion.author.name }},
               </span>
+              <span class="creation-info">
+                {{ discussion.createdAt | formatDate }}
+              </span>
+              <br>
               <br>
               <span class="answers-count">
                 <span class="icon is-small">
@@ -77,7 +74,7 @@
 
 <script>
 import _get from 'lodash/get'
-import discussions from '@/apollo/queries/discussionsByIri'
+import discussionsByIri from '@/apollo/queries/discussionsByIri'
 
 export default {
   name: 'Discussion',
@@ -101,7 +98,7 @@ export default {
   },
   apollo: {
     discussions: {
-      query: discussions,
+      query: discussionsByIri,
       variables () {
         return {
           iri: this.iri

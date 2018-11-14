@@ -30,11 +30,6 @@
             class="navbar-item">
             Home
           </nuxt-link>
-          <nuxt-link
-            :to="{ name: 'discussion', params: {} }"
-            class="navbar-item">
-            Discussions
-          </nuxt-link>
           <draft-tab class="navbar-item" />
           <nuxt-link
             :to="{ name: 'admin-proposal', params: {} }"

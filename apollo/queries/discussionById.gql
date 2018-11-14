@@ -13,12 +13,16 @@ query GetDiscussion ($id: Int!) {
     iri,
     threadType,
     authorId,
+    createdAt,
+    proposalObject,
     answers: messagesByThreadId {
       messages: nodes {
         id,
         body,
+        createdAt,
         author: personByAuthorId {
-          name
+          name,
+          avatar
         }
       }
     }

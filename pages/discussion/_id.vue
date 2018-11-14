@@ -1,9 +1,18 @@
 <template>
-  <section class="container">
-    <discussion-card :discussion="discussion" />
-    <discussion-reply
-      :id="id"
-      @answerAdded="answerAdded()" />
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Conversation
+      </h1>
+      <div class="box">
+        <discussion-card :discussion="discussion" />
+      </div>
+      <div class="box">
+        <discussion-reply
+          :id="id"
+          @answerAdded="answerAdded()" />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -31,6 +40,7 @@ export default {
   }),
   apollo: {
     discussion: {
+      prefetch: true,
       query: discussionById,
       variables () {
         return {
