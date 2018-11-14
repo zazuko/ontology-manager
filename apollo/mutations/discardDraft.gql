@@ -1,9 +1,6 @@
 mutation ($threadId: Int!) {
-  updateThreadById (input: {
-    id: $threadId,
-    threadPatch: {
-      status: HIDDEN
-    }
+  deleteThreadById (input: {
+    id: $threadId
   }) {
     thread {
       id
