@@ -18,10 +18,11 @@ export function Property ({
   parentStructureIRI = '',
   classChildren = [],
   collapsed = false,
-  isNew = false
+  isNew = false,
+  isDraft = true
 } = {}) {
   this.proposalType = 'Property'
-  this.isDraft = true
+  this.isDraft = isDraft
 
   this.baseIRI = baseIRI
   this.motivation = motivation

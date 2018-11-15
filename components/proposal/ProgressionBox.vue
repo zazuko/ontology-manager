@@ -28,6 +28,14 @@
         </a>
       </li>
     </ul>
+    <div v-show="!obj.isDraft">
+      <hr />
+      <ul class="progression">
+        <li class="done">
+          <a href="#conversation">Conversation</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -75,8 +83,10 @@ export default {
         steps.push(...newSteps)
       }
 
-      const lastStep = this.lastStep(steps)
-      steps.push(lastStep)
+      if (this.obj.isDraft) {
+        const lastStep = this.lastStep(steps)
+        steps.push(lastStep)
+      }
       return steps
     }
   },
