@@ -27,8 +27,39 @@
               :proposal-path="path" />
           </div>
           <div class="column">
+            <div class="level topic-box">
+              <div class="level-left">
+                <figure class="level-item">
+                  <p class="image is-64x64">
+                    <img
+                      :src="discussion.author.avatar"
+                      :alt="authorsAvatar(discussion.author.name)">
+                  </p>
+                </figure>
+                <div>
+                  <p>
+                    Submitted on {{ discussion.createdAt | formatDate }}
+                  </p>
+                  <p>
+                    by {{ discussion.author.name }}
+                  </p>
+                </div>
+              </div>
+              <div class="level-right has-text-right">
+                <button class="button is-large" disabled>
+                  <span class="icon is-large">
+                    <i class="mdi mdi-24px mdi-thumb-up-outline" />
+                  </span>
+                </button>
+                <button class="button is-large" disabled>
+                  <span class="icon is-large">
+                    <i class="mdi mdi-24px mdi-thumb-down-outline" />
+                  </span>
+                </button>
+              </div>
+            </div>
+
             <div
-              id="proposal"
               class="box">
               <div
                 id="motivation"
@@ -174,13 +205,16 @@ export default {
     }
   },
   methods: {
+    proposalType,
     ...classActions({
       loadClass: LOAD
     }),
     ...propertyActions({
       loadProperty: LOAD
     }),
-    proposalType,
+    authorsAvatar (name = '') {
+      return `${name}'s avatar'`
+    },
     answerAdded () {
       this.$apollo.queries.discussion.refetch()
         .then(() => {

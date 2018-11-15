@@ -13,11 +13,9 @@
           </p>
         </figure>
         <div class="media-content">
-          <div class="content">
-            <p class="content">
-              {{ discussion.body }}
-            </p>
-          </div>
+          <p class="content">
+            {{ discussion.body }}
+          </p>
         </div>
         <div class="media-right discussion-info">
           <!-- TODO: edit/delete icons but outside of box in a level -->
