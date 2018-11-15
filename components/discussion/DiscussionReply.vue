@@ -8,6 +8,7 @@
           <img
             :src="$store.state.auth.user.avatar_url">
         </p>
+        <p v-else />
       </figure>
       <div class="media-content">
         <div class="field">
