@@ -17,10 +17,11 @@ export function Class ({
   parentStructureIRI = '',
   propChildren = [],
   collapsed = false,
-  isNew = false
+  isNew = false,
+  isDraft = true
 } = {}) {
   this.proposalType = 'Class'
-  this.isDraft = true
+  this.isDraft = isDraft
 
   this.baseIRI = baseIRI
   this.motivation = motivation

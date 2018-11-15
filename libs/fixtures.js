@@ -5,7 +5,7 @@ export const emptyDiscussion = {
   hat: null,
   author: {
     avatar: '',
-    name: '',
+    name: ''
   },
   iri: '',
   threadType: 'PROPOSAL',

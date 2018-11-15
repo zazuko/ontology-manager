@@ -10,18 +10,12 @@
             <h1 class="title">
               New {{ type }} Request<span
                 v-show="obj.label">:
-                "{{ obj.label }}"
+              "{{ obj.label }}"
               </span>
             </h1>
             <h2 class="subtitle">
               On <code>{{ obj.parentStructureIRI }}</code>
             </h2>
-            <div class="content">
-              <ul>
-                <li>Go to <a href="#proposal">Proposals</a></li>
-                <li>Go to <a href="#conversation">Conversation</a></li>
-              </ul>
-            </div>
           </div>
         </div>
 
