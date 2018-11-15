@@ -220,7 +220,7 @@ export default {
       // Send splash screen
       this.isLoading = true
       // remove draft status from the json proposalObject
-      this.$vuexSet('isDraft', false)
+      this.$vuexSet('prop.prop.isDraft', false)
       // save the changes
       await this.saveDraft()
 
