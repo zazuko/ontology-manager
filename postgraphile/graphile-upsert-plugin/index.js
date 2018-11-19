@@ -1,5 +1,4 @@
 // https://github.com/einarjegorov/graphile-upsert-plugin/tree/94ea92e71e25a3c981feaa40cebcd0aad781f1af
-
 const path = require('path')
 const dir = path.dirname(require.resolve('graphile-build-pg'))
 
@@ -191,6 +190,8 @@ function PgMutationUpsertPlugin(builder, { pgExtendedTypes, pgInflection: inflec
                 );
 
                 // SQL query for upsert mutations
+                // replaced:
+                //                     ON CONFLICT (${sql.identifier(primaryKeys[0].name)}) DO UPDATE
                 const mutationQuery = sql.query`
                   insert into ${sql.identifier(
                     table.namespace.name,
@@ -199,7 +200,7 @@ function PgMutationUpsertPlugin(builder, { pgExtendedTypes, pgInflection: inflec
                   ? sql.fragment`(
                       ${sql.join(sqlColumns, ", ")}
                     ) values(${sql.join(sqlValues, ", ")})
-                    ON CONFLICT (${sql.identifier(primaryKeys[0].name)}) DO UPDATE
+                    ON CONFLICT (${sql.join(primaryKeys.map(pk => sql.identifier(pk.name)), ", ")}) DO UPDATE
                     SET ${sql.join(conflictUpdateArray, ", ")}`
                   : sql.fragment`default values`} returning *`;
 
