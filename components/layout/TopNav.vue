@@ -32,7 +32,7 @@
           </nuxt-link>
           <draft-tab class="navbar-item" />
           <nuxt-link
-            :to="{ name: 'admin-proposal', params: {} }"
+            :to="{ name: 'admin-proposals', params: {} }"
             class="navbar-item">
             Admin
           </nuxt-link>
