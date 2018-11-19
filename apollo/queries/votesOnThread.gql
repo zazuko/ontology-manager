@@ -1,0 +1,7 @@
+query GetTally ($threadId: Int!) {
+  tally: votesTally (threadId: $threadId) {
+    upvotes,
+    neutrals,
+    downvotes
+  }
+}

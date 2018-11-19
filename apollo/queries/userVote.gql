@@ -1,0 +1,3 @@
+query GetUserVote ($threadId: Int!) {
+  userVote: usersVoteOnThread (threadId: $threadId)
+}
