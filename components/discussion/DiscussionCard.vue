@@ -43,7 +43,9 @@
 
     <div>
       <hr v-show="discussion.answers.messages.length" />
+      <section v-if="_get(discussion, 'answers.messages.length', 0) === 0" />
       <section
+        v-else
         v-for="message in discussion.answers.messages"
         :key="message.id"
         class="media answer-box">
@@ -90,6 +92,7 @@ export default {
     }
   },
   methods: {
+    _get,
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
     },

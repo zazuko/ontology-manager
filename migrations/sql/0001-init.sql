@@ -311,7 +311,6 @@ grant execute on function ontology_editor.search_messages(text) to ontology_edit
 grant execute on function ontology_editor.authenticate(text, integer) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
--- grant execute on function ontology_editor.register_person(text, text, text, integer) to ontology_editor_anonymous;
 grant execute on function ontology_editor.register_person(text, text, text, text, text, integer) to ontology_editor_anonymous;
 
 alter table ontology_editor.person enable row level security;
