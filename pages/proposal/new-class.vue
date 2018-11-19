@@ -205,6 +205,7 @@ export default {
   watch: {
     success () {
       if (!this.error && this.success) {
+        this.$store.dispatch('drafts/LOAD')
         this.$router.push({ name: 'proposal-id', params: { id: this.success } })
       }
     }
