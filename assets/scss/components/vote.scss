@@ -1,5 +1,8 @@
 .votes {
   font-size: 0.9rem;
+  &--admin {
+    display: flex;
+  }
 
   .vote-cell {
     margin-left: 10px;

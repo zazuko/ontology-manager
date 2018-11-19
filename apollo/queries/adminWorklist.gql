@@ -1,5 +1,5 @@
 query GetAllDiscussions ($threadType: ThreadType!) {
-  discussions: allThreads (condition: {threadType: $threadType}) {
+  discussions: allThreads (condition: {threadType: $threadType, isDraft: false}) {
     nodes {
       id,
       headline,
@@ -18,7 +18,11 @@ query GetAllDiscussions ($threadType: ThreadType!) {
       externalId,
       status,
       proposalObject,
-      isDraft
+      votesByThreadId {
+        votes: nodes {
+          vote
+        }
+      }
     }
   }
 }
