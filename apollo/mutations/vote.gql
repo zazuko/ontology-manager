@@ -1,0 +1,12 @@
+mutation ($threadId: Int!, $voteType: VoteType) {
+  upsertVote (input: {
+    vote: {
+      threadId: $threadId,
+      vote: $voteType
+    }
+  }) {
+    vote {
+      vote
+    }
+  }
+}

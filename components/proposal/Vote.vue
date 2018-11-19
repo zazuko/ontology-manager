@@ -1,0 +1,95 @@
+<template>
+  <div class="votes">
+    <div class="vote-cell">
+      <button
+        @click="vote(threadId, 'UPVOTE')"
+        :class="{ 'user-vote': userVote === 'UPVOTE' }"
+        class="button is-large">
+        <span class="icon is-large">
+          <i class="mdi mdi-24px mdi-thumb-up-outline" />
+        </span>
+      </button>
+      {{ upvotes }}
+    </div>
+
+    <div class="vote-cell">
+      <button
+        @click="vote(threadId, 'DOWNVOTE')"
+        :class="{ 'user-vote': userVote === 'DOWNVOTE' }"
+        class="button is-large">
+        <span class="icon is-large">
+          <i class="mdi mdi-24px mdi-thumb-down-outline" />
+        </span>
+      </button>
+      {{ downvotes }}
+    </div>
+  </div>
+</template>
+
+<script>
+import voteMutation from '@/apollo/mutations/vote'
+import userVote from '@/apollo/queries/userVote'
+import votesOnThread from '@/apollo/queries/votesOnThread'
+
+export default {
+  name: 'Vote',
+  props: {
+    threadId: {
+      type: Number,
+      required: true
+    }
+  },
+  data () {
+    return {
+      upvotes: 0,
+      neutrals: 0,
+      downvotes: 0,
+      userVote: 'NEUTRAL'
+    }
+  },
+  methods: {
+    async vote (threadId, voteType) {
+      const variables = {
+        threadId,
+        voteType
+      }
+      try {
+        await this.$apollo.mutate({ mutation: voteMutation, variables })
+        await Promise.all([
+          this.$apollo.queries.userVote.refetch(),
+          this.$apollo.queries.tally.refetch()
+        ])
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  },
+  apollo: {
+    userVote: {
+      variables () {
+        return {
+          threadId: this.threadId
+        }
+      },
+      query: userVote,
+      result ({ data, loading }) {
+        this.userVote = data.userVote
+      }
+    },
+    tally: {
+      variables () {
+        return {
+          threadId: this.threadId
+        }
+      },
+      query: votesOnThread,
+      result ({ data, loading }) {
+        this.upvotes = data.tally.upvotes
+        this.neutrals = data.tally.neutrals
+        this.downvotes = data.tally.downvotes
+      },
+      pollInterval: 1000 * 30
+    }
+  }
+}
+</script>
