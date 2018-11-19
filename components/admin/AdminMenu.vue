@@ -2,14 +2,14 @@
   <nav class="tabs is-boxed is-large">
     <ul>
       <li
-        :class="{ 'is-active': currentRoute === 'admin-proposal'}">
-        <nuxt-link :to="{ name: 'admin-proposal' }">
+        :class="{ 'is-active': currentRoute === 'admin-proposals'}">
+        <nuxt-link :to="{ name: 'admin-proposals' }">
           Proposals
         </nuxt-link>
       </li>
       <li
-        :class="{ 'is-active': currentRoute === 'admin-discussion'}">
-        <nuxt-link :to="{ name: 'admin-discussion' }">
+        :class="{ 'is-active': currentRoute === 'admin-discussions'}">
+        <nuxt-link :to="{ name: 'admin-discussions' }">
           Discussions
         </nuxt-link>
       </li>

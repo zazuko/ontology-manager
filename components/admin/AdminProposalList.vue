@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-bordered is-striped is-narrow is-fullwidth">
+  <table class="table is-striped is-narrow is-fullwidth">
     <thead>
       <tr>
         <th>Title</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="proposal in proposals"
+        v-for="proposal in rows"
         :key="proposal.id">
         <td>
           <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
@@ -33,11 +33,25 @@
           {{ proposal.status }}
           <br>
           <small>
-            {{ proposalType(proposal.proposalObject) }}
+            {{ proposal.proposalType }}
           </small>
         </td>
         <td>
-          ?
+          <div class="votes votes--admin">
+            <div class="vote-cell">
+              <span class="icon">
+                <i class="mdi mdi-thumb-up-outline" />
+              </span>
+              {{ proposal.tally.upvotes }}
+            </div>
+
+            <div class="vote-cell">
+              <span class="icon">
+                <i class="mdi mdi-thumb-down-outline" />
+              </span>
+              {{ proposal.tally.downvotes }}
+            </div>
+          </div>
         </td>
         <td>
           <span
@@ -57,13 +71,13 @@
           </span>
           <span v-else>
             <nuxt-link
-              v-if="proposalType(proposal.proposalObject) === 'Class'"
+              v-if="proposal.proposalType === 'Class'"
               :to="{ name: 'proposal-id', params: { id: proposal.id } }"
               class="button is-small is-info">
               See
             </nuxt-link>
             <nuxt-link
-              v-if="proposalType(proposal.proposalObject) === 'Property'"
+              v-if="proposal.proposalType === 'Property'"
               :to="{ name: 'proposal-id', params: { id: proposal.id } }"
               class="button is-small is-info">
               See
@@ -83,6 +97,15 @@ import { proposalType } from '@/libs/proposals'
 export default {
   name: 'AdminProposalList',
   props: ['proposals'],
+  computed: {
+    rows () {
+      return this.proposals.map((proposal) => {
+        proposal.tally = this.tally(proposal.votesByThreadId.votes)
+        proposal.proposalType = this.proposalType(proposal.proposalObject)
+        return proposal
+      })
+    }
+  },
   methods: {
     proposalType,
     async approve (proposal) {
@@ -116,6 +139,22 @@ export default {
         console.error(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
+    },
+    tally (votes = []) {
+      return votes.reduce((acc, { vote } = {}) => {
+        switch (vote) {
+          case 'UPVOTE':
+            acc.upvotes += 1
+            break
+          case 'NEUTRAL':
+            acc.neutrals += 1
+            break
+          case 'DOWNVOTE':
+            acc.downvotes += 1
+            break
+        }
+        return acc
+      }, { upvotes: 0, neutrals: 0, downvotes: 0 })
     }
   }
 }
