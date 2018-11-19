@@ -45,22 +45,12 @@
                   </p>
                 </div>
               </div>
-              <div class="level-right has-text-right">
-                <button class="button is-large" disabled>
-                  <span class="icon is-large">
-                    <i class="mdi mdi-24px mdi-thumb-up-outline" />
-                  </span>
-                </button>
-                <button class="button is-large" disabled>
-                  <span class="icon is-large">
-                    <i class="mdi mdi-24px mdi-thumb-down-outline" />
-                  </span>
-                </button>
-              </div>
+              <vote
+                :thread-id="discussion.id"
+                class="level-right has-text-right" />
             </div>
 
-            <div
-              class="box">
+            <div class="box">
               <div
                 id="motivation"
                 class="field">
@@ -151,16 +141,19 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
+import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
+import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 import NewClassForm from '@/components/proposal/NewClassForm'
 import NewPropertyForm from '@/components/proposal/NewPropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
+import Vote from '@/components/proposal/Vote'
+
 import discussionById from '@/apollo/queries/discussionById'
-import { toastClose } from '@/libs/utils'
-import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
-import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 import { LOAD } from '@/store/action-types'
+import { toastClose } from '@/libs/utils'
 import { proposalType } from '@/libs/proposals'
 import { emptyDiscussion } from '@/libs/fixtures'
+import { Class } from '@/models/Class'
 
 const {
   mapActions: propertyActions
@@ -177,13 +170,14 @@ export default {
       id
     }
   },
-  middleware: 'authenticated',
+  // middleware: 'authenticated',
   components: {
     NewClassForm,
     NewPropertyForm,
     ProgressionBox,
     DiscussionCard,
-    DiscussionReply
+    DiscussionReply,
+    Vote
   },
   data () {
     return {
@@ -196,7 +190,7 @@ export default {
   computed: {
     obj () {
       if (!this.path) {
-        return null
+        return false
       }
       if (process.server) {
         return this.$store.state[this.path]

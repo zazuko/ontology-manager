@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="media reply-box">
+    <div
+      v-if="_get($auth, '$state.loggedIn', false)"
+      class="media reply-box">
       <figure class="media-left">
         <p
-          v-if="$store.state.auth.user.avatar_url"
+          v-if="_get($store, 'state.auth.user.avatar_url', false)"
           class="image is-48x48">
           <img
             :src="$store.state.auth.user.avatar_url">
@@ -26,10 +28,12 @@
           @click="create()">Comment</button>
       </div>
     </div>
+    <div v-else />
   </div>
 </template>
 
 <script>
+import _get from 'lodash/get'
 import answerDiscussion from '@/apollo/mutations/answerDiscussion'
 
 export default {
@@ -47,6 +51,7 @@ export default {
     }
   },
   methods: {
+    _get,
     create () {
       const variables = {
         threadId: this.id,

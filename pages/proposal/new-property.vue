@@ -21,7 +21,6 @@
             <p>
               Once submitted, the proposal will be discussed and eventually accepted or rejected by official team members.
             </p>
-
           </div>
         </div>
 
@@ -205,6 +204,7 @@ export default {
   watch: {
     success () {
       if (!this.error && this.success) {
+        this.$store.dispatch('drafts/LOAD')
         this.$router.push({ name: 'proposal-id', params: { id: this.success } })
       }
     }
