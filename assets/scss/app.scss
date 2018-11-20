@@ -59,7 +59,7 @@ body {
   border-radius: 6px 6px 0 0;
 }
 
-ul.types-list {
+ul.dash-bullet {
     list-style-type: none;
     padding-left: 1em;
 
@@ -68,6 +68,10 @@ ul.types-list {
     position: absolute;
     margin-left: -1em;
   }
+}
+
+ul.types-list {
+  @extend .dash-bullet;
 }
 
 .proposal-submit {
@@ -108,4 +112,12 @@ section hr {
     @extend .subtitle;
     @extend .is-4;
   }
+}
+
+.clickable-pointer {
+  cursor: pointer;
+}
+
+.hats-table, .hats-form {
+  margin-top: 20px;
 }

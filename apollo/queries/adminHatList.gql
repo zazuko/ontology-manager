@@ -1,0 +1,17 @@
+query ListHats {
+  allHats (orderBy: TITLE_ASC) {
+    hats: nodes {
+      id,
+      title,
+      description,
+      holders: hatPeopleByHatId {
+        persons: nodes {
+          person: personByPersonId {
+            id,
+            name
+          }
+        }
+      }
+    }
+  }
+}

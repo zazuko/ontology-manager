@@ -1,0 +1,12 @@
+mutation ($title: String!, $description: String) {
+  createHat (input: {
+    hat: {
+      title: $title,
+      description: $description
+    }
+  }) {
+    hat {
+      id
+    }
+  }
+}

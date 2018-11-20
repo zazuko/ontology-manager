@@ -1,0 +1,13 @@
+mutation ($hatId: Int!, $title: String, $description: String) {
+  updateHatById (input: {
+    id: $hatId,
+    hatPatch: {
+      title: $title,
+      description: $description
+    }
+  }) {
+    hat {
+      id
+    }
+  }
+}
