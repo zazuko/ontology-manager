@@ -24,7 +24,7 @@ comment on column ontology_editor.person.created_at is 'The time this person was
 
 create table ontology_editor.hat (
   id               serial primary key,
-  title            text not null check (char_length(title) < 20),
+  title            text not null check (char_length(title) < 20) unique,
   description      text
 );
 
@@ -38,6 +38,10 @@ create table ontology_editor.hat_person (
   person_id integer not null references ontology_editor.person(id),
   primary key (hat_id, person_id)
 );
+
+comment on table ontology_editor.hat_person is 'Who has which hat(s).';
+comment on column ontology_editor.hat_person.hat_id is 'Which hat.';
+comment on column ontology_editor.hat_person.person_id is 'Hat holder.';
 
 create type ontology_editor.thread_type as enum (
   'discussion',
@@ -300,10 +304,16 @@ grant update, delete on table ontology_editor.person to ontology_editor_person;
 grant select on table ontology_editor.message to ontology_editor_anonymous, ontology_editor_person;
 grant select on table ontology_editor.thread to ontology_editor_anonymous, ontology_editor_person;
 grant select on table ontology_editor.hat to ontology_editor_anonymous, ontology_editor_person;
+grant select on table ontology_editor.hat_person to ontology_editor_anonymous, ontology_editor_person;
+
 grant insert, update, delete on table ontology_editor.message to ontology_editor_person;
 grant insert, update, delete on table ontology_editor.thread to ontology_editor_person;
-grant usage on sequence ontology_editor.thread_id_seq to ontology_editor_person;
+grant insert, update, delete on table ontology_editor.hat to ontology_editor_person;
+grant insert, update, delete on table ontology_editor.hat_person to ontology_editor_person;
+
 grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person;
+grant usage on sequence ontology_editor.thread_id_seq to ontology_editor_person;
+grant usage on sequence ontology_editor.hat_id_seq to ontology_editor_person;
 
 grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.person_latest_message(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
@@ -350,15 +360,24 @@ create policy update_thread on ontology_editor.thread for update to ontology_edi
 create policy delete_thread on ontology_editor.thread for delete to ontology_editor_person
   using (ontology_editor.current_person_is_admin());
 
--- R
+-- CRUD
 -- hat
+create policy insert_hat on ontology_editor.hat for insert to ontology_editor_person
+  with check (ontology_editor.current_person_is_admin());
 create policy select_hat on ontology_editor.hat for select
   using (true);
+create policy update_hat on ontology_editor.hat for update to ontology_editor_person
+  using (ontology_editor.current_person_is_admin());
+create policy delete_hat on ontology_editor.hat for delete to ontology_editor_person
+  using (ontology_editor.current_person_is_admin());
 
--- CRD hat_person
+-- CRD
+-- hat_person
 create policy insert_hat_person on ontology_editor.hat_person for insert to ontology_editor_person
   with check (ontology_editor.current_person_is_admin());
 create policy select_hat_person on ontology_editor.hat_person for select
   using (true);
+create policy update_hat_person on ontology_editor.hat_person for update to ontology_editor_person
+  using (ontology_editor.current_person_is_admin());
 create policy delete_hat_person on ontology_editor.hat_person for delete to ontology_editor_person
   using (ontology_editor.current_person_is_admin());

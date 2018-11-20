@@ -4,7 +4,8 @@
 
       <admin-menu />
 
-      <admin-user-list
+      <admin-hat-list
+        :hats="hats"
         :users="users"
         @updated="refetch()" />
 
@@ -13,25 +14,36 @@
 </template>
 
 <script>
+import hats from '@/apollo/queries/adminHatList'
 import users from '@/apollo/queries/adminUserList'
-import AdminUserList from '@/components/admin/AdminUserList.vue'
+import AdminHatList from '@/components/admin/AdminHatList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 
 export default {
   middleware: 'authenticatedAdmin',
   components: {
-    AdminUserList,
+    AdminHatList,
     AdminMenu
   },
   data: () => ({
+    hats: [],
     users: []
   }),
   methods: {
     refetch () {
-      this.$apollo.queries.users.refetch()
+      this.$apollo.queries.allHats.refetch()
     }
   },
   apollo: {
+    allHats: {
+      prefetch: true,
+      query: hats,
+      result ({ data, loading }) {
+        if (!loading) {
+          this.hats = data.allHats.hats
+        }
+      }
+    },
     users: {
       prefetch: true,
       query: users,
@@ -40,7 +52,6 @@ export default {
           threadType: 'PROPOSAL'
         }
       },
-      fetchPolicy: 'cache-and-network',
       result ({ data, loading }) {
         if (!loading) {
           this.users = data.users.nodes

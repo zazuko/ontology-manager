@@ -14,7 +14,7 @@
           :class="{'is-active': isActive}"
           class="navbar-burger burger"
           data-target="top-nav"
-          @click="toggle()">
+          @click.prevent="toggle()">
           <span />
           <span />
           <span />

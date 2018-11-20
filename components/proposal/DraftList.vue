@@ -32,7 +32,7 @@
               Edit Proposal
             </nuxt-link>
             <button
-              @click="discard(draft.id)"
+              @click.prevent="discard(draft.id)"
               class="button is-small is-danger">
               Discard
             </button>

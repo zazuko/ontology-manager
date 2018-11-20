@@ -1,0 +1,10 @@
+mutation ($personId: Int!, $hatId: Int!) {
+  deleteHatPersonByHatIdAndPersonId (input: {
+    hatId: $hatId,
+    personId: $personId
+  }) {
+    hatPerson {
+      hatId
+    }
+  }
+}

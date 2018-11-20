@@ -3,13 +3,13 @@
     <button
       v-show="!loggedIn"
       class="button is-small is-info is-outlined"
-      @click="signIn">
+      @click.prevent="signIn">
       <span>Sign In</span>
     </button>
     <button
       v-show="loggedIn"
       class="button is-small is-info is-outlined"
-      @click="signOut">
+      @click.prevent="signOut">
       <span>Sign Out</span>
     </button>
   </span>

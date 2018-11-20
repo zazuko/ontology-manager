@@ -38,13 +38,13 @@
           <button
             v-show="user.isAdmin"
             class="button is-small is-info admin-action"
-            @click="demote(user.id)">
+            @click.prevent="demote(user.id)">
             Demote
           </button>
           <button
             v-show="!user.isAdmin"
             class="button is-small is-danger admin-action"
-            @click="promote(user.id)">
+            @click.prevent="promote(user.id)">
             Promote
           </button>
         </td>
