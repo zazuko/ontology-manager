@@ -2,7 +2,7 @@
   <div class="votes">
     <div class="vote-cell">
       <button
-        @click="vote(threadId, 'UPVOTE')"
+        @click.prevent="vote(threadId, 'UPVOTE')"
         :class="{ 'user-vote': userVote === 'UPVOTE' }"
         class="button is-large">
         <span class="icon is-large">
@@ -14,7 +14,7 @@
 
     <div class="vote-cell">
       <button
-        @click="vote(threadId, 'DOWNVOTE')"
+        @click.prevent="vote(threadId, 'DOWNVOTE')"
         :class="{ 'user-vote': userVote === 'DOWNVOTE' }"
         class="button is-large">
         <span class="icon is-large">
@@ -49,6 +49,10 @@ export default {
   },
   methods: {
     async vote (threadId, voteType) {
+      if (this.userVote === voteType) {
+        // user had voted X and is clicking X again => cancel vote
+        voteType = 'NEUTRAL'
+      }
       const variables = {
         threadId,
         voteType
@@ -84,9 +88,11 @@ export default {
       },
       query: votesOnThread,
       result ({ data, loading }) {
-        this.upvotes = data.tally.upvotes
-        this.neutrals = data.tally.neutrals
-        this.downvotes = data.tally.downvotes
+        if (data.tally) {
+          this.upvotes = data.tally.upvotes
+          this.neutrals = data.tally.neutrals
+          this.downvotes = data.tally.downvotes
+        }
       },
       pollInterval: 1000 * 30
     }
