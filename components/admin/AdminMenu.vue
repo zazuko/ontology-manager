@@ -2,21 +2,11 @@
   <nav class="tabs is-boxed is-large">
     <ul>
       <li
-        :class="{ 'is-active': currentRoute === 'admin-proposals'}">
-        <nuxt-link :to="{ name: 'admin-proposals' }">
-          Proposals
-        </nuxt-link>
-      </li>
-      <li
-        :class="{ 'is-active': currentRoute === 'admin-discussions'}">
-        <nuxt-link :to="{ name: 'admin-discussions' }">
-          Discussions
-        </nuxt-link>
-      </li>
-      <li
-        :class="{ 'is-active': currentRoute === 'admin-users'}">
-        <nuxt-link :to="{ name: 'admin-users' }">
-          Users
+        v-for="tab in tabs"
+        :key="tab.route"
+        :class="{ 'is-active': currentRoute === tab.route}">
+        <nuxt-link :to="{ name: tab.route }">
+          {{ tab.title }}
         </nuxt-link>
       </li>
     </ul>
@@ -28,6 +18,17 @@ import _get from 'lodash/get'
 
 export default {
   name: 'AdminMenu',
+  data () {
+    const tabs = [
+      { route: 'admin-proposals', title: 'Proposals' },
+      { route: 'admin-discussions', title: 'Discussions' },
+      { route: 'admin-users', title: 'Users' },
+      { route: 'admin-hats', title: 'Hats' },
+    ]
+    return {
+      tabs
+    }
+  },
   computed: {
     currentRoute () {
       return _get(this, '$router.currentRoute.name', '')
