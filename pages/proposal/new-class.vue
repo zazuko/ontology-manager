@@ -74,7 +74,7 @@
                     id="submit"
                     class="button is-primary is-medium"
                     :disabled="!isReady"
-                    @click="sendProposal">
+                    @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
                 </p>

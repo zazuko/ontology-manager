@@ -1,0 +1,12 @@
+mutation ($personId: Int!, $hatId: Int!) {
+  upsertHatPerson (input: {
+    hatPerson: {
+      hatId: $hatId,
+      personId: $personId
+    }
+  }) {
+    hatPerson {
+      hatId
+    }
+  }
+}

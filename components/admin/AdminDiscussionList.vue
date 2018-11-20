@@ -43,19 +43,19 @@
           <button
             v-show="discussion.status !== 'OPEN'"
             class="button is-small is-primary"
-            @click="reopen(discussion.id)">
+            @click.prevent="reopen(discussion.id)">
             Reopen
           </button>
           <button
             v-show="discussion.status === 'OPEN'"
             class="button is-small is-success"
-            @click="resolve(discussion.id)">
+            @click.prevent="resolve(discussion.id)">
             Resolve
           </button>
           <button
             v-show="discussion.status === 'OPEN'"
             class="button is-small is-danger"
-            @click="hide(discussion.id)">
+            @click.prevent="hide(discussion.id)">
             Hide / Close
           </button>
         </td>

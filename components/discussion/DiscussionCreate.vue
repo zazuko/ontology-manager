@@ -36,7 +36,7 @@
       <div class="control">
         <button
           class="button is-link"
-          @click="create()">Submit</button>
+          @click.prevent="create()">Submit</button>
       </div>
       <div class="control">
         <button class="button is-text">Cancel</button>

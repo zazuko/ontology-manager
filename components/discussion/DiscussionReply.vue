@@ -25,7 +25,7 @@
       <div class="media-right">
         <button
           class="button is-link"
-          @click="create()">Comment</button>
+          @click.prevent="create()">Comment</button>
       </div>
     </div>
     <div v-else />

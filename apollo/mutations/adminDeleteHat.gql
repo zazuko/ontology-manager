@@ -1,0 +1,9 @@
+mutation ($hatId: Int!) {
+  deleteHatById (input: {
+    id: $hatId
+  }) {
+    hat {
+      id
+    }
+  }
+}

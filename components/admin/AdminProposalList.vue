@@ -59,13 +59,13 @@
             <button
               class="button is-small is-success"
               :disabled="proposal.status !== 'OPEN'"
-              @click="approve(proposal)">
+              @click.prevent="approve(proposal)">
               Approve
             </button>
             <button
               class="button is-small is-danger"
               :disabled="proposal.status !== 'OPEN'"
-              @click="reject(proposal)">
+              @click.prevent="reject(proposal)">
               Reject
             </button>
           </span>
