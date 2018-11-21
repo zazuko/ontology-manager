@@ -64,11 +64,12 @@
               <select
                 v-for="user in users"
                 :key="user.id"
-                :selected="hatHolders.includes(user.id)"
                 :size="users.length < 8 ? users.length : 8"
                 v-model="selectedUserIds"
                 multiple>
-                <option :value="user.id">{{ user.name }}</option>
+                <option :value="user.id">
+                  {{ user.name }}
+                </option>
               </select>
             </div>
             <div
@@ -193,7 +194,6 @@ export default {
     return {
       hatTitle: '',
       hatDescription: '',
-      hatHolders: [],
       selectedUserIds: [],
       editingHatId: null,
       hatForm: false
@@ -205,7 +205,7 @@ export default {
       this.editingHatId = hat.id
       this.hatTitle = hat.title
       this.hatDescription = hat.description
-      this.hatHolders = _get(hat, 'holders.persons', []).map(({ person }) => person.id)
+      this.selectedUserIds = _get(hat, 'holders.persons', []).map(({ person }) => person.id)
     },
     async updateHat () {
       const variables = {
@@ -274,7 +274,6 @@ export default {
     clear () {
       this.hatTitle = ''
       this.hatDescription = ''
-      this.hatHolders = []
       this.selectedUserIds = []
       this.editingHatId = null
       this.hatForm = false
