@@ -3,6 +3,9 @@
   "datasetBaseUrl": "http://example.com/",
   "propertyBaseUrl": "http://example.com/schema/",
   "classBaseUrl": "http://example.com/schema/",
+  "containersNestingPredicates": [
+    "http://schema.org/hasPart"
+  ],
   "patchHeaders": {
     "root": {
       "static": {

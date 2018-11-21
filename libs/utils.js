@@ -1,6 +1,6 @@
 import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
-import { datasetBaseUrl } from '@/trifid/trifid.config.json'
+import { datasetBaseUrl, containersNestingPredicates } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
 
 export const toastClose = {
@@ -32,21 +32,20 @@ export function serialize (dataset) {
 export function buildTree (dataset, dataset2) {
   if (!dataset) return {}
 
-  const predicate = termIRI.hasPart
-
-  // we consider <parentIRI> <givenPredicate> <childIRI>
-
   const nodes = {}
 
-  dataset
-    .match(null, predicate)
-    .toArray()
-    .forEach((quad) => {
-      const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, dataset.match(quad.subject)))
-      const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, dataset.match(quad.object)))
-      child.parent = parent
-      parent.children.push(child)
-    })
+  // we consider <parentIRI> <givenPredicate> <childIRI>
+  containersNestingPredicates.forEach((predicate) => {
+    dataset
+      .match(null, rdf.namedNode(predicate))
+      .toArray()
+      .forEach((quad) => {
+        const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, dataset.match(quad.subject)))
+        const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, dataset.match(quad.object)))
+        child.parent = parent
+        parent.children.push(child)
+      })
+  })
 
   const forest = Object.keys(nodes)
     .reduce((acc, iri) => {

@@ -5,7 +5,7 @@
       <admin-menu />
 
       <admin-proposal-list
-        :proposals="discussions.nodes"
+        :proposals="proposals"
         @updated="refetch()" />
 
     </div>
@@ -24,9 +24,7 @@ export default {
     AdminMenu
   },
   data: () => ({
-    discussions: {
-      nodes: []
-    }
+    proposals: []
   }),
   methods: {
     refetch () {
@@ -40,6 +38,11 @@ export default {
       variables () {
         return {
           threadType: 'PROPOSAL'
+        }
+      },
+      result ({ data, loading }) {
+        if (!loading) {
+          this.proposals = data.discussions.nodes
         }
       },
       fetchPolicy: 'cache-and-network'

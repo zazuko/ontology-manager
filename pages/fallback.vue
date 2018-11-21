@@ -9,18 +9,37 @@
         type="application/ld+json"
         v-html="jsonld" />
 
-      <side-nav :current-iri="iri" />
+      <side-nav
+        v-show="termIRI.Class.equals(objectType)"
+        :current-iri="iri" />
 
-      <article class="column is-9">
+      <article
+        :class="{
+          'is-9': termIRI.Class.equals(objectType),
+          'is-12': !termIRI.Class.equals(objectType),
+        }"
+        class="column is-9">
 
-        <structure
-          v-if="termIRI.creativeWork.equals(objectType)"
-          :obj="subtree"
-          :name="subtree.label"
-          :ontology="ontology"
-          :structure="structure"
-          :is-class="termIRI.Class.equals(objectType)"
-          class="tile is-ancestor" />
+        <div
+          v-if="termIRI.creativeWork.equals(objectType)">
+          <section class="section">
+            <div class="container has-text-centered">
+              <h1 class="title">
+                {{ subtree.label }}
+              </h1>
+              <h2 class="subtitle">
+                {{ comment }}
+              </h2>
+            </div>
+          </section>
+          <structure
+            :obj="subtree"
+            :name="subtree.label"
+            :ontology="ontology"
+            :structure="structure"
+            :is-class="termIRI.Class.equals(objectType)" />
+        </div>
+        <div v-else />
 
         <object-details
           v-if="object"
@@ -29,7 +48,7 @@
           :structure="structure"
           :is-class="termIRI.Class.equals(objectType)" />
 
-        <hr v-show="termIRI.Class.equals(objectType) || termIRI.creativeWork.equals(objectType)" />
+        <!-- <hr v-show="termIRI.Class.equals(objectType) || termIRI.creativeWork.equals(objectType)" /> -->
 
         <property-proposals
           v-if="termIRI.Class.equals(objectType)"
@@ -131,6 +150,13 @@ export default {
         return this.ontology.match(rdf.namedNode(this.iri))
       }
       return null
+    },
+    comment () {
+      const comment = this.subtree.quads.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+      if (comment) {
+        return comment.object.value
+      }
+      return ''
     }
   },
   data () {
