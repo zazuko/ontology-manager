@@ -24,7 +24,9 @@
         and only if they chose to do so, when posting comments.
       </p>
 
-      <div class="hats-form" v-show="hatForm || editingHatId">
+      <div
+        class="hats-form"
+        v-show="hatForm || editingHatId">
         <div class="field">
           <label class="label">
             Hat Title
@@ -171,7 +173,22 @@ import removeHat from '@/apollo/mutations/adminRemoveHat'
 
 export default {
   name: 'AdminHatList',
-  props: ['hats', 'users'],
+  props: {
+    hats: {
+      type: Array,
+      required: true,
+      default () {
+        return []
+      }
+    },
+    users: {
+      type: Array,
+      required: true,
+      default () {
+        return []
+      }
+    }
+  },
   data () {
     return {
       hatTitle: '',

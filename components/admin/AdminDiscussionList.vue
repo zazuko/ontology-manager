@@ -69,7 +69,15 @@ import mutation from '@/apollo/mutations/changeDiscussionStatus'
 
 export default {
   name: 'AdminDiscussionList',
-  props: ['discussions'],
+  props: {
+    discussions: {
+      type: Array,
+      required: true,
+      default () {
+        return []
+      }
+    }
+  },
   methods: {
     async resolve (threadId) {
       this.mutate(threadId, 'RESOLVED')

@@ -96,7 +96,15 @@ import { proposalType } from '@/libs/proposals'
 
 export default {
   name: 'AdminProposalList',
-  props: ['proposals'],
+  props: {
+    proposals: {
+      type: Array,
+      required: true,
+      default () {
+        return []
+      }
+    }
+  },
   computed: {
     rows () {
       return this.proposals.map((proposal) => {
