@@ -23,9 +23,37 @@
         </div>
       </div>
       <div class="media-right">
-        <button
-          class="button is-link"
-          @click.prevent="create()">Comment</button>
+        <div class="opposite-fields">
+          <div
+            v-show="$store.state.auth.hats && $store.state.auth.hats.length"
+            class="field top">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  v-model="selectedHat">
+                  <option value="">
+                    Answer as…
+                  </option>
+                  <option
+                    v-for="hat in $store.state.auth.hats"
+                    :key="hat.id"
+                    :value="hat.id">
+                    {{ hat.title }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field bottom">
+            <div class="control">
+              <button
+                class="button is-link is-fullwidth"
+                @click.prevent="create()">
+                Comment
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else />
@@ -47,7 +75,7 @@ export default {
   data () {
     return {
       body: '',
-      hatId: null
+      selectedHat: ''
     }
   },
   methods: {
@@ -55,14 +83,17 @@ export default {
     create () {
       const variables = {
         threadId: this.id,
-        body: this.body,
-        hatId: this.hatId
+        body: this.body
+      }
+      if (this.selectedHat) {
+        variables.hatId = this.selectedHat
       }
 
       this.$apollo.mutate({ mutation: answerDiscussion, variables })
         .then((data) => {
           this.$emit('answerAdded')
           this.body = ''
+          this.selectedHat = ''
         })
         .catch((err) => {
           console.error(err)

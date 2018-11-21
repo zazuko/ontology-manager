@@ -23,6 +23,9 @@ query GetDiscussion ($id: Int!) {
         author: personByAuthorId {
           name,
           avatar
+        },
+        hat: hatByHatId {
+          title
         }
       }
     }

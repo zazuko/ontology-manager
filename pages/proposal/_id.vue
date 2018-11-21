@@ -153,7 +153,6 @@ import { LOAD } from '@/store/action-types'
 import { toastClose } from '@/libs/utils'
 import { proposalType } from '@/libs/proposals'
 import { emptyDiscussion } from '@/libs/fixtures'
-import { Class } from '@/models/Class'
 
 const {
   mapActions: propertyActions

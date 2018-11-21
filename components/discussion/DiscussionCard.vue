@@ -66,11 +66,17 @@
               commented on {{ message.createdAt | formatDate }}
             </span>
           </div>
-          <div class="content">
+          <div class="answer-content">
             <p class="content">
               {{ message.body }}
             </p>
           </div>
+          <div
+            v-if="message.hat"
+            class="answer-hat">
+            {{ message.hat.title }}
+          </div>
+          <div v-else />
         </div>
         <div class="media-right discussion-info">
           <!-- TODO: edit icon button -->
