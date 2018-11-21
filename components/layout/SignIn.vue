@@ -78,6 +78,7 @@ export default {
             const jwtToken = _get(result, 'data.jwtToken')
             this.$auth.$storage.setState('isAdmin', _get(result, 'data.isAdmin'))
             this.$auth.$storage.setState('personId', _get(result, 'data.personId'))
+            this.$auth.$storage.setState('hats', _get(result, 'data.personHats'))
 
             if (!jwtToken) throw new Error('Account linking failed.')
             this.$apolloHelpers.onLogin(jwtToken)

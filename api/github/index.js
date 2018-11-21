@@ -94,7 +94,16 @@ router.post('/link', async (req, res, next) => {
         }) {
           person {
             id,
-            isAdmin
+            isAdmin,
+            hatPeopleByPersonId {
+              nodes {
+                hatByHatId {
+                  id,
+                  title,
+                  description
+                }
+              }
+            }
           }
         }
       }`,
@@ -102,6 +111,11 @@ router.post('/link', async (req, res, next) => {
     })
     const isAdmin = _.get(r, 'data.registerPerson.person.isAdmin')
     const personId = _.get(r, 'data.registerPerson.person.id')
+    const personHats = _
+      .chain(r)
+      .get('data.registerPerson.person.hatPeopleByPersonId.nodes', [])
+      .map('hatByHatId')
+      .value()
 
     // generate the user-specific JWT that Apollo will use to make authenticated
     // graphql queries for this user
@@ -125,6 +139,7 @@ router.post('/link', async (req, res, next) => {
     }
     result.data.authenticate.isAdmin = isAdmin
     result.data.authenticate.personId = personId
+    result.data.authenticate.personHats = personHats
     res.json(result.data.authenticate)
     return
   } catch (err) {

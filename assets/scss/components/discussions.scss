@@ -9,18 +9,47 @@
 
 .answer-box {
   @extend .box;
+  // this position: relative makes it possible for .answer-hat to be 'absolute'
+  position: relative;
+
+  .answer-info {
+    .creation-info {
+      font-size: 0.9rem;
+      color: $grey;
+    }
+    margin-bottom: 1rem;
+  }
+
+  .answer-hat {
+    @extend .has-background-link;
+    @extend .has-text-white;
+    @extend .has-text-centered;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    border-top-left-radius: 6px;
+    padding: 3px 10px;
+    min-width: 80px;
+  }
 }
 
 .reply-box {
   @extend .box;
   box-shadow: none;
   margin-top: 10px;
-
   .media-right {
     align-self: stretch;
     display: flex;
-    .button {
-      margin-top: auto;
+
+    .opposite-fields {
+      display: flex;
+      flex-direction: column;
+
+      .bottom {
+        margin-top: auto;
+      }
     }
   }
 }
@@ -30,12 +59,4 @@
   .creation-info {
     color: $grey;
   }
-}
-
-.answer-info {
-  .creation-info {
-    font-size: 0.9rem;
-    color: $grey;
-  }
-  margin-bottom: 1rem;
 }

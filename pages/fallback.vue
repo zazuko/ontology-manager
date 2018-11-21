@@ -10,7 +10,7 @@
         v-html="jsonld" />
 
       <side-nav
-        v-show="termIRI.Class.equals(objectType)"
+        v-show="termIRI.Class.equals(objectType) || termIRI.Property.equals(objectType)"
         :current-iri="iri" />
 
       <article
