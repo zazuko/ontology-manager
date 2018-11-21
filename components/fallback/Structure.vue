@@ -1,63 +1,44 @@
 <template>
   <section class="section">
-    <div class="tile is-vertical is-12">
-      <div class="tile is-parent">
-        <article class="tile is-child container-box">
-          <p class="title">
-            <nuxt-link
-              v-if="obj.path"
-              :to="{ path: obj.path, params: {} }">
-              {{ name }}
-            </nuxt-link>
-            <span
-              v-else>
-              {{ name }}
-            </span>
-          </p>
-          <p
-            v-if="isClass"
-            class="subtitle">
-            {{ obj.properties.length }} propert{{ obj.properties.length === 1 ? 'y' : 'ies' }}
-          </p>
-          <p v-else />
-
-          <properties-table
-            v-if="isClass && obj.properties"
-            :properties="obj.properties.toArray()"
-            :ontology="ontology"
-            :structure="structure" />
-          <div v-else />
-
-          <div class="content">
+    <div class="container">
+      <h1 class="title">
+        {{ name }}: Logistics objects
+      </h1>
+      <article class="tile is-child container-box">
+        <div class="content">
+          <div
+            v-for="(group, index) in arrayToGroups(obj)"
+            :key="index"
+            class="tile is-ancestor">
             <div
-              v-for="(group, index) in arrayToGroups(obj)"
-              :key="index"
-              class="tile is-ancestor">
-              <div
-                v-for="child in group"
-                :key="child.path"
-                class="tile is-parent is-3">
-                <article class="tile is-child class-box">
-                  <p class="title">
-                    <nuxt-link
-                      v-if="child.path"
-                      :to="{ path: child.path, params: {} }">
-                      {{ child.label }}
-                    </nuxt-link>
-                    <span
-                      v-else>
-                      {{ child.label }}
-                    </span>
-                  </p>
-                  <p class="subtitle">
-                    {{ child.properties.length }} propert{{ child.properties.length === 1 ? 'y' : 'ies' }}
-                  </p>
-                </article>
-              </div>
+              v-for="child in group"
+              :key="child.path"
+              class="tile is-parent is-3">
+              <article class="tile is-child class-box">
+                <!-- TODO: add 'Last update' -->
+                <!-- cf. https://imgur.com/a/37ucgoS -->
+                <img src="~/assets/images/ic-document-white.svg" alt="Pouch icon" title="Pouch icon">
+                <p class="title">
+                  <nuxt-link
+                    v-if="child.path"
+                    :to="{ path: child.path, params: {} }">
+                    {{ child.label }}
+                  </nuxt-link>
+                  <span
+                    v-else>
+                    {{ child.label }}
+                  </span>
+                </p>
+                <p class="subtitle">
+                  Propert{{ child.properties.length === 1 ? 'y' : 'ies' }}
+                  <br>
+                  {{ child.properties.length }}
+                </p>
+              </article>
             </div>
           </div>
-        </article>
-      </div>
+        </div>
+      </article>
     </div>
   </section>
 </template>
@@ -65,13 +46,9 @@
 <script>
 import rdf from 'rdf-ext'
 import { arrayToGroups } from '@/libs/utils'
-import PropertiesTable from './PropertiesTable'
 
 export default {
   name: 'Structure',
-  components: {
-    PropertiesTable
-  },
   props: {
     name: {
       type: String,

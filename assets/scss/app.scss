@@ -105,9 +105,6 @@ section hr {
 }
 
 .container-box {
-  @extend .notification;
-  // @extend .is-danger;
-
   p.title {
     @extend .subtitle;
     @extend .is-4;
