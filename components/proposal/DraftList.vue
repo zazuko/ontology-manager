@@ -21,13 +21,13 @@
           <td>
             <nuxt-link
               v-if="proposalType(draft.proposalObject) === 'Class'"
-              :to="{ name: 'proposal-new-class', query: { id: draft.id } }"
+              :to="{ name: 'proposal-class', query: { id: draft.id } }"
               class="button is-small is-info">
               Edit Proposal
             </nuxt-link>
             <nuxt-link
               v-else
-              :to="{ name: 'proposal-new-property', query: { id: draft.id } }"
+              :to="{ name: 'proposal-property', query: { id: draft.id } }"
               class="button is-small is-info">
               Edit Proposal
             </nuxt-link>
@@ -60,7 +60,8 @@ export default {
       try {
         await this.$apollo.mutate({ mutation, variables })
         this.$emit('discarded', threadId)
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
       }
     }

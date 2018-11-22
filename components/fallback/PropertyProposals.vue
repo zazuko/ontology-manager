@@ -8,7 +8,7 @@
       <div class="level-right">
         <span class="navbar-item">
           <nuxt-link
-            :to="{ name: 'proposal-new-property', query: { iri: iri } }"
+            :to="{ name: 'proposal-property', query: { iri: iri } }"
             class="button is-info">
             Request New Property
           </nuxt-link>

@@ -33,9 +33,11 @@ function apiMiddleware () {
   let api
   if (config.github) {
     api = require('./github')
-  } else if (config.gitlab) {
+  }
+  else if (config.gitlab) {
     api = require('./gitlab')
-  } else {
+  }
+  else {
     throw new Error('No forge API configured or configured forge API not found.')
   }
 

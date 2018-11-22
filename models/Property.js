@@ -100,7 +100,8 @@ export function toDataset (property, validation = true) {
       let subject
       if (range instanceof QuadExt) {
         subject = range.subject
-      } else {
+      }
+      else {
         subject = rdf.namedNode(range.iri)
       }
       xs.push(rdf.quad(iri, termIRI.range, subject))
@@ -114,7 +115,8 @@ export function toDataset (property, validation = true) {
       let subject
       if (domain instanceof QuadExt) {
         subject = domain.subject
-      } else {
+      }
+      else {
         subject = rdf.namedNode(domain.iri)
       }
       xs.push(rdf.quad(iri, termIRI.domain, subject))

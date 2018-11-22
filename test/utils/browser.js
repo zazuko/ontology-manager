@@ -15,12 +15,16 @@ export default class Browser {
   }
 
   async close () {
-    if (!this.browser) return
+    if (!this.browser) {
+      return
+    }
     await this.browser.close()
   }
 
   async page (url) {
-    if (!this.browser) throw new Error('Please call start() before page(url)')
+    if (!this.browser) {
+      throw new Error('Please call start() before page(url)')
+    }
     const page = await this.browser.newPage()
     await page.goto(url)
     await page.waitForFunction('!!window.$nuxt')
@@ -51,7 +55,9 @@ export default class Browser {
           page.$nuxt,
           path
         )
-        if (waitEnd) await hook
+        if (waitEnd) {
+          await hook
+        }
         return { hook }
       },
       routeData () {

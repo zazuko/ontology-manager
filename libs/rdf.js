@@ -50,8 +50,12 @@ const xsdTypes = [
 function toObject (domain, dataset) {
   let label = dataset.match(domain.subject, termIRI.label).toArray()
   if (Array.isArray(label)) {
-    if (label.length) label = label[0].object.value
-    else label = ''
+    if (label.length) {
+      label = label[0].object.value
+    }
+    else {
+      label = ''
+    }
   }
   if (!label && domain.object instanceof Literal) {
     label = domain.object.value
@@ -59,8 +63,12 @@ function toObject (domain, dataset) {
 
   let comment = dataset.match(domain.subject, termIRI.comment).toArray()
   if (Array.isArray(comment)) {
-    if (comment.length) comment = comment[0].object.value
-    else comment = ''
+    if (comment.length) {
+      comment = comment[0].object.value
+    }
+    else {
+      comment = ''
+    }
   }
 
   return {
@@ -83,7 +91,9 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
   }
 
   return (searchInput = '') => {
-    if (!searchInput) return []
+    if (!searchInput) {
+      return []
+    }
     const results = domainsDataset
       .toArray()
       .reduce((acc, elem) => {
@@ -142,7 +152,8 @@ function objectMatch (object, searchInput, detailed = false) {
       labelMatch.index - 2
     )
     object.matched = object.label.substring(index, searchInput.length + 3)
-  } else if (commentMatch) {
+  }
+  else if (commentMatch) {
     const index = Math.min(
       commentMatch.index,
       commentMatch.index - 1,

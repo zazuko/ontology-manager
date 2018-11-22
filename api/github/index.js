@@ -142,10 +142,12 @@ router.post('/link', async (req, res, next) => {
     result.data.authenticate.personHats = personHats
     res.json(result.data.authenticate)
     return
-  } catch (err) {
+  }
+  catch (err) {
     if (_.get(err, 'graphQLErrors.length', 0)) {
       console.error(err.graphQLErrors)
-    } else {
+    }
+    else {
       console.error(err)
     }
   }
@@ -207,7 +209,8 @@ router.post('/proposal/submit', async (req, res, next) => {
     })
 
     res.json(result.data)
-  } catch (err) {
+  }
+  catch (err) {
     console.error(err)
     res.status(500).json(err)
   }
@@ -245,7 +248,8 @@ router.post('/proposal/merge', async (req, res, next) => {
     })
 
     res.json(result.data)
-  } catch (err) {
+  }
+  catch (err) {
     console.error(err)
     res.status(500).json(err)
   }
@@ -283,7 +287,8 @@ router.post('/proposal/close', async (req, res, next) => {
     })
 
     res.json(result.data)
-  } catch (err) {
+  }
+  catch (err) {
     console.error(err)
     res.status(500).json(err)
   }
@@ -291,7 +296,9 @@ router.post('/proposal/close', async (req, res, next) => {
 
 // TODO: factor these out
 function getToken (req) {
-  if (!req.get('Authorization')) return
+  if (!req.get('Authorization')) {
+    return
+  }
 
   const parts = req.headers.authorization.split(' ')
   if (parts.length === 2 && parts[0] === 'Bearer') {
@@ -335,7 +342,8 @@ async function checkToken (req, res) {
       res.status(500).send({ message: err.message })
       return false
     }
-  } catch (err) {
+  }
+  catch (err) {
     res.status(404).send({ message: err.message })
     return false
   }

@@ -96,7 +96,8 @@ export default {
       try {
         await this.$apollo.mutate({ mutation, variables })
         this.$emit('updated', threadId)
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
       }
     }
