@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { classBaseUrl } from '@/trifid/trifid.config.json'
-import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
+import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal } from '@/libs/rdf'
 import { toDataset as propToDataset } from '@/models/Property'
 
 export function Class ({
@@ -59,6 +59,49 @@ export function validate (clss) {
 
   if (!clss.comment) {
     throw new Error('Class `comment` missing')
+  }
+}
+
+export function hydrate ({ ontology, structure }, iri) {
+  const iriNode = rdf.namedNode(iri)
+  const parent = structure.match(null, null, iriNode).toArray()
+  const parentStructureIRI = parent.length ? parent[0].subject.value : ''
+
+  const labelQuad = firstVal(ontology.match(iriNode, termIRI.label).toArray())
+  const commentQuad = firstVal(ontology.match(iriNode, termIRI.comment).toArray())
+  const descriptionQuad = firstVal(ontology.match(iriNode, termIRI.description).toArray())
+  const exampleQuad = firstVal(ontology.match(iriNode, termIRI.example).toArray())
+
+  const data = {
+    proposalType: 'Class',
+    isDraft: true,
+    motivation: '',
+    iri,
+    label: labelQuad ? labelQuad.object.value : '',
+    comment: commentQuad ? commentQuad.object.value : '',
+    description: descriptionQuad ? descriptionQuad.object.value : '',
+    example: exampleQuad ? exampleQuad.object.value : '',
+    domains: ontology.match(null, termIRI.domain, iriNode).toArray().map(hydrateDomain),
+    parentStructureIRI,
+    propChildren: [],
+    collapsed: false,
+    isNew: false
+  }
+  const clss = new Class(data)
+  return clss
+
+  function hydrateDomain (quad) {
+    const quads = ontology.match(quad.subject)
+    const domainQuad = firstVal(quads.match(quad.subject, termIRI.a, termIRI.Property).toArray())
+    const commentQuad = firstVal(quads.match(quad.subject, termIRI.comment).toArray())
+    const labelQuad = firstVal(quads.match(quad.subject, termIRI.label).toArray())
+    return {
+      iri: quad.subject.value,
+      matched: '',
+      label: labelQuad ? labelQuad.object.value : '',
+      comment: commentQuad ? commentQuad.object.value : '',
+      domain: domainQuad
+    }
   }
 }
 

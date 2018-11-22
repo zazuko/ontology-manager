@@ -49,7 +49,10 @@
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
+            <h2 class="title">
+              <span v-show="!edit">New</span>
+              Class
+              <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
             <p
               v-show="clss['iri']"
               class="subtitle">
@@ -198,7 +201,7 @@
       </div>
 
       <div v-if="clss['propChildren'] && clss['propChildren'].length">
-        <new-property-form
+        <property-form
           v-for="(newProp, index) in clss['propChildren']"
           :key="index"
           :subform="true"
@@ -243,11 +246,16 @@ import { Property } from '@/models/Property'
 import { toDataset, toNT, validate } from '@/models/Class'
 
 export default {
-  name: 'NewClassForm',
+  name: 'ClassForm',
   props: {
     iri: {
       type: String,
       required: true
+    },
+    edit: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     storePath: {
       type: String,
@@ -271,7 +279,7 @@ export default {
     }
   },
   components: {
-    NewPropertyForm: () => import('@/components/proposal/NewPropertyForm'),
+    PropertyForm: () => import('@/components/proposal/PropertyForm'),
     ProposalPropertiesTable,
     Typeahead
   },

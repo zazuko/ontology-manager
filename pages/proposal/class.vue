@@ -2,20 +2,25 @@
   <div>
     <section class="section">
 
-      <div class="container">
+      <div
+        v-if="storeReady"
+        class="container">
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
             <h1 class="title">
-              Property Request<span
-                v-show="prop.name">:
-              "{{ prop.name }}"
+              {{ edit ? 'Request Changes on Class' : 'Request New Class'}}<span
+                v-show="clss.label">:
+              "{{ clss.label }}"
               </span>
             </h1>
             <h2 class="subtitle">
               On <code>{{ _iri }}</code>
             </h2>
-            <p>
+            <p v-show="edit">
+              This form allows suggesting modifications to the ontology.
+            </p>
+            <p v-show="!edit">
               This form allows suggesting new elements to include in the ontology.
             </p>
             <p>
@@ -29,10 +34,10 @@
             sticky-container
             class="column is-3">
             <progression-box
-              proposal-path="prop.prop"
+              proposal-path="class.clss"
+              :edit="edit"
               @step-done="finalize" />
           </div>
-
           <div class="column">
             <div class="box">
               <div
@@ -45,7 +50,7 @@
                       <textarea
                         :disabled="disabled"
                         v-debounce
-                        v-model.lazy="prop.motivation"
+                        v-model.lazy="clss.motivation"
                         class="textarea"
                         placeholder="" />
                     </div>
@@ -61,8 +66,9 @@
               </div>
             </div>
 
-            <new-property-form
+            <class-form
               :disabled="disabled"
+              :edit="edit"
               :iri="_iri">
 
               <p v-show="error">{{ error }}</p>
@@ -74,7 +80,7 @@
                   <button
                     id="submit"
                     class="button is-primary is-medium"
-                    :disabled="!isReady"
+                    :disabled="!proposalReady"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
@@ -87,11 +93,14 @@
                   </button>
                 </p>
               </div>
-            </new-property-form>
+
+            </class-form>
+
           </div>
 
         </div>
       </div>
+      <div v-else />
 
       <div
         :class="{ 'is-active': isLoading }"
@@ -112,26 +121,28 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import NewPropertyForm from '@/components/proposal/NewPropertyForm'
+import ClassForm from '@/components/proposal/ClassForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
+import { hydrate } from '@/models/Class'
 
 const {
-  mapActions: propertyActions,
-  mapGetters: propertyGetters
-} = createNamespacedHelpers('prop')
+  mapActions: classActions,
+  mapGetters: classGetters
+} = createNamespacedHelpers('class')
 
 export default {
   async asyncData ({ query }) {
     const id = parseInt(query.id, 10)
     return {
       id: Number.isNaN(id) ? null : id,
-      iri: query.iri || ''
+      iri: query.iri || '',
+      edit: Boolean(query.edit)
     }
   },
   middleware: 'authenticated',
   components: {
-    NewPropertyForm,
+    ClassForm,
     ProgressionBox
   },
   data () {
@@ -140,7 +151,8 @@ export default {
       saveInterval: null,
       disabled: false,
       isLoading: false,
-      isReady: true
+      proposalReady: true,
+      storeReady: false
     }
   },
   mounted () {
@@ -149,7 +161,7 @@ export default {
         clearInterval(i)
 
         this.saveInterval = setInterval(() => {
-          if (this.prop['isDraft'] === false) {
+          if (this.clss['isDraft'] === false) {
             clearInterval(this.saveInterval)
             return
           }
@@ -159,25 +171,36 @@ export default {
     })
   },
   beforeMount () {
+    // if we are editing an existing class, we populate the form with ontology data
+    if (this.edit) {
+      const ontology = this.$store.state.graph.ontology
+      const structure = this.$store.state.graph.structure
+      const clss = hydrate({ ontology, structure }, this.iri)
+      this.$store.commit('class/LOAD', clss)
+      this.storeReady = true
+    }
     // if we have an ID from the URL here, we load
-    if (this.id) {
+    else if (this.id) {
       this.load(this.id)
         .then((isDraft) => {
           if (isDraft !== true) {
             this.disabled = true
+            this.storeReady = true
             return
           }
 
-          if (this.prop['proposalType'] === 'Class') {
+          if (this.clss['proposalType'] === 'Property') {
             this.$router.push({
-              name: 'proposal-new-class',
-              query: { id: this.prop['threadId'] }
+              name: 'proposal-property',
+              query: { id: this.clss['threadId'] }
             })
           }
         })
-    } else {
+    }
+    else {
       // otherwise we .clear() which creates a new one
       this.clear()
+      this.storeReady = true
     }
   },
   beforeDestroy () {
@@ -187,19 +210,19 @@ export default {
     }
   },
   computed: {
-    prop () {
+    clss () {
       if (process.server) {
-        return this.$store.state.prop.prop
+        return this.$store.state.class.clss
       }
-      return this.$deepModel('prop.prop')
+      return this.$deepModel('class.clss')
     },
     _iri () {
-      if (this.prop['parentStructureIRI']) {
-        return this.prop['parentStructureIRI']
+      if (this.clss['parentStructureIRI']) {
+        return this.clss['parentStructureIRI']
       }
       return this.iri
     },
-    ...propertyGetters(['success', 'error', 'serialized'])
+    ...classGetters(['success', 'error', 'serialized'])
   },
   watch: {
     success () {
@@ -210,7 +233,7 @@ export default {
     }
   },
   methods: {
-    ...propertyActions({
+    ...classActions({
       clear: NEW,
       submit: SUBMIT,
       save: SAVE,
@@ -220,7 +243,7 @@ export default {
       // Send splash screen
       this.isLoading = true
       // remove draft status from the json proposalObject
-      this.$vuexSet('prop.prop.isDraft', false)
+      this.$vuexSet('class.clss.isDraft', false)
       // save the changes
       await this.saveDraft()
 
@@ -230,7 +253,7 @@ export default {
     },
     saveDraft () {
       const serialized = this.serialized
-      if (!this.prop.label && !this.prop.comment) {
+      if (!this.clss.label && !this.clss.comment) {
         return Promise.resolve()
       }
       if (this.saveTmp !== serialized) {
@@ -240,7 +263,7 @@ export default {
       return Promise.resolve()
     },
     finalize (flag) {
-      this.isReady = flag
+      this.proposalReady = flag
     }
   },
   validate ({ query }) {
