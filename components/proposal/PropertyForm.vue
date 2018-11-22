@@ -246,7 +246,7 @@
       </div>
 
       <div v-if="prop['classChildren'] && prop['classChildren'].length">
-        <new-class-form
+        <class-form
           v-for="(newClass, index) in prop['classChildren']"
           :key="index"
           :subform="true"
@@ -291,7 +291,7 @@ import { Class } from '@/models/Class'
 import { toDataset, toNT, validate } from '@/models/Property'
 
 export default {
-  name: 'NewPropertyForm',
+  name: 'PropertyForm',
   props: {
     iri: {
       type: String,
@@ -319,7 +319,7 @@ export default {
     }
   },
   components: {
-    NewClassForm: () => import('@/components/proposal/NewClassForm'),
+    ClassForm: () => import('@/components/proposal/ClassForm'),
     Typeahead
   },
   mounted () {
@@ -421,7 +421,7 @@ export default {
     createDomain (label) {
       const clss = new Class({ label, isNew: true })
       // should we push 'this.prop' into 'clss' here?
-      // or do something like :parentProp="prop" on <new-class-form in here and display it there?
+      // or do something like :parentProp="prop" on <class-form in here and display it there?
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
       return true
