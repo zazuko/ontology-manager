@@ -30,7 +30,9 @@ export function serialize (dataset) {
 }
 
 export function buildTree (dataset, dataset2) {
-  if (!dataset) return {}
+  if (!dataset) {
+    return {}
+  }
 
   const nodes = {}
 
@@ -58,7 +60,8 @@ export function buildTree (dataset, dataset2) {
 
       if (label.length) {
         node.label = label[0].object.value
-      } else {
+      }
+      else {
         const label = dataset2.match(rdf.namedNode(iri), termIRI.label).toArray()
         if (label.length) {
           node.type = 'class'

@@ -63,7 +63,8 @@ export default {
           this.$apollo.queries.userVote.refetch(),
           this.$apollo.queries.tally.refetch()
         ])
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
       }
     }

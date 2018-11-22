@@ -40,7 +40,8 @@ export default {
     const rebased = rebaseIRI(this.term.value, 'relative')
     if (rebased.startsWith('/')) {
       path = rebased
-    } else {
+    }
+    else {
       url = rebased
     }
     return {

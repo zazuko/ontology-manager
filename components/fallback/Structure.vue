@@ -17,7 +17,10 @@
               <article class="tile is-child class-box">
                 <!-- TODO: add 'Last update' -->
                 <!-- cf. https://imgur.com/a/37ucgoS -->
-                <img src="~/assets/images/ic-document-white.svg" alt="Pouch icon" title="Pouch icon">
+                <img
+                  src="~/assets/images/ic-document-white.svg"
+                  alt="Pouch icon"
+                  title="Pouch icon">
                 <p class="title">
                   <nuxt-link
                     v-if="child.path"

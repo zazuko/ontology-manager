@@ -37,7 +37,8 @@ async function up (env = 'dev') {
       clearInterval(wait)
       console.warn('Successfully migrated!')
       return true
-    } catch (err) {
+    }
+    catch (err) {
       console.warn(`  * Err: ${err.message}`)
       console.warn('    * … waiting 5s before retrying')
     }
@@ -72,7 +73,8 @@ async function run (stringsToReplace) {
       table.timestamps()
     })
     console.warn('  * Created migrations table!')
-  } catch (err) {
+  }
+  catch (err) {
     console.warn('  * Found migrations table!')
   }
 
@@ -86,7 +88,8 @@ async function run (stringsToReplace) {
     if (!done.length || !done[0].succeeded) {
       console.warn('    *', filename, 'running')
       await execute(file, client, stringsToReplace)
-    } else {
+    }
+    else {
       console.warn('    *', filename, 'already applied')
     }
   }

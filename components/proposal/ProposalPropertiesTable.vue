@@ -123,7 +123,8 @@ export default {
       setTimeout(() => {
         try {
           document.getElementById(property.label).scrollIntoView()
-        } catch (err) {}
+        }
+        catch (err) {}
       }, 25)
     }
   }

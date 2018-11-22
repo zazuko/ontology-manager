@@ -10,7 +10,7 @@
           <span
             class="navbar-item">
             <nuxt-link
-              :to="{ name: 'proposal-new-class', query: { iri: iri } }"
+              :to="{ name: 'proposal-class', query: { iri: iri } }"
               class="button is-info">
               Request New Class
             </nuxt-link>

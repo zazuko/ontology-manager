@@ -42,6 +42,8 @@ module.exports = {
       singleline: 'never',
       multiline: 'never'
     }],
-    'no-multi-spaces': ['error', { 'ignoreEOLComments': true }]
+    'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
+    'brace-style': ['error', 'stroustrup', { 'allowSingleLine': false }],
+    'curly': ['error', 'all']
   }
 }

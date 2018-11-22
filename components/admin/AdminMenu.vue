@@ -23,7 +23,7 @@ export default {
       { route: 'admin-proposals', title: 'Proposals' },
       { route: 'admin-discussions', title: 'Discussions' },
       { route: 'admin-users', title: 'Users' },
-      { route: 'admin-hats', title: 'Hats' },
+      { route: 'admin-hats', title: 'Hats' }
     ]
     return {
       tabs

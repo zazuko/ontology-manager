@@ -101,7 +101,9 @@ export default {
     try {
       jsonld = await new Promise((resolve, reject) => {
         iriDataset = matched(store, iri)
-        if (!iriDataset) resolve()
+        if (!iriDataset) {
+          resolve()
+        }
         const quadStream = rdf.graph(iriDataset).toStream()
 
         const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
@@ -118,7 +120,8 @@ export default {
           resolve()
         })
       })
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err)
     }
 

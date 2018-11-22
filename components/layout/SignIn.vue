@@ -38,7 +38,8 @@ export default {
         const loggedIn = this.$auth.$state.loggedIn
         await this.$auth.loginWith('github')
         await this.authenticate(loggedIn)
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
         this.$toast.error('Error while authenticating', toastClose)
       }
@@ -80,9 +81,12 @@ export default {
             this.$auth.$storage.setState('personId', _get(result, 'data.personId'))
             this.$auth.$storage.setState('hats', _get(result, 'data.personHats'))
 
-            if (!jwtToken) throw new Error('Account linking failed.')
+            if (!jwtToken) {
+              throw new Error('Account linking failed.')
+            }
             this.$apolloHelpers.onLogin(jwtToken)
-          } catch (err) {
+          }
+          catch (err) {
             this.$toast.error(err, toastClose)
             await this.$apolloHelpers.onLogout()
           }

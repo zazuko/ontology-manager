@@ -10,7 +10,8 @@ export default async function ({ app, error }) {
   // client sets this, if it's unset it cannot be false
   if (_get(app, 'store.$auth.$storage.getState("isAdmin")') === false) {
     error({ statusCode: 403, message: 'You are not allowed to see this' })
-  } else {
+  }
+  else {
     // if not set we're on the server
     const client = app.apolloProvider.defaultClient
     const query = gql`query GetUserContent {

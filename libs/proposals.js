@@ -14,13 +14,27 @@ const termsTypes = {
 }
 
 export async function submitProposal (data) {
-  if (!data.threadId) throw new Error('missing data.threadId')
-  if (!data.object) throw new Error('missing data.object')
-  if (!data.title) throw new Error('missing data.title')
-  if (!data.message) throw new Error('missing data.message')
-  if (!data.ontologyContent) throw new Error('missing data.ontologyContent')
-  if (!data.structureContent) throw new Error('missing data.structureContent')
-  if (!data.token) throw new Error('missing data.token')
+  if (!data.threadId) {
+    throw new Error('missing data.threadId')
+  }
+  if (!data.object) {
+    throw new Error('missing data.object')
+  }
+  if (!data.title) {
+    throw new Error('missing data.title')
+  }
+  if (!data.message) {
+    throw new Error('missing data.message')
+  }
+  if (!data.ontologyContent) {
+    throw new Error('missing data.ontologyContent')
+  }
+  if (!data.structureContent) {
+    throw new Error('missing data.structureContent')
+  }
+  if (!data.token) {
+    throw new Error('missing data.token')
+  }
 
   const token = data.token
 
