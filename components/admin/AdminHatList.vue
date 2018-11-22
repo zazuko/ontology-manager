@@ -222,7 +222,8 @@ export default {
         await this.$apollo.mutate({ mutation: updateHat, variables })
         await this.grantHat(this.editingHatId, this.selectedUserIds)
         this.clear()
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
       }
 
@@ -239,7 +240,8 @@ export default {
         const createdHatId = result.data.createHat.hat.id
         await this.grantHat(createdHatId, this.selectedUserIds)
         this.clear()
-      } catch (err) {
+      }
+      catch (err) {
         // TODO: error handling: show error message for instance for duplicate key value error
         // (title is UNIQUE)
         console.error(err)
@@ -255,7 +257,8 @@ export default {
 
       try {
         await this.$apollo.mutate({ mutation: removeHat, variables })
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
       }
 

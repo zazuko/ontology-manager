@@ -357,7 +357,8 @@ export default {
         // this triggers validation
         validate(this.prop)
         return true
-      } catch (err) {
+      }
+      catch (err) {
         return false
       }
     }
@@ -441,7 +442,8 @@ export default {
       if (this.baseDatasets) {
         this.ontology = this.baseDatasets.ontology
         this.structure = this.baseDatasets.structure
-      } else {
+      }
+      else {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
@@ -459,7 +461,8 @@ export default {
         this.debugNT = toNT(null, datasets.ontology)
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
         this.debugNT += toNT(null, datasets.structure)
-      } catch (err) {
+      }
+      catch (err) {
         this.debugNT = err.message
       }
     }

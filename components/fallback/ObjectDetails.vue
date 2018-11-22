@@ -3,6 +3,26 @@
     <article>
       <h1 class="title is-1">
         {{ label(iri) }}
+
+        <nuxt-link
+          v-if="isClass"
+          :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
+          class="object-edit-button">
+          <img
+            src="~/assets/images/ic-edit-passive.svg"
+            alt="Edit class"
+            title="Edit class">
+        </nuxt-link>
+        <nuxt-link
+          v-else-if="isProperty"
+          :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
+          class="object-edit-button">
+          <img
+            src="~/assets/images/ic-edit-passive.svg"
+            alt="Edit property"
+            title="Edit property">
+        </nuxt-link>
+        <span v-else />
       </h1>
       <div class="content">
         <ul>
@@ -141,6 +161,9 @@ export default {
     },
     isClass () {
       return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Class).toArray().length)
+    },
+    isProperty () {
+      return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Property).toArray().length)
     }
   },
   methods: {

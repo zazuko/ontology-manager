@@ -169,7 +169,6 @@ export default {
       id
     }
   },
-  // middleware: 'authenticated',
   components: {
     NewClassForm,
     NewPropertyForm,

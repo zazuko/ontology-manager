@@ -136,7 +136,8 @@ export default {
       evt.stopPropagation()
       if (this.collapsed === null && !this.isCurrent) {
         this.collapsed = this.isCurrentRoute
-      } else {
+      }
+      else {
         this.collapsed = !this.collapsed
       }
     }

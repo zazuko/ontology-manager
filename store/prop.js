@@ -61,7 +61,8 @@ export const actions = {
       commit(LOAD, deserialized)
       commit(SET_ID, proposal.id)
       return Promise.resolve(proposal.isDraft)
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error)
       return Promise.reject(error)
     }
@@ -111,7 +112,8 @@ export const actions = {
 
       commit(SET_ID, threadIdFromResult)
       return Promise.resolve()
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error)
       commit(ERROR, error.message)
       return Promise.reject(error)
@@ -137,7 +139,8 @@ export const actions = {
       })
 
       commit(SUCCESS, id)
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error)
       commit(ERROR, error.message)
     }

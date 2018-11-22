@@ -43,7 +43,8 @@ function createApolloClient ({
 
     if (!link) {
       link = httpLink
-    } else {
+    }
+    else {
       link = from([link, httpLink])
     }
 
@@ -96,7 +97,8 @@ function createApolloClient ({
 
       if (disableHttp) {
         link = wsLink
-      } else {
+      }
+      else {
         link = split(
           // split based on operation type
           ({ query }) => {

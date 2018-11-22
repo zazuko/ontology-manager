@@ -35,7 +35,8 @@ export const actions = {
 
       commit(LOAD, drafts)
       return Promise.resolve(drafts)
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error)
       return Promise.reject(error)
     }
