@@ -2,18 +2,12 @@ FROM node:10-stretch
 
 RUN npm install --global npm@6.4.1
 
-RUN apt-get update
-RUN apt-get install -qy apt-transport-https
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get -qy --no-install-recommends install yarn
-
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
-RUN node -v && yarn
+RUN node -v && npm install
 
 # all these variables should be set in the env where the build gets executed
 # and passed using --build-arg
