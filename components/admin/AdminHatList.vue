@@ -62,12 +62,13 @@
               v-if="editingHatId"
               class="select is-multiple is-fullwidth">
               <select
-                v-for="user in users"
-                :key="user.id"
                 :size="users.length < 8 ? users.length : 8"
                 v-model="selectedUserIds"
                 multiple>
-                <option :value="user.id">
+                <option
+                  v-for="user in users"
+                  :key="user.id"
+                  :value="user.id">
                   {{ user.name }}
                 </option>
               </select>
@@ -76,12 +77,15 @@
               v-else
               class="select is-multiple is-fullwidth">
               <select
-                v-for="user in users"
-                :key="user.id"
                 :size="users.length < 8 ? users.length : 8"
                 v-model="selectedUserIds"
                 multiple>
-                <option :value="user.id">{{ user.name }}</option>
+                <option
+                  v-for="user in users"
+                  :key="user.id"
+                  :value="user.id">
+                  {{ user.name }}
+                </option>
               </select>
             </div>
           </div>
