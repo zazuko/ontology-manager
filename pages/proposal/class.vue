@@ -9,7 +9,7 @@
           <div class="column is-3" />
           <div class="column">
             <h1 class="title">
-              {{ edit ? 'Request Changes on Class' : 'Request New Class'}}<span
+              {{ edit ? 'Request Changes on Class' : 'Request New Class' }}<span
                 v-show="clss.label">:
               "{{ clss.label }}"
               </span>
@@ -183,9 +183,9 @@ export default {
     else if (this.id) {
       this.load(this.id)
         .then((isDraft) => {
+          this.storeReady = true
           if (isDraft !== true) {
             this.disabled = true
-            this.storeReady = true
             return
           }
 
@@ -267,8 +267,12 @@ export default {
     }
   },
   validate ({ query }) {
-    if (query.iri) return true
-    if (query.id) return true
+    if (query.iri) {
+      return true
+    }
+    if (query.id) {
+      return true
+    }
     return false
   }
 }
