@@ -4,7 +4,7 @@
     v-sticky="true"
     sticky-side="top">
     <p class="label">
-      New Proposal Progression
+      Proposal Progression
     </p>
     <ul class="progression">
       <li
@@ -46,6 +46,11 @@ import { collectChildren } from '@/libs/utils'
 export default {
   name: 'ProgressionBox',
   props: {
+    edit: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     proposalPath: {
       type: String,
       required: true
@@ -55,6 +60,12 @@ export default {
     return {}
   },
   computed: {
+    adjective () {
+      if (this.edit) {
+        return ''
+      }
+      return 'New '
+    },
     obj () {
       if (process.server) {
         return _get(this.$store.state, this.proposalPath)
@@ -113,8 +124,8 @@ export default {
 
       return {
         check: () => this.obj[`${path}label`] && this.obj[`${path}comment`],
-        textError: `Enter New ${child && child.proposalType} Details:`,
-        textSuccess: `New ${child && child.proposalType}`,
+        textError: `Enter ${this.adjective}${child && child.proposalType} Details:`,
+        textSuccess: `${this.adjective}${child && child.proposalType}`,
         path: `${path}label`
       }
     },

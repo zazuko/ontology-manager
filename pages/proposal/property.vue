@@ -7,9 +7,9 @@
           <div class="column is-3" />
           <div class="column">
             <h1 class="title">
-              New Class Request<span
-                v-show="clss.label">:
-              "{{ clss.label }}"
+              Property Request<span
+                v-show="prop.name">:
+              "{{ prop.name }}"
               </span>
             </h1>
             <h2 class="subtitle">
@@ -29,9 +29,10 @@
             sticky-container
             class="column is-3">
             <progression-box
-              proposal-path="class.clss"
+              proposal-path="prop.prop"
               @step-done="finalize" />
           </div>
+
           <div class="column">
             <div class="box">
               <div
@@ -44,7 +45,7 @@
                       <textarea
                         :disabled="disabled"
                         v-debounce
-                        v-model.lazy="clss.motivation"
+                        v-model.lazy="prop.motivation"
                         class="textarea"
                         placeholder="" />
                     </div>
@@ -60,7 +61,7 @@
               </div>
             </div>
 
-            <new-class-form
+            <property-form
               :disabled="disabled"
               :iri="_iri">
 
@@ -86,9 +87,7 @@
                   </button>
                 </p>
               </div>
-
-            </new-class-form>
-
+            </property-form>
           </div>
 
         </div>
@@ -113,14 +112,14 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import NewClassForm from '@/components/proposal/NewClassForm'
+import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {
-  mapActions: classActions,
-  mapGetters: classGetters
-} = createNamespacedHelpers('class')
+  mapActions: propertyActions,
+  mapGetters: propertyGetters
+} = createNamespacedHelpers('prop')
 
 export default {
   async asyncData ({ query }) {
@@ -132,7 +131,7 @@ export default {
   },
   middleware: 'authenticated',
   components: {
-    NewClassForm,
+    PropertyForm,
     ProgressionBox
   },
   data () {
@@ -150,7 +149,7 @@ export default {
         clearInterval(i)
 
         this.saveInterval = setInterval(() => {
-          if (this.clss['isDraft'] === false) {
+          if (this.prop['isDraft'] === false) {
             clearInterval(this.saveInterval)
             return
           }
@@ -169,14 +168,15 @@ export default {
             return
           }
 
-          if (this.clss['proposalType'] === 'Property') {
+          if (this.prop['proposalType'] === 'Class') {
             this.$router.push({
-              name: 'proposal-new-property',
-              query: { id: this.clss['threadId'] }
+              name: 'proposal-class',
+              query: { id: this.prop['threadId'] }
             })
           }
         })
-    } else {
+    }
+    else {
       // otherwise we .clear() which creates a new one
       this.clear()
     }
@@ -188,19 +188,19 @@ export default {
     }
   },
   computed: {
-    clss () {
+    prop () {
       if (process.server) {
-        return this.$store.state.class.clss
+        return this.$store.state.prop.prop
       }
-      return this.$deepModel('class.clss')
+      return this.$deepModel('prop.prop')
     },
     _iri () {
-      if (this.clss['parentStructureIRI']) {
-        return this.clss['parentStructureIRI']
+      if (this.prop['parentStructureIRI']) {
+        return this.prop['parentStructureIRI']
       }
       return this.iri
     },
-    ...classGetters(['success', 'error', 'serialized'])
+    ...propertyGetters(['success', 'error', 'serialized'])
   },
   watch: {
     success () {
@@ -211,7 +211,7 @@ export default {
     }
   },
   methods: {
-    ...classActions({
+    ...propertyActions({
       clear: NEW,
       submit: SUBMIT,
       save: SAVE,
@@ -221,7 +221,7 @@ export default {
       // Send splash screen
       this.isLoading = true
       // remove draft status from the json proposalObject
-      this.$vuexSet('class.clss.isDraft', false)
+      this.$vuexSet('prop.prop.isDraft', false)
       // save the changes
       await this.saveDraft()
 
@@ -231,7 +231,7 @@ export default {
     },
     saveDraft () {
       const serialized = this.serialized
-      if (!this.clss.label && !this.clss.comment) {
+      if (!this.prop.label && !this.prop.comment) {
         return Promise.resolve()
       }
       if (this.saveTmp !== serialized) {
@@ -245,8 +245,12 @@ export default {
     }
   },
   validate ({ query }) {
-    if (query.iri) return true
-    if (query.id) return true
+    if (query.iri) {
+      return true
+    }
+    if (query.id) {
+      return true
+    }
     return false
   }
 }

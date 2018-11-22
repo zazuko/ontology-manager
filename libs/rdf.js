@@ -254,3 +254,17 @@ export function datasetToCanonicalN3 (dataset) {
     .sort((a, b) => a.localeCompare(b))
     .join('\n') + '\n' // files should always end with a nl
 }
+
+export function firstVal (xs = []) {
+  if (!Array.isArray(xs)) {
+    throw new Error('Argument should be an array')
+  }
+  if (xs.length) {
+    const first = xs[0]
+    if (first.hasOwnProperty('subject') && first.hasOwnProperty('predicate') && first.hasOwnProperty('object')) {
+      return first
+    }
+    return first.value
+  }
+  return ''
+}

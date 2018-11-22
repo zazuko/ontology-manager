@@ -71,11 +71,11 @@
               </div>
             </div>
 
-            <new-class-form
+            <class-form
               v-if="type === 'Class'"
               :disabled="disabled"
               :iri="obj.parentStructureIRI" />
-            <new-property-form
+            <property-form
               v-else-if="type === 'Property'"
               :disabled="disabled"
               :iri="obj.parentStructureIRI">
@@ -98,7 +98,7 @@
                 </p>
               </div>
 
-            </new-property-form>
+            </property-form>
             <div v-else />
 
           </div>
@@ -143,8 +143,8 @@ import { createNamespacedHelpers } from 'vuex'
 
 import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
-import NewClassForm from '@/components/proposal/NewClassForm'
-import NewPropertyForm from '@/components/proposal/NewPropertyForm'
+import ClassForm from '@/components/proposal/ClassForm'
+import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Vote from '@/components/proposal/Vote'
 
@@ -170,8 +170,8 @@ export default {
     }
   },
   components: {
-    NewClassForm,
-    NewPropertyForm,
+    ClassForm,
+    PropertyForm,
     ProgressionBox,
     DiscussionCard,
     DiscussionReply,

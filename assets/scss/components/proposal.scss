@@ -1,0 +1,17 @@
+.object-edit-button {
+  @extend .button;
+  @extend .has-background-light;
+
+  border: none;
+  padding: 0;
+  margin-left: 15px;
+  margin-top: 16px;
+
+  height: 30px;
+  width: 30px;
+
+  img {
+    height: 18px;
+    width: 18px;
+  }
+}
