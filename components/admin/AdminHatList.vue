@@ -225,6 +225,7 @@ export default {
       }
       catch (err) {
         console.error(err)
+        this.$sentry.captureException(err)
       }
 
       this.$emit('updated')
@@ -245,6 +246,7 @@ export default {
         // TODO: error handling: show error message for instance for duplicate key value error
         // (title is UNIQUE)
         console.error(err)
+        this.$sentry.captureException(err)
       }
 
       this.$emit('updated')
@@ -260,6 +262,7 @@ export default {
       }
       catch (err) {
         console.error(err)
+        this.$sentry.captureException(err)
       }
 
       this.$emit('updated')
