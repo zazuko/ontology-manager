@@ -5,6 +5,7 @@
       <admin-menu />
 
       <admin-proposal-list
+        v-model="orderBy"
         :proposals="proposals"
         @updated="refetch()" />
 
@@ -13,7 +14,7 @@
 </template>
 
 <script>
-import allDiscussions from '@/apollo/queries/adminWorklist'
+import adminWorklist from '@/apollo/queries/adminWorklist'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 
@@ -24,7 +25,8 @@ export default {
     AdminMenu
   },
   data: () => ({
-    proposals: []
+    proposals: [],
+    orderBy: []
   }),
   methods: {
     refetch () {
@@ -34,15 +36,19 @@ export default {
   apollo: {
     discussions: {
       prefetch: true,
-      query: allDiscussions,
+      query: adminWorklist,
       variables () {
-        return {
+        const vars = {
           threadType: 'PROPOSAL'
         }
+        if (this.orderBy.length) {
+          vars.orderBy = this.orderBy
+        }
+        return vars
       },
       result ({ data, loading }) {
         if (!loading) {
-          this.proposals = data.discussions.nodes
+          this.proposals = data.discussions.nodes.filter(node => node.status !== 'HIDDEN')
         }
       },
       fetchPolicy: 'cache-and-network'
