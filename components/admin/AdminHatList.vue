@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <table class="hats-table table is-striped is-narrow">
+      <table class="hats-table table is-striped is-narrow is-fullwidth">
         <thead>
           <tr>
             <th>Title</th>
