@@ -1,19 +1,17 @@
 <template>
   <section class="section">
-    <div class="container">
+    <admin-menu class="container" />
 
-      <admin-menu />
-
-      <admin-proposal-list
-        v-model="orderBy"
-        :proposals="proposals"
-        @updated="refetch()" />
-
-    </div>
+    <admin-proposal-list
+      v-model="orderBy"
+      :proposals="proposals"
+      @updated="refetch()"
+      class="container" />
   </section>
 </template>
 
 <script>
+import _get from 'lodash/get'
 import adminWorklist from '@/apollo/queries/adminWorklist'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
@@ -48,7 +46,8 @@ export default {
       },
       result ({ data, loading }) {
         if (!loading) {
-          this.proposals = data.discussions.nodes.filter(node => node.status !== 'HIDDEN')
+          this.proposals = _get(data, 'discussions.nodes', [])
+            .filter(node => node.status !== 'HIDDEN')
         }
       },
       fetchPolicy: 'cache-and-network'
