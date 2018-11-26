@@ -55,9 +55,12 @@
         <li
           v-for="(property, index) in properties"
           :key="index">
-          <link-to-IRI :term="property.subject" />
+          <link-to-IRI
+            :term="property.subject"
+            :link-class="{ 'is-current': sameIRI(property.subject.value) }" />
         </li>
       </ul>
+      <ul v-else />
     </div>
   </li>
 </template>
@@ -89,12 +92,17 @@ export default {
   },
   data () {
     return {
-      isCurrentRoute: this.currentIri === this.tree.iri,
-      collapsed: null, // initial state
-      hasActiveChild: !!this.tree.children.find((node) => node.iri === this.currentIri)
+      collapsed: null // initial state
     }
   },
   computed: {
+    hasActiveChild () {
+      const childClasses = !!this.tree.children.find((node) => node.iri === this.currentIri)
+      if (childClasses) {
+        return true
+      }
+      return Boolean(this.findPropertyInChildren(this.tree))
+    },
     isActive () {
       if (this.collapsed === null) {
         if (this.hasActiveChild) {
@@ -106,6 +114,15 @@ export default {
     },
     isCurrent () {
       return this.isCurrentRoute || this.hasActiveChild
+    },
+    isCurrentRoute () {
+      if (this.currentIri !== this.tree.iri) {
+        if (this.properties && this.properties.length) {
+          return !!this.properties.find(({ subject }) => subject.value === this.currentIri)
+        }
+        return false
+      }
+      return true
     },
     showMinusSymbol () {
       if (this.collapsed === null) {
@@ -139,6 +156,25 @@ export default {
       }
       else {
         this.collapsed = !this.collapsed
+      }
+    },
+    sameIRI (iri) {
+      return this.currentIri === iri
+    },
+    findPropertyInChildren (tree) {
+      const properties = Array.isArray(tree.properties) ? tree.properties : tree.properties.toArray()
+      if (properties.find(({ subject }) => subject.value === this.currentIri)) {
+        return true
+      }
+
+      if (Array.isArray(tree.children)) {
+        let found = false
+        tree.children.forEach((child) => {
+          if (this.findPropertyInChildren(child)) {
+            found = true
+          }
+        })
+        return found
       }
     }
   }
