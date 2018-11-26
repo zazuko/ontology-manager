@@ -19,6 +19,7 @@
     "@nuxtjs/apollo": "^4.0.0-rc3",
     "@nuxtjs/auth": "^4.5.2",
     "@nuxtjs/axios": "^5.3.3",
+    "@nuxtjs/sentry": "^2.0.0",
     "@nuxtjs/toast": "^3.0.1",
     "@octokit/rest": "^15.13.1",
     "@rdfjs/serializer-jsonld": "^1.2.0",
