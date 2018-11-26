@@ -1,5 +1,5 @@
 <template>
-  <nav class="tabs is-boxed is-large">
+  <nav class="tabs is-boxed">
     <ul>
       <li
         v-for="tab in tabs"
