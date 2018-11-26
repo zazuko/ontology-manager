@@ -1,19 +1,18 @@
 <template>
   <section class="section">
-    <div class="container">
 
-      <admin-menu />
+    <admin-menu class="container" />
 
-      <admin-discussion-list
-        :discussions="discussions.nodes"
-        @updated="refetch()" />
-
-    </div>
+    <admin-discussion-list
+      :discussions="rows"
+      @updated="refetch()"
+      class="container" />
   </section>
 </template>
 
 <script>
-import allDiscussions from '@/apollo/queries/adminWorklist'
+import _get from 'lodash/get'
+import adminWorklist from '@/apollo/queries/adminWorklist'
 import AdminDiscussionList from '@/components/admin/AdminDiscussionList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 
@@ -24,9 +23,7 @@ export default {
     AdminMenu
   },
   data: () => ({
-    discussions: {
-      nodes: []
-    }
+    rows: []
   }),
   methods: {
     refetch () {
@@ -36,10 +33,15 @@ export default {
   apollo: {
     discussions: {
       prefetch: true,
-      query: allDiscussions,
+      query: adminWorklist,
       variables () {
         return {
           threadType: 'DISCUSSION'
+        }
+      },
+      result ({ data, loading }) {
+        if (!loading) {
+          this.rows = _get(data, 'discussions.nodes', [])
         }
       },
       fetchPolicy: 'cache-and-network'

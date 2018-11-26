@@ -1,6 +1,6 @@
 <template>
-  <section class="section">
-    <div class="level">
+  <div>
+    <div class="level is-hidden-mobile">
       <div class="level-left">
         <h1 class="title">Hats</h1>
       </div>
@@ -14,108 +14,111 @@
         </span>
       </div>
     </div>
-    <div>
-      <p>
-        A hat is a badge a user can use when they want to speak in the name of
-        an organization they represent.
-      </p>
-      <p>
-        Users can have multiple hats but they can only wear one hat at a time
-        and only if they chose to do so, when posting comments.
-      </p>
 
-      <div
-        class="hats-form"
-        v-show="hatForm || editingHatId">
-        <div class="field">
-          <label class="label">
-            Hat Title
-          </label>
-          <div class="control">
-            <input
-              type="text"
-              class="input"
-              placeholder="title"
-              v-model="hatTitle">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">
-            Description
-          </label>
-          <div class="control">
-            <textarea
-              class="textarea"
-              placeholder="description"
-              rows="3"
-              v-model="hatDescription" />
-          </div>
-        </div>
+    <div>
+      <div class="is-hidden-mobile">
+        <p>
+          A hat is a badge a user can use when they want to speak in the name of
+          an organization they represent.
+        </p>
+        <p>
+          Users can have multiple hats but they can only wear one hat at a time
+          and only if they chose to do so, when posting comments.
+        </p>
 
         <div
-          class="field">
-          <label class="label">
-            Hat Holders
-          </label>
-          <div class="control">
-            <div
-              v-if="editingHatId"
-              class="select is-multiple is-fullwidth">
-              <select
-                :size="users.length < 8 ? users.length : 8"
-                v-model="selectedUserIds"
-                multiple>
-                <option
-                  v-for="user in users"
-                  :key="user.id"
-                  :value="user.id">
-                  {{ user.name }}
-                </option>
-              </select>
-            </div>
-            <div
-              v-else
-              class="select is-multiple is-fullwidth">
-              <select
-                :size="users.length < 8 ? users.length : 8"
-                v-model="selectedUserIds"
-                multiple>
-                <option
-                  v-for="user in users"
-                  :key="user.id"
-                  :value="user.id">
-                  {{ user.name }}
-                </option>
-              </select>
+          class="hats-form"
+          v-show="hatForm || editingHatId">
+          <div class="field">
+            <label class="label">
+              Hat Title
+            </label>
+            <div class="control">
+              <input
+                type="text"
+                class="input"
+                placeholder="title"
+                v-model="hatTitle">
             </div>
           </div>
-          <small>Control-click (Windows) or command-click (Mac) to select more than one.</small>
-        </div>
+          <div class="field">
+            <label class="label">
+              Description
+            </label>
+            <div class="control">
+              <textarea
+                class="textarea"
+                placeholder="description"
+                rows="3"
+                v-model="hatDescription" />
+            </div>
+          </div>
 
-        <div class="field is-grouped">
-          <div class="control">
-            <button
-              v-if="editingHatId"
-              @click.prevent="updateHat"
-              class="button is-link">
-              Update
-            </button>
-            <button
-              v-else
-              @click.prevent="createHat"
-              class="button is-link">
-              Create
-            </button>
-            <button
-              @click.prevent="clear"
-              class="button is-text">
-              Cancel
-            </button>
+          <div
+            class="field">
+            <label class="label">
+              Hat Holders
+            </label>
+            <div class="control">
+              <div
+                v-if="editingHatId"
+                class="select is-multiple is-fullwidth">
+                <select
+                  :size="users.length < 8 ? users.length : 8"
+                  v-model="selectedUserIds"
+                  multiple>
+                  <option
+                    v-for="user in users"
+                    :key="user.id"
+                    :value="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
+              </div>
+              <div
+                v-else
+                class="select is-multiple is-fullwidth">
+                <select
+                  :size="users.length < 8 ? users.length : 8"
+                  v-model="selectedUserIds"
+                  multiple>
+                  <option
+                    v-for="user in users"
+                    :key="user.id"
+                    :value="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <small>Control-click (Windows) or command-click (Mac) to select more than one.</small>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button
+                v-if="editingHatId"
+                @click.prevent="updateHat"
+                class="button is-link">
+                Update
+              </button>
+              <button
+                v-else
+                @click.prevent="createHat"
+                class="button is-link">
+                Create
+              </button>
+              <button
+                @click.prevent="clear"
+                class="button is-text">
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <table class="hats-table table is-striped is-narrow is-fullwidth">
+      <table class="hats-table table is-striped is-narrow">
         <thead>
           <tr>
             <th>Title</th>
@@ -166,7 +169,7 @@
         </tbody>
       </table>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
