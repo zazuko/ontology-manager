@@ -186,15 +186,24 @@
                 label="Expected Type"
                 @selectionChanged="selectRange">
                 <div
-                  v-if="typeahead.inputString && canCreateRange(typeahead.inputString)"
+                  v-if="typeahead.inputString"
                   slot="custom-options"
                   slot-scope="typeahead"
                   class="dropdown-item">
-                  Create <a
-                    title="Add as a new class"
-                    @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}"?
-                  </a>
+                  <span v-if="typeahead.inputString.startsWith('http')">
+                    <a
+                      title="Add external class"
+                      @click.prevent="addExternalRange(typeahead.inputString) && typeahead.hide()">
+                      Add external class "{{ typeahead.inputString }}"?
+                    </a>
+                  </span>
+                  <span v-else>
+                    <a
+                      title="Add as a new class"
+                      @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
+                      Create class "{{ typeahead.inputString }}"?
+                    </a>
+                  </span>
                 </div>
                 <nav
                   slot="selected-list"
@@ -278,7 +287,7 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI } from '@/libs/rdf'
+import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, externalIRIToQuad } from '@/libs/rdf'
 import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import { Class } from '@/models/Class'
@@ -423,8 +432,9 @@ export default {
       this.$vuexPush('classChildren', clss)
       return true
     },
-    invalidPropname (label) {
-      return !/^([a-z])/.test(label)
+    addExternalRange (iri) {
+      this.$vuexPush('ranges', externalIRIToQuad(iri))
+      return true
     },
     init () {
       if (this.baseDatasets) {

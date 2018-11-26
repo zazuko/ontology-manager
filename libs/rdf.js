@@ -268,3 +268,12 @@ export function firstVal (xs = []) {
   }
   return ''
 }
+
+export function externalIRIToQuad (iri) {
+  const range = rdf.quad(
+    rdf.namedNode(iri),
+    termIRI.label,
+    rdf.literal(term(iri))
+  )
+  return range
+}
