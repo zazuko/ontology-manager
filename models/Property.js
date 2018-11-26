@@ -55,10 +55,6 @@ export function validate (prop) {
     throw new Error('Property `label` missing')
   }
 
-  if (!/^([a-z])/.test(prop.label)) {
-    throw new Error(`Property 'label' ${prop.label} should start with a lowercase letter`)
-  }
-
   if (!prop.comment) {
     throw new Error('Property `comment` missing')
   }

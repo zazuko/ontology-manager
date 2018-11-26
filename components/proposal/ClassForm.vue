@@ -80,16 +80,15 @@
                     v-model.lazy="clss['label']">
                 </div>
                 <p
-                  v-if="clss['label'] && invalidClassname(clss['label'])"
+                  v-show="clss['label'] && invalidClassname(clss['label'])"
                   class="help is-danger">
                   Class name must start with an <strong>Uppercase</strong> letter!
                 </p>
                 <p
-                  v-else-if="!clss['label']"
+                  v-show="!clss['label']"
                   class="help is-danger">
                   Please enter the class name.
                 </p>
-                <p v-else />
               </div>
             </div>
           </div>
@@ -160,7 +159,7 @@
                 label="Has the Following Properties"
                 @selectionChanged="selectDomain">
                 <div
-                  v-if="typeahead.inputString && canCreateProperty(typeahead.inputString)"
+                  v-if="typeahead.inputString"
                   slot="custom-options"
                   slot-scope="typeahead"
                   class="dropdown-item">
@@ -352,9 +351,6 @@ export default {
       const childIndex = this.clss['propChildren'].indexOf(this.clss[`domains[${index}]`])
       this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
-    },
-    canCreateProperty (label) {
-      return /^([a-z])/.test(label)
     },
     createProperty (label) {
       const prop = new Property({ label, isNew: true })

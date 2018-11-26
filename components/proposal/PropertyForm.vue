@@ -72,16 +72,10 @@
                     v-model.lazy="prop['label']">
                 </div>
                 <p
-                  v-if="prop['label'] && invalidPropname(prop['label'])"
-                  class="help is-danger">
-                  Property name must start with a <strong>lowercase</strong> letter!
-                </p>
-                <p
-                  v-else-if="!prop['label']"
+                  v-show="!prop['label']"
                   class="help is-danger">
                   Please enter the property name.
                 </p>
-                <p v-else />
               </div>
             </div>
           </div>
@@ -152,7 +146,7 @@
                 label="Applies to the Following Classes"
                 @selectionChanged="selectDomain">
                 <div
-                  v-if="typeahead.inputString && canCreateDomain(typeahead.inputString)"
+                  v-if="typeahead.inputString"
                   slot="custom-options"
                   slot-scope="typeahead"
                   class="dropdown-item">
@@ -415,9 +409,6 @@ export default {
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('ranges', index)
     },
-    canCreateDomain (label) {
-      return /^([A-Z])/.test(label)
-    },
     createDomain (label) {
       const clss = new Class({ label, isNew: true })
       // should we push 'this.prop' into 'clss' here?
@@ -425,9 +416,6 @@ export default {
       this.$vuexPush('domains', clss)
       this.$vuexPush('classChildren', clss)
       return true
-    },
-    canCreateRange (label) {
-      return /^([A-Z])/.test(label)
     },
     createRange (label) {
       const clss = new Class({ label, isNew: true })
