@@ -130,6 +130,7 @@ export default {
       }
       catch (err) {
         console.error(err)
+        this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     },
@@ -147,6 +148,7 @@ export default {
       }
       catch (err) {
         console.error(err)
+        this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     },

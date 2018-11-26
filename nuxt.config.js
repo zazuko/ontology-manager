@@ -95,6 +95,14 @@ module.exports = {
   },
 
   /*
+  ** Module config: sentry
+  */
+  sentry: {
+    disabled: !process.env.SENTRY_DSN,
+    disableClientSide: !process.env.SENTRY_DSN
+  },
+
+  /*
   ** Internal API
   */
   serverMiddleware: [
