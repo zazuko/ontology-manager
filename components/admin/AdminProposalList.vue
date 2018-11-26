@@ -2,12 +2,34 @@
   <table class="table is-striped is-narrow is-fullwidth">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Created by</th>
-        <th>Last updated</th>
-        <th>Status</th>
-        <th>Vote</th>
-        <th>Actions</th>
+        <th>
+          <a
+            class="sort-by"
+            :class="{ [String(orderBy['HEADLINE']).toLowerCase()]: orderBy['HEADLINE'] }"
+            @click.prevent="sort('HEADLINE')">
+            Title
+          </a>
+        </th>
+        <th>
+          Created by
+        </th>
+        <th>
+          <a
+            class="sort-by"
+            :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }"
+            @click.prevent="sort('UPDATED_AT')">
+            Last updated
+          </a>
+        </th>
+        <th>
+          Status
+        </th>
+        <th>
+          Vote
+        </th>
+        <th>
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -53,21 +75,29 @@
             </div>
           </div>
         </td>
-        <td>
+        <td class="has-text-centered">
           <span
             v-if="!proposal.isDraft">
-            <button
-              class="button is-small is-success"
-              :disabled="proposal.status !== 'OPEN'"
-              @click.prevent="approve(proposal)">
-              Approve
-            </button>
-            <button
-              class="button is-small is-danger"
-              :disabled="proposal.status !== 'OPEN'"
-              @click.prevent="reject(proposal)">
-              Reject
-            </button>
+            <p>
+              <button
+                class="button is-small is-success"
+                :disabled="proposal.status !== 'OPEN'"
+                @click.prevent="approve(proposal)">
+                Approve
+              </button>
+              <button
+                class="button is-small is-danger"
+                :disabled="proposal.status !== 'OPEN'"
+                @click.prevent="reject(proposal)">
+                Reject
+              </button>
+              <button
+                class="button is-small is-danger is-outlined"
+                :disabled="proposal.status !== 'OPEN'"
+                @click.prevent="hide(proposal)">
+                Delete
+              </button>
+            </p>
           </span>
           <span v-else>
             <nuxt-link
@@ -103,6 +133,13 @@ export default {
       default () {
         return []
       }
+    },
+    value: {
+      type: Array,
+      required: true,
+      default () {
+        return []
+      }
     }
   },
   computed: {
@@ -112,6 +149,19 @@ export default {
         proposal.proposalType = this.proposalType(proposal.proposalObject)
         return proposal
       })
+    }
+  },
+  data () {
+    return {
+      orderBy: {
+        ID: false,
+        HEADLINE: false,
+        AUTHOR_ID: false,
+        HAT_ID: false,
+        THREAD_TYPE: false,
+        UPDATED_AT: false,
+        STATUS: false
+      }
     }
   },
   methods: {
@@ -151,6 +201,24 @@ export default {
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     },
+    async hide (proposal, status = 'HIDDEN') {
+      const body = {
+        threadId: proposal.id,
+        number: proposal.externalId,
+        status
+      }
+      const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
+      try {
+        await axios.post('/api/proposal/close', body, headers)
+        this.$emit('updated', proposal.id)
+        this.$toast.success('Proposal deleted!', toastClose)
+      }
+      catch (err) {
+        console.error(err)
+        this.$sentry.captureException(err)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
+      }
+    },
     tally (votes = []) {
       return votes.reduce((acc, { vote } = {}) => {
         switch (vote) {
@@ -166,6 +234,19 @@ export default {
         }
         return acc
       }, { upvotes: 0, neutrals: 0, downvotes: 0 })
+    },
+    sort (key) {
+      if (this.orderBy[key]) {
+        const opposite = this.orderBy[key] === 'ASC' ? 'DESC' : 'ASC'
+        this.orderBy[key] = opposite
+      }
+      else {
+        this.orderBy[key] = 'DESC'
+      }
+      const filters = Object.entries(this.orderBy)
+        .filter(([key, val]) => val)
+        .map(([key, val]) => `${key}_${val}`)
+      this.$emit('input', filters)
     }
   }
 }
