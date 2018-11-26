@@ -11,9 +11,7 @@
 
 @import "../../node_modules/bulma/sass/utilities/_all";
 
-$panel-block-active-border-left-color: $orange;
-$panel-block-active-icon-color: $orange;
-$table-background-color: opacity(0);
+@import "./dcf-components/_variables";
 
 @import "../../node_modules/bulma/sass/base/_all";
 @import "../../node_modules/bulma/sass/elements/_all";
@@ -39,82 +37,6 @@ $primary-invert: $pink-invert;
 // 4. Import the rest of Bulma
 // @import "../../node_modules/bulma/bulma";
 
-@import "./components/_all";
+@import "./dcf-components/_all";
 
 @import "../../node_modules/@mdi/font/css/materialdesignicons.min.css";
-
-body {
-  min-height: 100vh;
-}
-
-.proposal-draft {
-  &.is-class-subform > div > .box,
-  &.is-prop-subform > div > .box {
-    background-color: #f3f6f9;
-    border-radius: 0 0 6px 6px;
-  }
-}
-
-.has-prop-subform {
-  border-radius: 6px 6px 0 0;
-}
-
-ul.dash-bullet {
-    list-style-type: none;
-    padding-left: 1em;
-
-  li:before {
-    content: "–";
-    position: absolute;
-    margin-left: -1em;
-  }
-}
-
-ul.types-list {
-  @extend .dash-bullet;
-}
-
-.proposal-submit {
-  margin-top: 20px;
-}
-
-table tbody tr td a {
-  text-decoration: underline;
-}
-
-section hr {
-  border: 0;
-  height: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.class-box {
-  @extend .box;
-  @extend .notification;
-  @extend .is-info;
-
-  padding: 0.85rem;
-
-  p.title {
-    @extend .is-5;
-  }
-  p.subtitle {
-    @extend .is-6;
-  }
-}
-
-.container-box {
-  p.title {
-    @extend .subtitle;
-    @extend .is-4;
-  }
-}
-
-.clickable-pointer {
-  cursor: pointer;
-}
-
-.hats-table, .hats-form {
-  margin-top: 20px;
-}
