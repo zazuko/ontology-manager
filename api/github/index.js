@@ -259,13 +259,22 @@ router.post('/proposal/close', async (req, res, next) => {
   apicache.clear('files')
   const { threadId, number, status } = req.body
 
-  try {
-    if (!['resolved', 'hidden'].includes(status.toLowerCase())) {
-      throw new Error(`Cannot set unknown status '${status}'`)
+  if (!['resolved', 'hidden'].includes(status.toLowerCase())) {
+    res.status(400).json(new Error(`Cannot set unknown status '${status}'`))
+    return
+  }
+
+  if (number) {
+    try {
+      await api.closePR({ number })
     }
+    catch (errorOctokit) {
+      res.status(errorOctokit.code).json(errorOctokit)
+      return
+    }
+  }
 
-    await api.closePR({ number })
-
+  try {
     const userApolloClient = getApolloClientForUser(req)
 
     const result = await userApolloClient.mutate({

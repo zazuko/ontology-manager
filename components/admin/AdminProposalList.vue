@@ -123,8 +123,7 @@ export default {
       }
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        const result = await axios.post('/api/proposal/merge', body, headers)
-        console.log(result)
+        await axios.post('/api/proposal/merge', body, headers)
         this.$emit('updated', proposal.id)
         this.$toast.success('Proposal approved!', toastClose)
       }
