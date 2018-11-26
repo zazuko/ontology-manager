@@ -1,0 +1,51 @@
+ul.dash-bullet {
+    list-style-type: none;
+    padding-left: 1em;
+
+  li:before {
+    content: "–";
+    position: absolute;
+    margin-left: -1em;
+  }
+}
+
+ul.types-list {
+  @extend .dash-bullet;
+}
+
+table tbody tr td a {
+  text-decoration: underline;
+}
+
+section hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.class-box {
+  @extend .box;
+  @extend .notification;
+  @extend .is-info;
+
+  padding: 0.85rem;
+
+  p.title {
+    @extend .is-5;
+  }
+  p.subtitle {
+    @extend .is-6;
+  }
+}
+
+.container-box {
+  p.title {
+    @extend .subtitle;
+    @extend .is-4;
+  }
+}
+
+.clickable-pointer {
+  cursor: pointer;
+}
