@@ -9,6 +9,7 @@
     }
     a.is-current {
       @extend .has-background-success;
+      color: white;
     }
   }
 }

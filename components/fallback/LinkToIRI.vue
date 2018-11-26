@@ -2,12 +2,14 @@
   <span>
     <nuxt-link
       v-if="path"
-      :to="{ path: path + (anchor ? `#${anchor}` : ''), params: {} }">
+      :to="{ path: path + (anchor ? `#${anchor}` : ''), params: {} }"
+      :class="classes">
       {{ getTerm(term.value) }}
     </nuxt-link>
     <a
       v-else
-      :href="url">
+      :href="url"
+      :class="classes">
       {{ getTerm(term.value) }}
       <span
         class="icon is-small"
@@ -32,6 +34,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    linkClass: {
+      type: Object,
+      required: false,
+      default: () => ({})
     }
   },
   data () {
@@ -52,6 +59,13 @@ export default {
   methods: {
     getTerm: term,
     rebaseIRI
+  },
+  computed: {
+    classes () {
+      return Object.entries(this.linkClass)
+        .filter(([key, val]) => val)
+        .map(([key, val]) => key)
+    }
   }
 }
 </script>
