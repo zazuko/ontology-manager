@@ -53,7 +53,8 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/apollo',
-    '@nuxtjs/toast'
+    '@nuxtjs/toast',
+    '@nuxtjs/sentry'
   ],
 
   /*
