@@ -5,7 +5,9 @@
         {{ name }}: Logistics objects
       </h1>
       <article class="tile is-child container-box">
-        <div class="content">
+        <div
+          v-if="_get(obj, 'children.length', false)"
+          class="content">
           <div
             v-for="(group, index) in arrayToGroups(obj)"
             :key="index"
@@ -22,6 +24,13 @@
                 class="" />
             </div>
           </div>
+        </div>
+        <div
+          v-else
+          class="content">
+          <p>
+            This pouch is empty.
+          </p>
         </div>
       </article>
     </div>
