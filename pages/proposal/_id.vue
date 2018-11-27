@@ -127,8 +127,7 @@
           Conversation
         </h1>
         <div class="box">
-          <discussion-card
-            :discussion="discussion" />
+          <discussion-card :discussion="discussion" />
           <discussion-reply
             :id="id"
             @answerAdded="answerAdded()" />
