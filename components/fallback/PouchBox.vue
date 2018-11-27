@@ -8,9 +8,15 @@
       <span v-else>&mdash;</span>
     </p>
     <img
-      src="~/assets/images/ic-document-white.svg"
+      v-show="type === 'container'"
+      src="~/assets/images/ic-pouch.svg"
       alt="Pouch icon"
       title="Pouch icon">
+    <img
+      v-show="type === 'class'"
+      src="~/assets/images/ic-class.svg"
+      alt="Class icon"
+      title="Class icon">
     <p class="title">
       <nuxt-link
         v-if="to.name || to.path"
@@ -64,6 +70,11 @@ export default {
       default: 0
     },
     modified: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    type: {
       type: String,
       required: false,
       default: ''
