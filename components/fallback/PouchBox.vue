@@ -1,7 +1,12 @@
 <template>
   <article class="tile is-child class-box">
-    <!-- TODO: add 'Last update' -->
-    <!-- cf. https://imgur.com/a/37ucgoS -->
+    <p class="class-box-update">
+      Last updated:
+      <span v-if="modified">
+        {{ (new Date(modified)) | formatDate }}
+      </span>
+      <span v-else>&mdash;</span>
+    </p>
     <img
       src="~/assets/images/ic-document-white.svg"
       alt="Pouch icon"
@@ -57,6 +62,11 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    modified: {
+      type: String,
+      required: false,
+      default: ''
     }
   }
 }
