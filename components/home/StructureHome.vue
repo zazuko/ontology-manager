@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import { cloneDeep } from 'lodash'
 import { hasCreativeWorkChild, arrayToGroups } from '@/libs/utils'
 import PouchBox from '@/components/fallback/PouchBox'
@@ -84,30 +85,33 @@ export default {
     hasCreativeWorkChild,
     arrayToGroups,
     childPropertiesCount (obj) {
-      if (obj.childPropertiesCount) {
+      if (obj.hasOwnProperty('childPropertiesCount')) {
         return obj.childPropertiesCount
       }
       const properties = childPropertiesCount(obj)
-        .reduce((obj, p) => {
-          obj[p.subject.value] = true
-          return obj
+        .reduce((tmp, p) => {
+          tmp[p.subject.value] = true
+          return tmp
         }, {})
       const count = Object.keys(properties).length
       obj.childPropertiesCount = count
       return count
     },
-    childClassesCount (obj, sum = 0) {
-      if (obj.childClassesCount) {
+    childClassesCount (obj, sum = 0, recursing = false) {
+      if (obj.hasOwnProperty('childClassesCount')) {
         return obj.childClassesCount
       }
       let count
-      if (obj.children) {
-        count = (obj.type === 'class' ? 1 : 0) + obj.children.reduce((acc, child) => this.childClassesCount(child, acc), sum)
+      if (_get(obj, 'children.length', false)) {
+        const childCount = obj.children.reduce((acc, child) => this.childClassesCount(child, acc, true), sum)
+        count = (obj.type === 'class' ? 1 : 0) + childCount
       }
       else {
         count = sum + (obj.type === 'class' ? 1 : 0)
       }
-      obj.childClassesCount = count
+      if (!recursing) {
+        obj.childClassesCount = count
+      }
       return count
     }
   }
