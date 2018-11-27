@@ -32,6 +32,7 @@
           <figure class="media-left">
             <p class="image is-64x64">
               <img
+                class="is-rounded"
                 :src="discussion.author.avatar"
                 :alt="authorsAvatar(discussion.author.name)">
             </p>
@@ -77,7 +78,7 @@ import _get from 'lodash/get'
 import discussionsByIri from '@/apollo/queries/discussionsByIri'
 
 export default {
-  name: 'Discussion',
+  name: 'Discussions',
   props: {
     iri: {
       type: String,

@@ -4,6 +4,7 @@ export const emptyDiscussion = {
   body: '',
   hat: null,
   author: {
+    id: 0,
     avatar: '',
     name: ''
   },

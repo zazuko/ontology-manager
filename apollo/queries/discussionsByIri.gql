@@ -5,6 +5,7 @@ query GetUserContent ($iri: String!) {
       headline,
       body,
       author: personByAuthorId {
+        id,
         avatar,
         name
       },

@@ -39,10 +39,10 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '@/plugins/nuxt-client-init', ssr: false },
-    { src: '@/plugins/sticky', ssr: false },
     '@/plugins/filters',
-    '@/plugins/directives'
+    '@/plugins/directives',
+    { src: '@/plugins/nuxt-client-init', ssr: false },
+    { src: '@/plugins/sticky', ssr: false }
   ],
 
   /*

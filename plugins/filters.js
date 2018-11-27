@@ -4,8 +4,13 @@ import ontologyConfig from '@/ontology.config'
 const { owner, repo } = ontologyConfig.github
 
 Vue.filter('formatDate', (date) => {
-  const d = new Date(date).toISOString()
-  return d.substring(0, d.indexOf('T'))
+  const dateObj = new Date(date)
+  // Turns out `new Date(date).toISOString()` is unsafe…
+  if (isNaN(dateObj.getTime())) {
+    return ''
+  }
+  const dateString = dateObj.toISOString()
+  return dateString.substring(0, dateString.indexOf('T'))
 })
 
 Vue.filter('formatTime', (date) => {

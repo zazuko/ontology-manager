@@ -18,14 +18,23 @@
             {{ discussion.body }}
           </p>
         </div>
-        <div class="media-right discussion-info">
-          <!-- TODO: edit/delete icons but outside of box in a level -->
+        <div
+          v-show="isOwn(discussion.author.id)"
+          class="media-right discussion-info">
+          <img
+            src="~/assets/images/ic-edit-passive.svg"
+            alt="Edit discussion"
+            title="Edit discussion">
+          <img
+            src="~/assets/images/ic-trashcan-passive.svg"
+            alt="Delete discussion"
+            title="Delete discussion">
         </div>
       </div>
       <div class="topic-info level">
         <div class="level-left">
           <span class="creation-info">
-            Created on {{ discussion.createdAt | formatDate }} by
+            Created on {{ formatDate(discussion.createdAt) }} by
           </span>
           <span class="author-info">
             &nbsp;{{ discussion.author.name }}
@@ -36,18 +45,16 @@
             <span class="icon is-small">
               <i class="mdi mdi-message-reply-text" />
             </span>
-            {{ answersCount(discussion) }}
+            {{ messages.length }}
           </span>
         </div>
       </div>
     </section>
 
-    <div>
-      <hr v-show="discussion.answers.messages.length" />
-      <section v-if="_get(discussion, 'answers.messages.length', 0) === 0" />
+    <div v-if="messages.length">
+      <hr v-show="messages.length" />
       <section
-        v-else
-        v-for="message in discussion.answers.messages"
+        v-for="message in messages"
         :key="message.id"
         class="media answer-box">
         <figure class="media-left">
@@ -74,17 +81,26 @@
             </p>
           </div>
           <div
-            v-if="message.hat"
+            v-show="message.hat"
             class="answer-hat">
-            {{ message.hat.title }}
+            {{ _get(message, 'hat.title', '') }}
           </div>
-          <div v-else />
         </div>
-        <div class="media-right discussion-info">
-          <!-- TODO: edit icon button -->
+        <div
+          v-show="isOwn(message.author.id)"
+          class="media-right discussion-info">
+          <img
+            src="~/assets/images/ic-edit-passive.svg"
+            alt="Edit discussion"
+            title="Edit discussion">
+          <img
+            src="~/assets/images/ic-trashcan-passive.svg"
+            alt="Delete discussion"
+            title="Delete discussion">
         </div>
       </section>
     </div>
+    <div v-else />
   </div>
 </template>
 
@@ -99,13 +115,28 @@ export default {
       required: true
     }
   },
+  computed: {
+    messages () {
+      return _get(this, 'discussion.answers.messages', [])
+    }
+  },
   methods: {
     _get,
-    authorsAvatar (name = '') {
-      return `${name}'s avatar'`
+    isOwn (id) {
+      // TODO: implement edit & trash
+      return false
+      // return id === _get(this, '$store.state.auth.personId', NaN)
     },
-    answersCount (discussion) {
-      return _get(discussion, 'answers.messages', []).length
+    authorsAvatar (name = '') {
+      return `${name}'s avatar`
+    },
+    formatDate (date) {
+      const dateObj = new Date(date)
+      if (isNaN(dateObj.getTime())) {
+        return ''
+      }
+      const dateString = dateObj.toISOString()
+      return dateString.substring(0, dateString.indexOf('T'))
     }
   }
 }
