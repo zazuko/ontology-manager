@@ -50,7 +50,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
     const ref = `heads/${this.branch}`
-    const result = await octokit.repos.getContent({ owner, repo, path, ref })
+    const result = await octokit.repos.getContents({ owner, repo, path, ref })
     const content = Buffer.from(result.data.content, 'base64').toString()
     return content
   }
