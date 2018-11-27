@@ -12,6 +12,40 @@
       @click.prevent="signOut">
       <span>Sign Out</span>
     </button>
+    <div class="modal signin-modal">
+      <div class="modal-background" />
+      <div class="modal-card has-text-centered">
+        <header class="modal-card-head">
+          <p class="modal-card-title">
+            Sign In
+          </p>
+          <button
+            class="delete"
+            aria-label="close" />
+        </header>
+        <section class="modal-card-body">
+          <p>
+            DCF uses GitHub as a collaboration platform for the ontology management.
+            Therefore you require a GitHub account to collaborate on DCF.
+          </p>
+          <p>
+            <img
+              src="~/assets/images/github-logo.png"
+              alt="GitHub logo">
+          </p>
+        </section>
+        <footer class="modal-card-foot">
+          <div class="column">
+            <p>I already have a GitHub account</p>
+            <button class="button is-success">Sign In</button>
+          </div>
+          <div class="column">
+            <p>I don't have a GitHub account</p>
+            <button class="button is-success">Sign Up</button>
+          </div>
+        </footer>
+      </div>
+    </div>
   </span>
 </template>
 
