@@ -36,7 +36,7 @@
                     <pouch-box
                       :label="proposal.proposalObject.label"
                       :to="{ name: 'proposal-id', params: { id: proposal.id } }"
-                      :properties="proposal.proposalObject.propChildren"
+                      :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
                       class="" />
                   </div>
                 </div>

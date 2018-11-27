@@ -17,7 +17,7 @@
               <pouch-box
                 :label="child.label"
                 :to="{ path: child.path, params: {} }"
-                :properties="child.properties"
+                :properties-count="_get(child, 'properties.length', 0)"
                 class="" />
             </div>
           </div>
@@ -31,6 +31,7 @@
 import rdf from 'rdf-ext'
 import { arrayToGroups } from '@/libs/utils'
 import PouchBox from './PouchBox'
+import _get from 'lodash/get'
 
 export default {
   name: 'Structure',
@@ -69,6 +70,7 @@ export default {
     PouchBox
   },
   methods: {
+    _get,
     arrayToGroups
   }
 }
