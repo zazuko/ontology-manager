@@ -29,8 +29,8 @@ export function serialize (dataset) {
     .join('\n')
 }
 
-export function buildTree (dataset, dataset2) {
-  if (!dataset) {
+export function buildTree (structureDataset, ontologyDataset) {
+  if (!structureDataset) {
     return {}
   }
 
@@ -38,35 +38,40 @@ export function buildTree (dataset, dataset2) {
 
   // we consider <parentIRI> <givenPredicate> <childIRI>
   containersNestingPredicates.forEach((predicate) => {
-    dataset
+    structureDataset
       .match(null, rdf.namedNode(predicate))
       .toArray()
       .forEach((quad) => {
-        const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, dataset.match(quad.subject)))
-        const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, dataset.match(quad.object)))
+        const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, structureDataset.match(quad.subject)))
+        const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, structureDataset.match(quad.object)))
         child.parent = parent
         parent.children.push(child)
       })
   })
 
+  const modifiedDataset = structureDataset.merge(ontologyDataset).match(null, termIRI.modified)
+
   const forest = Object.keys(nodes)
     .reduce((acc, iri) => {
       const node = nodes[iri]
       node.path = `/${iri.replace(datasetBaseUrl, '')}`
-      let label = dataset.match(rdf.namedNode(iri), termIRI.label).toArray()
-      node.label = iri
       node.properties = []
       node.type = 'container'
 
+      const modified = modifiedDataset.match(rdf.namedNode(iri), termIRI.modified).toArray()
+      node.modified = modified.length ? modified[0].object.value : ''
+
+      node.label = iri
+      let label = structureDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
       if (label.length) {
         node.label = label[0].object.value
       }
       else {
-        const label = dataset2.match(rdf.namedNode(iri), termIRI.label).toArray()
+        label = ontologyDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
         if (label.length) {
           node.type = 'class'
           node.label = label[0].object.value
-          node.properties = findClassProperties(iri, dataset2)
+          node.properties = findClassProperties(iri, ontologyDataset)
         }
       }
 

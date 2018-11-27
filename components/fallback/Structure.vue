@@ -18,6 +18,7 @@
                 :label="child.label"
                 :to="{ path: child.path, params: {} }"
                 :properties-count="_get(child, 'properties.length', 0)"
+                :modified="child.modified"
                 class="" />
             </div>
           </div>
