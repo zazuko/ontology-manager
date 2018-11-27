@@ -33,17 +33,11 @@
                     v-for="(proposal, index) in group"
                     :key="index"
                     class="tile is-parent is-3">
-                    <article class="tile is-child class-box">
-                      <p class="title">
-                        <nuxt-link
-                          :to="{ name: 'proposal-id', params: { id: proposal.id } }">
-                          {{ proposal.proposalObject.label }}
-                        </nuxt-link>
-                      </p>
-                      <p class="subtitle">
-                        {{ proposal.proposalObject.propChildren.length }} propert{{ proposal.proposalObject.propChildren.length === 1 ? 'y' : 'ies' }}
-                      </p>
-                    </article>
+                    <pouch-box
+                      :label="proposal.proposalObject.label"
+                      :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                      :properties="proposal.proposalObject.propChildren"
+                      class="" />
                   </div>
                 </div>
               </div>
@@ -64,6 +58,7 @@ import _get from 'lodash/get'
 import { arrayToGroups } from '@/libs/utils'
 import proposals from '@/apollo/queries/proposalsByIri'
 import { proposalDeserializer } from '@/libs/proposals'
+import PouchBox from './PouchBox'
 
 export default {
   name: 'ClassProposals',
@@ -72,6 +67,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    PouchBox
   },
   methods: {
     _get,
