@@ -21,6 +21,7 @@
                 :to="{ path: child.path, params: {} }"
                 :properties-count="_get(child, 'properties.length', 0)"
                 :modified="child.modified"
+                :type="child.type"
                 class="" />
             </div>
           </div>
