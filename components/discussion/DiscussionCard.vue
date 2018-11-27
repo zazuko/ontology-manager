@@ -6,8 +6,9 @@
     <section>
       <div class="media topic-box">
         <figure class="media-left">
-          <p class="image is-64x64">
+          <p class="image is-48x48">
             <img
+              class="is-rounded"
               :src="discussion.author.avatar"
               :alt="authorsAvatar(discussion.author.name)">
           </p>
@@ -52,6 +53,7 @@
         <figure class="media-left">
           <p class="image is-48x48">
             <img
+              class="is-rounded"
               :src="message.author.avatar"
               :alt="authorsAvatar(message.author.name)">
           </p>
