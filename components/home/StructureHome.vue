@@ -5,8 +5,8 @@
         <article class="tile is-child container-box">
           <p class="title">
             <nuxt-link
-              v-if="obj.path"
-              :to="{ path: obj.path, params: {} }">
+              v-if="object.path"
+              :to="{ path: object.path, params: {} }">
               {{ name }}
             </nuxt-link>
             <span
@@ -15,44 +15,30 @@
             </span>
           </p>
           <p
-            v-if="true || obj.type === 'class'"
+            v-if="true || object.type === 'class'"
             class="subtitle">
-            {{ childClassesCount(obj) }} classes
+            {{ childClassesCount(object) }} Logistics Object{{ childClassesCount(object) === 1 ? '' : 's' }}
             <br>
-            {{ childPropertiesCount(obj) }} properties
+            {{ childPropertiesCount(object) }} Propert{{ childPropertiesCount(object) === 1 ? 'y' : 'ies' }}
           </p>
 
           <div
-            v-if="hasCreativeWorkChild(obj)"
+            v-if="hasCreativeWorkChild(object)"
             class="content">
             <div
-              v-for="(group, index) in arrayToGroups(obj)"
+              v-for="(group, index) in arrayToGroups(object)"
               :key="index"
               class="tile is-ancestor">
               <div
                 v-for="child in group"
                 :key="child.path"
                 class="tile is-parent is-3">
-                <article class="tile is-child class-box">
-                  <p class="title">
-                    <nuxt-link
-                      v-if="child.path"
-                      :to="{ path: child.path, params: {} }">
-                      {{ child.label }}
-                    </nuxt-link>
-                    <span
-                      v-else>
-                      {{ child.label }}
-                    </span>
-                  </p>
-                  <p
-                    v-if="true || child.type === 'class'"
-                    class="subtitle">
-                    {{ childClassesCount(child) }} classes
-                    <br>
-                    {{ childPropertiesCount(child) }} properties
-                  </p>
-                </article>
+                <pouch-box
+                  :label="child.label"
+                  :to="{ path: child.path, params: {} }"
+                  :properties-count="childPropertiesCount(child)"
+                  :classes-count="childClassesCount(child)"
+                  class="" />
               </div>
             </div>
           </div>
@@ -63,7 +49,9 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash'
 import { hasCreativeWorkChild, arrayToGroups } from '@/libs/utils'
+import PouchBox from '@/components/fallback/PouchBox'
 
 export default {
   name: 'StructureHome',
@@ -83,22 +71,43 @@ export default {
       default: () => ({})
     }
   },
+  components: {
+    PouchBox
+  },
+  data () {
+    return {
+      object: cloneDeep(this.obj)
+    }
+  },
   methods: {
     hasCreativeWorkChild,
     arrayToGroups,
     childPropertiesCount (obj) {
+      if (obj.childPropertiesCount) {
+        return obj.childPropertiesCount
+      }
       const properties = childPropertiesCount(obj)
         .reduce((obj, p) => {
           obj[p.subject.value] = true
           return obj
         }, {})
-      return Object.keys(properties).length
+      const count = Object.keys(properties).length
+      obj.childPropertiesCount = count
+      return count
     },
     childClassesCount (obj, sum = 0) {
-      if (obj.children) {
-        return (obj.type === 'class' ? 1 : 0) + obj.children.reduce((acc, child) => this.childClassesCount(child, acc), sum)
+      if (obj.childClassesCount) {
+        return obj.childClassesCount
       }
-      return sum + (obj.type === 'class' ? 1 : 0)
+      let count
+      if (obj.children) {
+        count = (obj.type === 'class' ? 1 : 0) + obj.children.reduce((acc, child) => this.childClassesCount(child, acc), sum)
+      }
+      else {
+        count = sum + (obj.type === 'class' ? 1 : 0)
+      }
+      obj.childClassesCount = count
+      return count
     }
   }
 }
