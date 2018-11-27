@@ -6,13 +6,11 @@
         <h1 class="title">Proposals</h1>
       </div>
       <div class="level-right">
-        <span class="level-item">
-          <nuxt-link
-            :to="{ name: 'proposal-property', query: { iri: iri } }"
-            class="button is-info">
-            Request New Property
-          </nuxt-link>
-        </span>
+        <nuxt-link
+          :to="{ name: 'proposal-property', query: { iri: iri } }"
+          class="button is-info">
+          Request New Property
+        </nuxt-link>
       </div>
     </div>
 
