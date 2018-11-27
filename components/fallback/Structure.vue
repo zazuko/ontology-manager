@@ -14,30 +14,11 @@
               v-for="child in group"
               :key="child.path"
               class="tile is-parent is-3">
-              <article class="tile is-child class-box">
-                <!-- TODO: add 'Last update' -->
-                <!-- cf. https://imgur.com/a/37ucgoS -->
-                <img
-                  src="~/assets/images/ic-document-white.svg"
-                  alt="Pouch icon"
-                  title="Pouch icon">
-                <p class="title">
-                  <nuxt-link
-                    v-if="child.path"
-                    :to="{ path: child.path, params: {} }">
-                    {{ child.label }}
-                  </nuxt-link>
-                  <span
-                    v-else>
-                    {{ child.label }}
-                  </span>
-                </p>
-                <p class="subtitle">
-                  Propert{{ child.properties.length === 1 ? 'y' : 'ies' }}
-                  <br>
-                  {{ child.properties.length }}
-                </p>
-              </article>
+              <pouch-box
+                :label="child.label"
+                :to="{ path: child.path, params: {} }"
+                :properties="child.properties"
+                class="" />
             </div>
           </div>
         </div>
@@ -49,6 +30,7 @@
 <script>
 import rdf from 'rdf-ext'
 import { arrayToGroups } from '@/libs/utils'
+import PouchBox from './PouchBox'
 
 export default {
   name: 'Structure',
@@ -82,6 +64,9 @@ export default {
       required: false,
       default: false
     }
+  },
+  components: {
+    PouchBox
   },
   methods: {
     arrayToGroups
