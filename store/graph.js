@@ -41,16 +41,16 @@ export const getters = {
 }
 
 export const mutations = {
-  ontologyInit (state, dataset) {
-    state.ontologySerialized = serialize(dataset)
-    state.ontology = dataset
-    state.ontologyGraph = resourcesToGraph(dataset)
+  ontologyInit (state, ontologyDataset) {
+    state.ontologySerialized = serialize(ontologyDataset)
+    state.ontology = ontologyDataset
+    state.ontologyGraph = resourcesToGraph(ontologyDataset)
   },
-  structureInit (state, dataset) {
-    state.structureSerialized = serialize(dataset)
-    state.structure = dataset
-    state.structureGraph = resourcesToGraph(dataset)
-    state.structureTree = buildTree(dataset, this.state.graph.ontology)
+  structureInit (state, structureDataset) {
+    state.structureSerialized = serialize(structureDataset)
+    state.structure = structureDataset
+    state.structureGraph = resourcesToGraph(structureDataset)
+    state.structureTree = buildTree(structureDataset, this.state.graph.ontology)
   },
   clientReady (state) {
     state.clientReady = true

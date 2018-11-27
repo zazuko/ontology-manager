@@ -38,6 +38,7 @@
                   :to="{ path: child.path, params: {} }"
                   :properties-count="childPropertiesCount(child)"
                   :classes-count="childClassesCount(child)"
+                  :modified="child.modified"
                   class="" />
               </div>
             </div>
