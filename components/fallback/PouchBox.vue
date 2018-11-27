@@ -17,11 +17,22 @@
         {{ label }}
       </span>
     </p>
-    <p class="subtitle">
-      Propert{{ properties.length === 1 ? 'y' : 'ies' }}
-      <br>
-      {{ properties.length }}
-    </p>
+    <div class="level">
+      <div class="level-left">
+        <p class="subtitle">
+          Logistics Object{{ classesCount === 1 ? '' : 's' }}
+          <br>
+          {{ classesCount }}
+        </p>
+      </div>
+      <div class="level-right">
+        <p class="subtitle">
+          Propert{{ propertiesCount === 1 ? 'y' : 'ies' }}
+          <br>
+          {{ propertiesCount }}
+        </p>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -38,9 +49,14 @@ export default {
       required: false,
       default: null
     },
-    properties: {
-      type: [Array, Object],
+    propertiesCount: {
+      type: Number,
       required: true
+    },
+    classesCount: {
+      type: Number,
+      required: false,
+      default: 0
     }
   }
 }

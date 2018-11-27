@@ -5,7 +5,7 @@
         ontology-editor
       </h1>
       <h2 class="subtitle">
-        Semantic Web, RDF ontology editor
+        RDF ontology/schema editor
       </h2>
 
       <div class="columns">
