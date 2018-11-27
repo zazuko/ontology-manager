@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <div>
     <button
       v-show="!loggedIn"
       class="button is-small is-info is-outlined"
@@ -46,7 +46,7 @@
         </footer>
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
