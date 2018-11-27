@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="18px" viewBox="0 0 15 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>858862DC-BAA8-4BE9-AB58-18B44875F2B1</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Front" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.3">
+        <g id="TCF-Participant---Discussion" transform="translate(-1143.000000, -216.000000)">
+            <g id="discussion" transform="translate(240.000000, 120.000000)">
+                <g transform="translate(0.000000, 36.000000)" id="topic-header">
+                    <g transform="translate(40.000000, 40.000000)">
+                        <g id="ic-trashcan-passive" transform="translate(861.000000, 19.000000)">
+                            <rect id="Rectangle" x="0" y="0" width="19" height="19"></rect>
+                            <g id="trashcan" transform="translate(2.000000, 1.000000)" fill="#000000" fill-rule="nonzero">
+                                <path d="M9.68275,0.15892875 L4.94225,0.15892875 L4.94225,2.53168438 L0.14097375,2.53168438 L0.14097375,3.71675 L1.389345,3.71675 L1.389345,17.9333813 L13.23575,17.9333813 L13.23575,3.71675 L14.3909975,3.71675 L14.3909975,2.53168438 L9.68275,2.53168438 L9.68275,0.15892875 Z M6.12975,1.34642875 L8.49525,1.34642875 L8.49525,2.52925 L6.12975,2.52925 L6.12975,1.34642875 Z M12.04825,16.7459288 L2.576845,16.7459288 L2.576845,3.71998 L12.04825,3.71998 L12.04825,16.7459288 Z" id="Shape"></path>
+                                <rect id="Rectangle-path" transform="translate(5.499947, 10.236363) rotate(-0.248660) translate(-5.499947, -10.236363) " x="4.90619069" y="6.09457128" width="1.18751187" height="8.28358438"></rect>
+                                <rect id="Rectangle-path" transform="translate(9.125053, 10.236365) rotate(-0.248660) translate(-9.125053, -10.236365) " x="8.53129718" y="6.09457293" width="1.18751188" height="8.28358438"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

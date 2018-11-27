@@ -9,7 +9,7 @@
           class="image is-48x48">
           <img
             class="is-rounded"
-            :src="$store.state.auth.user.avatar_url">
+            :src="_get($store, 'state.auth.user.avatar_url', '')">
         </p>
         <p v-else />
       </figure>
@@ -26,7 +26,7 @@
       <div class="media-right">
         <div class="opposite-fields">
           <div
-            v-show="$store.state.auth.hats && $store.state.auth.hats.length"
+            v-show="_get($store, 'state.auth.hats.length', 0)"
             class="field top">
             <div class="control is-expanded">
               <div class="select is-fullwidth">
@@ -36,7 +36,7 @@
                     Answer as…
                   </option>
                   <option
-                    v-for="hat in $store.state.auth.hats"
+                    v-for="hat in _get($store, 'state.auth.hats', [])"
                     :key="hat.id"
                     :value="hat.id">
                     {{ hat.title }}

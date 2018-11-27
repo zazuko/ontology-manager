@@ -7,8 +7,9 @@ query GetDiscussion ($id: Int!) {
       title
     },
     author: personByAuthorId {
-      avatar,
-      name
+      id,
+      name,
+      avatar
     },
     iri,
     threadType,
@@ -21,6 +22,7 @@ query GetDiscussion ($id: Int!) {
         body,
         createdAt,
         author: personByAuthorId {
+          id,
           name,
           avatar
         },
