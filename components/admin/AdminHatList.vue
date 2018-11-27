@@ -5,7 +5,7 @@
         <h1 class="title">Hats</h1>
       </div>
       <div class="level-right">
-        <span class="navbar-item">
+        <span class="level-item">
           <a
             @click.prevent="openForm"
             class="button is-info">
