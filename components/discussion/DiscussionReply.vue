@@ -8,6 +8,7 @@
           v-if="_get($store, 'state.auth.user.avatar_url', false)"
           class="image is-48x48">
           <img
+            class="is-rounded"
             :src="$store.state.auth.user.avatar_url">
         </p>
         <p v-else />
