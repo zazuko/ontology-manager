@@ -1,14 +1,11 @@
 <template>
-  <nav class="navbar is-white top-nav">
+  <nav class="navbar top-nav">
     <div class="container">
       <div class="navbar-brand">
         <nuxt-link
           :to="{ name: 'index', params: {} }"
           class="navbar-item">
-          <img
-            src="~/assets/images/logo.png"
-            style="filter: invert(100%);"
-            height="28">
+          <img src="~/assets/images/dcf-logo.svg">
         </nuxt-link>
         <div
           :class="{'is-active': isActive}"
@@ -38,6 +35,16 @@
           </nuxt-link>
         </div>
         <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field">
+              <p class="control has-icons-left">
+                <input class="input" type="text" placeholder="Search">
+                <span class="icon is-small is-left">
+                  <!--<i class="material-icons">calendar_today</i>-->
+                </span>
+              </p>
+            </div>
+          </div>
           <div class="navbar-item">
             <div class="field is-grouped">
               <p class="control">

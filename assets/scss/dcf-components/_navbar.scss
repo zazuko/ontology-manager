@@ -1,0 +1,25 @@
+.navbar {
+	.navbar-brand {
+		img {
+			height: 70px;
+			max-height: none;
+			padding: 15px 50px 15px 0;
+		}
+	}
+
+	.field input {
+		background: rgba(255, 255, 255, .1);
+		border: none;
+		color: white;
+
+		&::placeholder {
+			color: white;
+		}
+
+		&:active, &:focus {
+			background: rgba(255, 255, 255, .2);
+			border: none;
+			box-shadow: 0 0 2px 0 $theme-light-primary;
+		}
+	}
+}

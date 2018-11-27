@@ -1,3 +1,26 @@
+// theme colors
+$theme-light-primary: #3FA2F7;
+$theme-dark-primary: #2C3E50;
+$theme-light-secondary: #E67E22;
+
+// defining bulma variables
+$link: $theme-light-primary;
+$link-visited: $theme-light-primary;
+$family-primary: "Roboto", sans-serif;
+
+// navbar
+$navbar-background-color: $theme-dark-primary;
+$navbar-height: 5rem;
+$navbar-item-color: $theme-light-primary;
+$navbar-item-hover-color: lighten($theme-light-primary, 10%);
+$navbar-item-hover-background-color: transparent;
+$navbar-item-active-color: lighten($theme-light-primary, 10%);
+
+// that is not working (find why ?)
+//$primary: $theme-light-primary;
+//$info: $theme-dark-primary;
+
+// (?) legacy
 $panel-block-active-border-left-color: $orange;
 $panel-block-active-icon-color: $orange;
 $table-background-color: opacity(0);
