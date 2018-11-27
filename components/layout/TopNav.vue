@@ -38,19 +38,19 @@
           <div class="navbar-item">
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" type="text" placeholder="Search">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Search">
                 <span class="icon is-small is-left">
-                  <!--<i class="material-icons">calendar_today</i>-->
+                  <i class="mdi mdi-magnify"></i>
                 </span>
               </p>
             </div>
           </div>
           <div class="navbar-item">
             <div class="field is-grouped">
-              <p class="control">
-                <sign-in
-                  @loggedOut="loggedOut" />
-              </p>
+              <sign-in @loggedOut="loggedOut" />
             </div>
           </div>
         </div>
