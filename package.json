@@ -21,7 +21,7 @@
     "@nuxtjs/axios": "^5.3.3",
     "@nuxtjs/sentry": "^2.0.0",
     "@nuxtjs/toast": "^3.0.1",
-    "@octokit/rest": "^15.13.1",
+    "@octokit/rest": "^16.0.5",
     "@rdfjs/serializer-jsonld": "^1.2.0",
     "@rdfjs/serializer-ntriples": "^1.0.1",
     "@rdfjs/to-ntriples": "^1.0.1",
