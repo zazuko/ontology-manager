@@ -39,6 +39,7 @@
                   :properties-count="childPropertiesCount(child)"
                   :classes-count="childClassesCount(child)"
                   :modified="child.modified"
+                  :type="child.type"
                   class="" />
               </div>
             </div>
