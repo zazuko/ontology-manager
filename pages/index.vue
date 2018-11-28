@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <section class="container">
-      <h1 class="title">
+  <div class="container layout-list">
+    <section class="container layout-list-head">
+      <h1 class="main-title">
         ontology-editor
       </h1>
       <h2 class="subtitle">
@@ -20,14 +20,12 @@
           </p>
         </div>
       </div>
-
     </section>
 
     <section
       v-for="(tree, index) in children"
       :key="index"
-      class="container"
-      style="margin-top: 25px;">
+      class="container layout-list-item">
       <structure-home
         :obj="tree"
         :name="tree.label"
