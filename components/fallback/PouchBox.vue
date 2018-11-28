@@ -1,8 +1,6 @@
 <template>
   <article class="tile is-child class-box">
-    <nuxt-link
-      v-if="to.name || to.path"
-      :to="to">
+    <nuxt-link :to="(to.name || to.path) ? to : ''">
       <p class="class-box-update">
         Last updated:
         <span v-if="modified">
