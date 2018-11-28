@@ -144,19 +144,15 @@ export default {
     }
   },
   mounted () {
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        clearInterval(i)
-
-        this.saveInterval = setInterval(() => {
-          if (this.prop['isDraft'] === false) {
-            clearInterval(this.saveInterval)
-            return
-          }
-          this.saveDraft()
-        }, 2500)
-      }
-    })
+    if (process.browser) {
+      this.saveInterval = setInterval(() => {
+        if (this.prop['isDraft'] === false) {
+          clearInterval(this.saveInterval)
+          return
+        }
+        this.saveDraft()
+      }, 2500)
+    }
   },
   beforeMount () {
     // if we have an ID from the URL here, we load
