@@ -6,7 +6,13 @@ folder, add new files, etc.
 - It shouldn't be necessary to change anything in `scss/app.scss`
 
 */
-@import "../white-label-components/generic.scss";
+@import "generic.scss";
+
+@import "layouts/layout-list.scss";
+@import "layouts/layout-conversation.scss";
+@import "layouts/layout-request.scss";
+@import "layouts/layout-proposal.scss";
+@import "layouts/layout-admin.scss";
 
 @import "navbar.scss";
 
