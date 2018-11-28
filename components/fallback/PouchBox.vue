@@ -1,49 +1,49 @@
 <template>
   <article class="tile is-child class-box">
-    <p class="class-box-update">
-      Last updated:
-      <span v-if="modified">
-        {{ (new Date(modified)) | formatDate }}
-      </span>
-      <span v-else>&mdash;</span>
-    </p>
-    <img
-      v-show="type === 'container'"
-      src="~/assets/images/ic-pouch.svg"
-      alt="Pouch icon"
-      title="Pouch icon">
-    <img
-      v-show="type === 'class'"
-      src="~/assets/images/ic-class.svg"
-      alt="Class icon"
-      title="Class icon">
-    <p class="title">
-      <nuxt-link
-        v-if="to.name || to.path"
-        :to="to">
+    <nuxt-link
+      v-if="to.name || to.path"
+      :to="to">
+      <p class="class-box-update">
+        Last updated:
+        <span v-if="modified">
+          {{ (new Date(modified)) | formatDate }}
+        </span>
+        <span v-else>&mdash;</span>
+      </p>
+      <img
+        v-show="type === 'container'"
+        src="~/assets/images/ic-pouch.svg"
+        alt="Pouch icon"
+        title="Pouch icon"
+        class="class-box-icon">
+      <img
+        v-show="type === 'class'"
+        src="~/assets/images/ic-class.svg"
+        alt="Class icon"
+        title="Class icon"
+        class="class-box-icon">
+      <p class="class-box-title">
         {{ label }}
-      </nuxt-link>
-      <span
-        v-else>
-        {{ label }}
-      </span>
-    </p>
-    <div class="level">
-      <div class="level-left">
-        <p class="subtitle">
-          Logistics Object{{ classesCount === 1 ? '' : 's' }}
-          <br>
-          {{ classesCount }}
-        </p>
+      </p>
+      <div class="class-box-level">
+        <div class="class-box-level-item">
+          <span class="class-box-label">
+            Logistics Object{{ classesCount === 1 ? '' : 's' }}
+          </span>
+          <span class="class-box-value">
+            {{ classesCount }}
+          </span>
+        </div>
+        <div class="class-box-level-item">
+          <span class="class-box-label">
+            Propert{{ propertiesCount === 1 ? 'y' : 'ies' }}
+          </span>
+          <span class="class-box-value">
+            {{ propertiesCount }}
+          </span>
+        </div>
       </div>
-      <div class="level-right">
-        <p class="subtitle">
-          Propert{{ propertiesCount === 1 ? 'y' : 'ies' }}
-          <br>
-          {{ propertiesCount }}
-        </p>
-      </div>
-    </div>
+    </nuxt-link>
   </article>
 </template>
 
