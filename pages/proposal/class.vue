@@ -156,19 +156,16 @@ export default {
     }
   },
   mounted () {
-    let i = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        clearInterval(i)
-
-        this.saveInterval = setInterval(() => {
-          if (this.clss['isDraft'] === false) {
-            clearInterval(this.saveInterval)
-            return
-          }
-          this.saveDraft()
-        }, 2500)
-      }
-    })
+    if (process.browser) {
+      // save draft at fixed time interval
+      this.saveInterval = setInterval(() => {
+        if (this.clss['isDraft'] === false) {
+          clearInterval(this.saveInterval)
+          return
+        }
+        this.saveDraft()
+      }, 2500)
+    }
   },
   beforeMount () {
     // if we are editing an existing class, we populate the form with ontology data
