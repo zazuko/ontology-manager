@@ -15,11 +15,23 @@
         id="data"
         type="application/ld+json"
         v-html="jsonld" />
-      <script v-else />
+
+      <div
+        v-show="!dataReady"
+        class="modal is-active">
+        <div class="modal-background" />
+        <div class="modal-content has-text-centered">
+          <div class="box">
+            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
+            <p class="subtitle">Loading Data</p>
+          </div>
+        </div>
+      </div>
 
       <!-- layout-objects-list -->
       <div
-        v-if="termIRI.creativeWork.equals(objectType)">
+        v-if="termIRI.creativeWork.equals(objectType)"
+        v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
             {{ subtree.label }}
@@ -39,19 +51,6 @@
             :is-class="termIRI.Class.equals(objectType)" />
         </section>
 
-        <!-- unable to display that part -->
-        <!-- should be wrapped inside that
-          <section
-            class="container layout-objects-list-item">
-          </section>
-        -->
-        <object-details
-          v-if="object"
-          :object="object"
-          :ontology="ontology"
-          :structure="structure"
-          :is-class="termIRI.Class.equals(objectType)" />
-
         <section
           class="container layout-objects-list-item">
           <class-proposals
@@ -63,6 +62,7 @@
       <!-- layout-object-details -->
       <div
         v-else
+        v-show="dataReady"
         class="columns">
         <aside class="column is-3 is-narrow-mobile is-fullheight is-hidden-mobile side-nav-col">
           <side-nav :current-iri="iri" />
@@ -188,10 +188,12 @@ export default {
   },
   data () {
     return {
+      iri: 'loading',
       termIRI,
       objectType: '',
       ontology: rdf.dataset(),
-      structure: rdf.dataset()
+      structure: rdf.dataset(),
+      dataReady: false
     }
   },
   methods: {
@@ -207,6 +209,7 @@ export default {
           this.objectType = structureMatches[0].object
         }
       }
+      this.dataReady = true
     }
   },
   mounted () {
