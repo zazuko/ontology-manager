@@ -24,7 +24,9 @@
         {{ label }}
       </p>
       <div class="class-box-level">
-        <div class="class-box-level-item">
+        <div
+          v-show="type === 'container'"
+          class="class-box-level-item">
           <span class="class-box-label">
             Logistics Object{{ classesCount === 1 ? '' : 's' }}
           </span>
