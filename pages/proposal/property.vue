@@ -169,7 +169,7 @@ export default {
   mounted () {
     if (process.browser) {
       this.saveInterval = setInterval(() => {
-        if (this.prop['isDraft'] === false) {
+        if (this.prop && this.prop['isDraft'] === false) {
           clearInterval(this.saveInterval)
           return
         }
