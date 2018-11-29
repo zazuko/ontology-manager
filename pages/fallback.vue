@@ -6,9 +6,10 @@
     <div
       v-if="iri"
       :class="{
-        'container layout-objects-list': termIRI.creativeWork.equals(objectType),
-        'container layout-object-details': !termIRI.creativeWork.equals(objectType)
-      }">
+        'layout-objects-list': termIRI.creativeWork.equals(objectType),
+        'layout-object-details': !termIRI.creativeWork.equals(objectType)
+      }"
+      class="container">
       <script
         v-if="jsonld"
         id="data"
@@ -62,11 +63,12 @@
       <!-- layout-object-details -->
       <div
         v-else
-        class="main-content columns is-fullheight">
-        <side-nav :current-iri="iri" />
+        class="columns">
+        <aside class="column is-3 is-narrow-mobile is-fullheight is-hidden-mobile side-nav-col">
+          <side-nav :current-iri="iri" />
+        </aside>
 
-        <article class="column is-9">
-
+        <section class="column is-9">
           <object-details
             v-if="object"
             :object="object"
@@ -85,7 +87,7 @@
           <discussions
             id="conversations"
             :iri="iri" />
-        </article>
+        </section>
       </div>
 
     </div>
