@@ -1,5 +1,6 @@
 // theme colors
 $theme-light-primary: #3FA2F7;
+$theme-light-primary-hover: lighten($theme-light-primary, 10%);
 $theme-dark-primary: #2C3E50;
 $theme-light-secondary: #E67E22;
 
@@ -12,9 +13,9 @@ $family-primary: "Roboto", sans-serif;
 $navbar-background-color: $theme-dark-primary;
 $navbar-height: 5rem;
 $navbar-item-color: $theme-light-primary;
-$navbar-item-hover-color: lighten($theme-light-primary, 10%);
+$navbar-item-hover-color: $theme-light-primary-hover;
 $navbar-item-hover-background-color: transparent;
-$navbar-item-active-color: lighten($theme-light-primary, 10%);
+$navbar-item-active-color: $theme-light-primary-hover;
 
 // that is not working (find why ?)
 //$primary: $theme-light-primary;
