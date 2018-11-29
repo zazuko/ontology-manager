@@ -1,11 +1,11 @@
 <template>
-  <aside class="column is-3 is-narrow-mobile is-fullheight section is-hidden-mobile side-nav-col">
+  <div>
     <object-tree
       v-for="tree in children"
       :key="tree.iri"
       :tree="tree"
       :current-iri="currentIri" />
-  </aside>
+  </div>
 </template>
 
 <script>
