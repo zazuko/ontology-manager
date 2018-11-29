@@ -291,7 +291,7 @@ import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, e
 import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import { Class } from '@/models/Class'
-import { toDataset, toNT, validate } from '@/models/Property'
+import { proposalDataset, toNT, validate } from '@/models/Property'
 
 export default {
   name: 'PropertyForm',
@@ -340,7 +340,7 @@ export default {
   },
   computed: {
     datasets () {
-      return toDataset(this.prop, false)
+      return proposalDataset(this.prop, false)
     },
     prop () {
       if (process.server) {
@@ -455,7 +455,7 @@ export default {
     },
     debugGenerateNT () {
       try {
-        const datasets = toDataset(this.prop)
+        const datasets = proposalDataset(this.prop)
         this.debugNT = toNT(null, datasets.ontology)
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
         this.debugNT += toNT(null, datasets.structure)
