@@ -39,6 +39,7 @@
               :key="range.value">
               <a
                 :href="rebaseIRI(range.value)"
+                rel="noopener noreferrer"
                 target="_blank">
                 {{ term(range.value) }}
               </a>
@@ -58,6 +59,7 @@
               <a
                 v-else
                 :href="rebaseIRI(otherClass.object.value)"
+                rel="noopener noreferrer"
                 target="_blank">
                 {{ term(otherClass.object) }}
               </a>
