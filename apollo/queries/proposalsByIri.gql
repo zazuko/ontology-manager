@@ -16,15 +16,6 @@ query GetUserContent ($iri: String!) {
       authorId,
       externalId,
       proposalObject
-      # answers: messagesByThreadId {
-      #   messages: nodes {
-      #     id,
-      #     body,
-      #     author: personByAuthorId {
-      #       name
-      #     }
-      #   }
-      # }
     }
   }
 }

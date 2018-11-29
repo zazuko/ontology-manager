@@ -7,7 +7,7 @@ function helpersFactory (octokit) {
   }
 
   async function getRefSHA ({ owner, repo, ref } = {}) {
-    const result = await octokit.repos.getShaOfCommitRef({ owner, repo, ref })
+    const result = await octokit.repos.getCommitRefSha({ owner, repo, ref })
 
     return result.data.sha
   }

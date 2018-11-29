@@ -166,6 +166,8 @@ export default {
         this.saveDraft()
       }, 2500)
     }
+
+    this.edit = this.edit || this.clss.isEdit
   },
   beforeMount () {
     // if we are editing an existing class, we populate the form with ontology data
