@@ -2,26 +2,22 @@
   <div class="container">
     <section
       v-if="iri"
-      class="main-content columns is-fullheight">
+      :class="{
+        'layout-objects-list': termIRI.creativeWork.equals(objectType),
+        'layout-object-details': termIRI.creativeWork.equals(objectType)
+      }">
       <script
         v-if="jsonld"
         id="data"
         type="application/ld+json"
         v-html="jsonld" />
+      <script v-else />
 
-      <side-nav
-        v-show="termIRI.Class.equals(objectType) || termIRI.Property.equals(objectType)"
-        :current-iri="iri" />
-
-      <article
-        :class="{
-          'is-9': termIRI.Class.equals(objectType),
-          'is-12': !termIRI.Class.equals(objectType),
-        }"
-        class="column is-9">
-
-        <div
-          v-if="termIRI.creativeWork.equals(objectType)">
+      <!-- layout-objects-list -->
+      <div
+        v-if="termIRI.creativeWork.equals(objectType)"
+        class="main-content columns is-fullheight">
+        <article class="column is-12">
           <section class="section">
             <div class="container has-text-centered">
               <h1 class="title">
@@ -32,43 +28,59 @@
               </h2>
             </div>
           </section>
+
           <structure
             :obj="subtree"
             :name="subtree.label"
             :ontology="ontology"
             :structure="structure"
             :is-class="termIRI.Class.equals(objectType)" />
-        </div>
-        <div v-else />
 
-        <object-details
-          v-if="object"
-          :object="object"
-          :ontology="ontology"
-          :structure="structure"
-          :is-class="termIRI.Class.equals(objectType)" />
+          <object-details
+            v-if="object"
+            :object="object"
+            :ontology="ontology"
+            :structure="structure"
+            :is-class="termIRI.Class.equals(objectType)" />
 
-        <!-- <hr v-show="termIRI.Class.equals(objectType) || termIRI.creativeWork.equals(objectType)" /> -->
+          <class-proposals
+            id="proposals"
+            :iri="iri" />
 
-        <property-proposals
-          v-if="termIRI.Class.equals(objectType)"
-          id="proposals"
-          :iri="iri" />
-        <class-proposals
-          v-else-if="termIRI.creativeWork.equals(objectType)"
-          id="proposals"
-          :iri="iri" />
-        <div v-else />
+        </article>
+      </div>
 
-        <div v-show="!termIRI.creativeWork.equals(objectType)">
+      <!-- layout-object-details -->
+      <div
+        v-else
+        class="main-content columns is-fullheight">
+        <side-nav :current-iri="iri" />
+
+        <article class="column is-9">
+
+          <object-details
+            v-if="object"
+            :object="object"
+            :ontology="ontology"
+            :structure="structure"
+            :is-class="termIRI.Class.equals(objectType)" />
+
+          <property-proposals
+            v-if="termIRI.Class.equals(objectType)"
+            id="proposals"
+            :iri="iri" />
+          <div v-else />
+
           <hr />
 
           <discussions
             id="conversations"
             :iri="iri" />
-        </div>
-      </article>
+        </article>
+      </div>
+
     </section>
+    <section v-else />
   </div>
 </template>
 
