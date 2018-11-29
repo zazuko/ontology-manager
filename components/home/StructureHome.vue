@@ -1,51 +1,49 @@
 <template>
-  <div>
-    <div class="tile is-vertical is-12">
-      <div class="tile is-parent">
-        <article class="tile is-child container-box">
-          <p class="title">
-            <nuxt-link
-              v-if="object.path"
-              :to="{ path: object.path, params: {} }">
-              {{ name }}
-            </nuxt-link>
-            <span
-              v-else>
-              {{ name }}
-            </span>
-          </p>
-          <p
-            v-if="true || object.type === 'class'"
-            class="subtitle">
-            {{ childClassesCount(object) }} Logistics Object{{ childClassesCount(object) === 1 ? '' : 's' }}
-            <br>
-            {{ childPropertiesCount(object) }} Propert{{ childPropertiesCount(object) === 1 ? 'y' : 'ies' }}
-          </p>
+  <div class="tile is-vertical is-12">
+    <div class="tile is-parent">
+      <article class="tile is-child container-box">
+        <p class="title">
+          <nuxt-link
+            v-if="object.path"
+            :to="{ path: object.path, params: {} }">
+            {{ name }}
+          </nuxt-link>
+          <span
+            v-else>
+            {{ name }}
+          </span>
+        </p>
+        <p
+          v-if="true || object.type === 'class'"
+          class="subtitle">
+          {{ childClassesCount(object) }} Logistics Object{{ childClassesCount(object) === 1 ? '' : 's' }}
+          <br>
+          {{ childPropertiesCount(object) }} Propert{{ childPropertiesCount(object) === 1 ? 'y' : 'ies' }}
+        </p>
 
+        <div
+          v-if="hasCreativeWorkChild(object)"
+          class="content">
           <div
-            v-if="hasCreativeWorkChild(object)"
-            class="content">
+            v-for="(group, index) in arrayToGroups(object)"
+            :key="index"
+            class="tile is-ancestor">
             <div
-              v-for="(group, index) in arrayToGroups(object)"
-              :key="index"
-              class="tile is-ancestor">
-              <div
-                v-for="child in group"
-                :key="child.path"
-                class="tile is-parent is-3">
-                <pouch-box
-                  :label="child.label"
-                  :to="{ path: child.path, params: {} }"
-                  :properties-count="childPropertiesCount(child)"
-                  :classes-count="childClassesCount(child)"
-                  :modified="child.modified"
-                  :type="child.type"
-                  class="" />
-              </div>
+              v-for="child in group"
+              :key="child.path"
+              class="tile is-parent is-3">
+              <pouch-box
+                :label="child.label"
+                :to="{ path: child.path, params: {} }"
+                :properties-count="childPropertiesCount(child)"
+                :classes-count="childClassesCount(child)"
+                :modified="child.modified"
+                :type="child.type"
+                class="" />
             </div>
           </div>
-        </article>
-      </div>
+        </div>
+      </article>
     </div>
   </div>
 </template>

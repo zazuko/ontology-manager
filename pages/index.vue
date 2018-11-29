@@ -1,6 +1,6 @@
 <template>
-  <div class="container layout-list">
-    <section class="container layout-list-head">
+  <div class="container layout-objects-list">
+    <section class="container layout-objects-list-head">
       <h1 class="main-title">
         ontology-editor
       </h1>
@@ -25,7 +25,7 @@
     <section
       v-for="(tree, index) in children"
       :key="index"
-      class="container layout-list-item">
+      class="container layout-objects-list-item">
       <structure-home
         :obj="tree"
         :name="tree.label"
