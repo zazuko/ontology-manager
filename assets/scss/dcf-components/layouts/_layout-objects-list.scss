@@ -1,0 +1,20 @@
+.layout-list-head {
+  padding: 2.5rem 0;
+
+  .main-title {
+    text-align: center;
+  }
+
+  .subtitle {
+    text-align: center;
+  }
+}
+
+.layout-list-item {
+  padding: 2rem 0;
+
+  .title {
+    @extend .is-size-3;
+    @extend .subtitle;
+  }
+}

@@ -1,32 +1,12 @@
-.layout-list-head {
-  padding: 2.5rem 0;
-
-  .main-title {
-    text-align: center;
-  }
-
-  .subtitle {
-    text-align: center;
-  }
-}
-
-.layout-list-item {
-  padding: 2rem 0;
-
-  .title {
-    @extend .is-size-3;
-    @extend .subtitle;
-  }
-}
-
 .class-box {
   @extend .box;
 
-  padding: 0.8rem 1.6rem;
+  padding: 0;
   background: $theme-dark-primary;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
 
   a {
+    padding: 0.8rem 1.6rem;
     display: block;
     color: white;
     text-decoration: none;

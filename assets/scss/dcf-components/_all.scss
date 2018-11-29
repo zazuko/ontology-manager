@@ -6,16 +6,21 @@ folder, add new files, etc.
 - It shouldn't be necessary to change anything in `scss/app.scss`
 
 */
+// general stylesheets
 @import "generic.scss";
+@import "navbar.scss";
 
-@import "layouts/layout-list.scss";
+// layout stylesheets
+@import "layouts/layout-objects-list.scss";
+@import "layouts/layout-object-details.scss";
 @import "layouts/layout-conversation.scss";
-@import "layouts/layout-request.scss";
 @import "layouts/layout-proposal.scss";
 @import "layouts/layout-admin.scss";
 
-@import "navbar.scss";
+// component stylesheets
+@import "components/class-box.scss";
 
+// old stylesheets
 @import "../white-label-components/admin.scss";
 @import "../white-label-components/discussions.scss";
 @import "../white-label-components/proposal-progression.scss";
