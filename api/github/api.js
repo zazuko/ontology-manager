@@ -34,7 +34,7 @@ module.exports = class GitHubAPIv3 {
     })
 
     const branchName = (new Date()).toISOString().replace(/:/g, '')
-    await octokit.gitdata.createReference({
+    await octokit.gitdata.createRef({
       ref: `refs/heads/${branchName}`,
       sha,
       owner,

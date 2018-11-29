@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import { Class, generateClassProposal, toDataset } from '@/models/Class'
+import { Class, generateClassProposal, proposalDataset } from '@/models/Class'
 import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
@@ -19,7 +19,7 @@ export const state = () => ({
 export const getters = {
   error: (state) => state.error,
   success: (state) => state.success,
-  dataset: (state) => toDataset(state.clss, false),
+  dataset: (state) => proposalDataset(state.clss, false),
   serialized: (state) => proposalSerializer(state.clss)
 }
 
@@ -92,12 +92,13 @@ export const actions = {
           }
         }
       `
+      const isEdit = state.clss.isEdit
 
       const variables = {
         iri: state.clss.parentStructureIRI,
         body: state.clss.motivation,
         proposalObject: JSON.parse(proposalSerializer(state.clss)),
-        headline: `New class '${state.clss.label}'`,
+        headline: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,
         threadType: 'PROPOSAL'
       }
 
@@ -132,12 +133,13 @@ export const actions = {
         structure: rootState.graph.structure,
         clss: state.clss
       })
+      const isEdit = state.clss.isEdit
 
       const id = await submitProposal({
         threadId: state.clss.threadId,
         object: state.clss,
-        title: `New class '${state.clss.label}'`,
-        message: `add class '${state.clss.label}'`,
+        title: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,
+        message: `${isEdit ? 'update' : 'add'} class '${state.clss.label}'`,
         ontologyContent: classProposalData.ontologyContent,
         structureContent: classProposalData.structureContent,
         token

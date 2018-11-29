@@ -1,24 +1,36 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { classBaseUrl } from '@/trifid/trifid.config.json'
-import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal } from '@/libs/rdf'
-import { toDataset as propToDataset } from '@/models/Property'
+import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal, mergedEditedOntology } from '@/libs/rdf'
+import { proposalDataset as propToDataset } from '@/models/Property'
 
 export function Class ({
   baseIRI = classBaseUrl,
   motivation = '',
   threadId = null,
-  iri = false,
+  iri = '',
+  // when editing a Class, originalIRI is the IRI that this.iri will replace
+  originalIRI = '',
   label = '',
   comment = '',
   description = '',
   example = '',
+  // domains added to this Class
   domains = [],
+  // domains removed from this Class, only used when editing a Class
+  domainsRemoved = [], // Array<string iri>
+  // Pouch/Container to which this Class belgons
   parentStructureIRI = '',
+  // properties newly added to this Class, either a Quad or a Property
   propChildren = [],
+  // true if it's a child and the box is collapsed
   collapsed = false,
+  // true if it's a child created from a proposal
   isNew = false,
-  isDraft = true
+  // false if the proposal got submitted
+  isDraft = true,
+  // true if the proposal is editing an existing object instead of not adding a new one
+  isEdit = false
 } = {}) {
   this.proposalType = 'Class'
   this.isDraft = isDraft
@@ -29,6 +41,7 @@ export function Class ({
   this.threadId = threadId
 
   this.iri = iri || this.baseIRI + normalizeLabel(label, 'pascal')
+  this.originalIRI = originalIRI
 
   this.label = label
   this.comment = comment
@@ -36,11 +49,14 @@ export function Class ({
   this.example = example
   this.domains = domains
 
+  this.domainsRemoved = domainsRemoved
+
   this.parentStructureIRI = parentStructureIRI
   this.propChildren = propChildren
 
   this.collapsed = collapsed
   this.isNew = isNew
+  this.isEdit = isEdit
   return this
 }
 
@@ -74,9 +90,11 @@ export function hydrate ({ ontology, structure }, iri) {
 
   const data = {
     proposalType: 'Class',
+    isEdit: true,
     isDraft: true,
     motivation: '',
     iri,
+    originalIRI: iri,
     label: labelQuad ? labelQuad.object.value : '',
     comment: commentQuad ? commentQuad.object.value : '',
     description: descriptionQuad ? descriptionQuad.object.value : '',
@@ -109,15 +127,32 @@ export function generateClassProposal (data) {
   const ontology = data.ontology
   const structure = data.structure
   const clss = data.clss
-  const datasets = toDataset(clss)
+  const datasets = proposalDataset(clss)
+
+  if (clss.isEdit && clss.originalIRI) {
+    datasets.ontology = mergedEditedOntology(clss.originalIRI, clss.iri, ontology, datasets.ontology)
+    datasets.structure = mergedEditedOntology(clss.originalIRI, clss.iri, structure, datasets.structure)
+
+    clss.domainsRemoved.forEach((iri) => {
+      datasets.ontology.removeMatches(rdf.namedNode(iri), termIRI.domain, rdf.namedNode(clss.iri))
+    })
+
+    return {
+      ontologyContent: datasetToCanonicalN3(datasets.ontology),
+      structureContent: datasetToCanonicalN3(datasets.structure)
+    }
+  }
 
   return {
-    ontologyContent: toNT(ontology, datasets.ontology),
-    structureContent: toNT(structure, datasets.structure)
+    ontologyContent: datasetToCanonicalN3(ontology.merge(datasets.ontology)),
+    structureContent: datasetToCanonicalN3(structure.merge(datasets.structure))
   }
 }
 
-export function toDataset (clss, validation = true) {
+// proposalDataset only contains changed/newer quads, things to remove
+// from the ontology (e.g. when editing a class to delete a property) need to
+// handled later
+export function proposalDataset (clss, validation = true) {
   if (validation) {
     validate(clss)
   }
@@ -155,17 +190,22 @@ export function toDataset (clss, validation = true) {
     rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, iri)
   ]
 
+  const ontology = rdf.dataset().addAll(quads)
+  const structure = rdf.dataset().addAll(structureQuads)
+
   return clss.propChildren.reduce((acc, propChild) => {
     const childDatasets = propToDataset(propChild, validation)
-    return {
-      ontology: acc.ontology.merge(childDatasets.ontology),
-      structure: acc.structure.merge(childDatasets.structure)
-    }
-  }, { ontology: rdf.dataset().addAll(quads), structure: rdf.dataset().addAll(structureQuads) })
+
+    const ontology = acc.ontology.merge(childDatasets.ontology)
+    const structure = acc.structure.merge(childDatasets.structure)
+
+    return { ontology, structure }
+  }, { ontology, structure })
 }
 
-export function toNT (baseDataset, newQuadsDataset) {
-  const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
+export function _debugNT (baseDataset, newQuadsDataset) {
+  const base = baseDataset ? baseDataset.clone() : rdf.dataset()
+  const dataset = base.merge(newQuadsDataset)
 
   return datasetToCanonicalN3(dataset)
 }

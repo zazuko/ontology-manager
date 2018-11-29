@@ -8,7 +8,8 @@
 
     <div
       v-if="disabled || !clss['collapsed']">
-      <!-- <div
+      <!--
+      <div
         v-show="!subform && clss['iri']"
         class="box debug">
         <div class="columns">
@@ -38,7 +39,8 @@
             </button>
           </div>
         </div>
-      </div> -->
+      </div>
+      -->
 
       <div
         :class="{
@@ -242,7 +244,7 @@ import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
 import { Property } from '@/models/Property'
-import { toDataset, toNT, validate } from '@/models/Class'
+import { generateClassProposal, proposalDataset, validate } from '@/models/Class'
 
 export default {
   name: 'ClassForm',
@@ -296,7 +298,7 @@ export default {
   },
   computed: {
     datasets () {
-      return toDataset(this.clss, false)
+      return proposalDataset(this.clss, false)
     },
     clss () {
       if (process.server) {
@@ -348,9 +350,14 @@ export default {
       this.$vuexPush('domains', searchResult)
     },
     unselectDomain (index) {
-      const childIndex = this.clss['propChildren'].indexOf(this.clss[`domains[${index}]`])
+      const domain = this.clss[`domains[${index}]`]
+      const childIndex = this.clss['propChildren'].indexOf(domain)
       this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
+
+      if (this.clss['isEdit']) {
+        this.$vuexPush('domainsRemoved', domain.iri)
+      }
     },
     createProperty (label) {
       const prop = new Property({ label, isNew: true })
@@ -370,18 +377,27 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
+      if (this.edit) {
+        const originalIRI = this.clss['originalIRI'] || this.clss['iri']
+        this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
+      }
       this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
     },
     debugGenerateNT () {
       try {
-        const datasets = toDataset(this.clss)
-        this.debugNT = toNT(null, datasets.ontology)
+        const output = generateClassProposal({
+          ontology: this.ontology,
+          structure: this.structure,
+          clss: this.clss
+        })
+        this.debugNT = output.ontologyContent
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-        this.debugNT += toNT(null, datasets.structure)
+        this.debugNT += output.structureContent
       }
       catch (err) {
         this.debugNT = err.message
+        console.error(err)
       }
     }
   }

@@ -277,3 +277,34 @@ export function externalIRIToQuad (iri) {
   )
   return range
 }
+
+export function mergedEditedOntology (_originalIRI, _newIRI, baseDataset, newDataset) {
+  const originalIRI = rdf.namedNode(_originalIRI)
+  const newIRI = rdf.namedNode(_newIRI)
+  baseDataset = baseDataset.clone()
+
+  newDataset.forEach(({ subject, predicate, object, graph }) => {
+    if (baseDataset.match(originalIRI, predicate, null).length === 1) {
+      baseDataset.removeMatches(originalIRI, predicate, null)
+    }
+    if (baseDataset.match(null, predicate, originalIRI).length === 1) {
+      baseDataset.removeMatches(null, predicate, originalIRI)
+    }
+  })
+
+  const out = baseDataset.merge(newDataset).map(({ subject, predicate, object, graph }) => {
+    const quad = rdf.quad(subject, predicate, object, graph)
+    if (subject.equals(originalIRI)) {
+      quad.subject = newIRI
+    }
+    if (object.equals(originalIRI)) {
+      quad.object = newIRI
+    }
+    if (predicate.equals(originalIRI)) {
+      quad.predicate = newIRI
+    }
+    return quad
+  })
+
+  return out
+}

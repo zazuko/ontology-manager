@@ -2,7 +2,7 @@ import { propertyBaseUrl } from '@/trifid/trifid.config.json'
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3, normalizeLabel } from '@/libs/rdf'
-import { toDataset as classToDataset } from '@/models/Class'
+import { proposalDataset as classToDataset } from '@/models/Class'
 
 export function Property ({
   baseIRI = propertyBaseUrl,
@@ -17,9 +17,10 @@ export function Property ({
   domains = [],
   parentStructureIRI = '',
   classChildren = [],
-  collapsed = false,
-  isNew = false,
-  isDraft = true
+  collapsed = false, // true if it's a child and the box is collapsed
+  isNew = false,     // true if it's a child created from a proposal
+  isDraft = true,    // false if the proposal got submitted
+  isEdit = false     // true if the proposal is to edit an existing object, not adding a new one
 } = {}) {
   this.proposalType = 'Property'
   this.isDraft = isDraft
@@ -64,7 +65,7 @@ export function generatePropertyProposal (data) {
   const ontology = data.ontology
   const structure = data.structure
   const property = data.property
-  const datasets = toDataset(property)
+  const datasets = proposalDataset(property)
 
   return {
     ontologyContent: toNT(ontology, datasets.ontology),
@@ -72,7 +73,7 @@ export function generatePropertyProposal (data) {
   }
 }
 
-export function toDataset (property, validation = true) {
+export function proposalDataset (property, validation = true) {
   if (validation) {
     validate(property)
   }
