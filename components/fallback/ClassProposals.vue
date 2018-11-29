@@ -1,30 +1,15 @@
 <template>
-  <div>
-    <section class="section">
+  <div class="tile is-vertical is-12">
+    <div class="tile is-parent">
+      <article class="tile is-child container-box">
+        <h1 class="title">Proposals</h1>
 
-      <div class="level">
-        <div class="level-left">
-          <h1 class="title">Proposals</h1>
-        </div>
-        <div class="level-right">
-          <span
-            class="level-item">
-            <nuxt-link
-              :to="{ name: 'proposal-class', query: { iri: iri } }"
-              class="button is-info">
-              Request New Class
-            </nuxt-link>
-          </span>
-        </div>
-      </div>
-
-      <div
-        v-if="_get(proposals, 'proposals.length')"
-        class="tile is-ancestor">
-        <div class="tile is-vertical is-12">
-          <div class="tile is-parent">
-            <article class="tile is-child container-box">
-              <div class="content">
+        <div
+          v-if="_get(proposals, 'proposals.length')"
+          class="tile is-child container-box">
+          <div class="content">
+            <div class="tile is-ancestor">
+              <div class="tile is-parent is-3">
                 <div
                   v-for="(group, i) in arrayToGroups({ children: _get(proposals, 'proposals', []) })"
                   :key="i"
@@ -41,15 +26,23 @@
                   </div>
                 </div>
               </div>
-            </article>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-else>
-        <p>No proposal on this object at the moment.</p>
-      </div>
+        <div v-else>
+          <p>No proposal on this object at the moment.</p>
+        </div>
 
-    </section>
+        <div
+          class="layout-objects-list-tools">
+          <nuxt-link
+            :to="{ name: 'proposal-class', query: { iri: iri } }"
+            class="button">
+            Request New Class
+          </nuxt-link>
+        </div>
+      </article>
+    </div>
   </div>
 </template>
 

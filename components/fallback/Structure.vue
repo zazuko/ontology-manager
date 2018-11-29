@@ -1,41 +1,44 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        {{ name }}: Logistics objects
-      </h1>
+  <div class="tile is-vertical is-12">
+    <div class="tile is-parent">
       <article class="tile is-child container-box">
-        <div
-          v-if="_get(obj, 'children.length', false)"
-          class="content">
+        <h1 class="title">
+          {{ name }}: Logistics objects
+        </h1>
+
+        <div class="tile is-child container-box">
           <div
-            v-for="(group, index) in arrayToGroups(obj)"
-            :key="index"
-            class="tile is-ancestor">
+            v-if="_get(obj, 'children.length', false)"
+            class="content">
             <div
-              v-for="child in group"
-              :key="child.path"
-              class="tile is-parent is-3">
-              <pouch-box
-                :label="child.label"
-                :to="{ path: child.path, params: {} }"
-                :properties-count="_get(child, 'properties.length', 0)"
-                :modified="child.modified"
-                :type="child.type"
-                class="" />
+              v-for="(group, index) in arrayToGroups(obj)"
+              :key="index"
+              class="tile is-ancestor">
+              <div
+                v-for="child in group"
+                :key="child.path"
+                class="tile is-parent is-3">
+                <pouch-box
+                  :label="child.label"
+                  :to="{ path: child.path, params: {} }"
+                  :properties-count="_get(child, 'properties.length', 0)"
+                  :modified="child.modified"
+                  :type="child.type"
+                  class="" />
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          v-else
-          class="content">
-          <p>
-            This pouch is empty.
-          </p>
+          <div
+            v-else
+            class="content">
+            <p>
+              This pouch is empty.
+            </p>
+          </div>
         </div>
       </article>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
