@@ -13,6 +13,16 @@
             alt="Edit class"
             title="Edit class">
         </nuxt-link>
+
+        <nuxt-link
+          v-else-if="false && isProperty"
+          :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
+          class="object-edit-button">
+          <img
+            src="~/assets/images/ic-edit-passive.svg"
+            alt="Edit property"
+            title="Edit property">
+        </nuxt-link>
         <span v-else />
       </h1>
       <div class="content">

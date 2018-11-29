@@ -2,20 +2,25 @@
   <div>
     <section class="section">
 
-      <div class="container">
+      <div
+        v-show="storeReady"
+        class="container">
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
             <h1 class="title">
-              Property Request<span
-                v-show="prop.name">:
-              "{{ prop.name }}"
+              {{ edit ? 'Request Changes on Property' : 'Request New Property' }}<span
+                v-show="prop.label">:
+              "{{ prop.label }}"
               </span>
             </h1>
             <h2 class="subtitle">
               On <code>{{ _iri }}</code>
             </h2>
-            <p>
+            <p v-show="edit">
+              This form allows suggesting modifications to the ontology.
+            </p>
+            <p v-show="!edit">
               This form allows suggesting new elements to include in the ontology.
             </p>
             <p>
@@ -30,6 +35,7 @@
             class="column is-3">
             <progression-box
               proposal-path="prop.prop"
+              :edit="edit"
               @step-done="finalize" />
           </div>
 
@@ -63,6 +69,7 @@
 
             <property-form
               :disabled="disabled"
+              :edit="edit"
               :iri="_iri">
 
               <p v-show="error">{{ error }}</p>
@@ -74,7 +81,7 @@
                   <button
                     id="submit"
                     class="button is-link is-medium"
-                    :disabled="!isReady"
+                    :disabled="!proposalReady"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
@@ -87,9 +94,22 @@
                   </button>
                 </p>
               </div>
+
             </property-form>
+
           </div>
 
+        </div>
+      </div>
+      <div
+        v-show="!storeReady"
+        class="modal is-active">
+        <div class="modal-background" />
+        <div class="modal-content has-text-centered">
+          <div class="box">
+            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
+            <p class="subtitle">Loading Data</p>
+          </div>
         </div>
       </div>
 
@@ -115,6 +135,7 @@ import { createNamespacedHelpers } from 'vuex'
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
+import { hydrate } from '@/models/Property'
 
 const {
   mapActions: propertyActions,
@@ -126,7 +147,8 @@ export default {
     const id = parseInt(query.id, 10)
     return {
       id: Number.isNaN(id) ? null : id,
-      iri: query.iri || ''
+      iri: query.iri || '',
+      edit: Boolean(query.edit)
     }
   },
   middleware: 'authenticated',
@@ -140,7 +162,8 @@ export default {
       saveInterval: null,
       disabled: false,
       isLoading: false,
-      isReady: true
+      proposalReady: true,
+      storeReady: false
     }
   },
   mounted () {
@@ -153,12 +176,23 @@ export default {
         this.saveDraft()
       }, 2500)
     }
+
+    this.edit = this.edit || this.prop.isEdit
   },
   beforeMount () {
+    // if we are editing an existing property, we populate the form with ontology data
+    if (this.edit) {
+      const ontology = this.$store.state.graph.ontology
+      const structure = this.$store.state.graph.structure
+      const prop = hydrate({ ontology, structure }, this.iri)
+      this.$store.commit('prop/LOAD', prop)
+      this.storeReady = true
+    }
     // if we have an ID from the URL here, we load
-    if (this.id) {
+    else if (this.id) {
       this.load(this.id)
         .then((isDraft) => {
+          this.storeReady = true
           if (isDraft !== true) {
             this.disabled = true
             return
@@ -175,6 +209,7 @@ export default {
     else {
       // otherwise we .clear() which creates a new one
       this.clear()
+      this.storeReady = true
     }
   },
   beforeDestroy () {
@@ -237,7 +272,7 @@ export default {
       return Promise.resolve()
     },
     finalize (flag) {
-      this.isReady = flag
+      this.proposalReady = flag
     }
   },
   validate ({ query }) {

@@ -19,17 +19,17 @@ export function Class ({
   domains = [],
   // domains removed from this Class, only used when editing a Class
   domainsRemoved = [], // Array<string iri>
-  // Pouch/Container to which this Class belgons
+  // Pouch/Container to which this Class belongs
   parentStructureIRI = '',
-  // properties newly added to this Class, either a Quad or a Property
-  propChildren = [],
+  // properties newly added to this Class
+  propChildren = [], // Array<Quad|Property>
   // true if it's a child and the box is collapsed
   collapsed = false,
   // true if it's a child created from a proposal
   isNew = false,
   // false if the proposal got submitted
   isDraft = true,
-  // true if the proposal is editing an existing object instead of not adding a new one
+  // true if the proposal is editing an existing object instead of adding a new one
   isEdit = false
 } = {}) {
   this.proposalType = 'Class'
@@ -47,8 +47,8 @@ export function Class ({
   this.comment = comment
   this.description = description
   this.example = example
-  this.domains = domains
 
+  this.domains = domains
   this.domainsRemoved = domainsRemoved
 
   this.parentStructureIRI = parentStructureIRI
@@ -79,17 +79,16 @@ export function validate (clss) {
 }
 
 export function hydrate ({ ontology, structure }, iri) {
-  const iriNode = rdf.namedNode(iri)
-  const parent = structure.match(null, null, iriNode).toArray()
+  const existingClassIRI = rdf.namedNode(iri)
+  const parent = structure.match(null, null, existingClassIRI).toArray()
   const parentStructureIRI = parent.length ? parent[0].subject.value : ''
 
-  const labelQuad = firstVal(ontology.match(iriNode, termIRI.label).toArray())
-  const commentQuad = firstVal(ontology.match(iriNode, termIRI.comment).toArray())
-  const descriptionQuad = firstVal(ontology.match(iriNode, termIRI.description).toArray())
-  const exampleQuad = firstVal(ontology.match(iriNode, termIRI.example).toArray())
+  const labelQuad = firstVal(ontology.match(existingClassIRI, termIRI.label).toArray())
+  const commentQuad = firstVal(ontology.match(existingClassIRI, termIRI.comment).toArray())
+  const descriptionQuad = firstVal(ontology.match(existingClassIRI, termIRI.description).toArray())
+  const exampleQuad = firstVal(ontology.match(existingClassIRI, termIRI.example).toArray())
 
   const data = {
-    proposalType: 'Class',
     isEdit: true,
     isDraft: true,
     motivation: '',
@@ -99,7 +98,7 @@ export function hydrate ({ ontology, structure }, iri) {
     comment: commentQuad ? commentQuad.object.value : '',
     description: descriptionQuad ? descriptionQuad.object.value : '',
     example: exampleQuad ? exampleQuad.object.value : '',
-    domains: ontology.match(null, termIRI.domain, iriNode).toArray().map(hydrateDomain),
+    domains: ontology.match(null, termIRI.domain, existingClassIRI).toArray().map(hydrateDomain),
     parentStructureIRI,
     propChildren: [],
     collapsed: false,
@@ -157,37 +156,37 @@ export function proposalDataset (clss, validation = true) {
     validate(clss)
   }
 
-  const iri = rdf.namedNode(clss.iri)
+  const newClassIRI = rdf.namedNode(clss.iri)
   const quads = [
-    rdf.quad(iri, termIRI.a, termIRI.Class),
-    rdf.quad(iri, termIRI.label, rdf.literal(clss.label)),
-    rdf.quad(iri, termIRI.comment, rdf.literal(clss.comment))
+    rdf.quad(newClassIRI, termIRI.a, termIRI.Class),
+    rdf.quad(newClassIRI, termIRI.label, rdf.literal(clss.label)),
+    rdf.quad(newClassIRI, termIRI.comment, rdf.literal(clss.comment))
   ]
 
   if (clss.description) {
-    quads.push(rdf.quad(iri, termIRI.description, rdf.literal(clss.description)))
+    quads.push(rdf.quad(newClassIRI, termIRI.description, rdf.literal(clss.description)))
   }
   if (clss.example) {
-    quads.push(rdf.quad(iri, termIRI.example, rdf.literal(clss.example)))
+    quads.push(rdf.quad(newClassIRI, termIRI.example, rdf.literal(clss.example)))
   }
 
   if (clss.domains.length) {
     const existingDomainsQuads = clss.domains.reduce((xs, domain) => {
-      let subject
+      let domainIRI
       if (domain instanceof QuadExt) {
-        subject = domain.subject
+        domainIRI = domain.subject
       }
       else {
-        subject = rdf.namedNode(domain.iri)
+        domainIRI = rdf.namedNode(domain.iri)
       }
-      xs.push(rdf.quad(subject, termIRI.domain, iri))
+      xs.push(rdf.quad(domainIRI, termIRI.domain, newClassIRI))
       return xs
     }, [])
     quads.push(...existingDomainsQuads)
   }
 
   const structureQuads = [
-    rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, iri)
+    rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, newClassIRI)
   ]
 
   const ontology = rdf.dataset().addAll(quads)
