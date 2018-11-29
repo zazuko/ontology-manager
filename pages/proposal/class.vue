@@ -3,7 +3,7 @@
     <section class="section">
 
       <div
-        v-if="storeReady"
+        v-show="storeReady"
         class="container">
         <div class="columns">
           <div class="column is-3" />
@@ -100,7 +100,17 @@
 
         </div>
       </div>
-      <div v-else />
+      <div
+        v-show="!storeReady"
+        class="modal is-active">
+        <div class="modal-background" />
+        <div class="modal-content has-text-centered">
+          <div class="box">
+            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
+            <p class="subtitle">Loading Data</p>
+          </div>
+        </div>
+      </div>
 
       <div
         :class="{ 'is-active': isLoading }"

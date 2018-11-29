@@ -162,12 +162,12 @@
                   <a
                     v-for="(domain, index) in prop['domains']"
                     :key="index"
-                    class:="{ 'is-active': index > 0 }"
+                    :class="{ 'is-active': (edit || index > 0) }"
                     class="panel-block">
                     <span
                       v-show="!disabled"
                       class="panel-icon"
-                      @click.prevent="index > 0 && unselectDomain(index)">
+                      @click.prevent="(edit || index > 0) && unselectDomain(index)">
                       <i class="mdi mdi-close-circle" />
                     </span>
                     {{ (domain.object && term(domain.object)) || domain.label }}
@@ -299,6 +299,11 @@ export default {
     iri: {
       type: String,
       required: true
+    },
+    edit: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     storePath: {
       type: String,
