@@ -1,10 +1,13 @@
 <template>
-  <div class="container">
-    <section
+  <!--
+  class="main-content columns is-fullheight"
+  -->
+  <div class="is-fullheight">
+    <div
       v-if="iri"
       :class="{
-        'layout-objects-list': termIRI.creativeWork.equals(objectType),
-        'layout-object-details': termIRI.creativeWork.equals(objectType)
+        'container layout-objects-list': termIRI.creativeWork.equals(objectType),
+        'container layout-object-details': !termIRI.creativeWork.equals(objectType)
       }">
       <script
         v-if="jsonld"
@@ -15,39 +18,45 @@
 
       <!-- layout-objects-list -->
       <div
-        v-if="termIRI.creativeWork.equals(objectType)"
-        class="main-content columns is-fullheight">
-        <article class="column is-12">
-          <section class="section">
-            <div class="container has-text-centered">
-              <h1 class="title">
-                {{ subtree.label }}
-              </h1>
-              <h2 class="subtitle">
-                {{ comment }}
-              </h2>
-            </div>
-          </section>
+        v-if="termIRI.creativeWork.equals(objectType)">
+        <section class="container layout-objects-list-head">
+          <h1 class="main-title">
+            {{ subtree.label }}
+          </h1>
+          <h2 class="subtitle">
+            {{ comment }}
+          </h2>
+        </section>
 
+        <section
+          class="container layout-objects-list-item">
           <structure
             :obj="subtree"
             :name="subtree.label"
             :ontology="ontology"
             :structure="structure"
             :is-class="termIRI.Class.equals(objectType)" />
+        </section>
 
-          <object-details
-            v-if="object"
-            :object="object"
-            :ontology="ontology"
-            :structure="structure"
-            :is-class="termIRI.Class.equals(objectType)" />
+        <!-- unable to display that part -->
+        <!-- should be wrapped inside that
+          <section
+            class="container layout-objects-list-item">
+          </section>
+        -->
+        <object-details
+          v-if="object"
+          :object="object"
+          :ontology="ontology"
+          :structure="structure"
+          :is-class="termIRI.Class.equals(objectType)" />
 
+        <section
+          class="container layout-objects-list-item">
           <class-proposals
             id="proposals"
             :iri="iri" />
-
-        </article>
+        </section>
       </div>
 
       <!-- layout-object-details -->
@@ -79,8 +88,8 @@
         </article>
       </div>
 
-    </section>
-    <section v-else />
+    </div>
+    <div v-else />
   </div>
 </template>
 
