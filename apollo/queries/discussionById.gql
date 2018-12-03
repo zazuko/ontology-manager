@@ -4,12 +4,21 @@ query GetDiscussion ($id: Int!) {
     headline,
     body,
     hat: hatByHatId {
+      id,
       title
     },
     author: personByAuthorId {
       id,
       name,
-      avatar
+      avatar,
+      holding: hatPeopleByPersonId {
+        hats: nodes {
+          hat: hatByHatId {
+            id,
+            title
+          }
+        }
+      }
     },
     iri,
     threadType,
@@ -24,9 +33,18 @@ query GetDiscussion ($id: Int!) {
         author: personByAuthorId {
           id,
           name,
-          avatar
+          avatar,
+          holding: hatPeopleByPersonId {
+            hats: nodes {
+              hat: hatByHatId {
+                id,
+                title
+              }
+            }
+          }
         },
         hat: hatByHatId {
+          id,
           title
         }
       }

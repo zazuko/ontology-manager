@@ -8,12 +8,14 @@
         On <code>{{ discussion.iri }}</code>
       </h2>
       <div class="box">
-        <discussion-card :discussion="discussion" />
+        <discussion-card
+          :discussion="discussion"
+          @refreshDiscussions="refreshDiscussions()"/>
       </div>
       <div class="box">
         <discussion-reply
           :id="id"
-          @answerAdded="answerAdded()" />
+          @answerAdded="refreshDiscussions()" />
       </div>
     </div>
   </section>
@@ -67,7 +69,7 @@ export default {
     }
   },
   methods: {
-    answerAdded () {
+    refreshDiscussions () {
       this.$apollo.queries.discussion.refetch()
         .then(() => {
           this.$toast.success('Answer successfully added!', toastClose)
