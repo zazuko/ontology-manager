@@ -15,7 +15,7 @@
         </nuxt-link>
 
         <nuxt-link
-          v-else-if="false && isProperty"
+          v-else-if="isProperty"
           :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
           class="object-edit-button">
           <img

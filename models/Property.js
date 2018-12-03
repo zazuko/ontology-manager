@@ -139,12 +139,33 @@ export function generatePropertyProposal (data) {
   const property = data.property
   const datasets = proposalDataset(property)
 
+  if (property.isEdit && property.originalIRI) {
+    datasets.ontology = mergedEditedOntology(property.originalIRI, property.iri, ontology, datasets.ontology)
+    datasets.structure = mergedEditedOntology(property.originalIRI, property.iri, structure, datasets.structure)
+
+    property.domainsRemoved.forEach((iri) => {
+      datasets.ontology.removeMatches(rdf.namedNode(property.iri), termIRI.domain, rdf.namedNode(iri))
+    })
+
+    property.rangesRemoved.forEach((iri) => {
+      datasets.ontology.removeMatches(rdf.namedNode(property.iri), termIRI.range, rdf.namedNode(iri))
+    })
+
+    return {
+      ontologyContent: datasetToCanonicalN3(datasets.ontology),
+      structureContent: datasetToCanonicalN3(datasets.structure)
+    }
+  }
+
   return {
-    ontologyContent: toNT(ontology, datasets.ontology),
-    structureContent: toNT(structure, datasets.structure)
+    ontologyContent: datasetToCanonicalN3(ontology.merge(datasets.ontology)),
+    structureContent: datasetToCanonicalN3(structure.merge(datasets.structure))
   }
 }
 
+// proposalDataset only contains changed/newer quads, things to remove
+// from the ontology (e.g. when editing a class to delete a property) need to
+// handled later
 export function proposalDataset (property, validation = true) {
   if (validation) {
     validate(property)
@@ -194,17 +215,22 @@ export function proposalDataset (property, validation = true) {
     quads.push(...existingDomainsQuads)
   }
 
+  const ontology = rdf.dataset().addAll(quads)
+  const structure = rdf.dataset()
+
   return property.classChildren.reduce((acc, classChild) => {
     const childDatasets = classToDataset(classChild, validation)
-    return {
-      ontology: acc.ontology.merge(childDatasets.ontology),
-      structure: acc.structure.merge(childDatasets.structure)
-    }
-  }, { ontology: rdf.dataset().addAll(quads), structure: rdf.dataset() })
+
+    const ontology = acc.ontology.merge(childDatasets.ontology)
+    const structure = acc.structure.merge(childDatasets.structure)
+
+    return { ontology, structure }
+  }, { ontology, structure })
 }
 
-export function toNT (baseDataset, newQuadsDataset) {
-  const dataset = (baseDataset ? baseDataset.clone() : rdf.dataset()).merge(newQuadsDataset)
+export function _debugNT (baseDataset, newQuadsDataset) {
+  const base = baseDataset ? baseDataset.clone() : rdf.dataset()
+  const dataset = base.merge(newQuadsDataset)
 
   return datasetToCanonicalN3(dataset)
 }
