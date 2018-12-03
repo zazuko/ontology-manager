@@ -135,7 +135,7 @@
         <hr>
 
         <div
-          v-show="validBase"
+          v-show="canContinue"
           class="columns">
           <div class="column">
             <div
@@ -239,7 +239,7 @@
           <div class="column">
             <button
               class="button is-success"
-              :disabled="!validBase"
+              :disabled="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.collapsed`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
             </button>
@@ -291,7 +291,7 @@ import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, e
 import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import { Class } from '@/models/Class'
-import { proposalDataset, toNT, validate } from '@/models/Property'
+import { proposalDataset, generatePropertyProposal, validate } from '@/models/Property'
 
 export default {
   name: 'PropertyForm',
@@ -360,7 +360,13 @@ export default {
         structure: datasets.structure.clone().merge(this.structure)
       }
     },
-    validBase () {
+    canContinue () {
+      // while editing a property we want to see the full form even if the
+      // property we're editing didn't have a short description (which would
+      // otherwise hide the end of the form)
+      if (this.edit) {
+        return true
+      }
       try {
         // this triggers validation
         validate(this.prop)
@@ -405,9 +411,14 @@ export default {
       }
     }, 400),
     unselectDomain (index) {
-      const childIndex = this.prop['classChildren'].indexOf(this.prop[`domains[${index}]`])
+      const domain = this.prop[`domains[${index}]`]
+      const childIndex = this.prop['classChildren'].indexOf(domain)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
+
+      if (this.prop['isEdit']) {
+        this.$vuexPush('domainsRemoved', domain.subject.value)
+      }
     },
     selectRange (searchResult) {
       const range = searchResult.domain
@@ -419,9 +430,14 @@ export default {
       this.$vuexPush('ranges', range)
     },
     unselectRange (index) {
-      const childIndex = this.prop['classChildren'].indexOf(this.prop[`ranges[${index}]`])
+      const range = this.prop[`ranges[${index}]`]
+      const childIndex = this.prop['classChildren'].indexOf(range)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('ranges', index)
+
+      if (this.prop['isEdit']) {
+        this.$vuexPush('rangesRemoved', range.subject.value)
+      }
     },
     createDomain (label) {
       const clss = new Class({ label, isNew: true })
@@ -460,13 +476,18 @@ export default {
     },
     debugGenerateNT () {
       try {
-        const datasets = proposalDataset(this.prop)
-        this.debugNT = toNT(null, datasets.ontology)
+        const datasets = generatePropertyProposal({
+          ontology: this.ontology,
+          structure: this.structure,
+          property: this.prop
+        })
+        this.debugNT = datasets.ontologyContent
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-        this.debugNT += toNT(null, datasets.structure)
+        this.debugNT += datasets.structureContent
       }
       catch (err) {
         this.debugNT = err.message
+        console.error(err)
       }
     }
   }
