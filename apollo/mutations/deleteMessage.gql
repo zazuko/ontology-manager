@@ -1,0 +1,9 @@
+mutation DeleteMessage ($messageId: Int!) {
+  deleteMessageById (input: {
+    id: $messageId
+  }) {
+    message {
+      id
+    }
+  }
+}

@@ -19,7 +19,7 @@
           src="~/assets/images/ic-trashcan-passive.svg"
           alt="Delete thread"
           title="Delete thread"
-          @click="deleteConfirm = true">
+          @click="deleteConfirm = 'thread'">
       </div>
     </div>
     <section>
@@ -158,10 +158,11 @@
               alt="Edit message"
               title="Edit message"
               @click="editMessageSetup(message)">
-              <!-- <img
+              <img
               src="~/assets/images/ic-trashcan-passive.svg"
               alt="Delete message"
-              title="Delete message"> -->
+              title="Delete message"
+              @click="deleteConfirm = message.id">
           </div>
         </div>
         <div
@@ -236,18 +237,35 @@
       }"
       class="modal">
       <div class="modal-background"></div>
-      <div class="modal-card">
-        <!-- <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
-        </header> -->
+      <div v-show="deleteConfirm === 'thread'" class="modal-card">
         <section class="modal-card-body">
-          You are about to delete this thread, are you sure?
+          <p>
+            You are about to delete this thread, are you sure?
+          </p>
         </section>
         <footer class="modal-card-foot">
           <button
             class="button is-danger"
             @click="closeThread">
+            Delete
+          </button>
+          <button
+            class="button"
+            @click="deleteConfirm = false">
+            Cancel
+          </button>
+        </footer>
+      </div>
+      <div v-show="typeof deleteConfirm === 'number'" class="modal-card">
+        <section class="modal-card-body">
+          <p>
+            You are about to delete a message, are you sure?
+          </p>
+        </section>
+        <footer class="modal-card-foot">
+          <button
+            class="button is-danger"
+            @click="deleteMessage(deleteConfirm)">
             Delete
           </button>
           <button
@@ -266,6 +284,7 @@ import _get from 'lodash/get'
 import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
 import updateMessage from '@/apollo/mutations/updateMessage'
+import deleteMessage from '@/apollo/mutations/deleteMessage'
 
 export default {
   name: 'DiscussionCard',
@@ -380,6 +399,21 @@ export default {
       this.$apollo.mutate({ mutation: updateMessage, variables })
         .then((result) => {
           this.editMessage = 0
+          this.$emit('refreshDiscussions')
+        })
+        .catch((err) => {
+          console.error(err)
+          this.$sentry.captureException(err)
+        })
+    },
+    deleteMessage (messageId) {
+      const variables = {
+        messageId: messageId,
+      }
+
+      this.$apollo.mutate({ mutation: deleteMessage, variables })
+        .then((result) => {
+          this.deleteConfirm = false
           this.$emit('refreshDiscussions')
         })
         .catch((err) => {
