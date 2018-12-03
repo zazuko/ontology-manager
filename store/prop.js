@@ -91,12 +91,13 @@ export const actions = {
           }
         }
       `
+      const isEdit = state.clss.isEdit
 
       const variables = {
         iri: state.prop.parentStructureIRI,
         body: state.prop.motivation,
         proposalObject: JSON.parse(proposalSerializer(state.prop)),
-        headline: `New property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
+        headline: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
         threadType: 'PROPOSAL'
       }
 
@@ -127,12 +128,13 @@ export const actions = {
         structure: rootState.graph.structure,
         property: state.prop
       })
+      const isEdit = state.clss.isEdit
 
       const id = await submitProposal({
         threadId: state.prop.threadId,
         object: state.prop,
-        title: `New property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
-        message: `add property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
+        title: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
+        message: `${isEdit ? 'update' : 'add'} property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
         ontologyContent: propertyProposalData.ontologyContent,
         structureContent: propertyProposalData.structureContent,
         token
