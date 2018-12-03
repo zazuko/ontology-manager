@@ -1,0 +1,13 @@
+mutation ($messageId: Int!, $body: String, $hatId: Int) {
+  updateMessageById (input: {
+    id: $messageId,
+    messagePatch: {
+      body: $body,
+      hatId: $hatId
+    }
+  }) {
+    message {
+      id
+    }
+  }
+}
