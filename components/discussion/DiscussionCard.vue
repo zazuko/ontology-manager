@@ -279,6 +279,7 @@ export default {
     return {
       editMessage: 0,
       selectedHat: '',
+      originalHat: '',
       messageBody: '',
       editThread: false,
       deleteConfirm: false,
@@ -358,7 +359,9 @@ export default {
       this.editMessage = message.id
       this.messageBody = message.body
       if (message.hat) {
-        this.selectedHat = message.hat.id
+        this.originalHat = this.selectedHat = message.hat.id
+      } else {
+        this.originalHat = this.selectedHat = ''
       }
     },
     saveMessage () {
@@ -366,8 +369,12 @@ export default {
         messageId: this.editMessage,
         body: this.messageBody
       }
+
       if (this.selectedHat) {
         variables.hatId = this.selectedHat
+      }
+      else if (this.originalHat) {
+        variables.hatId = null
       }
 
       this.$apollo.mutate({ mutation: updateMessage, variables })
