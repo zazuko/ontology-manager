@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="_get($auth, '$state.loggedIn', false)"
-      class="media reply-box">
+      class="media discussion-box">
       <figure class="media-left">
         <p
           v-if="_get($store, 'state.auth.user.avatar_url', false)"
