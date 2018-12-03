@@ -1,8 +1,24 @@
 <template>
   <div>
-    <h2 class="title is-4">
-      {{ discussion.headline }}
-    </h2>
+    <div class="level">
+      <div class="level-left">
+        <h2 class="title is-4">
+          {{ discussion.headline }}
+        </h2>
+      </div>
+      <div
+        v-show="isOwn(discussion.author.id)"
+        class="level-right discussion-action">
+        <img
+          src="~/assets/images/ic-edit-passive.svg"
+          alt="Edit discussion"
+          title="Edit discussion">
+        <img
+          src="~/assets/images/ic-trashcan-passive.svg"
+          alt="Delete discussion"
+          title="Delete discussion">
+      </div>
+    </div>
     <section>
       <div class="media topic-box">
         <figure class="media-left">
@@ -17,18 +33,6 @@
           <p class="content">
             {{ discussion.body }}
           </p>
-        </div>
-        <div
-          v-show="isOwn(discussion.author.id)"
-          class="media-right discussion-info">
-          <img
-            src="~/assets/images/ic-edit-passive.svg"
-            alt="Edit discussion"
-            title="Edit discussion">
-          <img
-            src="~/assets/images/ic-trashcan-passive.svg"
-            alt="Delete discussion"
-            title="Delete discussion">
         </div>
       </div>
       <div class="topic-info level">
@@ -123,9 +127,7 @@ export default {
   methods: {
     _get,
     isOwn (id) {
-      // TODO: implement edit & trash
-      return false
-      // return id === _get(this, '$store.state.auth.personId', NaN)
+      return id === _get(this, '$store.state.auth.personId', NaN)
     },
     authorsAvatar (name = '') {
       return `${name}'s avatar`
