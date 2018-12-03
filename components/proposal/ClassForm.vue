@@ -386,14 +386,14 @@ export default {
     },
     debugGenerateNT () {
       try {
-        const output = generateClassProposal({
+        const datasets = generateClassProposal({
           ontology: this.ontology,
           structure: this.structure,
           clss: this.clss
         })
-        this.debugNT = output.ontologyContent
+        this.debugNT = datasets.ontologyContent
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-        this.debugNT += output.structureContent
+        this.debugNT += datasets.structureContent
       }
       catch (err) {
         this.debugNT = err.message
