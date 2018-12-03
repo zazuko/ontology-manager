@@ -3,16 +3,18 @@
     <div class="level">
       <div class="level-left">
         <h2 class="title is-4">
-          {{ discussion.headline }}
+          {{ headline }}
         </h2>
       </div>
+
       <div
-        v-show="isOwn(discussion.author.id)"
+        v-show="canEdit(discussion.author.id)"
         class="level-right discussion-action">
         <img
           src="~/assets/images/ic-edit-passive.svg"
           alt="Edit discussion"
-          title="Edit discussion">
+          title="Edit discussion"
+          @click="editThread = !editThread">
         <img
           src="~/assets/images/ic-trashcan-passive.svg"
           alt="Delete discussion"
@@ -20,7 +22,9 @@
       </div>
     </div>
     <section>
-      <div class="media topic-box">
+      <div
+        v-show="!editThread"
+        class="media topic-box">
         <figure class="media-left">
           <p class="image is-48x48">
             <img
@@ -35,6 +39,59 @@
           </p>
         </div>
       </div>
+      <div
+        v-show="editThread"
+        class="media discussion-box">
+        <figure class="media-left">
+          <p class="image is-48x48">
+            <img
+              class="is-rounded"
+              :src="discussion.author.avatar"
+              :alt="authorsAvatar(discussion.author.name)">
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="field">
+            <div class="control">
+              <input
+                v-model="headline"
+                class="input"
+                type="text"
+                placeholder="Topic title">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <textarea
+                v-model="body"
+                class="textarea"
+                placeholder="Content" />
+            </div>
+          </div>
+        </div>
+
+        <div class="media-right">
+          <div class="opposite-fields">
+            <div class="field top">
+              <div class="control is-expanded has-text-right">
+                <span
+                  class="delete"
+                  @click="editThread = false"/>
+              </div>
+            </div>
+            <div class="field bottom">
+              <div class="control">
+                <button
+                  class="button is-link is-fullwidth"
+                  @click.prevent="saveTopic()">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="topic-info level">
         <div class="level-left">
           <span class="creation-info">
@@ -91,7 +148,7 @@
           </div>
         </div>
         <div
-          v-show="isOwn(message.author.id)"
+          v-show="canEdit(message.author.id)"
           class="media-right discussion-info">
           <img
             src="~/assets/images/ic-edit-passive.svg"
@@ -110,6 +167,7 @@
 
 <script>
 import _get from 'lodash/get'
+import updateDiscussion from '@/apollo/mutations/updateDiscussion'
 
 export default {
   name: 'DiscussionCard',
@@ -119,6 +177,14 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      editThread: false,
+      editAnswer: 0,
+      headline: this.discussion.headline,
+      body: this.discussion.body
+    }
+  },
   computed: {
     messages () {
       return _get(this, 'discussion.answers.messages', [])
@@ -126,7 +192,12 @@ export default {
   },
   methods: {
     _get,
-    isOwn (id) {
+    canEdit (id) {
+      if (this.$auth.$storage.getState('isAdmin')) {
+        // admins can edit anything
+        return true
+      }
+      // only author otherwise
       return id === _get(this, '$store.state.auth.personId', NaN)
     },
     authorsAvatar (name = '') {
@@ -139,7 +210,29 @@ export default {
       }
       const dateString = dateObj.toISOString()
       return dateString.substring(0, dateString.indexOf('T'))
-    }
+    },
+    saveTopic () {
+      const variables = {
+        threadId: this.discussion.id,
+        headline: this.headline,
+        body: this.body,
+      }
+
+      this.$apollo.mutate({ mutation: updateDiscussion, variables })
+        .then((result) => {
+          const id = _get(result, 'data.updateThreadById.thread.id')
+          if (id) {
+            this.$router.push({ name: 'discussion-id', params: { id } })
+          }
+          else {
+            console.error('Failed to redirect', result)
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+          this.$sentry.captureException(err)
+        })
+    },
   }
 }
 </script>

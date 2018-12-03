@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="media reply-box">
+    <div class="media discussion-box">
       <figure class="media-left">
         <p
           v-if="_get($store, 'state.auth.user.avatar_url', false)"
