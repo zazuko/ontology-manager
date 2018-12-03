@@ -18,7 +18,8 @@
         <img
           src="~/assets/images/ic-trashcan-passive.svg"
           alt="Delete discussion"
-          title="Delete discussion">
+          title="Delete discussion"
+          @click="deleteConfirm = true">
       </div>
     </div>
     <section>
@@ -114,59 +115,91 @@
 
     <div v-if="messages.length">
       <hr v-show="messages.length" />
-      <section
+      <div
         v-for="message in messages"
-        :key="message.id"
-        class="media answer-box">
-        <figure class="media-left">
-          <p class="image is-48x48">
-            <img
-              class="is-rounded"
-              :src="message.author.avatar"
-              :alt="authorsAvatar(message.author.name)">
-          </p>
-        </figure>
-        <div class="media-content">
-          <div class="answer-info">
-            <span
-              class="author-info">
-              {{ message.author.name }}
-            </span>
-            <span class="creation-info">
-              commented on {{ message.createdAt | formatDate }}
-            </span>
-          </div>
-          <div class="answer-content">
-            <p class="content">
-              {{ message.body }}
+        :key="message.id">
+        <section
+          v-show="message.id"
+          class="media answer-box">
+          <figure class="media-left">
+            <p class="image is-48x48">
+              <img
+                class="is-rounded"
+                :src="message.author.avatar"
+                :alt="authorsAvatar(message.author.name)">
             </p>
+          </figure>
+          <div class="media-content">
+            <div class="answer-info">
+              <span
+                class="author-info">
+                {{ message.author.name }}
+              </span>
+              <span class="creation-info">
+                commented on {{ message.createdAt | formatDate }}
+              </span>
+            </div>
+            <div class="answer-content">
+              <p class="content">
+                {{ message.body }}
+              </p>
+            </div>
+            <div
+              v-show="message.hat"
+              class="answer-hat">
+              {{ _get(message, 'hat.title', '') }}
+            </div>
           </div>
           <div
-            v-show="message.hat"
-            class="answer-hat">
-            {{ _get(message, 'hat.title', '') }}
+            v-show="canEdit(message.author.id)"
+            class="media-right discussion-info">
+            <img
+              src="~/assets/images/ic-edit-passive.svg"
+              alt="Edit discussion"
+              title="Edit discussion">
+            <img
+              src="~/assets/images/ic-trashcan-passive.svg"
+              alt="Delete discussion"
+              title="Delete discussion">
           </div>
-        </div>
-        <div
-          v-show="canEdit(message.author.id)"
-          class="media-right discussion-info">
-          <img
-            src="~/assets/images/ic-edit-passive.svg"
-            alt="Edit discussion"
-            title="Edit discussion">
-          <img
-            src="~/assets/images/ic-trashcan-passive.svg"
-            alt="Delete discussion"
-            title="Delete discussion">
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
     <div v-else />
+    <div
+      :class="{
+        'is-active': deleteConfirm
+      }"
+      class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <!-- <header class="modal-card-head">
+          <p class="modal-card-title">Modal title</p>
+          <button class="delete" aria-label="close"></button>
+        </header> -->
+        <section class="modal-card-body">
+          You are about to delete this thread, are you sure?
+        </section>
+        <footer class="modal-card-foot">
+          <button
+            class="button is-danger"
+            @click="closeThread">
+            Delete
+          </button>
+          <button
+            class="button"
+            @click="deleteConfirm = false">
+            Cancel
+          </button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import _get from 'lodash/get'
+import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
 
 export default {
@@ -181,6 +214,7 @@ export default {
     return {
       editThread: false,
       editAnswer: 0,
+      deleteConfirm: false,
       headline: this.discussion.headline,
       body: this.discussion.body
     }
@@ -188,6 +222,14 @@ export default {
   computed: {
     messages () {
       return _get(this, 'discussion.answers.messages', [])
+    }
+  },
+  watch: {
+    'discussion.headline' () {
+      this.headline = this.discussion.headline
+    },
+    'discussion.body' () {
+      this.body = this.discussion.body
     }
   },
   methods: {
@@ -215,24 +257,34 @@ export default {
       const variables = {
         threadId: this.discussion.id,
         headline: this.headline,
-        body: this.body,
+        body: this.body
       }
 
       this.$apollo.mutate({ mutation: updateDiscussion, variables })
         .then((result) => {
-          const id = _get(result, 'data.updateThreadById.thread.id')
-          if (id) {
-            this.$router.push({ name: 'discussion-id', params: { id } })
-          }
-          else {
-            console.error('Failed to redirect', result)
-          }
+          this.editThread = false
         })
         .catch((err) => {
           console.error(err)
           this.$sentry.captureException(err)
         })
     },
+    closeThread () {
+      const variables = {
+        threadId: this.discussion.id,
+        newStatus: 'HIDDEN'
+      }
+
+      this.$apollo.mutate({ mutation: changeDiscussionStatus, variables })
+        .then((result) => {
+          this.deleteConfirm = false
+          this.$router.push({ path: '/' })
+        })
+        .catch((err) => {
+          console.error(err)
+          this.$sentry.captureException(err)
+        })
+    }
   }
 }
 </script>

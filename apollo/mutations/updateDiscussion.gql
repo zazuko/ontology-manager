@@ -1,0 +1,15 @@
+mutation ($threadId: Int!, $headline: String!, $body: String!) {
+  updateThreadById (input: {
+    id: $threadId,
+    threadPatch: {
+      headline: $headline,
+      body: $body
+    }
+  }) {
+    thread {
+      id,
+      headline,
+      body
+    }
+  }
+}
