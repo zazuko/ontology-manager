@@ -3,7 +3,7 @@
     <div class="level">
       <div class="level-left">
         <h2 class="title is-4">
-          {{ headline }}
+          {{ threadHeadline }}
         </h2>
       </div>
 
@@ -12,13 +12,13 @@
         class="level-right discussion-action">
         <img
           src="~/assets/images/ic-edit-passive.svg"
-          alt="Edit discussion"
-          title="Edit discussion"
+          alt="Edit thread"
+          title="Edit thread"
           @click="editThread = !editThread">
         <img
           src="~/assets/images/ic-trashcan-passive.svg"
-          alt="Delete discussion"
-          title="Delete discussion"
+          alt="Delete thread"
+          title="Delete thread"
           @click="deleteConfirm = true">
       </div>
     </div>
@@ -55,7 +55,7 @@
           <div class="field">
             <div class="control">
               <input
-                v-model="headline"
+                v-model="threadHeadline"
                 class="input"
                 type="text"
                 placeholder="Topic title">
@@ -64,7 +64,7 @@
           <div class="field">
             <div class="control">
               <textarea
-                v-model="body"
+                v-model="threadBody"
                 class="textarea"
                 placeholder="Content" />
             </div>
@@ -77,7 +77,7 @@
               <div class="control is-expanded has-text-right">
                 <span
                   class="delete"
-                  @click="editThread = false"/>
+                  @click="editThread = false" />
               </div>
             </div>
             <div class="field bottom">
@@ -118,8 +118,8 @@
       <div
         v-for="message in messages"
         :key="message.id">
-        <section
-          v-show="message.id"
+        <div
+          v-show="message.id && editMessage !== message.id"
           class="media answer-box">
           <figure class="media-left">
             <p class="image is-48x48">
@@ -155,14 +155,78 @@
             class="media-right discussion-info">
             <img
               src="~/assets/images/ic-edit-passive.svg"
-              alt="Edit discussion"
-              title="Edit discussion">
-            <img
+              alt="Edit message"
+              title="Edit message"
+              @click="editMessageSetup(message)">
+              <!-- <img
               src="~/assets/images/ic-trashcan-passive.svg"
-              alt="Delete discussion"
-              title="Delete discussion">
+              alt="Delete message"
+              title="Delete message"> -->
           </div>
-        </section>
+        </div>
+        <div
+          v-show="editMessage === message.id"
+          class="is-paddingless box">
+          <button
+            class="delete is-pulled-right"
+            title="Cancel"
+            @click="editMessage = 0">
+            Cancel
+          </button>
+          <div class="media discussion-box">
+            <figure class="media-left">
+              <p class="image is-48x48">
+                <img
+                  class="is-rounded"
+                  :src="message.author.avatar"
+                  :alt="authorsAvatar(message.author.name)">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="field">
+                <div class="control">
+                  <textarea
+                    v-model="messageBody"
+                    class="textarea"
+                    placeholder="Content" />
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <div class="opposite-fields">
+                <div
+                  v-show="_get(message, 'author.holding.hats.length', 0)"
+                  class="field top">
+                  <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                      <select
+                        v-model="selectedHat">
+                        <option value="">
+                          Answer as…
+                        </option>
+                        <option
+                          v-for="item in _get(message, 'author.holding.hats', [])"
+                          :key="item.hat.id"
+                          :value="item.hat.id">
+                          {{ item.hat.title }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="field bottom">
+                  <div class="control">
+                    <button
+                      class="button is-link is-fullwidth"
+                      @click.prevent="saveMessage()">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-else />
@@ -201,6 +265,7 @@
 import _get from 'lodash/get'
 import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
+import updateMessage from '@/apollo/mutations/updateMessage'
 
 export default {
   name: 'DiscussionCard',
@@ -212,11 +277,13 @@ export default {
   },
   data () {
     return {
+      editMessage: 0,
+      selectedHat: '',
+      messageBody: '',
       editThread: false,
-      editAnswer: 0,
       deleteConfirm: false,
-      headline: this.discussion.headline,
-      body: this.discussion.body
+      threadHeadline: this.discussion.headline,
+      threadBody: this.discussion.body
     }
   },
   computed: {
@@ -226,10 +293,10 @@ export default {
   },
   watch: {
     'discussion.headline' () {
-      this.headline = this.discussion.headline
+      this.threadHeadline = this.discussion.headline
     },
     'discussion.body' () {
-      this.body = this.discussion.body
+      this.threadBody = this.discussion.body
     }
   },
   methods: {
@@ -256,13 +323,14 @@ export default {
     saveTopic () {
       const variables = {
         threadId: this.discussion.id,
-        headline: this.headline,
-        body: this.body
+        headline: this.threadHeadline,
+        body: this.threadBody
       }
 
       this.$apollo.mutate({ mutation: updateDiscussion, variables })
         .then((result) => {
           this.editThread = false
+          this.$emit('refreshDiscussions')
         })
         .catch((err) => {
           console.error(err)
@@ -278,7 +346,34 @@ export default {
       this.$apollo.mutate({ mutation: changeDiscussionStatus, variables })
         .then((result) => {
           this.deleteConfirm = false
+          this.$emit('refreshDiscussions')
           this.$router.push({ path: '/' })
+        })
+        .catch((err) => {
+          console.error(err)
+          this.$sentry.captureException(err)
+        })
+    },
+    editMessageSetup (message) {
+      this.editMessage = message.id
+      this.messageBody = message.body
+      if (message.hat) {
+        this.selectedHat = message.hat.id
+      }
+    },
+    saveMessage () {
+      const variables = {
+        messageId: this.editMessage,
+        body: this.messageBody
+      }
+      if (this.selectedHat) {
+        variables.hatId = this.selectedHat
+      }
+
+      this.$apollo.mutate({ mutation: updateMessage, variables })
+        .then((result) => {
+          this.editMessage = 0
+          this.$emit('refreshDiscussions')
         })
         .catch((err) => {
           console.error(err)
