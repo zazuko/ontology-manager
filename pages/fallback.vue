@@ -65,11 +65,11 @@
         v-else
         v-show="dataReady"
         class="columns">
-        <aside class="column is-3 is-narrow-mobile is-hidden-mobile">
+        <aside class="layout-object-details-sidenav column is-3 is-narrow-mobile is-hidden-mobile">
           <side-nav :current-iri="iri" />
         </aside>
 
-        <section class="column is-9">
+        <section class="layout-object-details-content column is-9">
           <object-details
             v-if="object"
             :object="object"
@@ -82,8 +82,6 @@
             id="proposals"
             :iri="iri" />
           <div v-else />
-
-          <hr />
 
           <discussions
             id="conversations"

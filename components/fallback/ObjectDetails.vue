@@ -1,23 +1,30 @@
 <template>
-  <section class="section has-background-white">
+  <section class="section">
     <article>
+      <nav class="breadcrumb">
+        <ul>
+          <li><a href="#">Bulma</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Components</a></li>
+        </ul>
+      </nav>
+
       <h1 class="title is-1">
         {{ label(iri) }}
 
         <nuxt-link
           v-if="isClass"
           :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
-          class="object-edit-button">
+          class="title-edit-button">
           <img
             src="~/assets/images/ic-edit-passive.svg"
             alt="Edit class"
             title="Edit class">
         </nuxt-link>
-
         <nuxt-link
           v-else-if="isProperty"
           :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
-          class="object-edit-button">
+          class="title-edit-button">
           <img
             src="~/assets/images/ic-edit-passive.svg"
             alt="Edit property"
@@ -25,24 +32,25 @@
         </nuxt-link>
         <span v-else />
       </h1>
+
       <div class="content">
-        <ul>
-          <li v-show="isClass">Go to <a href="#proposals">Proposals</a></li>
-          <li>Go to <a href="#conversations">Conversation</a></li>
+        <ul class="goto-nav">
+          <li v-show="isClass"><a href="#proposals">Proposals</a></li>
+          <li><a href="#conversations">Conversation</a></li>
         </ul>
 
         <div v-show="comment">
-          <p class="title is-5">Short Description</p>
-          <blockquote>
+          <p class="title is-2">Short Description</p>
+          <p>
             {{ comment }}
-          </blockquote>
+          </p>
         </div>
 
         <div v-show="description">
-          <p class="title is-5">Long Description</p>
-          <blockquote>
+          <p class="title is-3">Long Description</p>
+          <p>
             {{ description }}
-          </blockquote>
+          </p>
         </div>
       </div>
 
@@ -60,11 +68,12 @@
           </p>
         </div>
       </div>
+
       <div v-else>
         <section
           class="content"
           v-show="rangeOf.length">
-          <h4 class="title is-5">
+          <h4 class="title is-2">
             Values are of types
           </h4>
           <ul class="types-list">
@@ -78,7 +87,7 @@
         <section
           class="content"
           v-show="usedOn.length">
-          <h4 class="title is-5">
+          <h4 class="title is-2">
             Used on types
           </h4>
           <ul class="types-list">

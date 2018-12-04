@@ -1,19 +1,12 @@
 <template>
-  <section class="section has-background-white">
+  <section class="section">
+    <h1 class="title is-2">Conversations</h1>
 
-    <div class="level">
-      <div class="level-left">
-        <h1 class="title">Conversations</h1>
-      </div>
-      <div class="level-right">
-        <nuxt-link
-          :to="{ name: 'discussion-new', query: { iri: iri } }"
-          class="button is-info">
-          New Thread
-        </nuxt-link>
-      </div>
-    </div>
-
+    <nuxt-link
+      :to="{ name: 'discussion-new', query: { iri: iri } }"
+      class="button is-info">
+      New Thread
+    </nuxt-link>
     <div
       class="content"
       v-if="_get(discussions, 'discussions.length', 0) === 0">
