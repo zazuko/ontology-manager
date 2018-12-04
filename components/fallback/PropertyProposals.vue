@@ -1,13 +1,14 @@
 <template>
   <section class="section">
-      <h2 class="title is-2">
-        Proposals
-        <nuxt-link
-          :to="{ name: 'proposal-property', query: { iri: iri } }"
-          class="title-edit-button">
-          +
-        </nuxt-link>
-      </h2>
+    <h2 class="title is-2">
+      Proposals
+      <nuxt-link
+        :to="{ name: 'proposal-property', query: { iri: iri } }"
+        title="Request new property"
+        class="title-edit-button">
+        +
+      </nuxt-link>
+    </h2>
 
     <table
       v-if="_get(proposals, 'proposals.length')"
