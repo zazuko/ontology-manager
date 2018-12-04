@@ -22,8 +22,8 @@
                       :label="proposal.proposalObject.label"
                       :to="{ name: 'proposal-id', params: { id: proposal.id } }"
                       :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
+                      :is-proposal="true"
                       type="class"
-                      is-proposal="true"
                       class="" />
                   </div>
                 </div>
