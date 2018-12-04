@@ -10,7 +10,7 @@
       <div class="box">
         <discussion-card
           :discussion="discussion"
-          @refreshDiscussions="refreshDiscussions()"/>
+          @refreshDiscussions="refreshDiscussions()" />
       </div>
       <div class="box">
         <discussion-reply

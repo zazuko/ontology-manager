@@ -1,7 +1,11 @@
 <template>
   <article class="tile is-child class-box">
     <nuxt-link :to="(to.name || to.path) ? to : ''">
-      <span v-show="isProposal" class="class-box-toast">In Draft</span>
+      <span
+        v-show="isProposal"
+        class="class-box-toast">
+        Proposal
+      </span>
       <p class="class-box-update">
         Last updated:
         <span v-if="modified">
