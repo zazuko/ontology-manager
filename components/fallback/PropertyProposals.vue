@@ -11,7 +11,7 @@
 
     <table
       v-if="_get(proposals, 'proposals.length')"
-      class="table is-fullwidth">
+      class="table generic-table is-fullwidth">
       <thead>
         <tr>
           <th>

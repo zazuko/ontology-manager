@@ -17,6 +17,9 @@ folder, add new files, etc.
 @import "layouts/layout-proposal.scss";
 @import "layouts/layout-admin.scss";
 
+// generic stylesheets
+@import "generics/table.scss";
+
 // component stylesheets
 @import "components/class-box.scss";
 

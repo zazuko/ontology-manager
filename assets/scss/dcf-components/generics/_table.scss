@@ -1,0 +1,32 @@
+table.generic-table {
+  thead th {
+    border-bottom: solid 1px $theme-light-primary;
+  }
+
+  th {
+    color: $theme-light-primary;
+    font-weight: normal;
+  }
+
+  th, td {
+    padding: 1em 1em 1em 0;
+  }
+
+  td {
+    font-size: .9em;
+
+    a {
+      font-weight: bold;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: $theme-light-primary;
+      }
+    }
+  }
+
+  tr:last-child td {
+    border-bottom: solid 1px #dbdbdb;
+  }
+}

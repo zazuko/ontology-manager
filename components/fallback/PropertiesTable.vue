@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="_get(ontology, '_quads.length') !== 0">
-      <table class="table is-fullwidth has-background-white">
+      <table class="table generic-table is-fullwidth">
         <thead>
           <tr>
             <th>
@@ -23,7 +23,7 @@
               <link-to-IRI :term="property.subject" />
             </td>
             <td>
-              <ul class="types-list">
+              <ul>
                 <li
                   v-for="range in rangeOf(property.subject.value, ontology)"
                   :key="range.value">
