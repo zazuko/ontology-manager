@@ -44,7 +44,10 @@
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">New Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span></h2>
+            <h2 class="title">
+              <span v-show="!prop['isEdit']">New</span>
+              Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
+            </h2>
             <p
               v-show="prop['iri']"
               class="subtitle">
@@ -468,9 +471,15 @@ export default {
       }
       this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-      if (!this.subform && this.prop['domains.length'] === 0) {
-        const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
-        this.$vuexPush('domains', currentLabelQuad)
+      if (!this.subform) {
+        if (this.edit) {
+          const originalIRI = this.prop['originalIRI'] || this.prop['iri']
+          this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
+        }
+        if (this.prop['domains.length'] === 0) {
+          const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
+          this.$vuexPush('domains', currentLabelQuad)
+        }
       }
       this.onParentIRIChange()
     },

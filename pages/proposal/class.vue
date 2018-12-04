@@ -176,8 +176,6 @@ export default {
         this.saveDraft()
       }, 2500)
     }
-
-    this.edit = this.edit || this.clss.isEdit
   },
   beforeMount () {
     // if we are editing an existing class, we populate the form with ontology data
@@ -193,6 +191,7 @@ export default {
       this.load(this.id)
         .then((isDraft) => {
           this.storeReady = true
+          this.edit = this.clss.isEdit
           if (isDraft !== true) {
             this.disabled = true
             return
