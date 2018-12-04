@@ -1,16 +1,28 @@
 <template>
   <section class="section">
     <article>
-      <nav class="breadcrumb">
-        <ul>
-          <li><a href="#">Bulma</a></li>
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">Components</a></li>
+      <nav
+        class="breadcrumb">
+        <ul
+          v-for="(breadcrumb, index) in breadcrumbs"
+          :key="index">
+          <li
+            v-for="item in breadcrumb"
+            :key="item.target">
+            <nuxt-link :to="{ path: item.target }">
+              {{ item.label }}
+            </nuxt-link>
+          </li>
+          <li>
+            <a href="#">
+              {{ label(iri, ontology) }}
+            </a>
+          </li>
         </ul>
       </nav>
 
       <h1 class="title is-1">
-        {{ label(iri) }}
+        {{ label(iri, ontology) }}
 
         <nuxt-link
           v-if="isClass"
@@ -112,6 +124,7 @@ import PropertiesTable from './PropertiesTable'
 import LinkToIRI from './LinkToIRI'
 import { termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
 import { findClassProperties } from '@/libs/utils'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'ObjectDetails',
@@ -136,18 +149,23 @@ export default {
       default: () => rdf.dataset()
     }
   },
+  data () {
+    return {
+      bothDatasets: undefined
+    }
+  },
   computed: {
     iri () {
       const iri = _get(this.object.toArray(), '[0].subject', { value: '' })
       return iri
     },
     comment () {
-      const label = this.ontology.match(this.iri, termIRI.comment).toArray()
-      return _get(label, '[0].object.value', '')
+      const commentQuad = this.ontology.match(this.iri, termIRI.comment).toArray()
+      return _get(commentQuad, '[0].object.value', '')
     },
     description () {
-      const label = this.ontology.match(this.iri, termIRI.description).toArray()
-      return _get(label, '[0].object.value', '')
+      const descriptionQuad = this.ontology.match(this.iri, termIRI.description).toArray()
+      return _get(descriptionQuad, '[0].object.value', '')
     },
     properties () {
       if (this.isClass) {
@@ -160,7 +178,7 @@ export default {
       const classes = usedOnClasses(this.iri.value, this.ontology)
       return classes.map(({ object }) => {
         return {
-          label: this.label(object),
+          label: this.label(object, this.ontology),
           url: rebaseIRI(object.value)
         }
       })
@@ -174,12 +192,72 @@ export default {
     },
     isProperty () {
       return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Property).toArray().length)
+    },
+    breadcrumbs () {
+      this.init()
+      const structureTree = cloneDeep(this.$store.state.graph.structureTree)
+
+      if (this.isProperty) {
+        const parents = this.findPropertyParents(this.iri)
+        return parents.map((parent) => {
+          const path = []
+          let child = this.findInTree(parent.iri, structureTree[0])
+          while (child.parent) {
+            const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
+            const target = rebaseIRI(child.iri)
+            path.push({ label, target })
+            child = child.parent
+          }
+          path.reverse()
+          return path
+        })
+      }
+      else if (this.isClass) {
+        const path = []
+        let child = this.findInTree(this.iri.value, structureTree[0])
+        while (child.parent) {
+          const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
+          const target = rebaseIRI(child.iri)
+          path.push({ label, target })
+          child = child.parent
+        }
+        path.reverse()
+        path.pop()
+        return [path]
+      }
+      return ''
     }
   },
   methods: {
-    label (iri) {
-      const label = this.ontology.match(iri, termIRI.label).toArray()
+    init () {
+      if (!this.bothDatasets) {
+        this.bothDatasets = this.ontology.clone().merge(this.structure)
+      }
+    },
+    label (iri, dataset) {
+      const label = dataset.match(iri, termIRI.label).toArray()
       return _get(label, '[0].object.value', '')
+    },
+    findInTree (iri, tree) {
+      for (const child of tree.children) {
+        child.parent = tree
+        if (child.iri === iri) {
+          return child
+        }
+        const found = this.findInTree(iri, child)
+        if (found) {
+          return found
+        }
+      }
+    },
+    findPropertyParents (iri) {
+      return this.ontology.match(iri, termIRI.domain)
+        .toArray()
+        .map(({ object }) => {
+          const label = this.label(object, this.bothDatasets)
+          const target = rebaseIRI(object.value)
+          return { iri: object.value, label, target }
+        })
     }
   }
 }
