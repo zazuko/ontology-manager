@@ -15,7 +15,8 @@ query GetUserContent ($iri: String!) {
       threadType,
       authorId,
       externalId,
-      proposalObject
+      proposalObject,
+      updatedAt
     }
   }
 }
