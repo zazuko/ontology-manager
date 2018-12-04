@@ -20,8 +20,11 @@ build:
     # all the build-arg variables should be set in the env where the build gets executed
     - docker build --pull -t "$CI_REGISTRY_IMAGE/web" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRESQL_HOST --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg POSTGRESQL_POSTGRAPHILE_PASSWORD --build-arg OAUTH_TOKEN_SECRET --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg EDITOR_HOST -f docker-app-prod/Dockerfile.web .
     - docker push "$CI_REGISTRY_IMAGE/web"
-    - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    # spare registry disk space
+    # - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    # - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:latest"
+    - docker push "$CI_REGISTRY_IMAGE/web:latest"
   only:
     - tags
 
@@ -29,6 +32,7 @@ deploy:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
-    - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
+    # - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
+    - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:latest
   only:
     - tags
