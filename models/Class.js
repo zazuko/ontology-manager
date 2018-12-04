@@ -15,6 +15,7 @@ export function Class ({
   comment = '',
   description = '',
   example = '',
+  isDeprecated = false,
   // domains added to this Class
   domains = [],
   // domains removed from this Class, only used when editing a Class
@@ -24,7 +25,7 @@ export function Class ({
   // properties newly added to this Class
   propChildren = [], // Array<Quad|Property>
   // true if it's a child and the box is collapsed
-  collapsed = false,
+  isSubFormCollapsed = false,
   // true if it's a child created from a proposal
   isNew = false,
   // false if the proposal got submitted
@@ -47,6 +48,7 @@ export function Class ({
   this.comment = comment
   this.description = description
   this.example = example
+  this.isDeprecated = isDeprecated
 
   this.domains = domains
   this.domainsRemoved = domainsRemoved
@@ -54,7 +56,7 @@ export function Class ({
   this.parentStructureIRI = parentStructureIRI
   this.propChildren = propChildren
 
-  this.collapsed = collapsed
+  this.isSubFormCollapsed = isSubFormCollapsed
   this.isNew = isNew
   this.isEdit = isEdit
   return this
@@ -101,7 +103,7 @@ export function hydrate ({ ontology, structure }, iri) {
     domains: ontology.match(null, termIRI.domain, existingClassIRI).toArray().map(hydrateDomain),
     parentStructureIRI,
     propChildren: [],
-    collapsed: false,
+    isSubFormCollapsed: false,
     isNew: false
   }
   const clss = new Class(data)
@@ -156,18 +158,22 @@ export function proposalDataset (clss, validation = true) {
     validate(clss)
   }
 
-  const newClassIRI = rdf.namedNode(clss.iri)
+  const classIRI = rdf.namedNode(clss.iri)
   const quads = [
-    rdf.quad(newClassIRI, termIRI.a, termIRI.Class),
-    rdf.quad(newClassIRI, termIRI.label, rdf.literal(clss.label)),
-    rdf.quad(newClassIRI, termIRI.comment, rdf.literal(clss.comment))
+    rdf.quad(classIRI, termIRI.a, termIRI.Class),
+    rdf.quad(classIRI, termIRI.label, rdf.literal(clss.label)),
+    rdf.quad(classIRI, termIRI.comment, rdf.literal(clss.comment))
   ]
 
   if (clss.description) {
-    quads.push(rdf.quad(newClassIRI, termIRI.description, rdf.literal(clss.description)))
+    quads.push(rdf.quad(classIRI, termIRI.description, rdf.literal(clss.description)))
   }
   if (clss.example) {
-    quads.push(rdf.quad(newClassIRI, termIRI.example, rdf.literal(clss.example)))
+    quads.push(rdf.quad(classIRI, termIRI.example, rdf.literal(clss.example)))
+  }
+
+  if (clss.isDeprecated) {
+    quads.push(rdf.quad(classIRI, termIRI.deprecated, rdf.literal('true', rdf.namedNode('xsd:boolean'))))
   }
 
   if (clss.domains.length) {
@@ -179,14 +185,14 @@ export function proposalDataset (clss, validation = true) {
       else {
         domainIRI = rdf.namedNode(domain.iri)
       }
-      xs.push(rdf.quad(domainIRI, termIRI.domain, newClassIRI))
+      xs.push(rdf.quad(domainIRI, termIRI.domain, classIRI))
       return xs
     }, [])
     quads.push(...existingDomainsQuads)
   }
 
   const structureQuads = [
-    rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, newClassIRI)
+    rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, classIRI)
   ]
 
   const ontology = rdf.dataset().addAll(quads)

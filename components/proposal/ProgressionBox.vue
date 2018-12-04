@@ -28,7 +28,7 @@
         </a>
       </li>
     </ul>
-    <div v-show="!obj.isDraft">
+    <div v-show="obj && !obj.isDraft">
       <hr />
       <ul class="progression">
         <li class="done">
@@ -94,7 +94,7 @@ export default {
         steps.push(...newSteps)
       }
 
-      if (this.obj.isDraft) {
+      if (_get(this.obj, 'isDraft', false)) {
         const lastStep = this.lastStep(steps)
         steps.push(lastStep)
       }
