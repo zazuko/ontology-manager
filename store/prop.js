@@ -91,7 +91,7 @@ export const actions = {
           }
         }
       `
-      const isEdit = state.clss.isEdit
+      const isEdit = state.prop.isEdit
 
       const variables = {
         iri: state.prop.parentStructureIRI,
@@ -128,7 +128,7 @@ export const actions = {
         structure: rootState.graph.structure,
         property: state.prop
       })
-      const isEdit = state.clss.isEdit
+      const isEdit = state.prop.isEdit
 
       const id = await submitProposal({
         threadId: state.prop.threadId,
