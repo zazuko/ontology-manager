@@ -78,6 +78,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    isProposal: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }
