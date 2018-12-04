@@ -7,7 +7,7 @@
     }">
 
     <div
-      v-if="disabled || !prop['collapsed']">
+      v-if="disabled || !prop['isSubFormCollapsed']">
       <!-- <div
         v-show="!subform && prop['iri']"
         class="box debug">
@@ -60,27 +60,23 @@
         </div>
 
         <div class="columns">
-          <div class="column">
-            <div class="columns">
-              <div class="column is-6 field">
-                <label class="label">Property Name</label>
-                <div class="control">
-                  <input
-                    :disabled="disabled"
-                    :class="{'is-danger': !prop['label']}"
-                    class="input"
-                    autocomplete="new-password"
-                    type="text"
-                    v-debounce
-                    v-model.lazy="prop['label']">
-                </div>
-                <p
-                  v-show="!prop['label']"
-                  class="help is-danger">
-                  Please enter the property name.
-                </p>
-              </div>
+          <div class="column is-6 field">
+            <label class="label">Property Name</label>
+            <div class="control">
+              <input
+                :disabled="disabled"
+                :class="{'is-danger': !prop['label']}"
+                class="input"
+                autocomplete="new-password"
+                type="text"
+                v-debounce
+                v-model.lazy="prop['label']">
             </div>
+            <p
+              v-show="!prop['label']"
+              class="help is-danger">
+              Please enter the property name.
+            </p>
           </div>
         </div>
 
@@ -102,6 +98,16 @@
                 class="help is-danger">
                 Please write a short description.
               </p>
+            </div>
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    v-model.lazy="prop['isDeprecated']">
+                  Deprecate Property
+                </label>
+              </div>
             </div>
           </div>
           <div class="column">
@@ -243,7 +249,7 @@
             <button
               class="button is-success"
               :disabled="!canContinue"
-              @click.prevent="$vuexSet(`${storePath}.collapsed`, true)">
+              @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
             </button>
           </div>
@@ -275,7 +281,7 @@
           </div>
           <div class="column">
             <button
-              @click.prevent="$vuexSet(`${storePath}.collapsed`, false)"
+              @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, false)"
               class="button is-info is-pulled-right">
               Reopen
             </button>
