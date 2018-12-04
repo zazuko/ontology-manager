@@ -1,18 +1,13 @@
 <template>
-  <section class="section has-background-white">
-
-    <div class="level">
-      <div class="level-left">
-        <h1 class="title">Proposals</h1>
-      </div>
-      <div class="level-right">
+  <section class="section">
+      <h2 class="title is-2">
+        Proposals
         <nuxt-link
           :to="{ name: 'proposal-property', query: { iri: iri } }"
-          class="button is-info">
-          Request New Property
+          class="title-edit-button">
+          +
         </nuxt-link>
-      </div>
-    </div>
+      </h2>
 
     <table
       v-if="_get(proposals, 'proposals.length')"
