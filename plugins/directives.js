@@ -6,7 +6,7 @@ Vue.directive('debounce', (el, binding) => {
   const defaultDelay = 330
   const delay = parseInt(binding.value || defaultDelay, 10)
   el.oninput = debounce((evt) => {
-    // console.log('debounced by', defaultDelay)
+    // console.log('debounced by', delay)
     el.dispatchEvent(new Event('change'))
   }, delay)
 })

@@ -106,7 +106,7 @@ import Discussions from '@/components/fallback/Discussions'
 import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest } from '@/libs/utils'
-import { termIRI } from '@/libs/rdf'
+import { termIRI, term } from '@/libs/rdf'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
 
