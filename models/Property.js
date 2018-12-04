@@ -15,6 +15,7 @@ export function Property ({
   comment = '',
   description = '',
   example = '',
+  isDeprecated = false,
   // domains added to this Property
   domains = [],
   // domains removed from this Property, only used when editing a Property
@@ -28,7 +29,7 @@ export function Property ({
   // classes needed by this Property proposal
   classChildren = [], // Array<Quad|Class>
   // true if it's a child and the box is collapsed
-  collapsed = false,
+  isSubFormCollapsed = false,
   // true if it's a child created from a proposal
   isNew = false,
   // false if the proposal got submitted
@@ -51,6 +52,7 @@ export function Property ({
   this.comment = comment
   this.description = description
   this.example = example
+  this.isDeprecated = isDeprecated
 
   this.ranges = ranges
   this.rangesRemoved = rangesRemoved
@@ -60,7 +62,7 @@ export function Property ({
   this.parentStructureIRI = parentStructureIRI
   this.classChildren = classChildren
 
-  this.collapsed = collapsed
+  this.isSubFormCollapsed = isSubFormCollapsed
   this.isNew = isNew
   this.isEdit = isEdit
   return this
@@ -111,7 +113,7 @@ export function hydrate ({ ontology, structure }, iri) {
     */
     parentStructureIRI,
     propChildren: [],
-    collapsed: false,
+    isSubFormCollapsed: false,
     isNew: false
   }
   const prop = new Property(data)
@@ -171,18 +173,22 @@ export function proposalDataset (property, validation = true) {
     validate(property)
   }
 
-  const newPropertyIRI = rdf.namedNode(property.iri)
+  const propertyIRI = rdf.namedNode(property.iri)
   const quads = [
-    rdf.quad(newPropertyIRI, termIRI.a, termIRI.Property),
-    rdf.quad(newPropertyIRI, termIRI.label, rdf.literal(property.label)),
-    rdf.quad(newPropertyIRI, termIRI.comment, rdf.literal(property.comment))
+    rdf.quad(propertyIRI, termIRI.a, termIRI.Property),
+    rdf.quad(propertyIRI, termIRI.label, rdf.literal(property.label)),
+    rdf.quad(propertyIRI, termIRI.comment, rdf.literal(property.comment))
   ]
 
   if (property.description) {
-    quads.push(rdf.quad(newPropertyIRI, termIRI.description, rdf.literal(property.description)))
+    quads.push(rdf.quad(propertyIRI, termIRI.description, rdf.literal(property.description)))
   }
   if (property.example) {
-    quads.push(rdf.quad(newPropertyIRI, termIRI.example, rdf.literal(property.example)))
+    quads.push(rdf.quad(propertyIRI, termIRI.example, rdf.literal(property.example)))
+  }
+
+  if (property.isDeprecated) {
+    quads.push(rdf.quad(propertyIRI, termIRI.deprecated, rdf.literal('true', rdf.namedNode('xsd:boolean'))))
   }
 
   if (property.ranges.length) {
@@ -194,7 +200,7 @@ export function proposalDataset (property, validation = true) {
       else {
         rangeIRI = rdf.namedNode(range.iri)
       }
-      xs.push(rdf.quad(newPropertyIRI, termIRI.range, rangeIRI))
+      xs.push(rdf.quad(propertyIRI, termIRI.range, rangeIRI))
       return xs
     }, [])
     quads.push(...existingRangesQuads)
@@ -209,7 +215,7 @@ export function proposalDataset (property, validation = true) {
       else {
         domainIRI = rdf.namedNode(domain.iri)
       }
-      xs.push(rdf.quad(newPropertyIRI, termIRI.domain, domainIRI))
+      xs.push(rdf.quad(propertyIRI, termIRI.domain, domainIRI))
       return xs
     }, [])
     quads.push(...existingDomainsQuads)

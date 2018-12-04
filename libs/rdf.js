@@ -22,6 +22,7 @@ const stringIRI = {
 
   created: 'http://purl.org/dc/terms/created', // not used atm
   modified: 'http://purl.org/dc/terms/modified',
+  deprecated: 'http://www.w3.org/2002/07/owl#deprecated',
 
   hasPart: 'http://schema.org/hasPart',
   creativeWork: 'http://schema.org/CreativeWork'

@@ -7,7 +7,7 @@
     }">
 
     <div
-      v-if="disabled || !clss['collapsed']">
+      v-if="disabled || !clss['isSubFormCollapsed']">
       <!--
       <div
         v-show="!subform && clss['iri']"
@@ -67,32 +67,28 @@
         </div>
 
         <div class="columns">
-          <div class="column">
-            <div class="columns">
-              <div class="column is-6 field">
-                <label class="label">Class Name</label>
-                <div class="control">
-                  <input
-                    :disabled="disabled"
-                    :class="{'is-danger': !clss['label']}"
-                    class="input"
-                    autocomplete="new-password"
-                    type="text"
-                    v-debounce
-                    v-model.lazy="clss['label']">
-                </div>
-                <p
-                  v-show="clss['label'] && invalidClassname(clss['label'])"
-                  class="help is-danger">
-                  Class name must start with an <strong>Uppercase</strong> letter!
-                </p>
-                <p
-                  v-show="!clss['label']"
-                  class="help is-danger">
-                  Please enter the class name.
-                </p>
-              </div>
+          <div class="column is-6 field">
+            <label class="label">Class Name</label>
+            <div class="control">
+              <input
+                :disabled="disabled"
+                :class="{'is-danger': !clss['label']}"
+                class="input"
+                autocomplete="new-password"
+                type="text"
+                v-debounce
+                v-model.lazy="clss['label']">
             </div>
+            <p
+              v-show="clss['label'] && invalidClassname(clss['label'])"
+              class="help is-danger">
+              Class name must start with an <strong>Uppercase</strong> letter!
+            </p>
+            <p
+              v-show="!clss['label']"
+              class="help is-danger">
+              Please enter the class name.
+            </p>
           </div>
         </div>
 
@@ -114,6 +110,16 @@
                 class="help is-danger">
                 Please write a short description.
               </p>
+            </div>
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    v-model.lazy="clss['isDeprecated']">
+                  Deprecate Class
+                </label>
+              </div>
             </div>
           </div>
           <div class="column">
@@ -193,7 +199,7 @@
             <button
               class="button is-success"
               :disabled="!validBase"
-              @click.prevent="$vuexSet(`${storePath}.collapsed`, true)">
+              @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ clss['label'] }}</em>" to the proposal
             </button>
           </div>
@@ -225,7 +231,7 @@
           </div>
           <div class="column">
             <button
-              @click.prevent="$vuexSet(`${storePath}.collapsed`, false)"
+              @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, false)"
               class="button is-info is-pulled-right">
               Reopen
             </button>
