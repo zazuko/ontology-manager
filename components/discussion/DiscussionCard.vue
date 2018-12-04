@@ -158,7 +158,7 @@
               alt="Edit message"
               title="Edit message"
               @click="editMessageSetup(message)">
-              <img
+            <img
               src="~/assets/images/ic-trashcan-passive.svg"
               alt="Delete message"
               title="Delete message"
@@ -237,7 +237,9 @@
       }"
       class="modal">
       <div class="modal-background"></div>
-      <div v-show="deleteConfirm === 'thread'" class="modal-card">
+      <div
+        v-show="deleteConfirm === 'thread'"
+        class="modal-card">
         <section class="modal-card-body">
           <p>
             You are about to delete this thread, are you sure?
@@ -256,7 +258,9 @@
           </button>
         </footer>
       </div>
-      <div v-show="typeof deleteConfirm === 'number'" class="modal-card">
+      <div
+        v-show="typeof deleteConfirm === 'number'"
+        class="modal-card">
         <section class="modal-card-body">
           <p>
             You are about to delete a message, are you sure?
@@ -379,7 +383,8 @@ export default {
       this.messageBody = message.body
       if (message.hat) {
         this.originalHat = this.selectedHat = message.hat.id
-      } else {
+      }
+      else {
         this.originalHat = this.selectedHat = ''
       }
     },
@@ -408,7 +413,7 @@ export default {
     },
     deleteMessage (messageId) {
       const variables = {
-        messageId: messageId,
+        messageId
       }
 
       this.$apollo.mutate({ mutation: deleteMessage, variables })
