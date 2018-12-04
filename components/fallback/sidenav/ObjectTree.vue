@@ -4,7 +4,7 @@
       {{ tree.label }}
     </p>
     <ul
-      class="menu-list side-nav">
+      class="menu-list">
       <object-node
         v-for="node in tree.children"
         :key="node.iri"

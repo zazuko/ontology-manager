@@ -9,7 +9,7 @@
           class="tile is-child container-box">
           <div class="content">
             <div class="tile is-ancestor">
-              <div class="tile is-parent is-3">
+              <div class="tile is-parent is-12">
                 <div
                   v-for="(group, i) in arrayToGroups({ children: _get(proposals, 'proposals', []) })"
                   :key="i"

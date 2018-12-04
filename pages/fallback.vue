@@ -22,8 +22,9 @@
         <div class="modal-background" />
         <div class="modal-content has-text-centered">
           <div class="box">
-            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-            <p class="subtitle">Loading Data</p>
+            <div class="lds-roller">
+              <p class="subtitle">Loading Data</p>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +65,7 @@
         v-else
         v-show="dataReady"
         class="columns">
-        <aside class="column is-3 is-narrow-mobile is-fullheight is-hidden-mobile side-nav-col">
+        <aside class="column is-3 is-narrow-mobile is-hidden-mobile">
           <side-nav :current-iri="iri" />
         </aside>
 
