@@ -1,4 +1,4 @@
-import { compareTwoStrings } from 'string-similarity'
+import { compareTwoStrings } from '@/libs/string-similarity'
 import _camelCase from 'lodash/camelCase'
 import _upperFirst from 'lodash/upperFirst'
 import rdf from 'rdf-ext'
@@ -308,4 +308,26 @@ export function mergedEditedOntology (_originalIRI, _newIRI, baseDataset, newDat
   })
 
   return out
+}
+
+export function buildSearchIndex (ontology) {
+  const indexedPredicates = [stringIRI.a, stringIRI.label, stringIRI.comment, stringIRI.description]
+
+  return ontology._quads.reduce((iris, quad) => {
+    if (!indexedPredicates.includes(quad.predicate.value)) {
+      return iris
+    }
+    const iri = quad.subject.value
+    if (!iri.startsWith(datasetBaseUrl)) {
+      return iris
+    }
+
+    iris.push({
+      iri,
+      part: iri.substr(iri.lastIndexOf('/') + 1),
+      type: term(quad.predicate),
+      text: term(quad.object)
+    })
+    return iris
+  }, [])
 }

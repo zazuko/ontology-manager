@@ -41,7 +41,9 @@
                 <input
                   class="input"
                   type="text"
-                  placeholder="Search">
+                  placeholder="Search"
+                  v-debounce="150"
+                  v-model.lazy="searchString">
                 <span class="icon is-small is-left">
                   <i class="mdi mdi-magnify"></i>
                 </span>
@@ -61,6 +63,7 @@
 
 <script>
 import { toastClose } from '@/libs/utils'
+import { findBestMatch } from '@/libs/string-similarity'
 import SignIn from './SignIn.vue'
 import DraftTab from './DraftTab.vue'
 
@@ -72,7 +75,15 @@ export default {
   },
   data () {
     return {
-      isActive: false
+      isActive: false,
+      searchString: '',
+      searchIndex: this.$store.state.graph.searchIndex,
+      searchTexts: this.$store.state.graph.searchIndex.map(x => x.text)
+    }
+  },
+  watch: {
+    'searchString' () {
+      this.search(this.searchString)
     }
   },
   methods: {
@@ -81,6 +92,15 @@ export default {
     },
     toggle () {
       this.isActive = !this.isActive
+    },
+    search (str) {
+      let { ratings = [] } = findBestMatch(str, this.searchTexts)
+      ratings.sort((a, b) => b.rating - a.rating)
+      ratings = ratings.slice(0, 10)
+      ratings.forEach((rating) => {
+        rating.object = this.searchIndex[rating.index]
+      })
+      console.log(ratings)
     }
   }
 }
