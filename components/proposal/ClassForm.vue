@@ -377,7 +377,7 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
-      if (this.edit) {
+      if (!this.subform && this.edit) {
         const originalIRI = this.clss['originalIRI'] || this.clss['iri']
         this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
       }
