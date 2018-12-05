@@ -14,7 +14,7 @@ export const state = () => ({
   ontologyGraph: {},
   structureGraph: {},
   structureTree: {},
-  searchIndex: {},
+  searchIndex: [],
   clientReady: false
 })
 
@@ -47,15 +47,15 @@ export const mutations = {
     state.ontologySerialized = serialize(ontologyDataset)
     state.ontology = ontologyDataset
     state.ontologyGraph = resourcesToGraph(ontologyDataset)
-    state.searchIndex = buildSearchIndex(ontologyDataset)
   },
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
     state.structure = structureDataset
     state.structureGraph = resourcesToGraph(structureDataset)
-    state.structureTree = buildTree(structureDataset, this.state.graph.ontology)
+    state.structureTree = buildTree(structureDataset, state.ontology)
   },
   clientReady (state) {
+    state.searchIndex = buildSearchIndex(state.ontology.clone().merge(state.structure))
     state.clientReady = true
   }
 }
