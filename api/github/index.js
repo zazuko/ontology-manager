@@ -185,15 +185,11 @@ router.post('/proposal/submit', async (req, res, next) => {
 
     const result = await userApolloClient.mutate({
       mutation: gql`
-        mutation ($id: Int!, $externalId: Int!, $branchName: String!, $status: Status!) {
-          updateThreadById (input: {
-            id: $id,
-            threadPatch: {
-              externalId: $externalId,
-              branchName: $branchName,
-              status: $status,
-              isDraft: false
-            }
+        mutation ($threadId: Int!, $newExternalId: Int!, $newBranchName: String!) {
+          finalizeProposal (input: {
+            threadId: $threadId,
+            newExternalId: $newExternalId,
+            newBranchName: $newBranchName
           }) {
             thread {
               id
@@ -201,10 +197,9 @@ router.post('/proposal/submit', async (req, res, next) => {
           }
         }`,
       variables: {
-        id: threadId,
-        branchName: branch,
-        externalId: number,
-        status: 'OPEN'
+        threadId,
+        newExternalId: number,
+        newBranchName: branch
       }
     })
 
@@ -231,16 +226,16 @@ router.post('/proposal/merge', async (req, res, next) => {
 
     const result = await userApolloClient.mutate({
       mutation: gql`
-      mutation ($threadId: Int!, $newStatus: Status!) {
-        changeThreadStatus (input: {
-          threadId: $threadId,
-          newStatus: $newStatus
-        }) {
-          thread {
-            id
+        mutation ($threadId: Int!, $newStatus: Status!) {
+          changeThreadStatus (input: {
+            threadId: $threadId,
+            newStatus: $newStatus
+          }) {
+            thread {
+              id
+            }
           }
-        }
-      }`,
+        }`,
       variables: {
         threadId: parseInt(threadId, 10),
         newStatus: 'RESOLVED'
@@ -279,16 +274,16 @@ router.post('/proposal/close', async (req, res, next) => {
 
     const result = await userApolloClient.mutate({
       mutation: gql`
-      mutation ($threadId: Int!, $newStatus: Status!) {
-        changeThreadStatus (input: {
-          threadId: $threadId,
-          newStatus: $newStatus
-        }) {
-          thread {
-            id
+        mutation ($threadId: Int!, $newStatus: Status!) {
+          changeThreadStatus (input: {
+            threadId: $threadId,
+            newStatus: $newStatus
+          }) {
+            thread {
+              id
+            }
           }
-        }
-      }`,
+        }`,
       variables: {
         threadId: parseInt(threadId, 10),
         newStatus: status.toUpperCase()

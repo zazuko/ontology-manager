@@ -51,7 +51,7 @@ export async function submitProposal (data) {
   const headers = { headers: { authorization: `Bearer ${token}` } }
 
   const result = await axios.post('/api/proposal/submit', body, headers)
-  const id = _get(result, 'data.updateThreadById.thread.id')
+  const id = _get(result, 'data.finalizeProposal.thread.id')
   return id
 }
 
