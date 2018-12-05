@@ -238,6 +238,10 @@ export default {
         this.$store.dispatch('drafts/LOAD')
         this.$router.push({ name: 'proposal-id', params: { id: this.success } })
       }
+      else {
+        console.error(this.error)
+        console.log(this.success)
+      }
     }
   },
   methods: {
@@ -257,7 +261,9 @@ export default {
 
       const token = this.$apolloHelpers.getToken()
       // create the PR etc
-      this.submit(token)
+      await this.submit(token)
+      // submit will commit success or error to the store,
+      // see this page's `watch`ers
     },
     saveDraft () {
       const serialized = this.serialized
