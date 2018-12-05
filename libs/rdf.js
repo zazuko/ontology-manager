@@ -310,10 +310,10 @@ export function mergedEditedOntology (_originalIRI, _newIRI, baseDataset, newDat
   return out
 }
 
-export function buildSearchIndex (ontology) {
-  const indexedPredicates = [stringIRI.a, stringIRI.label, stringIRI.comment, stringIRI.description]
+export function buildSearchIndex (dataset) {
+  const indexedPredicates = [stringIRI.label, stringIRI.comment, stringIRI.description]
 
-  return ontology._quads.reduce((iris, quad) => {
+  return dataset._quads.reduce((iris, quad) => {
     if (!indexedPredicates.includes(quad.predicate.value)) {
       return iris
     }
@@ -321,12 +321,18 @@ export function buildSearchIndex (ontology) {
     if (!iri.startsWith(datasetBaseUrl)) {
       return iris
     }
+    const typeQuad = dataset.match(rdf.namedNode(iri), termIRI.a).toArray()[0]
+    let type = typeQuad ? term(typeQuad.object) : ''
+    if (type === 'CreativeWork') {
+      type = 'Pouch'
+    }
 
     iris.push({
       iri,
       part: iri.substr(iri.lastIndexOf('/') + 1),
       type: term(quad.predicate),
-      text: term(quad.object)
+      text: term(quad.object),
+      objectType: type
     })
     return iris
   }, [])
