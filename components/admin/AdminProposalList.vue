@@ -183,7 +183,7 @@ export default {
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
       }
     },
-    async reject (proposal, status = 'RESOLVED') {
+    async reject (proposal, status = 'REJECTED') {
       const body = {
         threadId: proposal.id,
         number: proposal.externalId,

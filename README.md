@@ -18,9 +18,7 @@
 1. Run the project:
   * Database:
       * `make up` (If the database is booting up for the first time, you'll see migrations being retried until DB is up and they get applied.)
-  * Front dev server + watch:
-      * If you only want to watch the front (you probably do): `npm run dev`
-      * If you want to watch the front AND the API: `npm run dev-api`
+  * Dev server + watch: `npm run dev`
 
 Whenever you feel like it:
 
@@ -43,8 +41,8 @@ Whenever you feel like it:
 
 #### Threads
 
-* A thread is a conversation, messages belong to a thread.
-* A thread has a type, at the moment a thread can either be a `discussion` or a `proposal`.
+* A thread can either be a `discussion` or a `proposal`.
+* A thread with `discussion` type is a conversation, messages belong to a thread.
 
 #### PR
 
@@ -54,7 +52,7 @@ Whenever you feel like it:
     1. Create a branch based on `master`, give it a unique name.
     1. Apply the proposed changes to the files on this branch.
     1. Create a commit attributed to the original author, push the branch to the origin.
-    1. Open a PR targeting `master`, retrieve the PR `id`, store it as `thread.external_id`.
+    1. Open a PR targeting `master`, retrieve the PR `id` and branch name, store them as `thread.external_id` `thread.branch_name`.
 
 ### Resources
 

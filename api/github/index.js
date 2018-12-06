@@ -254,8 +254,8 @@ router.post('/proposal/close', async (req, res, next) => {
   apicache.clear('files')
   const { threadId, number, status } = req.body
 
-  if (!['resolved', 'hidden'].includes(status.toLowerCase())) {
-    res.status(400).json(new Error(`Cannot set unknown status '${status}'`))
+  if (!['resolved', 'hidden', 'rejected'].includes(status.toLowerCase())) {
+    res.status(400).json(`Cannot set unknown status '${status}'`)
     return
   }
 
