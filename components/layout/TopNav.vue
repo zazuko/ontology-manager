@@ -57,8 +57,7 @@
                 <a
                   v-for="(item, index) in ratings"
                   :key="index"
-                  class="navbar-item"
-                  style="display: block">
+                  class="navbar-item">
                   <p class="result-title">
                     {{ item.target }}
                   </p>
