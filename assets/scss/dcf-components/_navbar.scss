@@ -55,20 +55,22 @@
     overflow: hidden;
 
     .navbar-item {
+      display: block;
       border-bottom: solid 1px $theme-light-grey;
+      padding-right: 1em;
 
       .result-title {
-        font-weight: bold;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: bold;
       }
 
       .result-detail {
-        color: $theme-dark-grey;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: $theme-dark-grey;
       }
     }
   }
