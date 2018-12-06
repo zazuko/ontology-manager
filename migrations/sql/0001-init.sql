@@ -110,28 +110,28 @@ comment on column ontology_editor.message.created_at is 'The time this message w
 
 alter default privileges revoke execute on functions from public;
 
-create function ontology_editor.message_summary(
-  message ontology_editor.message,
-  length int default 50,
-  omission text default '…'
-) returns text as $$
-  select case
-    when message.body is null then null
-    else substr(message.body, 0, length) || omission
-  end
-$$ language sql stable;
-
-comment on function ontology_editor.message_summary(ontology_editor.message, int, text) is 'A truncated version of the body for summaries.';
-
-create function ontology_editor.person_latest_message(person ontology_editor.person) returns ontology_editor.message as $$
-  select message.*
-  from ontology_editor.message as message
-  where message.author_id = person.id
-  order by created_at desc
-  limit 1
-$$ language sql stable;
-
-comment on function ontology_editor.person_latest_message(ontology_editor.person) is 'Gets the latest message written by the person.';
+-- create function ontology_editor.message_summary(
+--   message ontology_editor.message,
+--   length int default 50,
+--   omission text default '…'
+-- ) returns text as $$
+--   select case
+--     when message.body is null then null
+--     else substr(message.body, 0, length) || omission
+--   end
+-- $$ language sql stable;
+--
+-- comment on function ontology_editor.message_summary(ontology_editor.message, int, text) is 'A truncated version of the body for summaries.';
+--
+-- create function ontology_editor.person_latest_message(person ontology_editor.person) returns ontology_editor.message as $$
+--   select message.*
+--   from ontology_editor.message as message
+--   where message.author_id = person.id
+--   order by created_at desc
+--   limit 1
+-- $$ language sql stable;
+--
+-- comment on function ontology_editor.person_latest_message(ontology_editor.person) is 'Gets the latest message written by the person.';
 
 create function ontology_editor.search_messages(search text) returns setof ontology_editor.thread as $$
   select thread.*
@@ -178,7 +178,7 @@ create trigger message_updated_at before update
   for each row
   execute procedure ontology_editor_private.set_updated_at();
 
-create trigger message_updated_at before update
+create trigger thread_updated_at before update
   on ontology_editor.thread
   for each row
   execute procedure ontology_editor_private.set_updated_at();
@@ -315,18 +315,18 @@ grant usage on sequence ontology_editor.message_id_seq to ontology_editor_person
 grant usage on sequence ontology_editor.thread_id_seq to ontology_editor_person;
 grant usage on sequence ontology_editor.hat_id_seq to ontology_editor_person;
 
-grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
-grant execute on function ontology_editor.person_latest_message(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
+-- grant execute on function ontology_editor.message_summary(ontology_editor.message, integer, text) to ontology_editor_anonymous, ontology_editor_person;
+-- grant execute on function ontology_editor.person_latest_message(ontology_editor.person) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.search_messages(text) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.authenticate(text, integer) to ontology_editor_anonymous, ontology_editor_person;
 grant execute on function ontology_editor.current_person() to ontology_editor_anonymous, ontology_editor_person;
 
 grant execute on function ontology_editor.register_person(text, text, text, text, text, integer) to ontology_editor_anonymous;
 
-alter table ontology_editor.person enable row level security;
-alter table ontology_editor.message enable row level security;
-alter table ontology_editor.thread enable row level security;
-alter table ontology_editor.hat enable row level security;
+alter table ontology_editor.person     enable row level security;
+alter table ontology_editor.message    enable row level security;
+alter table ontology_editor.thread     enable row level security;
+alter table ontology_editor.hat        enable row level security;
 alter table ontology_editor.hat_person enable row level security;
 
 -- RUD
