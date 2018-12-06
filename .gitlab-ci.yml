@@ -18,7 +18,7 @@ build:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
     # all the build-arg variables should be set in the env where the build gets executed
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/web" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRESQL_HOST --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg POSTGRESQL_POSTGRAPHILE_PASSWORD --build-arg OAUTH_TOKEN_SECRET --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg EDITOR_HOST -f docker-app-prod/Dockerfile.web .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/web" --build-arg POSTGRESQL_PASSWORD --build-arg POSTGRESQL_DATABASE --build-arg POSTGRESQL_HOST --build-arg POSTGRAPHILE_TOKEN_SECRET --build-arg POSTGRESQL_POSTGRAPHILE_PASSWORD --build-arg OAUTH_HOST --build-arg OAUTH_CLIENT_ID --build-arg OAUTH_CLIENT_SECRET --build-arg GITHUB_PERSONAL_ACCESS_TOKEN --build-arg EDITOR_HOST -f docker-app-prod/Dockerfile.web .
     - docker push "$CI_REGISTRY_IMAGE/web"
     # spare registry disk space
     # - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"

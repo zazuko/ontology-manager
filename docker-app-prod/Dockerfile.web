@@ -7,7 +7,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app/
-RUN node -v && npm install
+RUN node -v && npm ci
 
 # all these variables should be set in the env where the build gets executed
 # and passed using --build-arg
@@ -18,7 +18,6 @@ ARG POSTGRESQL_HOST
 ARG POSTGRAPHILE_TOKEN_SECRET
 ARG POSTGRESQL_POSTGRAPHILE_PASSWORD
 
-ARG OAUTH_TOKEN_SECRET
 ARG OAUTH_HOST
 ARG OAUTH_CLIENT_ID
 ARG OAUTH_CLIENT_SECRET
