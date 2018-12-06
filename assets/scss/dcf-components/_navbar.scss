@@ -15,26 +15,60 @@
     }
   }
 
-  .field input {
-    background: rgba(255, 255, 255, .1);
-    border: none;
-    color: white;
+  .field {
+    margin-bottom: 0;
 
-    i {
-      color: white;
-    }
-
-    &::placeholder {
-      color: white;
-    }
-
-    &:active, &:focus {
-      background: rgba(255, 255, 255, .2);
+    input {
+      background: rgba(255, 255, 255, .1);
       border: none;
-      box-shadow: 0 0 2px 0 $theme-light-primary;
+      color: white;
 
       i {
-        color: white !important;
+        color: white;
+      }
+
+      &::placeholder {
+        color: white;
+      }
+
+      &:active, &:focus {
+        background: rgba(255, 255, 255, .2);
+        border: none;
+        box-shadow: 0 0 2px 0 $theme-light-primary;
+
+        i {
+          color: white !important;
+        }
+      }
+    }
+  }
+
+  .navbar-dropdown {
+    padding: 0;
+    width: 100%;
+    margin-top: 0.5em;
+
+    border-radius: 2px;
+    background: #f3f6f9;
+    box-shadow: 0 0 5px $theme-dark-grey;
+    font-size: 0.9em;
+    overflow: hidden;
+
+    .navbar-item {
+      border-bottom: solid 1px $theme-light-grey;
+
+      .result-title {
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .result-detail {
+        color: $theme-dark-grey;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
