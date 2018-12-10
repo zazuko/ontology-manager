@@ -163,7 +163,7 @@ const {
 export default {
   async asyncData ({ route }) {
     return {
-      id: route.params.id
+      id: parseInt(route.params.id, 10)
     }
   },
   components: {
