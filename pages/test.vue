@@ -1,41 +1,45 @@
 <template>
   <div>
-    <section
-      v-for="child in tree.children"
-      :key="child.lvl"
-      class="container"
-      style="margin-bottom: 25px;">
-      <structure
-        :obj="child"
-        :name="child.lvl" />
-    </section>
+    <editor v-model="html" />
   </div>
 </template>
 
 <script>
-// import rdf from 'rdf-ext'
-import Structure from '@/components/fallback/Structure'
+import Editor from '@/components/editor/Editor'
 
 export default {
   components: {
-    Structure
+    Editor
   },
-  // async asyncData (context) {
-  //   if (process.server) {
-  //     const dataset = context.req.structure
-  //     const x = dataset.match(
-  //       null,
-  //       rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-  //       rdf.namedNode('http://www.w3.org/2002/07/owl#Class')
-  //     )
-  //     console.log(x.map(a => a.subject))
-  //   }
-  //   return {}
-  // }
   data () {
-    // console.log(typeof window !== 'undefined' && window.ontology.match())
     return {
-      tree: this.$store.state.graph.structureTree
+      html: `
+        <h2>
+          Hi there,
+        </h2>
+        <p>
+          this is a very <em>basic</em> example of tiptap.
+        </p>
+        <pre><code>body { display: none; }</code></pre>
+        <ul>
+          <li>
+            A regular list
+          </li>
+          <li>
+            With regular items
+          </li>
+        </ul>
+        <blockquote>
+          It's amazing 👏
+          <br />
+          – mom
+        </blockquote>
+      `
+    }
+  },
+  watch: {
+    html () {
+      console.log(this.html)
     }
   }
 }
