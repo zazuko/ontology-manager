@@ -32,7 +32,7 @@
 </template>
 
 <script>
-const ontologyConfig = require('@/ontology.config')
+const ontologyConfig = require('@/editor.config')
 
 export default {
   name: 'DiscussionList',

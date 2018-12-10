@@ -1,7 +1,7 @@
 const jwt = require('express-jwt')
 const bodyParser = require('body-parser')
 const express = require('express')
-const config = require(require.resolve('../ontology.config.js'))
+const config = require(require.resolve('../editor.config.js'))
 
 const app = express()
 
