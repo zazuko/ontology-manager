@@ -3,7 +3,7 @@ const stringToStream = require('string-to-stream')
 const N3Parser = require('rdf-parser-n3')
 const axios = require('axios')
 
-const ontology = require('../ontology.config')
+const ontology = require('../editor.config')
 
 /**
  * This middleware runs on every page load, it fetchs the dataset and puts

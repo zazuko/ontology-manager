@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import ontologyConfig from '@/ontology.config'
+import ontologyConfig from '@/editor.config'
 
 const { owner, repo } = ontologyConfig.github
 

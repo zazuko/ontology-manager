@@ -1,4 +1,11 @@
 module.exports = {
+  website: {
+    url: 'http://editor.zazuko.com',
+    head: {
+      title: 'Zazuko Ontology Editor Demo',
+      description: 'Linked Data Ontology Editor for Domain Specialists'
+    }
+  },
   github: {
     repo: 'o',
     owner: 'vhf',
