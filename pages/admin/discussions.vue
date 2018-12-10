@@ -12,7 +12,7 @@
 
 <script>
 import _get from 'lodash/get'
-import adminWorklist from '@/apollo/queries/adminWorklist'
+import adminDiscussionList from '@/apollo/queries/adminDiscussionList'
 import AdminDiscussionList from '@/components/admin/AdminDiscussionList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 
@@ -33,12 +33,7 @@ export default {
   apollo: {
     discussions: {
       prefetch: true,
-      query: adminWorklist,
-      variables () {
-        return {
-          threadType: 'DISCUSSION'
-        }
-      },
+      query: adminDiscussionList,
       result ({ data, loading }) {
         if (!loading) {
           this.rows = _get(data, 'discussions.nodes', [])

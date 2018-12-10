@@ -1,5 +1,5 @@
-query GetAllDiscussions ($threadType: ThreadType!, $orderBy: [ThreadsOrderBy!]) {
-  discussions: allThreads (condition: {threadType: $threadType, isDraft: false}, orderBy: $orderBy) {
+query GetAllDiscussions ($orderBy: [ThreadsOrderBy!]) {
+  discussions: allThreads (condition: {threadType: PROPOSAL, isDraft: false}, orderBy: $orderBy) {
     nodes {
       id,
       headline,
