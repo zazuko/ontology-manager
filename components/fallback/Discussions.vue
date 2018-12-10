@@ -2,65 +2,67 @@
   <section class="section">
     <h1 class="title is-2">Conversations</h1>
 
-    <nuxt-link
-      :to="{ name: 'discussion-new', query: { iri: iri } }"
-      class="button is-info">
-      New Thread
-    </nuxt-link>
-    <div
-      class="content"
-      v-if="_get(discussions, 'discussions.length', 0) === 0">
-      <p>
-        There is no ongoing conversation about this object.
-      </p>
-    </div>
-    <div
-      v-else
-      class="section">
-      <div
-        v-for="(discussion, index) in discussions.discussions"
-        :key="discussion.id">
-        <hr v-show="index !== 0">
-        <article class="media">
-          <figure class="media-left">
-            <p class="image is-64x64">
-              <img
-                class="is-rounded"
-                :src="discussion.author.avatar"
-                :alt="authorsAvatar(discussion.author.name)">
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <h3 class="title is-5">
+    <div class="discussion-list">
+      <div class="discussion-list-header">
+        <div class="field is-pulled-left">
+          <p class="control has-icons-left">
+            <input class="input" type="text" placeholder="Search">
+            <span class="icon is-small is-left">
+              <i class="mdi mdi-magnify"></i>
+            </span>
+          </p>
+        </div>
+        <nuxt-link
+          :to="{ name: 'discussion-new', query: { iri: iri } }"
+          class="button is-pulled-right is-info">
+          New Thread
+        </nuxt-link>
+      </div>
+      <div class="discussion-list-body">
+        <template v-if="_get(discussions, 'discussions.length', 0) === 0">
+          <p>
+            There is no ongoing conversation about this object.
+          </p>
+        </template>
+        <template v-else>
+          <div
+            class="discussion-list-item media"
+            v-for="(discussion, index) in discussions.discussions"
+            :key="discussion.id">
+              <figure class="media-left">
+                <img
+                  class="discussion-list-avatar"
+                  :src="discussion.author.avatar"
+                  :alt="authorsAvatar(discussion.author.name)">
+              </figure>
+              <div class="media-content">
+                  <h3 class="discussion-list-title">
+                    <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+                      {{ discussion.headline }}
+                    </nuxt-link>
+                  </h3>
+                  <p class="discussion-list-content">
+                    {{ cut(discussion.body) }}
+                  </p>
+              </div>
+              <div class="media-right">
                 <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-                  {{ discussion.headline }}
+                  <span class="discussion-list-creation-info">
+                    Created {{ discussion.createdAt | formatDate }} by
+                  </span>
+                  <span class="discussion-list-author-info">
+                    {{ discussion.author.name }}
+                  </span>
+                  <span class="discussion-list-answers-count">
+                    {{ answersCount(discussion) }}
+                    <span class="icon is-small">
+                      <i class="mdi mdi-message-reply-text" />
+                    </span>
+                  </span>
                 </nuxt-link>
-              </h3>
-              <p class="content">
-                {{ cut(discussion.body) }}
-              </p>
-            </div>
+              </div>
           </div>
-          <div class="media-right discussion-info">
-            <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-              <span class="author-info">
-                {{ discussion.author.name }},
-              </span>
-              <span class="creation-info">
-                {{ discussion.createdAt | formatDate }}
-              </span>
-              <br>
-              <br>
-              <span class="answers-count">
-                <span class="icon is-small">
-                  <i class="mdi mdi-message-reply-text" />
-                </span>
-                {{ answersCount(discussion) }}
-              </span>
-            </nuxt-link>
-          </div>
-        </article>
+        </template>
       </div>
     </div>
   </section>
