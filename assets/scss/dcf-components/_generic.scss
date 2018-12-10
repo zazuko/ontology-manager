@@ -29,3 +29,10 @@ section hr {
 .clickable-pointer {
   cursor: pointer;
 }
+
+.hoverable-icon {
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+}
