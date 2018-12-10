@@ -145,6 +145,12 @@ import {
 } from 'tiptap-extensions'
 
 export default {
+  props: {
+    value: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     EditorContent,
     EditorMenuBar,
@@ -153,11 +159,11 @@ export default {
   data () {
     if (!process.browser) {
       return {
-        editor: false
+        editor: false,
+        html: ''
       }
     }
     return {
-      html: '',
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -177,11 +183,19 @@ export default {
           new Underline(),
           new History()
         ],
-        content: this.html,
+        content: this.value,
         onUpdate: (state) => {
-          this.$emit('input', state.getHTML())
+          this.html = state.getHTML()
+          this.$emit('input', this.html)
         }
       })
+    }
+  },
+  watch: {
+    value (newVal) {
+      if (this.html !== newVal) {
+        this.editor.setContent(newVal)
+      }
     }
   },
   beforeDestroy () {

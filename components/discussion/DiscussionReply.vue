@@ -14,10 +14,7 @@
       <div class="media-content">
         <div class="field">
           <div class="control">
-            <textarea
-              v-model="body"
-              class="textarea"
-              placeholder="Content" />
+            <editor v-model="body" />
           </div>
         </div>
       </div>
@@ -60,6 +57,7 @@
 <script>
 import _get from 'lodash/get'
 import answerDiscussion from '@/apollo/mutations/answerDiscussion'
+import Editor from '@/components/editor/Editor'
 
 export default {
   name: 'DiscussionReply',
@@ -68,6 +66,9 @@ export default {
       required: true,
       type: Number
     }
+  },
+  components: {
+    Editor
   },
   data () {
     return {
