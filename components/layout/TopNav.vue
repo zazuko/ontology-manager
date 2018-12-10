@@ -39,9 +39,7 @@
             <search class="navbar-item has-dropdown is-active" />
           </div>
           <div class="navbar-item">
-            <img
-              class="hoverable-icon"
-              src="~/assets/images/ic-activity.svg">
+            <activity-log class="navbar-item has-dropdown is-active" />
           </div>
           <div class="navbar-item">
             <div class="field is-grouped">
@@ -56,16 +54,18 @@
 
 <script>
 import { toastClose } from '@/libs/utils'
-import SignIn from './SignIn.vue'
+import ActivityLog from './ActivityLog.vue'
 import DraftTab from './DraftTab.vue'
 import Search from './Search.vue'
+import SignIn from './SignIn.vue'
 
 export default {
   name: 'TopNav',
   components: {
-    SignIn,
+    ActivityLog,
     DraftTab,
-    Search
+    Search,
+    SignIn
   },
   data () {
     return {
