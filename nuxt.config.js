@@ -1,6 +1,7 @@
 const dotenv = require('dotenv')
-
 const env = process.env.NODE_TEST ? `${__dirname}/test/.env` : `${__dirname}/docker-app-dev/.env`
+const editorConfig = require('./editor.config')
+const feedCreate = require('./libs/feed')
 
 // load env vars
 dotenv.config({ path: env })
@@ -12,11 +13,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'ontology-editor',
+    title: editorConfig.website.head.title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Semantic Web, RDF ontology editor' }
+      { hid: 'description', name: 'description', content: editorConfig.website.head.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -54,7 +55,8 @@ module.exports = {
     '@nuxtjs/auth',
     '@nuxtjs/apollo',
     '@nuxtjs/toast',
-    '@nuxtjs/sentry'
+    '@nuxtjs/sentry',
+    '@nuxtjs/feed'
   ],
 
   /*
@@ -101,6 +103,21 @@ module.exports = {
     disabled: !process.env.SENTRY_DSN,
     disableClientSide: !process.env.SENTRY_DSN
   },
+
+  /*
+  ** Module config: feed
+  */
+  feed: [{
+    path: '/atom.xml',
+    create: feedCreate('atom'),
+    cacheTime: 1000 * 60 * 5,
+    type: 'atom1'
+  }, {
+    path: '/rss.xml',
+    create: feedCreate('rss'),
+    cacheTime: 1000 * 60 * 5,
+    type: 'rss2'
+  }],
 
   /*
   ** Internal API

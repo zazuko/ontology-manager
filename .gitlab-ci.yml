@@ -10,7 +10,7 @@ stages:
 build:
   stage: build
   script:
-    - sed -i s/example-com/editor/ ontology.config.js
+    - sed -i s/example-com/editor/ editor.config.js
 
     - sed -i s/example-com/editor/ trifid/trifid.config.json
     - sed -i s/example.com/editor.zazuko.com/ trifid/trifid.config.json
