@@ -1,4 +1,4 @@
-// https://github.com/einarjegorov/graphile-upsert-plugin/tree/94ea92e71e25a3c981feaa40cebcd0aad781f1af
+// https://github.com/micimize/graphile-upsert-plugin/blob/4221595e58ee8386dad6b9e9b024971da5c9e6ff/index.js
 const path = require('path')
 const dir = path.dirname(require.resolve('graphile-build-pg'))
 
