@@ -11,12 +11,14 @@
         v-show="canEdit(discussion.author.id)"
         class="level-right discussion-action">
         <img
-          src="~/assets/images/ic-edit-passive.svg"
+          class="hoverable-icon"
+          src="~/assets/images/ic-edit.svg"
           alt="Edit thread"
           title="Edit thread"
           @click="editThread = !editThread">
         <img
-          src="~/assets/images/ic-trashcan-passive.svg"
+          class="hoverable-icon"
+          src="~/assets/images/ic-trashcan.svg"
           alt="Delete thread"
           title="Delete thread"
           @click="deleteConfirm = 'thread'">
@@ -154,12 +156,14 @@
             v-show="canEdit(message.author.id)"
             class="media-right discussion-info">
             <img
-              src="~/assets/images/ic-edit-passive.svg"
+              class="hoverable-icon"
+              src="~/assets/images/ic-edit.svg"
               alt="Edit message"
               title="Edit message"
               @click="editMessageSetup(message)">
             <img
-              src="~/assets/images/ic-trashcan-passive.svg"
+              class="hoverable-icon"
+              src="~/assets/images/ic-trashcan.svg"
               alt="Delete message"
               title="Delete message"
               @click="deleteConfirm = message.id">
