@@ -2,7 +2,8 @@
   <div class="container">
     <div class="layout-conversation">
       <div class="section">
-        <nav
+        <!-- TODO: breadcrumb -->
+        <!-- <nav
           class="breadcrumb">
           <ul>
             <li>
@@ -21,7 +22,7 @@
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> -->
 
         <discussion-create :iri="iri" />
       </div>

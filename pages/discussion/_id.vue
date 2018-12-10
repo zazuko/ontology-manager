@@ -3,7 +3,8 @@
     <div class="layout-conversation">
       <div class="section">
         <!-- On <code>{{ discussion.iri }}</code> -->
-        <nav
+        <!-- TODO: breadcrumb -->
+        <!-- <nav
           class="breadcrumb">
           <ul>
             <li>
@@ -22,7 +23,7 @@
               </a>
             </li>
           </ul>
-        </nav>
+        </nav> -->
 
         <div class="discussion">
           <discussion-card
