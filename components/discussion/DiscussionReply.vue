@@ -2,13 +2,11 @@
   <div>
     <div
       v-if="_get($auth, '$state.loggedIn', false)"
-      class="media discussion-box">
+      class="media discussion-form">
       <figure class="media-left">
-        <p
-          v-if="_get($store, 'state.auth.user.avatar_url', false)"
-          class="image is-48x48">
+        <p v-if="_get($store, 'state.auth.user.avatar_url', false)">
           <img
-            class="is-rounded"
+            class="discussion-avatar"
             :src="_get($store, 'state.auth.user.avatar_url', '')">
         </p>
         <p v-else />
@@ -24,35 +22,33 @@
         </div>
       </div>
       <div class="media-right">
-        <div class="opposite-fields">
-          <div
-            v-show="_get($store, 'state.auth.hats.length', 0)"
-            class="field top">
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select
-                  v-model="selectedHat">
-                  <option value="">
-                    Answer as…
-                  </option>
-                  <option
-                    v-for="hat in _get($store, 'state.auth.hats', [])"
-                    :key="hat.id"
-                    :value="hat.id">
-                    {{ hat.title }}
-                  </option>
-                </select>
-              </div>
+        <div
+          v-show="_get($store, 'state.auth.hats.length', 0)"
+          class="field top">
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select
+                v-model="selectedHat">
+                <option value="">
+                  Answer as…
+                </option>
+                <option
+                  v-for="hat in _get($store, 'state.auth.hats', [])"
+                  :key="hat.id"
+                  :value="hat.id">
+                  {{ hat.title }}
+                </option>
+              </select>
             </div>
           </div>
-          <div class="field bottom">
-            <div class="control">
-              <button
-                class="button is-link is-fullwidth"
-                @click.prevent="create()">
-                Comment
-              </button>
-            </div>
+        </div>
+        <div class="field discussion-post-button">
+          <div class="control">
+            <button
+              class="button is-info"
+              @click.prevent="create()">
+              Comment
+            </button>
           </div>
         </div>
       </div>

@@ -2,14 +2,13 @@
   <div>
     <div class="level">
       <div class="level-left">
-        <h2 class="title is-4">
+        <h2 class="title is-2">
           {{ threadHeadline }}
         </h2>
       </div>
-
       <div
         v-show="canEdit(discussion.author.id)"
-        class="level-right discussion-action">
+        class="discussion-actions level-right">
         <img
           class="hoverable-icon"
           src="~/assets/images/ic-edit.svg"
@@ -24,35 +23,34 @@
           @click="deleteConfirm = 'thread'">
       </div>
     </div>
-    <section>
-      <div
-        v-show="!editThread"
-        class="media topic-box">
-        <figure class="media-left">
-          <p class="image is-48x48">
-            <img
-              class="is-rounded"
-              :src="discussion.author.avatar"
-              :alt="authorsAvatar(discussion.author.name)">
-          </p>
-        </figure>
-        <div class="media-content">
-          <p class="content">
-            {{ discussion.body }}
-          </p>
-        </div>
+
+    <div
+      v-show="!editThread"
+      class="media discussion-message is-from-thread-author">
+      <figure class="media-left">
+        <img
+          class="discussion-avatar"
+          :src="discussion.author.avatar"
+          :alt="authorsAvatar(discussion.author.name)">
+      </figure>
+      <div class="media-content">
+        <p class="discussion-message-content">
+          {{ discussion.body }}
+        </p>
       </div>
-      <div
-        v-show="editThread"
-        class="media discussion-box">
+    </div>
+
+    <div
+      v-show="editThread"
+      class="discussion-message discussion-form is-from-thread-author">
+      <div class="media">
         <figure class="media-left">
-          <p class="image is-48x48">
-            <img
-              class="is-rounded"
-              :src="discussion.author.avatar"
-              :alt="authorsAvatar(discussion.author.name)">
-          </p>
+          <img
+            class="discussion-avatar"
+            :src="discussion.author.avatar"
+            :alt="authorsAvatar(discussion.author.name)">
         </figure>
+
         <div class="media-content">
           <div class="field">
             <div class="control">
@@ -74,65 +72,70 @@
         </div>
 
         <div class="media-right">
-          <div class="opposite-fields">
-            <div class="field top">
-              <div class="control is-expanded has-text-right">
-                <span
-                  class="delete"
-                  @click="editThread = false" />
-              </div>
+          <div class="field top">
+            <div class="control has-text-right">
+              <span
+                class="icon is-medium"
+                @click="editThread = false">
+                <i class="mdi mdi-close" />
+              </span>
             </div>
-            <div class="field bottom">
-              <div class="control">
-                <button
-                  class="button is-link is-fullwidth"
-                  @click.prevent="saveTopic()">
-                  Save
-                </button>
-              </div>
+          </div>
+          <div class="field discussion-post-button">
+            <div class="control">
+              <button
+                class="button is-info"
+                @click.prevent="saveTopic()">
+                Save
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="topic-info level">
-        <div class="level-left">
-          <span class="creation-info">
-            Created on {{ formatDate(discussion.createdAt) }} by
-          </span>
-          <span class="author-info">
-            &nbsp;{{ discussion.author.name }}
-          </span>
-        </div>
-        <div class="level-right">
-          <span class="answers-count">
-            <span class="icon is-small">
-              <i class="mdi mdi-message-reply-text" />
-            </span>
-            {{ messages.length }}
-          </span>
-        </div>
+    <div class="discussion-infos level">
+      <div class="level-left">
+        <span class="creation-info">
+          Created on {{ formatDate(discussion.createdAt) }} by
+        </span>
+        <span class="author-info">
+          &nbsp;{{ discussion.author.name }}
+        </span>
       </div>
-    </section>
+      <div class="level-right">
+        <span class="count-info">
+          {{ messages.length }}
+          <span class="icon is-small">
+            <i class="mdi mdi-message-reply-text" />
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <hr v-show="messages.length" />
 
     <div v-if="messages.length">
-      <hr v-show="messages.length" />
       <div
+        class="discussion-message"
+        v-bind:class="{
+          'is-from-thread-author': discussion.author.id == message.author.id,
+          'has-hat': message.hat,
+          'discussion-form': editMessage === message.id
+        }"
         v-for="message in messages"
         :key="message.id">
         <div
-          v-show="message.id && editMessage !== message.id"
-          class="media answer-box">
+          class="media"
+          v-show="message.id && editMessage !== message.id">
           <figure class="media-left">
-            <p class="image is-48x48">
-              <img
-                class="is-rounded"
-                :src="message.author.avatar"
-                :alt="authorsAvatar(message.author.name)">
-            </p>
+            <img
+              class="discussion-avatar"
+              :src="message.author.avatar"
+              :alt="authorsAvatar(message.author.name)">
           </figure>
           <div class="media-content">
-            <div class="answer-info">
+            <div class="discussion-message-info">
               <span
                 class="author-info">
                 {{ message.author.name }}
@@ -141,20 +144,18 @@
                 commented on {{ message.createdAt | formatDate }}
               </span>
             </div>
-            <div class="answer-content">
-              <p class="content">
-                {{ message.body }}
-              </p>
-            </div>
+            <p class="discussion-message-content">
+              {{ message.body }}
+            </p>
             <div
               v-show="message.hat"
-              class="answer-hat">
+              class="discussion-message-hat">
               {{ _get(message, 'hat.title', '') }}
             </div>
           </div>
           <div
             v-show="canEdit(message.author.id)"
-            class="media-right discussion-info">
+            class="media-right discussion-actions">
             <img
               class="hoverable-icon"
               src="~/assets/images/ic-edit.svg"
@@ -169,65 +170,62 @@
               @click="deleteConfirm = message.id">
           </div>
         </div>
-        <div
-          v-show="editMessage === message.id"
-          class="is-paddingless box">
-          <button
-            class="delete is-pulled-right"
-            title="Cancel"
-            @click="editMessage = 0">
-            Cancel
-          </button>
-          <div class="media discussion-box">
-            <figure class="media-left">
-              <p class="image is-48x48">
-                <img
-                  class="is-rounded"
-                  :src="message.author.avatar"
-                  :alt="authorsAvatar(message.author.name)">
-              </p>
-            </figure>
-            <div class="media-content">
-              <div class="field">
-                <div class="control">
-                  <textarea
-                    v-model="messageBody"
-                    class="textarea"
-                    placeholder="Content" />
+
+        <div class="media" v-show="editMessage === message.id">
+          <figure class="media-left">
+            <img
+              class="discussion-avatar"
+              :src="message.author.avatar"
+              :alt="authorsAvatar(message.author.name)">
+          </figure>
+          <div class="media-content">
+            <div class="field">
+              <div class="control">
+                <textarea
+                  v-model="messageBody"
+                  class="textarea"
+                  placeholder="Content" />
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <div class="field top">
+              <div class="control has-text-right">
+                <span
+                  class="icon is-medium"
+                  title="Cancel"
+                  @click="editMessage = 0">
+                  <i class="mdi mdi-close" />
+                </span>
+              </div>
+            </div>
+            <div
+              v-show="_get(message, 'author.holding.hats.length', 0)"
+              class="field top">
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    v-model="selectedHat">
+                    <option value="">
+                      Answer as…
+                    </option>
+                    <option
+                      v-for="item in _get(message, 'author.holding.hats', [])"
+                      :key="item.hat.id"
+                      :value="item.hat.id">
+                      {{ item.hat.title }}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="media-right">
-              <div class="opposite-fields">
-                <div
-                  v-show="_get(message, 'author.holding.hats.length', 0)"
-                  class="field top">
-                  <div class="control is-expanded">
-                    <div class="select is-fullwidth">
-                      <select
-                        v-model="selectedHat">
-                        <option value="">
-                          Answer as…
-                        </option>
-                        <option
-                          v-for="item in _get(message, 'author.holding.hats', [])"
-                          :key="item.hat.id"
-                          :value="item.hat.id">
-                          {{ item.hat.title }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="field bottom">
-                  <div class="control">
-                    <button
-                      class="button is-link is-fullwidth"
-                      @click.prevent="saveMessage()">
-                      Save
-                    </button>
-                  </div>
-                </div>
+            <div class="field discussion-post-button">
+              <div class="control">
+                <button
+                  class="button is-info"
+                  @click.prevent="saveMessage()">
+                  Save
+                </button>
               </div>
             </div>
           </div>
