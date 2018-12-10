@@ -90,6 +90,7 @@ export default {
         headline: this.headlineModel,
         iri: this.iri,
         body: this.body,
+        isDraft: false,
         threadType: 'DISCUSSION'
       }
 

@@ -12,7 +12,7 @@
 
 <script>
 import _get from 'lodash/get'
-import adminWorklist from '@/apollo/queries/adminWorklist'
+import adminProposalList from '@/apollo/queries/adminProposalList'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 
@@ -34,11 +34,9 @@ export default {
   apollo: {
     discussions: {
       prefetch: true,
-      query: adminWorklist,
+      query: adminProposalList,
       variables () {
-        const vars = {
-          threadType: 'PROPOSAL'
-        }
+        const vars = {}
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy
         }
