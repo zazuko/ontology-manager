@@ -74,7 +74,7 @@ export default {
     userVote: {
       variables () {
         return {
-          threadId: this.threadId
+          threadId: parseInt(this.threadId, 10)
         }
       },
       query: userVote,
@@ -85,7 +85,7 @@ export default {
     tally: {
       variables () {
         return {
-          threadId: this.threadId
+          threadId: parseInt(this.threadId, 10)
         }
       },
       query: votesOnThread,
