@@ -54,7 +54,7 @@
         </ul>
 
         <div v-show="comment">
-          <p class="title is-2">Short Description</p>
+          <p class="title is-2">Description</p>
           <p>
             {{ comment }}
           </p>
