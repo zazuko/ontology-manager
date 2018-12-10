@@ -20,7 +20,7 @@
       </div>
       <div class="discussion-list-body">
         <template v-if="_get(discussions, 'discussions.length', 0) === 0">
-          <p>
+          <p class="discussion-list-item">
             There is no ongoing conversation about this object.
           </p>
         </template>
