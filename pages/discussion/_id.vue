@@ -49,10 +49,8 @@ import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {
   async asyncData ({ route }) {
-    const id = parseInt(route.params.id, 10)
-
     return {
-      id
+      id: route.params.id
     }
   },
   middleware: 'authenticated',
@@ -71,7 +69,7 @@ export default {
       query: discussionById,
       variables () {
         return {
-          id: this.id || this.$route.params.id
+          id: parseInt(this.id || this.$route.params.id, 10)
         }
       },
       fetchPolicy: 'cache-and-network',
