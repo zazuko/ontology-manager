@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Einar Jegorov",
+  "contributors": ["Michael Rosenthal"],
   "license": "MIT",
   "dependencies": {
-    "graphile-build-pg": "^4.0.0-alpha.5"
+    "debug": "^4.1.0"
   }
 }
