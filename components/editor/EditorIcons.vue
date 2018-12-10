@@ -1,5 +1,7 @@
 <template>
-  <div class="icon" :class="[`icon--${name}`, `icon--${size}`, { 'has-align-fix': fixAlign }]">
+  <div
+    class="icon"
+    :class="[`icon--${name}`, `icon--${size}`, { 'has-align-fix': fixAlign }]">
     <img :src="require(`~/assets/images/editor/${name}.svg`)" />
   </div>
 </template>
@@ -7,16 +9,19 @@
 <script>
 export default {
   props: {
-    name: {},
+    name: {
+      type: String,
+      required: true
+    },
     size: {
-      default: 'normal',
+      default: 'normal'
     },
     modifier: {
-      default: null,
+      default: null
     },
     fixAlign: {
-      default: true,
-    },
+      default: true
+    }
   }
 }
 </script>

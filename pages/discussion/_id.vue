@@ -50,7 +50,7 @@ import { emptyDiscussion } from '@/libs/fixtures'
 export default {
   async asyncData ({ route }) {
     return {
-      id: route.params.id
+      id: parseInt(route.params.id, 10)
     }
   },
   middleware: 'authenticated',

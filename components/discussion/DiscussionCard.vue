@@ -34,9 +34,9 @@
           :alt="authorsAvatar(discussion.author.name)">
       </figure>
       <div class="media-content">
-        <p class="discussion-message-content">
-          {{ discussion.body }}
-        </p>
+        <p
+          class="discussion-message-content"
+          v-html="discussion.body" />
       </div>
     </div>
 
@@ -63,10 +63,7 @@
           </div>
           <div class="field">
             <div class="control">
-              <textarea
-                v-model="threadBody"
-                class="textarea"
-                placeholder="Content" />
+              <editor v-model="threadBody" />
             </div>
           </div>
         </div>
@@ -118,7 +115,7 @@
     <div v-if="messages.length">
       <div
         class="discussion-message"
-        v-bind:class="{
+        :class="{
           'is-from-thread-author': discussion.author.id == message.author.id,
           'has-hat': message.hat,
           'discussion-form': editMessage === message.id
@@ -144,9 +141,9 @@
                 commented on {{ message.createdAt | formatDate }}
               </span>
             </div>
-            <p class="discussion-message-content">
-              {{ message.body }}
-            </p>
+            <p
+              class="discussion-message-content"
+              v-html="message.body" />
             <div
               v-show="message.hat"
               class="discussion-message-hat">
@@ -171,7 +168,9 @@
           </div>
         </div>
 
-        <div class="media" v-show="editMessage === message.id">
+        <div
+          class="media"
+          v-show="editMessage === message.id">
           <figure class="media-left">
             <img
               class="discussion-avatar"
@@ -181,10 +180,7 @@
           <div class="media-content">
             <div class="field">
               <div class="control">
-                <textarea
-                  v-model="messageBody"
-                  class="textarea"
-                  placeholder="Content" />
+                <editor v-model="messageBody" />
               </div>
             </div>
           </div>
@@ -287,6 +283,7 @@
 
 <script>
 import _get from 'lodash/get'
+import Editor from '@/components/editor/Editor'
 import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
 import updateMessage from '@/apollo/mutations/updateMessage'
@@ -299,6 +296,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  components: {
+    Editor
   },
   data () {
     return {

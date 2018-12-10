@@ -6,7 +6,10 @@
       <div class="discussion-list-header">
         <div class="field is-pulled-left">
           <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Search">
+            <input
+              class="input"
+              type="text"
+              placeholder="Search">
             <span class="icon is-small is-left">
               <i class="mdi mdi-magnify"></i>
             </span>
@@ -27,40 +30,40 @@
         <template v-else>
           <div
             class="discussion-list-item media"
-            v-for="(discussion, index) in discussions.discussions"
+            v-for="discussion in discussions.discussions"
             :key="discussion.id">
-              <figure class="media-left">
-                <img
-                  class="discussion-list-avatar"
-                  :src="discussion.author.avatar"
-                  :alt="authorsAvatar(discussion.author.name)">
-              </figure>
-              <div class="media-content">
-                  <h3 class="discussion-list-title">
-                    <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-                      {{ discussion.headline }}
-                    </nuxt-link>
-                  </h3>
-                  <p class="discussion-list-content">
-                    {{ cut(discussion.body) }}
-                  </p>
-              </div>
-              <div class="media-right">
+            <figure class="media-left">
+              <img
+                class="discussion-list-avatar"
+                :src="discussion.author.avatar"
+                :alt="authorsAvatar(discussion.author.name)">
+            </figure>
+            <div class="media-content">
+              <h3 class="discussion-list-title">
                 <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-                  <span class="discussion-list-creation-info">
-                    Created {{ discussion.createdAt | formatDate }} by
-                  </span>
-                  <span class="discussion-list-author-info">
-                    {{ discussion.author.name }}
-                  </span>
-                  <span class="discussion-list-answers-count">
-                    {{ answersCount(discussion) }}
-                    <span class="icon is-small">
-                      <i class="mdi mdi-message-reply-text" />
-                    </span>
-                  </span>
+                  {{ discussion.headline }}
                 </nuxt-link>
-              </div>
+              </h3>
+              <p class="discussion-list-content">
+                {{ cut(discussion.body) }}
+              </p>
+            </div>
+            <div class="media-right">
+              <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+                <span class="discussion-list-creation-info">
+                  Created {{ discussion.createdAt | formatDate }} by
+                </span>
+                <span class="discussion-list-author-info">
+                  {{ discussion.author.name }}
+                </span>
+                <span class="discussion-list-answers-count">
+                  {{ answersCount(discussion) }}
+                  <span class="icon is-small">
+                    <i class="mdi mdi-message-reply-text" />
+                  </span>
+                </span>
+              </nuxt-link>
+            </div>
           </div>
         </template>
       </div>
