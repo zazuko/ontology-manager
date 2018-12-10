@@ -2,7 +2,7 @@
   <div>
     <div class="level">
       <div class="level-left">
-        <h1 class="title">New Thread</h1>
+        <h1 class="title is-1">New Thread</h1>
       </div>
       <div class="level-right">
         <button
@@ -12,44 +12,42 @@
         </button>
       </div>
     </div>
+    <div class="discussion">
+      <div class="discussion-form media">
+        <figure class="media-left">
+          <p v-if="_get($store, 'state.auth.user.avatar_url', false)">
+            <img
+              class="discussion-avatar"
+              :src="_get($store, 'state.auth.user.avatar_url', '')">
+          </p>
+          <p v-else />
+        </figure>
 
-    <div class="media discussion-box">
-      <figure class="media-left">
-        <p
-          v-if="_get($store, 'state.auth.user.avatar_url', false)"
-          class="image is-48x48">
-          <img
-            class="is-rounded"
-            :src="_get($store, 'state.auth.user.avatar_url', '')">
-        </p>
-        <p v-else />
-      </figure>
-      <div class="media-content">
-        <div class="field">
-          <div class="control">
-            <input
-              v-model="headlineModel"
-              class="input"
-              type="text"
-              placeholder="Topic title">
+        <div class="media-content">
+          <div class="field">
+            <div class="control">
+              <input
+                v-model="headlineModel"
+                class="input"
+                type="text"
+                placeholder="Topic title">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <textarea
+                v-model="body"
+                class="textarea"
+                placeholder="What's on your mind" />
+            </div>
           </div>
         </div>
-        <div class="field">
-          <div class="control">
-            <textarea
-              v-model="body"
-              class="textarea"
-              placeholder="Content" />
-          </div>
-        </div>
-      </div>
 
-      <div class="media-right">
-        <div class="opposite-fields">
-          <div class="field bottom">
+        <div class="media-right">
+          <div class="field discussion-post-button">
             <div class="control">
               <button
-                class="button is-link is-fullwidth"
+                class="button is-info"
                 @click.prevent="create()">
                 Comment
               </button>

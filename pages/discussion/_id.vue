@@ -1,21 +1,39 @@
 <template>
-  <section class="section">
-    <div class="container">
-      <h1 class="title">
-        Conversation
-      </h1>
-      <h2 class="subtitle">
-        On <code>{{ discussion.iri }}</code>
-      </h2>
-      <div class="box">
-        <discussion-card
-          :discussion="discussion"
-          @refreshDiscussions="refreshDiscussions()" />
-      </div>
-      <div class="box">
-        <discussion-reply
-          :id="id"
-          @answerAdded="refreshDiscussions()" />
+  <section class="container">
+    <div class="layout-conversation">
+      <div class="section">
+        <!-- On <code>{{ discussion.iri }}</code> -->
+        <nav
+          class="breadcrumb">
+          <ul>
+            <li>
+              <a href="#">
+                item 1
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                item 2
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                conversation
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="discussion">
+          <discussion-card
+            :discussion="discussion"
+            @refreshDiscussions="refreshDiscussions()" />
+        </div>
+        <div class="discussion">
+          <discussion-reply
+            :id="id"
+            @answerAdded="refreshDiscussions()" />
+        </div>
       </div>
     </div>
   </section>

@@ -1,7 +1,32 @@
 <template>
-  <section class="container">
-    <discussion-create :iri="iri" />
-  </section>
+  <div class="container">
+    <div class="layout-conversation">
+      <div class="section">
+        <nav
+          class="breadcrumb">
+          <ul>
+            <li>
+              <a href="#">
+                item 1
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                item 2
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                conversation
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <discussion-create :iri="iri" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
