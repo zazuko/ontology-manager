@@ -85,6 +85,11 @@
             </div>
           </div>
           <div class="navbar-item">
+            <img
+              class="hoverable-icon"
+              src="~/assets/images/ic-activity.svg">
+          </div>
+          <div class="navbar-item">
             <div class="field is-grouped">
               <sign-in @loggedOut="loggedOut" />
             </div>

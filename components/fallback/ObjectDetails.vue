@@ -29,7 +29,8 @@
           :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
           class="title-edit-button">
           <img
-            src="~/assets/images/ic-edit-passive.svg"
+            class="hoverable-icon"
+            src="~/assets/images/ic-edit.svg"
             alt="Edit class"
             title="Edit class">
         </nuxt-link>
@@ -38,7 +39,8 @@
           :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
           class="title-edit-button">
           <img
-            src="~/assets/images/ic-edit-passive.svg"
+            class="hoverable-icon"
+            src="~/assets/images/ic-edit.svg"
             alt="Edit property"
             title="Edit property">
         </nuxt-link>
