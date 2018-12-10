@@ -272,6 +272,7 @@ export default {
       }
       if (this.saveTmp !== serialized) {
         this.saveTmp = serialized
+        this.$store.dispatch('drafts/LOAD')
         return this.save()
       }
       return Promise.resolve()
