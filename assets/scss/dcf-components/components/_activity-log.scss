@@ -1,0 +1,65 @@
+.activity-log {
+  .navbar-dropdown {
+    @extend .is-right;
+
+    width: 500px;
+    margin-top: 3.5em;
+    border-radius: 10px;
+    box-shadow: -2px 2px 8px 0 $theme-light-grey;
+
+    .activity-log-header {
+      margin: 0 2em;
+      border-bottom: solid 1px $theme-light-grey;
+
+      h2 {
+        font-weight: normal;
+        font-size: 2em;
+        padding: 0.5em 0;
+      }
+
+      .icon {
+        font-size: 2em;
+        color: $theme-dark-grey;
+        cursor: pointer;
+      }
+    }
+
+    .activity-log-content {
+      max-height: calc(100vh - 225px);
+      padding: 1em 2em;
+      overflow: auto;
+
+      .media {
+        color: $theme-dark-grey;
+
+        &:last-child {
+          margin-bottom: 2em;
+        }
+
+        .activity-author {
+          color: black;
+          font-weight: bold;
+        }
+
+        img {
+          max-height: none;
+        }
+
+        a {
+          text-decoration: underline;
+
+          &:hover, &:focus {
+            text-decoration: none;
+          }
+        }
+
+        .activity-date {
+          display: block;
+          position: relative;
+          top: 5px;
+          font-size: .75em;
+        }
+      }
+    }
+  }
+}
