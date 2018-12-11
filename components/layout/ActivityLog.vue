@@ -1,94 +1,95 @@
 <template>
-  <div>
-    <img
-      class="hoverable-icon"
-      src="~/assets/images/ic-activity.svg"
-      @click="toggle()">
+  <div class="activity-log">
+    <div class="field">
+      <p class="control">
+        <img
+          class="hoverable-icon"
+          src="~/assets/images/ic-activity.svg"
+          @click="toggle()">
+      </p>
+    </div>
 
     <div
       v-show="show"
-      style="
-        display: block;
-        position: absolute;
-        width: 500px;
-        top: 90px;
-        right: 0;
-        z-index: 1000;
-        background-color: white;
-        border: 2px solid black;
-        padding-right: 20px;
-        padding-left: 20px;
-        padding-bottom: 10px;
-      ">
-      <h2>Activity List</h2>
+      class="navbar-dropdown">
+      <div class="activity-log-header level">
+        <h2 class="level-left">Activity List</h2>
+        <span
+          class="level-right icon is-medium"
+          title="Cancel"
+           @click="toggle(false)">
+          <i class="mdi mdi-close" />
+        </span>
+      </div>
 
       <div v-show="!items.length">
         No activity yet.
       </div>
+
       <div
         v-show="items.length"
-        style="
-          max-height: 740px;
-          height: auto;
-          overflow: auto;
-        ">
-        <span
-          class="delete"
-          @click="toggle(false)" />
+        class="activity-log-content">
         <div
+          class="media"
           v-for="item in items"
           :key="item.id">
 
-          <p class="image is-48x48">
-            <img
-              class="is-rounded"
-              :src="item.author.avatar"
-              :alt="authorsAvatar(item.author.name)">
-          </p>
+          <div class="media-left">
+            <figure class="image is-32x32">
+              <img
+                class="is-rounded"
+                :src="item.author.avatar"
+                :alt="authorsAvatar(item.author.name)">
+            </figure>
+          </div>
 
-          {{ item.author.name }}
+          <div class="media-content">
+            <span class="activity-author">
+              {{ item.author.name }}
+            </span>
 
-          <span v-if="item.actionType === 'PROPOSAL_SUBMIT'">
-            submitted the proposal
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
-              {{ item.thread.headline }}
-            </nuxt-link>
-          </span>
-          <span v-else-if="item.actionType === 'PROPOSAL_ACCEPT'">
-            accepted the proposal
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
-              {{ item.thread.headline }}
-            </nuxt-link>
-          </span>
-          <span v-else-if="item.actionType === 'PROPOSAL_REJECT'">
-            rejected the proposal
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
-              {{ item.thread.headline }}
-            </nuxt-link>
-          </span>
-          <span v-else-if="item.actionType === 'CONVERSATION_CREATE'">
-            created a conversation
-            <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
-              {{ item.thread.headline }}
-            </nuxt-link>
-            on
-            <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
-              {{ term(item.thread.iri) }}
-            </nuxt-link>
-          </span>
-          <span v-else-if="item.actionType === 'CONVERSATION_COMMENT'">
-            left a comment on conversation
-            <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
-              {{ item.thread.headline }}
-            </nuxt-link>
-            on
-            <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
-              {{ term(item.thread.iri) }}
-            </nuxt-link>
-          </span>
-          <span v-else />
+            <span v-if="item.actionType === 'PROPOSAL_SUBMIT'">
+              submitted the proposal
+              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+            </span>
+            <span v-else-if="item.actionType === 'PROPOSAL_ACCEPT'">
+              accepted the proposal
+              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+            </span>
+            <span v-else-if="item.actionType === 'PROPOSAL_REJECT'">
+              rejected the proposal
+              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+            </span>
+            <span v-else-if="item.actionType === 'CONVERSATION_CREATE'">
+              created a conversation
+              <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+              on
+              <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
+                {{ term(item.thread.iri) }}
+              </nuxt-link>
+            </span>
+            <span v-else-if="item.actionType === 'CONVERSATION_COMMENT'">
+              left a comment on conversation
+              <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+              on
+              <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
+                {{ term(item.thread.iri) }}
+              </nuxt-link>
+            </span>
+            <span v-else />
 
-          <span>{{ item.eventDate | formatTime }}</span>
+            <span class="activity-date">{{ item.eventDate | formatTime }}</span>
+          </div>
         </div>
       </div>
     </div>
