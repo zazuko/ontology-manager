@@ -29,6 +29,9 @@ module.exports = {
   rules: {
     'vue/require-prop-types': 0,
     'vue/html-self-closing': 0,
+    'vue/component-name-in-template-casing': 0,
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/multiline-html-element-content-newline': 0,
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
