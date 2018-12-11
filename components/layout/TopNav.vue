@@ -1,5 +1,7 @@
 <template>
-  <nav class="navbar top-nav">
+  <nav
+    id="page-top"
+    class="navbar top-nav">
     <div class="container">
       <div class="navbar-brand">
         <nuxt-link

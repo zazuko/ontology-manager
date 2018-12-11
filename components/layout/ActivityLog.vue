@@ -17,7 +17,7 @@
         <span
           class="level-right icon is-medium"
           title="Cancel"
-           @click="toggle(false)">
+          @click="toggle(false)">
           <i class="mdi mdi-close" />
         </span>
       </div>
