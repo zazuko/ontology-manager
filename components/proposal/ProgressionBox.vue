@@ -82,6 +82,7 @@ export default {
       if (this.obj.proposalType === 'Property') {
         return collectChildren(this.obj.classChildren, {}, 'classChildren')
       }
+      return {}
     },
     progressionSteps () {
       const steps = [
