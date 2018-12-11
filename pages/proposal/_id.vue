@@ -101,6 +101,19 @@
             </property-form>
             <div v-else />
 
+            <h1
+              id="conversation"
+              class="title">
+              Conversation
+            </h1>
+            <div class="discussion">
+              <discussion-card :discussion="discussion" />
+            </div>
+            <div class="discussion">
+              <discussion-reply
+                :id="id"
+                @answerAdded="answerAdded()" />
+            </div>
           </div>
 
         </div>
@@ -114,23 +127,6 @@
             <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
             <p class="subtitle">Loading Proposal</p>
           </div>
-        </div>
-      </div>
-
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h1
-          id="conversation"
-          class="title">
-          Conversation
-        </h1>
-        <div class="box">
-          <discussion-card :discussion="discussion" />
-          <discussion-reply
-            :id="id"
-            @answerAdded="answerAdded()" />
         </div>
       </div>
     </section>
