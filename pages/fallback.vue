@@ -23,8 +23,7 @@
         <div class="modal-content has-text-centered">
           <div class="box">
             <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-              <p class="subtitle">Loading Data</p>
-            </div>
+            <p class="subtitle">Loading Data</p>
           </div>
         </div>
       </div>
