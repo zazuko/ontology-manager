@@ -5,16 +5,13 @@ $theme-dark-primary: #2C3E50;
 $theme-light-secondary: #E67E22;
 $theme-dark-grey: #959FA6;
 $theme-light-grey: #BFC5CA;
-
-$theme-discussion-background: #F3F6F9;
-$theme-discussion-background-2: #DEECF7;
-$theme-discussion-background-3: #2D4150;
-$theme-discussion-border: #CCCCCC;
+$theme-shadow: lighten($theme-light-grey, 5%);
 
 // defining bulma variables
 $link: $theme-light-primary;
 $link-visited: $theme-light-primary;
 $family-primary: "Roboto", sans-serif;
+$footer-background-color: $theme-dark-primary;
 
 // navbar
 $navbar-background-color: $theme-dark-primary;
@@ -23,6 +20,12 @@ $navbar-item-color: $theme-light-primary;
 $navbar-item-hover-color: $theme-light-primary-hover;
 $navbar-item-hover-background-color: transparent;
 $navbar-item-active-color: $theme-light-primary-hover;
+
+// discussion
+$theme-discussion-background: #F3F6F9;
+$theme-discussion-background-2: #DEECF7;
+$theme-discussion-background-3: #2D4150;
+$theme-discussion-border: #CCCCCC;
 
 // that is not working (find why ?)
 //$primary: $theme-light-primary;

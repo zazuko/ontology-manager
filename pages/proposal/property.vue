@@ -1,12 +1,11 @@
 <template>
   <div>
-    <section class="section">
-
-      <div
-        v-show="storeReady"
-        class="container">
+    <div class="container layout-proposal">
+      <section
+        v-show="storeReady">
         <div class="columns">
           <div class="column is-3" />
+
           <div class="column">
             <h1 class="title">
               {{ edit ? 'Request Changes on Property' : 'Request New Property' }}<span
@@ -94,13 +93,11 @@
                   </button>
                 </p>
               </div>
-
             </property-form>
-
           </div>
-
         </div>
-      </div>
+      </section>
+
       <div
         v-show="!storeReady"
         class="modal is-active">
@@ -124,8 +121,7 @@
           </div>
         </div>
       </div>
-
-    </section>
+    </div>
   </div>
 </template>
 
