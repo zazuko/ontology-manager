@@ -1,6 +1,6 @@
 FROM node:10-stretch
 
-RUN npm install --global npm@6.4.1
+RUN npm install --global npm@6.5.0
 
 # Create app directory
 RUN mkdir -p /usr/src/app
