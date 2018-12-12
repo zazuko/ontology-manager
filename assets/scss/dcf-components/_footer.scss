@@ -1,7 +1,12 @@
 .footer {
   color: $theme-light-primary;
-  margin-top: 3em;
   padding: 1em 0;
+
+  a {
+    &:hover, &:focus {
+      color: $theme-light-primary-hover;
+    }
+  }
 
   .footer-icon {
     height: 70px;
@@ -9,6 +14,8 @@
   }
 
   .footer-back-icon {
-    font-size: 1.5em;
+    i {
+      font-weight: bold;
+    }
   }
 }
