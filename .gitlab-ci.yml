@@ -34,5 +34,6 @@ deploy:
   script:
     # - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
     - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:latest
+    - upgrade --environment default --stack tcfplayground-org --service editor --new-image $CI_REGISTRY_IMAGE/web:latest
   only:
     - tags
