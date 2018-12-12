@@ -13,8 +13,8 @@ const stringIRI = {
   Class: 'http://www.w3.org/2000/01/rdf-schema#Class',
 
   label: 'http://www.w3.org/2000/01/rdf-schema#label',
-  comment: 'http://www.w3.org/2000/01/rdf-schema#comment',
-  description: 'http://www.w3.org/2004/02/skos/core#note',
+  comment: 'http://www.w3.org/2000/01/rdf-schema#comment', // short description
+  description: 'http://www.w3.org/2004/02/skos/core#note', // long description
   example: 'http://www.w3.org/2004/02/skos/core#example',
 
   domain: 'http://schema.org/domainIncludes',

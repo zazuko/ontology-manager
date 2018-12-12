@@ -120,7 +120,7 @@
           'has-hat': message.hat,
           'discussion-form': editMessage === message.id
         }"
-        v-for="(message, index) in discussion.answers.messages"
+        v-for="message in discussion.answers.messages"
         :key="messageAnchor(message.id)">
 
         <div
