@@ -90,7 +90,7 @@ export default {
       this.$apollo.queries.discussion.refetch()
         .then(() => {
           if (message) {
-            this.$toast.success(message, toastClose)
+            this.$toast.success(message, toastClose).goAway(1600)
           }
         })
     }

@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     loggedOut () {
-      this.$toast.success('Signed out successfully!', toastClose)
+      this.$toast.success('Signed out successfully!', toastClose).goAway(1600)
     },
     toggle () {
       this.isActive = !this.isActive
