@@ -2,6 +2,7 @@ import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import { datasetBaseUrl, containersNestingPredicates } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
+import { website } from '@/editor.config'
 
 export const toastClose = {
   action: {
@@ -164,4 +165,8 @@ export function debounce (fn, delay) {
       fn.apply(this, args)
     }, delay)
   }
+}
+
+export function headTitle (title) {
+  return `${title} - ${website.head.title}`
 }

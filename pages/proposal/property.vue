@@ -133,6 +133,7 @@ import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { hydrate } from '@/models/Property'
+import { headTitle } from '@/libs/utils'
 
 const {
   mapActions: propertyActions,
@@ -286,6 +287,20 @@ export default {
       return true
     }
     return false
+  },
+  head () {
+    const h = {
+      title: 'Proposal'
+    }
+    if (this.obj.label) {
+      h.title += headTitle(` '${this.obj.label}'`)
+    }
+    if (this.comment) {
+      h.meta = [
+        { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
+      ]
+    }
+    return h
   }
 }
 </script>

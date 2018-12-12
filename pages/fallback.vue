@@ -104,7 +104,7 @@ import SideNav from '@/components/fallback/sidenav/SideNav'
 import Discussions from '@/components/fallback/Discussions'
 import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
-import { findSubtreeInForest } from '@/libs/utils'
+import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI } from '@/libs/rdf'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
@@ -245,6 +245,18 @@ export default {
 
     // triggers a 404
     return false
+  },
+  head () {
+    const h = {}
+    if (this.subtree.label) {
+      h.title = headTitle(this.subtree.label)
+    }
+    if (this.comment) {
+      h.meta = [
+        { hid: 'description', name: 'description', content: this.comment }
+      ]
+    }
+    return h
   }
 }
 

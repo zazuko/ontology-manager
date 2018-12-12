@@ -15,6 +15,7 @@ import _get from 'lodash/get'
 import adminProposalList from '@/apollo/queries/adminProposalList'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
+import { headTitle } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -50,6 +51,12 @@ export default {
       },
       fetchPolicy: 'cache-and-network'
     }
+  },
+  head () {
+    const h = {
+      title: headTitle('Proposals Management - Admin')
+    }
+    return h
   }
 }
 </script>
