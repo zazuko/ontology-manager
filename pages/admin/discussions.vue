@@ -15,6 +15,7 @@ import _get from 'lodash/get'
 import adminDiscussionList from '@/apollo/queries/adminDiscussionList'
 import AdminDiscussionList from '@/components/admin/AdminDiscussionList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
+import { headTitle } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -41,6 +42,12 @@ export default {
       },
       fetchPolicy: 'cache-and-network'
     }
+  },
+  head () {
+    const h = {
+      title: headTitle('Discussions Management - Admin')
+    }
+    return h
   }
 }
 </script>

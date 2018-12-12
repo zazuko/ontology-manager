@@ -48,7 +48,7 @@
 <script>
 import _get from 'lodash/get'
 import discussionById from '@/apollo/queries/discussionById'
-import { toastClose } from '@/libs/utils'
+import { toastClose, headTitle } from '@/libs/utils'
 import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 import { emptyDiscussion } from '@/libs/fixtures'
@@ -104,6 +104,20 @@ export default {
   validate ({ params }) {
     // Must be a number
     return /^\d+$/.test(params.id)
+  },
+  head () {
+    const h = {
+      title: 'Discussion'
+    }
+    if (this.discussion.headline) {
+      h.title += ' ' + headTitle("'" + this.discussion.headline + "'")
+    }
+    if (this.comment) {
+      h.meta = [
+        { hid: 'description', name: 'description', content: `Discussion '${this.discussion.headline}' on '${this.discussion.iri}'` }
+      ]
+    }
+    return h
   }
 }
 </script>
