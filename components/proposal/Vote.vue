@@ -72,6 +72,7 @@ export default {
   },
   apollo: {
     userVote: {
+      prefetch: true,
       variables () {
         return {
           threadId: parseInt(this.threadId, 10)
@@ -83,6 +84,8 @@ export default {
       }
     },
     tally: {
+      prefetch: true,
+      fetchPolicy: 'no-cache',
       variables () {
         return {
           threadId: parseInt(this.threadId, 10)

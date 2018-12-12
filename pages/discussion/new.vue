@@ -33,6 +33,7 @@
 <script>
 import _get from 'lodash/get'
 import DiscussionCreate from '@/components/discussion/DiscussionCreate.vue'
+import { headTitle } from '@/libs/utils'
 
 export default {
   async asyncData (context) {
@@ -50,6 +51,12 @@ export default {
   middleware: 'authenticated',
   components: {
     DiscussionCreate
+  },
+  head () {
+    const h = {
+      title: headTitle('Create Discussion')
+    }
+    return h
   }
 }
 </script>
