@@ -356,7 +356,7 @@ export default {
       this.$apollo.mutate({ mutation: updateDiscussion, variables })
         .then((result) => {
           this.editThread = false
-          this.$emit('refreshDiscussions')
+          this.$emit('refreshDiscussion', 'Conversation updated.')
         })
         .catch((err) => {
           console.error(err)
@@ -372,7 +372,7 @@ export default {
       this.$apollo.mutate({ mutation: changeDiscussionStatus, variables })
         .then((result) => {
           this.deleteConfirm = false
-          this.$emit('refreshDiscussions')
+          this.$emit('refreshDiscussion', 'Conversation closed.')
           this.$router.push({ path: '/' })
         })
         .catch((err) => {
@@ -406,7 +406,7 @@ export default {
       this.$apollo.mutate({ mutation: updateMessage, variables })
         .then((result) => {
           this.editMessage = 0
-          this.$emit('refreshDiscussions')
+          this.$emit('refreshDiscussion', 'Message successfully saved.')
         })
         .catch((err) => {
           console.error(err)
@@ -421,7 +421,7 @@ export default {
       this.$apollo.mutate({ mutation: deleteMessage, variables })
         .then((result) => {
           this.deleteConfirm = false
-          this.$emit('refreshDiscussions')
+          this.$emit('refreshDiscussion', 'Message successfully deleted.')
         })
         .catch((err) => {
           console.error(err)
