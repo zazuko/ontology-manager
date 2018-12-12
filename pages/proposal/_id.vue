@@ -148,7 +148,7 @@ import Vote from '@/components/proposal/Vote'
 
 import discussionById from '@/apollo/queries/discussionById'
 import { LOAD } from '@/store/action-types'
-import { toastClose } from '@/libs/utils'
+import { toastClose, headTitle } from '@/libs/utils'
 import { proposalType } from '@/libs/proposals'
 import { emptyDiscussion } from '@/libs/fixtures'
 
@@ -265,6 +265,20 @@ export default {
         }
       }
     }
+  },
+  head () {
+    const h = {
+      title: 'Proposal'
+    }
+    if (this.obj.label) {
+      h.title += headTitle(` '${this.obj.label}'`)
+    }
+    if (this.comment) {
+      h.meta = [
+        { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
+      ]
+    }
+    return h
   }
 }
 </script>

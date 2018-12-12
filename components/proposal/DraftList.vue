@@ -6,7 +6,6 @@
       <thead>
         <tr>
           <th>title</th>
-          <th>on</th>
           <th>last updated</th>
           <th />
         </tr>
@@ -16,7 +15,6 @@
           v-for="draft in drafts"
           :key="draft.id">
           <td>{{ draft.headline }}</td>
-          <td>{{ draft.iri }}</td>
           <td>{{ draft.updatedAt | formatTime }}</td>
           <td>
             <nuxt-link
