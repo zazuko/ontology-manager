@@ -68,7 +68,7 @@ export default {
   methods: {
     async signIn () {
       try {
-        this.$toast.show('Logging in...')
+        this.$toast.show('Logging in...').goAway(1600)
         const loggedIn = this.$auth.$state.loggedIn
         await this.$auth.loginWith('github')
         await this.authenticate(loggedIn)
@@ -76,7 +76,7 @@ export default {
       catch (err) {
         console.error(err)
         this.$sentry.captureException(err)
-        this.$toast.error('Error while authenticating', toastClose)
+        this.$toast.error('Error while authenticating', toastClose).goAway(1600)
       }
     },
     async signOut () {
@@ -108,7 +108,7 @@ export default {
             const headers = { headers: { authorization: this.$auth.getToken('github') } }
             const result = await axios.post('/api/link', { email, name, id, username }, headers)
               .catch((err) => {
-                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
+                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
               })
 
             const jwtToken = _get(result, 'data.jwtToken')
@@ -122,7 +122,7 @@ export default {
             this.$apolloHelpers.onLogin(jwtToken)
           }
           catch (err) {
-            this.$toast.error(err, toastClose)
+            this.$toast.error(err, toastClose).goAway(1600)
             await this.$apolloHelpers.onLogout()
           }
         }
