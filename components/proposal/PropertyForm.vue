@@ -41,48 +41,43 @@
       </div> -->
 
       <div class="box">
-
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">
+            <h2 class="title is-2">
               <span v-show="!prop['isEdit']">New</span>
               Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
             </h2>
             <p
               v-show="prop['iri']"
-              class="subtitle">
-              <code>{{ prop['iri'] }}</code>
+              class="subtitle is-1">
+              <span class="title-url">{{ prop['iri'] }}</span>
             </p>
           </div>
-          <!--<div class="column">
-            <button class="button is-warning is-pulled-right">Remove</button>
-          </div>-->
+          <div class="column">
+            <!--<button class="button is-warning is-pulled-right">Remove</button>-->
+          </div>
         </div>
 
         <div class="columns">
           <div class="column is-6 field">
-            <label class="label">Property Name</label>
-            <div class="control">
-              <input
-                :disabled="disabled"
-                :class="{'is-danger': !prop['label']}"
-                class="input"
-                autocomplete="new-password"
-                type="text"
-                v-debounce
-                v-model.lazy="prop['label']">
+            <div class="field">
+              <label class="label">Property Name</label>
+              <div class="control">
+                <input
+                  :disabled="disabled"
+                  :class="{'is-danger': !prop['label']}"
+                  class="input"
+                  autocomplete="new-password"
+                  type="text"
+                  v-debounce
+                  v-model.lazy="prop['label']">
+              </div>
+              <p
+                v-show="!prop['label']"
+                class="help is-danger">
+                Please enter the property name.
+              </p>
             </div>
-            <p
-              v-show="!prop['label']"
-              class="help is-danger">
-              Please enter the property name.
-            </p>
-          </div>
-        </div>
-
-        <div class="columns">
-
-          <div class="column">
             <div class="field">
               <label class="label">Short Description</label>
               <div class="control">
@@ -122,7 +117,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="columns">
@@ -245,12 +239,19 @@
         <div
           v-show="subform && !disabled"
           class="columns">
-          <div class="column">
+          <div class="column is-6">
             <button
-              class="button is-success"
+              class="button is-info"
               :disabled="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
+            </button>
+          </div>
+
+          <div class="column is-6">
+            <button
+              class="button is-dark-info is-pulled-right">
+              Cancel
             </button>
           </div>
         </div>

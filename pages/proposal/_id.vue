@@ -1,20 +1,18 @@
 <template>
   <div>
-    <section class="section">
-      <div
-        v-if="obj"
-        class="container">
+    <div class="container layout-proposal">
+      <section v-if="obj">
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
-            <h1 class="title">
+            <h1 class="title is-1">
               New {{ type }} Request<span
                 v-show="obj.label">:
               "{{ obj.label }}"
               </span>
             </h1>
-            <h2 class="subtitle">
-              On <code>{{ obj.parentStructureIRI }}</code>
+            <h2 class="subtitle is-1">
+              On <span class="title-url">{{ obj.parentStructureIRI }}</span>
             </h2>
           </div>
         </div>
@@ -27,27 +25,30 @@
               :proposal-path="path" />
           </div>
           <div class="column">
-            <div class="level topic-box">
-              <div class="level-left">
-                <figure class="level-item">
-                  <p class="image is-64x64">
-                    <img
-                      :src="discussion.author.avatar"
-                      :alt="authorsAvatar(discussion.author.name)">
-                  </p>
-                </figure>
-                <div>
-                  <p>
-                    Submitted on {{ discussion.createdAt | formatDate }}
-                  </p>
-                  <p>
-                    by {{ discussion.author.name }}
-                  </p>
+            <div class="box">
+              <div class="level topic-box">
+                <div class="level-left">
+                  <figure class="level-item">
+                    <p class="image is-64x64">
+                      <img
+                        class="is-rounded"
+                        :src="discussion.author.avatar"
+                        :alt="authorsAvatar(discussion.author.name)">
+                    </p>
+                  </figure>
+                  <div>
+                    <p>
+                      Submitted on {{ discussion.createdAt | formatDate }}
+                    </p>
+                    <p>
+                      by {{ discussion.author.name }}
+                    </p>
+                  </div>
                 </div>
+                <vote
+                  :thread-id="discussion.id"
+                  class="level-right has-text-right" />
               </div>
-              <vote
-                :thread-id="discussion.id"
-                class="level-right has-text-right" />
             </div>
 
             <div class="box">
@@ -103,7 +104,7 @@
 
             <h1
               id="conversation"
-              class="title">
+              class="title is-2">
               Conversation
             </h1>
             <div class="discussion">
@@ -119,7 +120,7 @@
           </div>
 
         </div>
-      </div>
+      </section>
       <div
         v-else
         class="modal is-active">
@@ -131,7 +132,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 

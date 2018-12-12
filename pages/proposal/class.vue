@@ -1,21 +1,19 @@
 <template>
   <div>
-    <section class="section">
-
-      <div
-        v-show="storeReady"
-        class="container">
+    <div class="container layout-proposal">
+      <section
+        v-show="storeReady">
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
-            <h1 class="title">
+            <h1 class="title is-1">
               {{ edit ? 'Request Changes on Class' : 'Request New Class' }}<span
                 v-show="clss.label">:
               "{{ clss.label }}"
               </span>
             </h1>
-            <h2 class="subtitle">
-              On <code>{{ _iri }}</code>
+            <h2 class="subtitle is-1">
+              On <span class="title-url">{{ _iri }}</span>
             </h2>
             <p v-show="edit">
               This form allows suggesting modifications to the ontology.
@@ -56,7 +54,7 @@
                     </div>
                   </div>
                   <div class="column">
-                    <p>
+                    <p class="desc">
                       In your motivation, please mention involved parties and other supportive
                       entities, what shortcoming this proposal is expected to overcome
                       or what purpose it serves.
@@ -75,19 +73,19 @@
 
               <div
                 v-show="!disabled"
-                class="field is-grouped proposal-submit">
-                <p class="control">
+                class="columns proposal-submit">
+                <p class="column is-6">
                   <button
                     id="submit"
-                    class="button is-link is-medium"
+                    class="button is-info"
                     :disabled="!proposalReady"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
                 </p>
-                <p class="control">
+                <p class="column is-6">
                   <button
-                    class="button is-medium"
+                    class="button is-dark-info"
                     @click.prevent="clear">
                     Cancel
                   </button>
@@ -99,7 +97,7 @@
           </div>
 
         </div>
-      </div>
+      </section>
       <div
         v-show="!storeReady"
         class="modal is-active">
@@ -123,8 +121,7 @@
           </div>
         </div>
       </div>
-
-    </section>
+    </div>
   </div>
 </template>
 

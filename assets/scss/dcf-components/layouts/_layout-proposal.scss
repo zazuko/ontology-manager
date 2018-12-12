@@ -1,9 +1,100 @@
 .layout-proposal {
   padding-top: 3em;
 
+  .is-prop-subform .box {
+    border-top: solid 1px $theme-shadow;
+    border-radius: 0 0 8px 8px;
+    background: $theme-main-background;
+  }
+
+  .title {
+    &.is-1 {
+      @extend .is-size-1;
+
+      font-weight: normal;
+      color: $theme-light-primary;
+    }
+
+    &.is-2 {
+      @extend .is-size-4;
+
+      font-weight: normal;
+      color: $theme-light-primary;
+    }
+  }
+
+  .title.is-3, .label {
+    @extend .is-size-7;
+
+    font-weight: bold;
+    color: black;
+  }
+
+  .subtitle {
+    &.is-1 {
+      @extend .is-size-6;
+    }
+  }
+
+  .title-url {
+    display: inline-block;
+    font-family: $family-monospace;
+    color: $theme-dark-primary;
+  }
+
   .box {
     border: none;
     border-radius: 8px;
     box-shadow: -2px 2px 8px 0 $theme-shadow;
+    padding: 1.5em 2em;
+
+    &.is-marginless {
+      border-radius: 8px 8px 0 0;
+    }
+
+    .desc {
+      color: $theme-light-grey;
+      font-size: .9em;
+    }
+
+    .configurable-list {
+      .field {
+        margin-bottom: -1em;
+      }
+
+      .panel-block {
+        border: none;
+        padding: 0;
+        color: $theme-light-grey;
+
+        .panel-icon {
+          font-size: 1.2em;
+        }
+
+        &.is-active {
+          color: black;
+
+          .panel-icon {
+            color: black;
+          }
+        }
+      }
+    }
+
+    .dropdown {
+      width: 100%;
+    }
+  }
+
+  .proposal-submit {
+    .button {
+      @extend .is-medium;
+      padding-top: 1.5em;
+      padding-bottom: 1.5em;
+
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1em;
+    }
   }
 }
