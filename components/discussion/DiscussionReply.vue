@@ -43,6 +43,7 @@
           <div class="control">
             <button
               class="button is-info"
+              :disabled="!body"
               @click.prevent="create()">
               Comment
             </button>
