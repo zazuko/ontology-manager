@@ -34,9 +34,9 @@
           :alt="authorsAvatar(discussion.author.name)">
       </figure>
       <div class="media-content">
-        <p
+        <div
           class="discussion-message-content"
-          v-html="discussion.body" />
+          v-html="toHTML(discussion.body)" />
       </div>
     </div>
 
@@ -141,9 +141,9 @@
                 commented on {{ message.createdAt | formatDate }}
               </span>
             </div>
-            <p
+            <div
               class="discussion-message-content"
-              v-html="message.body" />
+              v-html="toHTML(message.body)" />
             <div
               v-show="message.hat"
               class="discussion-message-hat">
@@ -219,6 +219,7 @@
               <div class="control">
                 <button
                   class="button is-info"
+                  :disabled="!messageBody"
                   @click.prevent="saveMessage()">
                   Save
                 </button>
@@ -283,6 +284,7 @@
 
 <script>
 import _get from 'lodash/get'
+import { toHTML } from '@/libs/editor'
 import Editor from '@/components/editor/Editor'
 import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
@@ -327,6 +329,7 @@ export default {
   },
   methods: {
     _get,
+    toHTML,
     canEdit (id) {
       if (this.$auth.$storage.getState('isAdmin')) {
         // admins can edit anything

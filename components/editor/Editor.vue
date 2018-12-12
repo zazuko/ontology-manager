@@ -123,7 +123,6 @@
 </template>
 
 <script>
-import Icon from './EditorIcons'
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Blockquote,
@@ -143,6 +142,8 @@ import {
   Underline,
   History
 } from 'tiptap-extensions'
+import Icon from './EditorIcons'
+import { toMarkdown, toHTML } from '@/libs/editor'
 
 export default {
   props: {
@@ -160,7 +161,7 @@ export default {
     if (!process.browser) {
       return {
         editor: false,
-        html: ''
+        markdown: ''
       }
     }
     return {
@@ -185,16 +186,17 @@ export default {
         ],
         content: this.value,
         onUpdate: (state) => {
-          this.html = state.getHTML()
-          this.$emit('input', this.html)
+          const html = state.getHTML()
+          this.markdown = toMarkdown(html)
+          this.$emit('input', this.markdown)
         }
       })
     }
   },
   watch: {
     value (newVal) {
-      if (this.html !== newVal) {
-        this.editor.setContent(newVal)
+      if (this.markdown !== newVal) {
+        this.editor.setContent(toHTML(newVal))
       }
     }
   },
