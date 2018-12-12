@@ -34,7 +34,7 @@
         v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
-            {{ subtree.label }}
+            {{ label }}
           </h1>
           <h2 class="subtitle">
             {{ comment }}
@@ -105,7 +105,7 @@ import Discussions from '@/components/fallback/Discussions'
 import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
-import { termIRI } from '@/libs/rdf'
+import { termIRI, term } from '@/libs/rdf'
 
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
 
@@ -176,8 +176,27 @@ export default {
       }
       return null
     },
+    label () {
+      let label
+      if (this.subtree) {
+        return this.subtree.label
+      }
+      else if (this.object) {
+        label = this.object.match(rdf.namedNode(this.iri), termIRI.label).toArray()[0]
+      }
+      if (label) {
+        return label.object.value
+      }
+      return ''
+    },
     comment () {
-      const comment = this.subtree.quads.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+      let comment
+      if (this.subtree) {
+        comment = this.subtree.quads.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+      }
+      else if (this.object) {
+        comment = this.object.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+      }
       if (comment) {
         return comment.object.value
       }
@@ -195,6 +214,7 @@ export default {
     }
   },
   methods: {
+    term,
     setObjectType () {
       if (this.structure) {
         const subject = rdf.namedNode(this.iri)
@@ -247,9 +267,11 @@ export default {
     return false
   },
   head () {
-    const h = {}
-    if (this.subtree.label) {
-      h.title = headTitle(this.subtree.label)
+    const h = {
+      title: headTitle(term(this.iri))
+    }
+    if (this.label) {
+      h.title = headTitle(this.label)
     }
     if (this.comment) {
       h.meta = [
