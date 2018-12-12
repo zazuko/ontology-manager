@@ -1,0 +1,33 @@
+.progression-box {
+  hr {
+    margin-bottom: 1em;
+  }
+
+  ul {
+    padding-top: .5em;
+    padding-left: 1em;
+    list-style-type: disc;
+    font-size: .9em;
+
+    li {
+      margin: .25em 0;
+      color: $theme-light-grey;
+
+      a {
+        color: $theme-light-grey;
+      }
+
+      &.done {
+        color: $theme-light-primary;
+
+        a {
+          color: $theme-light-primary;
+
+          &:hover, &:focus {
+            color: $theme-light-primary-hover;
+          }
+        }
+      }
+    }
+  }
+}
