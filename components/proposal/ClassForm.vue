@@ -51,14 +51,14 @@
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title">
+            <h2 class="title is-2">
               <span v-show="!edit">New</span>
               Class
               <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
             <p
               v-show="clss['iri']"
-              class="subtitle">
-              <code>{{ clss['iri'] }}</code>
+              class="subtitle is-1">
+              <span class="title-url">{{ clss['iri'] }}</span>
             </p>
           </div>
           <!--<div class="column">
@@ -69,32 +69,28 @@
         <div class="columns">
           <div class="column is-6 field">
             <label class="label">Class Name</label>
-            <div class="control">
-              <input
-                :disabled="disabled"
-                :class="{'is-danger': !clss['label']}"
-                class="input"
-                autocomplete="new-password"
-                type="text"
-                v-debounce
-                v-model.lazy="clss['label']">
+            <div class="field">
+              <div class="control">
+                <input
+                  :disabled="disabled"
+                  :class="{'is-danger': !clss['label']}"
+                  class="input"
+                  autocomplete="new-password"
+                  type="text"
+                  v-debounce
+                  v-model.lazy="clss['label']">
+              </div>
+              <p
+                v-show="clss['label'] && invalidClassname(clss['label'])"
+                class="help is-danger">
+                Class name must start with an <strong>Uppercase</strong> letter!
+              </p>
+              <p
+                v-show="!clss['label']"
+                class="help is-danger">
+                Please enter the class name.
+              </p>
             </div>
-            <p
-              v-show="clss['label'] && invalidClassname(clss['label'])"
-              class="help is-danger">
-              Class name must start with an <strong>Uppercase</strong> letter!
-            </p>
-            <p
-              v-show="!clss['label']"
-              class="help is-danger">
-              Please enter the class name.
-            </p>
-          </div>
-        </div>
-
-        <div class="columns">
-
-          <div class="column">
             <div class="field">
               <label class="label">Short Description</label>
               <div class="control">
@@ -122,6 +118,7 @@
               </div>
             </div>
           </div>
+
           <div class="column">
             <div class="field">
               <label class="label">Long Description (optional)</label>
@@ -134,7 +131,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="columns">
@@ -195,12 +191,18 @@
         <div
           v-show="subform && !disabled"
           class="columns">
-          <div class="column">
+          <div class="column is-6">
             <button
-              class="button is-success"
+              class="button is-info"
               :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ clss['label'] }}</em>" to the proposal
+            </button>
+          </div>
+          <div class="column is-6">
+            <button
+              class="button is-dark-info is-pulled-right">
+              Cancel
             </button>
           </div>
         </div>
