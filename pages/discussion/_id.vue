@@ -28,12 +28,12 @@
         <div class="discussion">
           <discussion-card
             :discussion="discussion"
-            @refreshDiscussions="refreshDiscussions()" />
+            @refreshDiscussion="refreshDiscussion" />
         </div>
         <div class="discussion">
           <discussion-reply
             :id="id"
-            @answerAdded="refreshDiscussions()" />
+            @answerAdded="refreshDiscussion" />
         </div>
       </div>
     </div>
@@ -86,10 +86,12 @@ export default {
     }
   },
   methods: {
-    refreshDiscussions () {
+    refreshDiscussion (message) {
       this.$apollo.queries.discussion.refetch()
         .then(() => {
-          this.$toast.success('Answer successfully added!', toastClose)
+          if (message) {
+            this.$toast.success(message, toastClose)
+          }
         })
     }
   },
