@@ -30,8 +30,10 @@ async function up (env = 'dev') {
   }, {})
 
   const wait = setInterval(attempts, 1000 * 5)
+  let attemptsCount = 0
 
   async function attempts () {
+    attemptsCount += 1
     try {
       await run(stringsToReplace)
       clearInterval(wait)
@@ -39,8 +41,13 @@ async function up (env = 'dev') {
       return true
     }
     catch (err) {
-      console.warn(`  * Err: ${err.message}`)
-      console.warn('    * … waiting 5s before retrying')
+      if (err.message.includes('starting')) {
+        console.warn('    * … database is starting up')
+      }
+      else if (attemptsCount > 3) {
+        console.warn(`  * Err: ${err.message}`)
+        console.warn('    * … waiting 5s before retrying')
+      }
     }
   }
   if (await attempts()) {
