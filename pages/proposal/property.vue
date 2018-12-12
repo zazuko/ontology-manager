@@ -292,10 +292,10 @@ export default {
     const h = {
       title: 'Proposal'
     }
-    if (this.obj.label) {
+    if (this.obj && this.obj.label) {
       h.title += headTitle(` '${this.obj.label}'`)
     }
-    if (this.comment) {
+    if (this.obj) {
       h.meta = [
         { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
       ]
