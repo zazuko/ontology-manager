@@ -112,6 +112,7 @@ export default {
   name: 'ActivityLog',
   data () {
     return {
+      interval: null,
       show: false,
       logs: null
     }
@@ -139,14 +140,25 @@ export default {
       }
     }
   },
+  mounted () {
+    this.interval = setInterval(() => {
+      this.$apollo.queries.logs.refetch()
+    }, 45 * 1000)
+  },
+  beforeDestroy () {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   apollo: {
     logs: {
-      prefetch: true,
       query: activityLog,
+      fetchPolicy: 'no-cache',
       result ({ data, loading }) {
-        this.logs = data.logs
-      },
-      pollInterval: 1000 * 31
+        if (!loading) {
+          this.logs = data.logs
+        }
+      }
     }
   }
 }
