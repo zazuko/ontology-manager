@@ -107,12 +107,14 @@
               Conversation
             </h1>
             <div class="discussion">
-              <discussion-card :discussion="discussion" />
+              <discussion-card
+                :discussion="discussion"
+                @refreshDiscussion="refreshDiscussion" />
             </div>
             <div class="discussion">
               <discussion-reply
                 :id="id"
-                @answerAdded="answerAdded()" />
+                @answerAdded="refreshDiscussion" />
             </div>
           </div>
 
@@ -200,10 +202,12 @@ export default {
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
     },
-    answerAdded () {
+    refreshDiscussion (message) {
       this.$apollo.queries.discussion.refetch()
         .then(() => {
-          this.$toast.success('Answer successfully added!', toastClose)
+          if (message) {
+            this.$toast.success(message, toastClose)
+          }
         })
     },
     init () {

@@ -89,7 +89,7 @@ export default {
 
       this.$apollo.mutate({ mutation: answerDiscussion, variables })
         .then((data) => {
-          this.$emit('answerAdded')
+          this.$emit('answerAdded', 'Answer successfully added!')
           this.body = ''
           this.selectedHat = ''
         })
