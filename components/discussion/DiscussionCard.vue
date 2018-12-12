@@ -102,7 +102,7 @@
       </div>
       <div class="level-right">
         <span class="count-info">
-          {{ messages.length }}
+          {{ discussion.answers.messages.length }}
           <span class="icon is-small">
             <i class="mdi mdi-message-reply-text" />
           </span>
@@ -110,9 +110,9 @@
       </div>
     </div>
 
-    <hr v-show="messages.length" />
+    <hr v-show="discussion.answers.messages.length" />
 
-    <div v-if="messages.length">
+    <div v-if="discussion.answers.messages.length">
       <div
         class="discussion-message"
         :class="{
@@ -120,57 +120,13 @@
           'has-hat': message.hat,
           'discussion-form': editMessage === message.id
         }"
-        v-for="message in messages"
-        :key="message.id">
-        <div
-          class="media"
-          v-show="message.id && editMessage !== message.id">
-          <figure class="media-left">
-            <img
-              class="discussion-avatar"
-              :src="message.author.avatar"
-              :alt="authorsAvatar(message.author.name)">
-          </figure>
-          <div class="media-content">
-            <div class="discussion-message-info">
-              <span
-                class="author-info">
-                {{ message.author.name }}
-              </span>
-              <span class="creation-info">
-                commented on {{ message.createdAt | formatDate }}
-              </span>
-            </div>
-            <div
-              class="discussion-message-content"
-              v-html="toHTML(message.body)" />
-            <div
-              v-show="message.hat"
-              class="discussion-message-hat">
-              {{ _get(message, 'hat.title', '') }}
-            </div>
-          </div>
-          <div
-            v-show="canEdit(message.author.id)"
-            class="media-right discussion-actions">
-            <img
-              class="hoverable-icon"
-              src="~/assets/images/ic-edit.svg"
-              alt="Edit message"
-              title="Edit message"
-              @click="editMessageSetup(message)">
-            <img
-              class="hoverable-icon"
-              src="~/assets/images/ic-trashcan.svg"
-              alt="Delete message"
-              title="Delete message"
-              @click="deleteConfirm = message.id">
-          </div>
-        </div>
+        v-for="(message, index) in discussion.answers.messages"
+        :key="messageAnchor(message.id)">
 
         <div
-          class="media"
-          v-show="editMessage === message.id">
+          v-if="editMessage === message.id"
+          :id="messageAnchor(message.id)"
+          class="media">
           <figure class="media-left">
             <img
               class="discussion-avatar"
@@ -225,6 +181,52 @@
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+        <div
+          v-else
+          :id="messageAnchor(message.id)"
+          class="media">
+          <figure class="media-left">
+            <img
+              class="discussion-avatar"
+              :src="message.author.avatar"
+              :alt="authorsAvatar(message.author.name)">
+          </figure>
+          <div class="media-content">
+            <div class="discussion-message-info">
+              <span
+                class="author-info">
+                {{ message.author.name }}
+              </span>
+              <span class="creation-info">
+                commented on {{ message.createdAt | formatDate }}
+              </span>
+            </div>
+            <div
+              class="discussion-message-content"
+              v-html="toHTML(message.body)" />
+            <div
+              v-show="message.hat"
+              class="discussion-message-hat">
+              {{ _get(message, 'hat.title', '') }}
+            </div>
+          </div>
+          <div
+            v-show="canEdit(message.author.id)"
+            class="media-right discussion-actions">
+            <img
+              class="hoverable-icon"
+              src="~/assets/images/ic-edit.svg"
+              alt="Edit message"
+              title="Edit message"
+              @click="editMessageSetup(message)">
+            <img
+              class="hoverable-icon"
+              src="~/assets/images/ic-trashcan.svg"
+              alt="Delete message"
+              title="Delete message"
+              @click="deleteConfirm = message.id">
           </div>
         </div>
       </div>
@@ -304,6 +306,7 @@ export default {
   },
   data () {
     return {
+      thread: this.discussion,
       editMessage: 0,
       selectedHat: '',
       originalHat: '',
@@ -314,12 +317,10 @@ export default {
       threadBody: this.discussion.body
     }
   },
-  computed: {
-    messages () {
-      return _get(this, 'discussion.answers.messages', [])
-    }
-  },
   watch: {
+    'discussion' (newVal) {
+      this.thread = newVal
+    },
     'discussion.headline' () {
       this.threadHeadline = this.discussion.headline
     },
@@ -331,7 +332,8 @@ export default {
     _get,
     toHTML,
     canEdit (id) {
-      if (this.$auth.$storage.getState('isAdmin')) {
+      const auth = _get(this, '$auth.$storage')
+      if (auth && auth.getState('isAdmin')) {
         // admins can edit anything
         return true
       }
@@ -430,6 +432,9 @@ export default {
           console.error(err)
           this.$sentry.captureException(err)
         })
+    },
+    messageAnchor (messageId) {
+      return `message-${messageId}`
     }
   }
 }
