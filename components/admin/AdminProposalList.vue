@@ -175,12 +175,12 @@ export default {
       try {
         await axios.post('/api/proposal/merge', body, headers)
         this.$emit('updated', proposal.id)
-        this.$toast.success('Proposal approved!', toastClose)
+        this.$toast.success('Proposal approved!', toastClose).goAway(1600)
       }
       catch (err) {
         console.error(err)
         this.$sentry.captureException(err)
-        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
       }
     },
     async reject (proposal, status = 'REJECTED') {
@@ -193,12 +193,12 @@ export default {
       try {
         await axios.post('/api/proposal/close', body, headers)
         this.$emit('updated', proposal.id)
-        this.$toast.success('Proposal rejected!', toastClose)
+        this.$toast.success('Proposal rejected!', toastClose).goAway(1600)
       }
       catch (err) {
         console.error(err)
         this.$sentry.captureException(err)
-        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
       }
     },
     async hide (proposal, status = 'HIDDEN') {
@@ -211,12 +211,12 @@ export default {
       try {
         await axios.post('/api/proposal/close', body, headers)
         this.$emit('updated', proposal.id)
-        this.$toast.success('Proposal deleted!', toastClose)
+        this.$toast.success('Proposal deleted!', toastClose).goAway(1600)
       }
       catch (err) {
         console.error(err)
         this.$sentry.captureException(err)
-        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose)
+        this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
       }
     },
     tally (votes = []) {
