@@ -6,13 +6,6 @@
   border-radius: 10px;
   box-shadow: -2px 2px 8px 0 $theme-light-grey;
 
-  // quite ugly hack
-  .media + .media {
-    border-top: none;
-    margin-top: 0;
-    padding-top: 0;
-  }
-
   .discussion-avatar {
     width: 40px; height: 40px;
     border-radius: 100%;
