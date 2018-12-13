@@ -5,9 +5,11 @@ query GetUserContent ($iri: String!) {
       headline,
       body,
       hat: hatByHatId {
+        id,
         title
       },
       author: personByAuthorId {
+        id,
         avatar,
         name
       },
