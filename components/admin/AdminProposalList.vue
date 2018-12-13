@@ -2,6 +2,7 @@
   <table class="table is-striped is-narrow">
     <thead>
       <tr>
+        <th></th>
         <th>
           <a
             class="sort-by"
@@ -37,9 +38,17 @@
         v-for="proposal in rows"
         :key="proposal.id">
         <td>
+          <forge-link
+            :id="proposal.externalId"
+            class="is-link" />
+        </td>
+        <td>
           <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
             {{ proposal.headline }}
           </nuxt-link>
+          <p>
+            on <small>{{ proposal.iri }}</small>
+          </p>
         </td>
         <td>
           {{ proposal.author.name }}
@@ -48,7 +57,7 @@
           {{ proposal.updatedAt|formatDate }}
           <br>
           <small>
-            (Created: {{ proposal.createdAt|formatDate }})
+            Created: {{ proposal.createdAt|formatDate }}
           </small>
         </td>
         <td>
@@ -123,6 +132,7 @@
 import axios from 'axios'
 import { toastClose } from '@/libs/utils'
 import { proposalType } from '@/libs/proposals'
+import ForgeLink from './ForgeLink'
 
 export default {
   name: 'AdminProposalList',
@@ -141,6 +151,9 @@ export default {
         return []
       }
     }
+  },
+  components: {
+    ForgeLink
   },
   computed: {
     rows () {
