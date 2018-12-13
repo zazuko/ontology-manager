@@ -2,11 +2,13 @@
   <section class="section">
     <admin-menu class="container" />
 
-    <admin-hat-list
-      :hats="hats"
-      :users="users"
-      @updated="refetch()"
-      class="container" />
+    <no-ssr>
+      <admin-hat-list
+        :hats="hats"
+        :users="users"
+        @updated="refetch()"
+        class="container" />
+    </no-ssr>
   </section>
 </template>
 
@@ -34,7 +36,6 @@ export default {
   },
   apollo: {
     allHats: {
-      prefetch: true,
       query: hats,
       result ({ data, loading }) {
         if (!loading) {
@@ -43,7 +44,6 @@ export default {
       }
     },
     users: {
-      prefetch: true,
       query: users,
       variables () {
         return {

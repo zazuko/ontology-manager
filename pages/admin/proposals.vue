@@ -2,11 +2,13 @@
   <section class="section">
     <admin-menu class="container" />
 
-    <admin-proposal-list
-      v-model="orderBy"
-      :proposals="proposals"
-      @updated="refetch()"
-      class="container" />
+    <no-ssr>
+      <admin-proposal-list
+        v-model="orderBy"
+        :proposals="proposals"
+        @updated="refetch()"
+        class="container" />
+    </no-ssr>
   </section>
 </template>
 
@@ -34,7 +36,6 @@ export default {
   },
   apollo: {
     discussions: {
-      prefetch: true,
       query: adminProposalList,
       variables () {
         const vars = {}
