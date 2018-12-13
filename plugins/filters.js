@@ -22,5 +22,6 @@ Vue.filter('formatTime', (date) => {
 })
 
 Vue.filter('forgeLink', (id) => {
+  // TODO: make this forge-agnostic
   return `https://github.com/${owner}/${repo}/pull/${id}`
 })

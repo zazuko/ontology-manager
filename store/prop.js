@@ -97,7 +97,7 @@ export const actions = {
         iri: state.prop.parentStructureIRI,
         body: state.prop.motivation,
         proposalObject: JSON.parse(proposalSerializer(state.prop)),
-        headline: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
+        headline: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,
         threadType: 'PROPOSAL'
       }
 
@@ -133,7 +133,7 @@ export const actions = {
       const id = await submitProposal({
         threadId: state.prop.threadId,
         object: state.prop,
-        title: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}' on '${state.prop.parentStructureIRI}'`,
+        title: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,
         message: `${isEdit ? 'update' : 'add'} property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
         ontologyContent: propertyProposalData.ontologyContent,
         structureContent: propertyProposalData.structureContent,
