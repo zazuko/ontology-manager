@@ -1,6 +1,6 @@
 module.exports = {
   website: {
-    url: 'http://editor.zazuko.com',
+    url: `${process.env.EDITOR_PROTOCOL || 'http'}://${process.env.EDITOR_HOST || 'localhost:3000'}`,
     head: {
       title: 'Zazuko Ontology Editor Demo',
       description: 'Linked Data Ontology Editor for Domain Specialists'

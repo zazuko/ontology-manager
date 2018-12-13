@@ -5,9 +5,11 @@ query GetAllDiscussions ($orderBy: [ThreadsOrderBy!]) {
       headline,
       body,
       hat: hatByHatId {
+        id,
         title
       },
       author: personByAuthorId {
+        id,
         name
       },
       iri,

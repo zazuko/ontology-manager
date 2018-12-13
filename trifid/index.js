@@ -1,6 +1,6 @@
-const path = require('path')
-const Trifid = require('trifid-core')
-const express = require('express')
+import path from 'path'
+import Trifid from 'trifid-core'
+import express from 'express'
 
 const app = express()
 
@@ -22,7 +22,10 @@ app.use(async function (req, res, next) {
   middleware(req, res, next)
 })
 
-module.exports = { path: '/', handler: app }
+export default {
+  path: '/',
+  handler: app
+}
 
 async function trifidMiddleware () {
   const trifid = new Trifid()

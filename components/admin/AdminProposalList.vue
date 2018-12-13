@@ -175,6 +175,7 @@ export default {
       try {
         await axios.post('/api/proposal/merge', body, headers)
         this.$emit('updated', proposal.id)
+        this.$store.dispatch('graph/RELOAD_DATASET')
         this.$toast.success('Proposal approved!', toastClose).goAway(1600)
       }
       catch (err) {

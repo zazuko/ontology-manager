@@ -4,7 +4,8 @@ import { Readable } from 'readable-stream'
 import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
 import { serialize, buildTree } from '@/libs/utils'
 import { buildSearchIndex } from '@/libs/rdf'
-import { DESERIALIZE } from '@/store/action-types'
+import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
+import fetchDataset from '@/trifid/dataset-fetch'
 
 export const state = () => ({
   ontology: {},
@@ -74,6 +75,12 @@ export const actions = {
     })
     commit('clientReady')
     return Promise.resolve('deserialized')
+  },
+  async [RELOAD_DATASET] ({ commit, dispatch }) {
+    const { ontologyDataset, structureDataset } = await fetchDataset()
+    commit('ontologyInit', ontologyDataset)
+    commit('structureInit', structureDataset)
+    return dispatch('DESERIALIZE')
   }
 }
 
