@@ -16,7 +16,7 @@
 
     <div
       v-show="ratings.length"
-      class="navbar-dropdown"
+      class="navbar-dropdown search-results"
       @click="clear">
       <nuxt-link
         v-for="(item, index) in ratings"
@@ -71,7 +71,6 @@ export default {
   },
   methods: {
     clear () {
-      console.log('click')
       this.searchString = ''
     },
     search (str) {
@@ -107,14 +106,21 @@ export default {
 function highlight (word, sentence) {
   const xs = []
   const submatch = findBestMatch(word, sentence.split(' '))
+  const highlightedText = submatch.ratings[submatch.bestMatchIndex].target
   if (submatch.bestMatchIndex > 0) {
+    let beforeHighlight = submatch.ratings.slice(0, submatch.bestMatchIndex).map(p => p.target).join(' ')
+    let trimmed = false
+    while (beforeHighlight.includes(' ') && (beforeHighlight.length + highlightedText.length) > 35) {
+      beforeHighlight = beforeHighlight.substr(beforeHighlight.indexOf(' ') + 1)
+      trimmed = true
+    }
     xs.push({
-      text: submatch.ratings.slice(0, submatch.bestMatchIndex).map(p => p.target).join(' '),
+      text: (trimmed ? '…' : '') + beforeHighlight,
       highlight: false
     })
   }
   xs.push({
-    text: submatch.ratings[submatch.bestMatchIndex].target,
+    text: highlightedText,
     highlight: true
   })
   if (submatch.bestMatchIndex < submatch.ratings.length - 1) {
