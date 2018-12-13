@@ -65,7 +65,7 @@ module.exports = {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: `http://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
+        httpEndpoint: `${process.env.EDITOR_PROTOCOL || 'http'}://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
         // You can use `wss` for secure connection (recommended in production)
         // Use `null` to disable subscriptions
         wsEndpoint: null // `ws://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
