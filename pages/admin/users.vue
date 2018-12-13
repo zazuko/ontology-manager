@@ -2,10 +2,12 @@
   <section class="section">
     <admin-menu class="container" />
 
-    <admin-user-list
-      :users="users"
-      @updated="refetch()"
-      class="container" />
+    <no-ssr>
+      <admin-user-list
+        :users="users"
+        @updated="refetch()"
+        class="container" />
+    </no-ssr>
   </section>
 </template>
 
@@ -31,7 +33,6 @@ export default {
   },
   apollo: {
     users: {
-      prefetch: true,
       query: users,
       variables () {
         return {

@@ -3,10 +3,12 @@
 
     <admin-menu class="container" />
 
-    <admin-discussion-list
-      :discussions="rows"
-      @updated="refetch()"
-      class="container" />
+    <no-ssr>
+      <admin-discussion-list
+        :discussions="rows"
+        @updated="refetch()"
+        class="container" />
+    </no-ssr>
   </section>
 </template>
 
@@ -33,7 +35,6 @@ export default {
   },
   apollo: {
     discussions: {
-      prefetch: true,
       query: adminDiscussionList,
       result ({ data, loading }) {
         if (!loading) {
