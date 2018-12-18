@@ -181,7 +181,7 @@ export function proposalDataset (property, validation = true) {
   ]
 
   if (property.description) {
-    quads.push(rdf.quad(propertyIRI, termIRI.description, rdf.literal(property.description)))
+    quads.push(rdf.quad(propertyIRI, termIRI.description, rdf.literal(property.description, termIRI.markdown)))
   }
   if (property.example) {
     quads.push(rdf.quad(propertyIRI, termIRI.example, rdf.literal(property.example)))

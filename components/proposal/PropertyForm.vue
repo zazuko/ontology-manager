@@ -109,9 +109,8 @@
             <div class="field">
               <label class="label">Long Description (optional)</label>
               <div class="control">
-                <textarea
+                <editor
                   :disabled="disabled"
-                  class="textarea"
                   v-debounce
                   v-model.lazy="prop['description']" />
               </div>
@@ -300,6 +299,7 @@ import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, externalIRIToQuad } from '@/libs/rdf'
 import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
+import Editor from '@/components/editor/Editor'
 import { Class } from '@/models/Class'
 import { proposalDataset, generatePropertyProposal, validate } from '@/models/Property'
 
@@ -338,7 +338,8 @@ export default {
   },
   components: {
     ClassForm: () => import('@/components/proposal/ClassForm'),
-    Typeahead
+    Typeahead,
+    Editor
   },
   mounted () {
     this.init()

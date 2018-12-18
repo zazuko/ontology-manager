@@ -82,17 +82,17 @@
   .menubar {
     background-color: white;
     width: 100%;
-    height: 36px;
     background-color: #F6F8FA;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     border: 1px solid #CCCCCC;
     border-bottom: none;
-    padding-top: 6px;
+    padding: 6px;
 
     button {
       border: none;
       background-color: inherit;
+      padding: 3px;
     }
   }
 
