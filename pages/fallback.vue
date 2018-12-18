@@ -111,6 +111,7 @@ import { termIRI, term } from '@/libs/rdf'
 const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
 
 export default {
+  layout: 'background',
   async asyncData ({ route, store }) {
     const params = route.params
     let iri = datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')

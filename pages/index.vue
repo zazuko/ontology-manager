@@ -39,6 +39,7 @@ import _get from 'lodash/get'
 import StructureHome from '@/components/home/StructureHome'
 
 export default {
+  layout: 'background',
   components: {
     StructureHome
   },
