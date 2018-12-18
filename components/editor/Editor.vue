@@ -5,11 +5,12 @@
         <editor-menu-bar :editor="editor">
           <div
             class="menubar"
-            slot-scope="{ commands, isActive }">
+            slot-scope="{ commands, isActive, getMarkAttrs }">
 
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.bold() }"
+              title="Bold"
               @click="commands.bold">
               <icon name="bold" />
             </button>
@@ -17,6 +18,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.italic() }"
+              title="Italic"
               @click="commands.italic">
               <icon name="italic" />
             </button>
@@ -24,20 +26,15 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.strike() }"
+              title="Strike"
               @click="commands.strike">
               <icon name="strike" />
             </button>
 
             <button
               class="menubar__button"
-              :class="{ 'is-active': isActive.underline() }"
-              @click="commands.underline">
-              <icon name="underline" />
-            </button>
-
-            <button
-              class="menubar__button"
               :class="{ 'is-active': isActive.code() }"
+              title="Code"
               @click="commands.code">
               <icon name="code" />
             </button>
@@ -45,6 +42,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.paragraph() }"
+              title="Paragraph"
               @click="commands.paragraph">
               <icon name="paragraph" />
             </button>
@@ -52,6 +50,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+              title="Heading 1"
               @click="commands.heading({ level: 1 })">
               H1
             </button>
@@ -59,6 +58,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+              title="Heading 2"
               @click="commands.heading({ level: 2 })">
               H2
             </button>
@@ -66,6 +66,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+              title="Heading 3"
               @click="commands.heading({ level: 3 })">
               H3
             </button>
@@ -73,6 +74,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.bullet_list() }"
+              title="Bullet List"
               @click="commands.bullet_list">
               <icon name="ul" />
             </button>
@@ -80,6 +82,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.ordered_list() }"
+              title="Ordered List"
               @click="commands.ordered_list">
               <icon name="ol" />
             </button>
@@ -87,6 +90,7 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.blockquote() }"
+              title="Quote"
               @click="commands.blockquote">
               <icon name="quote" />
             </button>
@@ -94,22 +98,72 @@
             <button
               class="menubar__button"
               :class="{ 'is-active': isActive.code_block() }"
+              title="Code block"
               @click="commands.code_block">
               <icon name="code" />
             </button>
 
             <button
               class="menubar__button"
+              :class="{ 'is-active': isActive.link() }"
+              title="Add Link"
+              @click="showLinkMenu(getMarkAttrs('link'))">
+              <icon name="link" />
+            </button>
+
+            <button
+              class="menubar__button"
+              title="Undo"
               @click="commands.undo">
               <icon name="undo" />
             </button>
 
             <button
               class="menubar__button"
+              title="Redo"
               @click="commands.redo">
               <icon name="redo" />
             </button>
 
+            <div
+              :class="{
+                'is-active': linkMenuIsActive
+              }"
+              class="editor-link-modal modal">
+              <div class="modal-background"></div>
+              <form class="modal-card" @submit.prevent>
+                <section class="modal-card-body">
+                  <p>
+                    <input
+                      class="menububble__input"
+                      type="text"
+                      v-model="linkUrl"
+                      placeholder="https://"
+                      ref="linkInput"
+                      @keydown.esc="hideLinkMenu" />
+                    <button
+                      class="menububble__button"
+                      @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+                      @click="setLinkUrl(commands.link, null)"
+                      type="button">
+                      <icon name="remove" />
+                    </button>
+                  </p>
+                </section>
+                <footer class="modal-card-foot">
+                  <button
+                    class="button is-info"
+                    @click="setLinkUrl(commands.link, linkUrl)">
+                    Add
+                  </button>
+                  <button
+                    class="button"
+                    @click="hideLinkMenu">
+                    Cancel
+                  </button>
+                </footer>
+              </form>
+            </div>
           </div>
         </editor-menu-bar>
 
@@ -150,6 +204,11 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   components: {
@@ -165,7 +224,10 @@ export default {
       }
     }
     return {
+      linkUrl: null,
+      linkMenuIsActive: false,
       editor: new Editor({
+        editable: !this.disabled,
         extensions: [
           new Blockquote(),
           new BulletList(),
@@ -202,6 +264,24 @@ export default {
   },
   beforeDestroy () {
     this.editor.destroy()
+  },
+  methods: {
+    showLinkMenu (attrs) {
+      this.linkUrl = attrs.href
+      this.linkMenuIsActive = true
+      this.$nextTick(() => {
+        this.$refs.linkInput.focus()
+      })
+    },
+    hideLinkMenu () {
+      this.linkUrl = null
+      this.linkMenuIsActive = false
+    },
+    setLinkUrl (command, url) {
+      command({ href: url })
+      this.hideLinkMenu()
+      this.editor.focus()
+    }
   }
 }
 </script>

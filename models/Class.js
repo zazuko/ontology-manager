@@ -166,7 +166,7 @@ export function proposalDataset (clss, validation = true) {
   ]
 
   if (clss.description) {
-    quads.push(rdf.quad(classIRI, termIRI.description, rdf.literal(clss.description)))
+    quads.push(rdf.quad(classIRI, termIRI.description, rdf.literal(clss.description, termIRI.markdown)))
   }
   if (clss.example) {
     quads.push(rdf.quad(classIRI, termIRI.example, rdf.literal(clss.example)))
