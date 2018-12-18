@@ -1,5 +1,5 @@
 <template>
-  <div class="has-primary-background">
+  <div class="has-secondary-background">
     <top-nav />
     <nuxt />
     <Footer />
