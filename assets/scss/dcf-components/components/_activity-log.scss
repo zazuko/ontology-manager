@@ -24,6 +24,12 @@
       }
     }
 
+    .activity-log-empty-state {
+      padding: 4em 2em;
+      text-align: center;
+      color: $theme-dark-grey;
+    }
+
     .activity-log-content {
       max-height: calc(100vh - 225px);
       padding: 1em 2em;
