@@ -4,12 +4,18 @@
   text-align: center !important;
 
   .modal-card-head {
+    display: block;
     padding: 2em 5em 1em 5em;
+
+    h1 {
+      font-size: 1.5em;
+      padding-bottom: 1em;
+    }
   }
 
   .modal-card-foot {
     display: block;
-    padding: 0 5em 2em 5em;
+    padding: 1em 5em 2em 5em;
     height: auto;
 
     .button {
