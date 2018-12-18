@@ -240,20 +240,20 @@
       <div class="modal-background"></div>
       <div
         v-show="deleteConfirm === 'thread'"
-        class="modal-card">
-        <section class="modal-card-body">
+        class="default-modal modal-card">
+        <section class="modal-card-head">
           <p>
             You are about to delete this thread, are you sure?
           </p>
         </section>
         <footer class="modal-card-foot">
           <button
-            class="button is-danger"
+            class="button is-info"
             @click="closeThread">
             Delete
           </button>
           <button
-            class="button"
+            class="button is-dark-info"
             @click="deleteConfirm = false">
             Cancel
           </button>
@@ -261,20 +261,20 @@
       </div>
       <div
         v-show="typeof deleteConfirm === 'number'"
-        class="modal-card">
-        <section class="modal-card-body">
+        class="default-modal modal-card">
+        <section class="modal-card-head">
           <p>
             You are about to delete a message, are you sure?
           </p>
         </section>
         <footer class="modal-card-foot">
           <button
-            class="button is-danger"
+            class="button is-info"
             @click="deleteMessage(deleteConfirm)">
             Delete
           </button>
           <button
-            class="button"
+            class="button is-dark-info"
             @click="deleteConfirm = false">
             Cancel
           </button>
