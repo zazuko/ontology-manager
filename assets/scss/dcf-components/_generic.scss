@@ -9,6 +9,14 @@ body {
   background: $theme-main-background;
 }
 
+.has-primary-background {
+  background: $theme-main-background;
+}
+
+.has-secondary-background {
+  background: white;
+}
+
 body::after {
   content: '';
   display: block;
