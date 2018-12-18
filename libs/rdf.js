@@ -27,7 +27,8 @@ const stringIRI = {
   hasPart: 'http://schema.org/hasPart',
   creativeWork: 'http://schema.org/CreativeWork',
 
-  html: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML'
+  html: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML',
+  markdown: 'http://media-type.described.at/text/markdown'
 }
 
 export const termIRI = Object
