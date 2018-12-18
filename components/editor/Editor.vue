@@ -124,52 +124,60 @@
               @click="commands.redo">
               <icon name="redo" />
             </button>
-
-            <div
-              :class="{
-                'is-active': linkMenuIsActive
-              }"
-              class="editor-link-modal modal">
-              <div class="modal-background"></div>
-              <form class="modal-card" @submit.prevent>
-                <section class="modal-card-body">
-                  <p>
-                    <input
-                      class="menububble__input"
-                      type="text"
-                      v-model="linkUrl"
-                      placeholder="https://"
-                      ref="linkInput"
-                      @keydown.esc="hideLinkMenu" />
-                    <button
-                      class="menububble__button"
-                      @submit.prevent="setLinkUrl(commands.link, linkUrl)"
-                      @click="setLinkUrl(commands.link, null)"
-                      type="button">
-                      <icon name="remove" />
-                    </button>
-                  </p>
-                </section>
-                <footer class="modal-card-foot">
-                  <button
-                    class="button is-info"
-                    @click="setLinkUrl(commands.link, linkUrl)">
-                    Add
-                  </button>
-                  <button
-                    class="button"
-                    @click="hideLinkMenu">
-                    Cancel
-                  </button>
-                </footer>
-              </form>
-            </div>
           </div>
         </editor-menu-bar>
 
         <editor-content
           class="editor__content"
           :editor="editor" />
+      </div>
+
+      <div
+        :class="{
+          'is-active': linkMenuIsActive
+        }"
+        class="editor-link-modal modal">
+        <div class="modal-background"></div>
+        <form class="default-modal modal-card" @submit.prevent>
+          <section class="modal-card-head">
+            <h1>
+              Edit link
+            </h1>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input
+                  class="input menububble__input"
+                  type="text"
+                  v-model="linkUrl"
+                  placeholder="https://"
+                  ref="linkInput"
+                  @keydown.esc="hideLinkMenu" />
+              </div>
+              <p class="control">
+                <button
+                  class="menububble__button button"
+                  style="width: 36px;"
+                  @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+                  @click="setLinkUrl(commands.link, null)"
+                  type="button">
+                  <icon name="remove" />
+                </button>
+              </p>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button
+              class="button is-info"
+              @click="setLinkUrl(commands.link, linkUrl)">
+              Add
+            </button>
+            <button
+              class="button"
+              @click="hideLinkMenu">
+              Cancel
+            </button>
+          </footer>
+        </form>
       </div>
     </div>
     <div v-else />
