@@ -146,16 +146,6 @@
                         ref="linkInput"
                         @keydown.esc="hideLinkMenu" />
                     </div>
-                    <p class="control">
-                      <button
-                        class="menububble__button button"
-                        style="width: 36px;"
-                        @submit.prevent="setLinkUrl(commands.link, linkUrl)"
-                        @click="setLinkUrl(commands.link, null)"
-                        type="button">
-                        <icon name="remove" />
-                      </button>
-                    </p>
                   </div>
                 </section>
                 <footer class="modal-card-foot">
@@ -166,7 +156,7 @@
                   </button>
                   <button
                     class="button"
-                    @click="hideLinkMenu">
+                    @click="hideLinkMenu()">
                     Cancel
                   </button>
                 </footer>
