@@ -96,4 +96,18 @@
       font-size: 1em;
     }
   }
+
+  .proposal-author-img {
+    width: 40px; height: 40px;
+  }
+
+  .proposal-author-info {
+    font-size: .9em;
+    color: $theme-dark-grey;
+  }
+
+  .proposal-author-name {
+    font-size: 1.2em;
+    color: black;
+  }
 }

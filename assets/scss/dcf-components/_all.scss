@@ -29,12 +29,13 @@ folder, add new files, etc.
 @import "components/activity-log.scss";
 @import "components/progression-box.scss";
 @import "components/signin-modal.scss";
+@import "components/editor.scss";
+@import "components/spinning-loader.scss";
+@import "components/vote-box.scss";
 
 // old stylesheets
-@import "../white-label-components/editor.scss";
 @import "../white-label-components/admin.scss";
-@import "../white-label-components/spinning-loader.scss";
-@import "../white-label-components/vote.scss";
+// @import "../white-label-components/vote.scss";
 // @import "../white-label-components/discussions.scss";
 // @import "../white-label-components/proposal-progression.scss";
 // @import "../white-label-components/proposal.scss";

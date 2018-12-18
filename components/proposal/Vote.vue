@@ -1,9 +1,9 @@
 <template>
-  <div class="votes">
+  <div class="vote-box">
     <div class="vote-cell">
       <button
         @click.prevent="vote(threadId, 'UPVOTE')"
-        :class="{ 'user-vote': userVote === 'UPVOTE' }"
+        :class="{ 'is-info': userVote === 'UPVOTE' }"
         class="button is-large">
         <span class="icon is-large">
           <i class="mdi mdi-24px mdi-thumb-up-outline" />
@@ -15,7 +15,7 @@
     <div class="vote-cell">
       <button
         @click.prevent="vote(threadId, 'DOWNVOTE')"
-        :class="{ 'user-vote': userVote === 'DOWNVOTE' }"
+        :class="{ 'is-dark-info': userVote === 'DOWNVOTE' }"
         class="button is-large">
         <span class="icon is-large">
           <i class="mdi mdi-24px mdi-thumb-down-outline" />
