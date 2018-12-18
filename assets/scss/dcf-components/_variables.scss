@@ -3,8 +3,8 @@ $theme-light-primary: #3FA2F7;
 $theme-light-primary-hover: lighten($theme-light-primary, 10%);
 $theme-dark-primary: #2C3E50;
 $theme-light-secondary: #E67E22;
-$theme-dark-grey: #959FA6;
 $theme-light-grey: #BFC5CA;
+$theme-dark-grey: #959FA6;
 $theme-shadow: lighten($theme-light-grey, 5%);
 $theme-main-background: #F2F3F7;
 
@@ -35,10 +35,6 @@ $modal-card-head-border-bottom: #F2F6F9;
 $modal-card-body-background-color: #F2F6F9;
 $modal-card-foot-border-top: #F2F6F9;
 $modal-card-title-color: black;
-
-// that is not working (find why ?)
-//$primary: $theme-light-primary;
-//$info: $theme-dark-primary;
 
 // (?) legacy
 $panel-block-active-border-left-color: $orange;

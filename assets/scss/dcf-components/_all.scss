@@ -32,11 +32,4 @@ folder, add new files, etc.
 @import "components/editor.scss";
 @import "components/spinning-loader.scss";
 @import "components/vote-box.scss";
-
-// old stylesheets
-@import "../white-label-components/admin.scss";
-// @import "../white-label-components/vote.scss";
-// @import "../white-label-components/discussions.scss";
-// @import "../white-label-components/proposal-progression.scss";
-// @import "../white-label-components/proposal.scss";
-// @import "../white-label-components/side-nav.scss";
+@import "components/admin-table.scss";

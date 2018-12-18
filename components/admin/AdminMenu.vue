@@ -1,16 +1,21 @@
 <template>
-  <nav class="tabs is-boxed">
-    <ul>
-      <li
-        v-for="tab in tabs"
-        :key="tab.route"
-        :class="{ 'is-active': currentRoute === tab.route}">
-        <nuxt-link :to="{ name: tab.route }">
-          {{ tab.title }}
-        </nuxt-link>
-      </li>
-    </ul>
-  </nav>
+  <div class="layout-admin-header">
+    <h1>Admin Worklist</h1>
+
+    <nav class="layout-admin-nav">
+      <ul>
+        <li
+          v-for="tab in tabs"
+          :key="tab.route">
+          <nuxt-link
+            :to="{ name: tab.route }"
+            :class="{ 'is-active': currentRoute === tab.route}">
+            {{ tab.title }}
+          </nuxt-link>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>

@@ -1,0 +1,43 @@
+.layout-admin {
+  //max-width: 950px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 3em;
+
+  .layout-admin-header {
+    padding: 3em 0 1em 0;
+
+    h1 {
+      font-size: 3em;
+      font-weight: 300;
+      color: $theme-light-primary;
+    }
+  }
+
+  .layout-admin-nav {
+    padding: 1em;
+    font-size: .9em;
+
+    li {
+      display: inline-block;
+      margin-right: 10px;
+
+      a {
+        padding: 5px;
+        color: $theme-dark-grey;
+        border-bottom: solid 4px transparent;
+
+        &:hover, &:focus, &.is-active {
+          color: $theme-light-primary;
+          border-bottom-color: $theme-light-primary;
+        }
+      }
+    }
+  }
+
+  .layout-admin-panel {
+    p {
+      padding-bottom: 1em;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.admin-table {
+  @extend .is-fullwidth;
+  overflow: hidden;
+  font-size: .9em;
+
+  background: white;
+  border-radius: 10px;
+  box-shadow: -2px 2px 8px 0 $theme-light-grey;
+
+  thead th {
+    padding: 1em;
+    border-bottom: none;
+
+    color: white;
+    background: $theme-dark-primary;
+    font-weight: normal;
+
+    a {
+      color: white;
+    }
+  }
+
+  tbody td {
+    padding: 1em;
+  }
+
+  .info {
+    font-size: .8em;
+    color: $theme-dark-grey;
+  }
+
+  code {
+    color: $theme-dark-primary;
+  }
+}

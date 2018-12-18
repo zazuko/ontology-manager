@@ -1,13 +1,12 @@
 <template>
-  <section class="section">
-    <admin-menu class="container" />
+  <section class="container layout-admin">
+    <admin-menu />
 
     <no-ssr>
       <admin-proposal-list
         v-model="orderBy"
         :proposals="proposals"
-        @updated="refetch()"
-        class="container" />
+        @updated="refetch()" />
     </no-ssr>
   </section>
 </template>

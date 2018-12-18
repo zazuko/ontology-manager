@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-striped is-narrow">
+  <table class="table admin-table">
     <thead>
       <tr>
         <th>Title</th>
@@ -8,7 +8,7 @@
         <th>Object</th>
         <th>Status</th>
         <th>Vote</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -16,45 +16,52 @@
         v-for="discussion in discussions"
         :key="discussion.id">
         <td>
-          <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
-            {{ discussion.headline }}
-          </nuxt-link>
+          <p>
+            <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+              {{ discussion.headline }}
+            </nuxt-link>
+          </p>
         </td>
         <td>
           {{ discussion.author.name }}
         </td>
         <td>
-          {{ discussion.updatedAt|formatDate }}
-          <br>
-          <small>
-            (Created: {{ discussion.createdAt|formatDate }})
-          </small>
+          <p>
+            {{ discussion.updatedAt|formatDate }}
+          </p>
+          <p>
+            <span class="info">
+              (Created: {{ discussion.createdAt|formatDate }})
+            </span>
+          </p>
         </td>
         <td>
-          <small>
+          <p>
             <code>{{ discussion.iri }}</code>
-          </small>
-        </td>
-        <td>{{ discussion.status }}</td>
-        <td>
-          ?
+          </p>
         </td>
         <td>
+          <p>{{ discussion.status }}</p>
+        </td>
+        <td>
+          <p>?</p>
+        </td>
+        <td class="has-text-right">
           <button
             v-show="discussion.status !== 'OPEN'"
-            class="button is-small is-primary"
+            class="button is-small is-info"
             @click.prevent="reopen(discussion.id)">
             Reopen
           </button>
           <button
             v-show="discussion.status === 'OPEN'"
-            class="button is-small is-success"
+            class="button is-small is-info"
             @click.prevent="resolve(discussion.id)">
             Resolve
           </button>
           <button
             v-show="discussion.status === 'OPEN'"
-            class="button is-small is-danger"
+            class="button is-small is-dark-info"
             @click.prevent="hide(discussion.id)">
             Hide / Close
           </button>
