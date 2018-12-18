@@ -1,6 +1,8 @@
 .layout-object-details {
   .columns {
     margin-top: 0;
+    margin-right: 0em;
+    margin-left: 0em;
   }
 }
 
@@ -8,6 +10,8 @@
   position: relative;
   background: $theme-dark-grey;
   padding: 2rem 2rem 2rem 0;
+
+  min-height: calc(100vh - 186px);
 
   color: white;
 
