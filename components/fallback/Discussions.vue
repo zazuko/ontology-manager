@@ -6,13 +6,13 @@
       <div class="discussion-list-header">
         <div class="field is-pulled-left">
           <p class="control has-icons-left">
-            <input
+            <!--TODO <input
               class="input"
               type="text"
               placeholder="Search">
             <span class="icon is-small is-left">
               <i class="mdi mdi-magnify"></i>
-            </span>
+            </span>-->
           </p>
         </div>
         <nuxt-link
