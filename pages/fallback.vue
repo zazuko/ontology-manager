@@ -2,7 +2,7 @@
   <!--
   class="main-content columns is-fullheight"
   -->
-  <div class="is-fullheight">
+  <div>
     <div
       v-if="iri"
       :class="{
