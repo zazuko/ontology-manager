@@ -22,7 +22,9 @@
         </span>
       </div>
 
-      <div v-show="!items.length">
+      <div
+        class="activity-log-empty-state"
+        v-show="!items.length">
         No activity yet.
       </div>
 
