@@ -1,0 +1,19 @@
+.default-modal {
+  width: 500px;
+  color: $theme-light-primary;
+  text-align: center !important;
+
+  .modal-card-head {
+    padding: 2em 5em 1em 5em;
+  }
+
+  .modal-card-foot {
+    display: block;
+    padding: 0 5em 2em 5em;
+    height: auto;
+
+    .button {
+      width: 120px;
+    }
+  }
+}
