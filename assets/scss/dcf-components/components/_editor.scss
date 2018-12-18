@@ -1,80 +1,86 @@
+.discussion-message-content {
+  color: black;
+
+  p, code {
+    font-size: .9em;
+  }
+
+  blockquote {
+    background-color: #F3F6F9;
+    border-left: solid 6px #d8d8d8;
+    padding: 10px;
+    margin: 1em 0;
+
+    p {
+      color: #666666;
+    }
+
+    span {
+      display: inline-block;
+      font-weight: normal;
+    }
+  }
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  h1, h2 {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: .5em;
+  }
+
+  code {
+    background-color: #F3F6F9;
+  }
+
+  pre {
+    margin: 1em 0;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ul, ol {
+    padding-left: 25px;
+    margin: 1em 0;
+
+    li p {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .has-hat .discussion-message-content {
   blockquote,
   blockquote span,
   blockquote p,
   code {
-    font-size: 14px;
-    color: #000;
+    color: black;
   }
-  h1,
-  h2,
-  p,
-  strong {
-    color: #fff;
-  }
-}
 
-.discussion-message-content {
-  h1,
-  h2,
-  p,
-  code {
-    font-size: 14px;
-    color: #000;
-  }
-  blockquote {
-    background-color: #F3F6F9;
-    border-left: solid 6px #d8d8d8;
-    padding: 10px;
-    p {
-      color: #666666;
-    }
-    span {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 21px;
-      margin-bottom: 10px;
-    }
-  }
-  h1 {
-    font-size: 28px;
-  }
-  h2 {
-    font-size: 20px;
-    &:after {
-      display: none;
-    }
-  }
-  h1,
-  h2 {
-    display: block;
-    width: 100%;
-    font-weight: 500;
-    line-height: 21px;
-    border-bottom: solid 1px #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-  }
-  code {
-    background-color: #F3F6F9;
-  }
-  a {
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  ul,
-  ol {
-    padding-left: 25px;
-  }
-  ul {
-    list-style-type: disc;
-  }
-  ul li p,
-  ol li p {
-    margin-bottom: 0;
+  h1, h2, p {
+    color: white;
   }
 }
 
