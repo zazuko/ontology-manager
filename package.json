@@ -6,7 +6,7 @@
   "license": "AGPLv3",
   "private": true,
   "scripts": {
-    "dev": "nuxt dev",
+    "dev": "NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
     "dev-api": "nodemon --watch api --watch trifid --exec 'nuxt dev'",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -44,6 +44,7 @@
     "postgraphile": "^4.1.0",
     "rdf-ext": "^1.1.2",
     "rdf-parser-n3": "^1.1.1",
+    "rdf-serializer-jsonld": "^1.1.2",
     "readable-stream": "^3.0.6",
     "string-to-stream": "^1.1.1",
     "tiptap": "^1.4.0",
