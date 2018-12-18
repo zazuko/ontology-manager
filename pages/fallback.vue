@@ -96,7 +96,8 @@
 <script>
 import rdf from 'rdf-ext'
 import _get from 'lodash/get'
-import JsonLdSerializer from 'rdf-serializer-jsonld-ext'
+// https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
+import JsonLdSerializer from 'rdf-serializer-jsonld'
 
 import Structure from '@/components/fallback/Structure'
 import ObjectDetails from '@/components/fallback/ObjectDetails'
