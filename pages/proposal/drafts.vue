@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
-    <section class="section">
-      <draft-list
-        :drafts="drafts"
-        @discarded="loadDrafts()" />
-    </section>
+  <div class="container layout-admin">
+    <div class="layout-admin-header">
+      <h1>Your Drafts</h1>
+    </div>
+
+    <draft-list
+      :drafts="drafts"
+      @discarded="loadDrafts()" />
   </div>
 </template>
 

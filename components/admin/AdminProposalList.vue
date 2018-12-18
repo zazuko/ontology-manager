@@ -1,8 +1,7 @@
 <template>
-  <table class="table is-striped is-narrow">
+  <table class="table admin-table">
     <thead>
       <tr>
-        <th></th>
         <th>
           <a
             class="sort-by"
@@ -26,10 +25,9 @@
           Status
         </th>
         <th>
-          Vote
+          Votes
         </th>
         <th>
-          Actions
         </th>
       </tr>
     </thead>
@@ -38,44 +36,49 @@
         v-for="proposal in rows"
         :key="proposal.id">
         <td>
-          <forge-link
-            :id="proposal.externalId"
-            class="is-link" />
-        </td>
-        <td>
-          <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
-            {{ proposal.headline }}
-          </nuxt-link>
           <p>
-            on <small>{{ proposal.iri }}</small>
+            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+              {{ proposal.headline }}
+            </nuxt-link>
+            <forge-link
+              :id="proposal.externalId"
+              class="is-link" />
+          </p>
+          <p>
+            <span class="info">on {{ proposal.iri }}</span>
           </p>
         </td>
         <td>
           {{ proposal.author.name }}
         </td>
         <td>
-          {{ proposal.updatedAt|formatDate }}
-          <br>
-          <small>
-            Created: {{ proposal.createdAt|formatDate }}
-          </small>
+          <p>
+            {{ proposal.updatedAt|formatDate }}
+          </p>
+          <p>
+            <span class="info">
+              (Created: {{ proposal.createdAt|formatDate }})
+            </span>
+          </p>
         </td>
         <td>
-          {{ proposal.status }}
-          <br>
-          <small>
-            {{ proposal.proposalType }}
-          </small>
+          <p>
+            {{ proposal.status }}
+          </p>
+          <p>
+            <span class="info">
+              {{ proposal.proposalType }}
+            </span>
+          </p>
         </td>
         <td>
-          <div class="votes votes--admin">
+          <div class="votes">
             <div class="vote-cell">
               <span class="icon">
                 <i class="mdi mdi-thumb-up-outline" />
               </span>
               {{ proposal.tally.upvotes }}
             </div>
-
             <div class="vote-cell">
               <span class="icon">
                 <i class="mdi mdi-thumb-down-outline" />
@@ -84,24 +87,24 @@
             </div>
           </div>
         </td>
-        <td class="has-text-centered">
+        <td class="has-text-right">
           <span
             v-if="!proposal.isDraft">
             <p>
               <button
-                class="button is-small is-success"
+                class="button is-small is-info"
                 :disabled="proposal.status !== 'OPEN'"
                 @click.prevent="approve(proposal)">
                 Approve
               </button>
               <button
-                class="button is-small is-danger"
+                class="button is-small is-dark-info"
                 :disabled="proposal.status !== 'OPEN'"
                 @click.prevent="reject(proposal)">
                 Reject
               </button>
               <button
-                class="button is-small is-danger is-outlined"
+                class="button is-small is-grey is-outlined"
                 :disabled="proposal.status !== 'OPEN'"
                 @click.prevent="hide(proposal)">
                 Delete

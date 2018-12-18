@@ -1,22 +1,7 @@
 <template>
   <div>
-    <div class="level is-hidden-mobile">
-      <div class="level-left">
-        <h1 class="title">Hats</h1>
-      </div>
-      <div class="level-right">
-        <span class="level-item">
-          <a
-            @click.prevent="openForm"
-            class="button is-info">
-            Create New Hat
-          </a>
-        </span>
-      </div>
-    </div>
-
-    <div>
-      <div class="is-hidden-mobile">
+    <div class="layout-admin-panel columns is-hidden-mobile">
+      <div class="column">
         <p>
           A hat is a badge a user can use when they want to speak in the name of
           an organization they represent.
@@ -25,6 +10,15 @@
           Users can have multiple hats but they can only wear one hat at a time
           and only if they chose to do so, when posting comments.
         </p>
+      </div>
+      <div class="column">
+        <div class="has-text-right">
+          <a
+            @click.prevent="openForm"
+            class="button is-info">
+            Create New Hat
+          </a>
+        </div>
 
         <div
           class="hats-form"
@@ -99,31 +93,34 @@
               <button
                 v-if="editingHatId"
                 @click.prevent="updateHat"
-                class="button is-link">
+                class="button is-info">
                 Update
               </button>
               <button
                 v-else
                 @click.prevent="createHat"
-                class="button is-link">
+                class="button is-info">
                 Create
               </button>
               <button
                 @click.prevent="clear"
-                class="button is-text">
+                class="button is-dark-info">
                 Cancel
               </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <table class="hats-table table is-striped is-narrow is-fullwidth">
+    <div>
+      <table class="table admin-table">
         <thead>
           <tr>
             <th>Title</th>
             <th>Description</th>
             <th>Holders</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -131,13 +128,7 @@
             v-for="hat in hats"
             :key="hat.id">
             <td>
-              <span
-                class="icon has-text-info clickable-pointer"
-                title="edit hat"
-                @click.prevent="edit(hat)">
-                <i class="mdi mdi-pencil"></i>
-              </span>
-              {{ hat.title }}
+              <p>{{ hat.title }}</p>
             </td>
             <td>
               {{ hat.description }}
@@ -149,21 +140,25 @@
                   :key="person.id">
                   <span
                     class="icon has-text-danger clickable-pointer"
-                    title="remove hat from this person"
+                    title="Remove hat from this person"
                     @click.prevent="removeHat(person.id, hat.id)">
                     <i class="mdi mdi-account-off"></i>
                   </span>
                   {{ person.name }}
                 </li>
-                <li
-                  class="has-text-info clickable-pointer"
-                  @click.prevent="edit(hat)">
-                  <span class="icon">
-                    <i class="mdi mdi-account-plus"></i>
-                  </span>
-                  grant
-                </li>
               </ul>
+            </td>
+            <td class="has-text-right">
+              <button
+                class="button is-small is-info"
+                @click.prevent="edit(hat)">
+                Grant
+              </button>
+              <button
+                class="button is-small is-info"
+                @click.prevent="edit(hat)">
+                Edit
+              </button>
             </td>
           </tr>
         </tbody>
