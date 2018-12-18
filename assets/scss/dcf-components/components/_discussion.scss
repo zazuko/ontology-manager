@@ -89,6 +89,10 @@
     &.has-hat {
       background: $theme-discussion-background-3;
       color: white;
+
+      .discussion-actions img {
+        filter: invert(1);
+      }
     }
 
     &:not(:last-child) {
