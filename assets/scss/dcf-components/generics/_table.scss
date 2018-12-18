@@ -1,6 +1,11 @@
 table.generic-table {
+
   thead th {
     border-bottom: solid 1px $theme-light-primary;
+  }
+
+  tbody {
+    font-size: .9em;
   }
 
   th {
@@ -28,5 +33,23 @@ table.generic-table {
 
   tr:last-child td {
     border-bottom: solid 1px #dbdbdb;
+  }
+
+  .table-action-button {
+    display: inline-block;
+    padding: 0;
+    margin: 0 0 0 1em;
+    background: transparent;
+    border: none;
+    font-size: .9em;
+    font-weight: normal;
+    text-decoration: underline;
+    cursor: pointer;
+    color: $theme-light-primary;
+    opacity: .6;
+
+    &:hover, &:focus {
+      opacity: 1;
+    }
   }
 }

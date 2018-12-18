@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-fullwidth">
+  <table class="table generic-table is-fullwidth">
     <thead>
       <tr>
         <th>
@@ -67,17 +67,19 @@
           </ul>
         </td>
         <td v-show="!disabled">
-          <button
-            class="button is-small is-danger is-outlined"
-            @click.prevent="$emit('delete', index)">
-            Remove
-          </button>
-          <a
-            class="button is-small is-success is-outlined"
-            v-show="property.isNew"
-            @click.prevent="jumpToProperty(property, index)">
-            Edit
-          </a>
+          <div class="is-pulled-right">
+            <button
+              class="table-action-button"
+              @click.prevent="$emit('delete', index)">
+              Remove
+            </button>
+            <a
+              class="table-action-button"
+              v-show="property.isNew"
+              @click.prevent="jumpToProperty(property, index)">
+              Edit
+            </a>
+          </div>
         </td>
       </tr>
     </tbody>
