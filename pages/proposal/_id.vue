@@ -29,19 +29,19 @@
               <div class="level topic-box">
                 <div class="level-left">
                   <figure class="level-item">
-                    <p class="image is-64x64">
+                    <p class="image proposal-author-img">
                       <img
                         class="is-rounded"
                         :src="discussion.author.avatar"
                         :alt="authorsAvatar(discussion.author.name)">
                     </p>
                   </figure>
-                  <div>
+                  <div class="proposal-author-info">
                     <p>
                       Submitted on {{ discussion.createdAt | formatDate }}
                     </p>
                     <p>
-                      by {{ discussion.author.name }}
+                      by <span class="proposal-author-name">{{ discussion.author.name }}</span>
                     </p>
                   </div>
                 </div>
