@@ -2,11 +2,11 @@
   <div>
     <table
       v-if="drafts.length"
-      class="table is-bordered is-striped is-narrow is-fullwidth">
+      class="table admin-table">
       <thead>
         <tr>
-          <th>title</th>
-          <th>last updated</th>
+          <th>Title</th>
+          <th>Last updated</th>
           <th />
         </tr>
       </thead>
@@ -14,9 +14,13 @@
         <tr
           v-for="draft in drafts"
           :key="draft.id">
-          <td>{{ draft.headline }}</td>
-          <td>{{ draft.updatedAt | formatTime }}</td>
           <td>
+            <p>{{ draft.headline }}</p>
+          </td>
+          <td>
+            <p>{{ draft.updatedAt | formatTime }}</p>
+          </td>
+          <td class="has-text-right">
             <nuxt-link
               v-if="proposalType(draft.proposalObject) === 'Class'"
               :to="{ name: 'proposal-class', query: { id: draft.id } }"
@@ -31,7 +35,7 @@
             </nuxt-link>
             <button
               @click.prevent="discard(draft.id)"
-              class="button is-small is-danger">
+              class="button is-small is-dark-info">
               Discard
             </button>
           </td>

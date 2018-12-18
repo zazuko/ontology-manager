@@ -1,12 +1,12 @@
 <template>
-  <table class="table is-striped is-narrow">
+  <table class="table admin-table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Username</th>
         <th>Is Admin</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -14,27 +14,29 @@
         v-for="user in users"
         :key="user.id">
         <td>
-          {{ user.id }}
+          <p>{{ user.id }}</p>
         </td>
         <td>
-          {{ user.name }}
+          <p>{{ user.name }}</p>
         </td>
         <td>
-          {{ user.username }}
+          <p>{{ user.username }}</p>
         </td>
         <td>
-          <span
-            v-show="user.isAdmin"
-            class="tag is-warning admin-flag">
-            yes
-          </span>
-          <span
-            v-show="!user.isAdmin"
-            class="tag is-light admin-flag">
-            no
-          </span>
+          <p>
+            <span
+              v-show="user.isAdmin"
+              class="tag is-info admin-flag">
+              Yes
+            </span>
+            <span
+              v-show="!user.isAdmin"
+              class="tag is-grey admin-flag">
+              No
+            </span>
+          </p>
         </td>
-        <td>
+        <td class="has-text-right">
           <button
             v-show="user.isAdmin"
             class="button is-small is-info admin-action"
@@ -43,7 +45,7 @@
           </button>
           <button
             v-show="!user.isAdmin"
-            class="button is-small is-danger admin-action"
+            class="button is-small is-dark-info admin-action"
             @click.prevent="promote(user.id)">
             Promote
           </button>
