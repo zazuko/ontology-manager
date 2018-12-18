@@ -6,7 +6,7 @@
       </div>
       <div class="level-right">
         <button
-          class="button"
+          class="button is-dark-info"
           @click.prevent="cancel()">
           Cancel
         </button>
