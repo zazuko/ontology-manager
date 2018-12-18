@@ -15,13 +15,13 @@
     <div class="modal signin-modal">
       <div class="modal-background" />
       <div class="modal-card has-text-centered">
+        <a class="signin-modal-close" aria-label="close">
+          ×
+        </a>
         <header class="modal-card-head">
           <p class="modal-card-title">
             Sign In
           </p>
-          <button
-            class="delete"
-            aria-label="close" />
         </header>
         <section class="modal-card-body">
           <p>
@@ -30,20 +30,21 @@
           </p>
           <p>
             <img
+              class="github-logo"
               src="~/assets/images/github-logo.png"
               alt="GitHub logo">
           </p>
+          <div class="columns">
+            <div class="column">
+              <p class="info">I already have a GitHub account</p>
+              <button class="button is-info is-fullwidth">Sign In</button>
+            </div>
+            <div class="column">
+              <p class="info">I don't have a GitHub account</p>
+              <button class="button is-dark-info is-fullwidth">Sign Up</button>
+            </div>
+          </div>
         </section>
-        <footer class="modal-card-foot">
-          <div class="column">
-            <p>I already have a GitHub account</p>
-            <button class="button is-success">Sign In</button>
-          </div>
-          <div class="column">
-            <p>I don't have a GitHub account</p>
-            <button class="button is-success">Sign Up</button>
-          </div>
-        </footer>
       </div>
     </div>
   </div>
