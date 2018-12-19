@@ -1,8 +1,9 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
-import { classBaseUrl } from '@/trifid/trifid.config.json'
 import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal, mergedEditedOntology } from '@/libs/rdf'
 import { proposalDataset as propToDataset } from '@/models/Property'
+
+const classBaseUrl = process.env.classBaseUrl
 
 export function Class ({
   baseIRI = classBaseUrl,

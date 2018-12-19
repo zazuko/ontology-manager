@@ -10,7 +10,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose up -d db
   - sleep 45
-  - node migrations/migrate.js
+  - node setup/migrate.js
   - docker-compose up -d
 
 services:

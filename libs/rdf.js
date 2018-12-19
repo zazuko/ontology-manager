@@ -2,9 +2,9 @@ import { compareTwoStrings } from '@/libs/string-similarity'
 import _camelCase from 'lodash/camelCase'
 import _upperFirst from 'lodash/upperFirst'
 import rdf from 'rdf-ext'
-
-import { datasetBaseUrl } from '@/trifid/trifid.config.json'
 import Literal from '@rdfjs/data-model/lib/literal'
+
+const datasetBaseUrl = process.env.datasetBaseUrl
 
 const stringIRI = {
   a: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',

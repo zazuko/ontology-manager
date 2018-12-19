@@ -9,23 +9,6 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app/
 RUN node -v && npm ci
 
-# all these variables should be set in the env where the build gets executed
-# and passed using --build-arg
-ARG POSTGRESQL_PASSWORD
-ARG POSTGRESQL_DATABASE
-ARG POSTGRESQL_HOST
-
-ARG POSTGRAPHILE_TOKEN_SECRET
-ARG POSTGRESQL_POSTGRAPHILE_PASSWORD
-
-ARG OAUTH_HOST
-ARG OAUTH_CLIENT_ID
-ARG OAUTH_CLIENT_SECRET
-
-ARG GITHUB_PERSONAL_ACCESS_TOKEN
-
-ARG EDITOR_HOST
-
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
 
 # Build app

@@ -5,15 +5,14 @@ import PgMutationUpsertPlugin from './graphile-upsert-plugin'
 const pgConfig = {
   host: process.env.POSTGRESQL_HOST || 'localhost',
   database: process.env.POSTGRESQL_DATABASE,
-  // user is set by migrations, do not change it
-  user: 'ontology_editor_postgraphile',
-  password: process.env.POSTGRESQL_POSTGRAPHILE_PASSWORD,
+  user: process.env.POSTGRESQL_ROLE_POSTGRAPHILE,
+  password: process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD,
   port: 5432,
   // number of milliseconds before a query will time out default is no timeout
   statement_timeout: 5000
 }
 
-const schemaName = 'ontology_editor'
+const schemaName = 'editor_schema'
 
 const debugErrors = [
   'severity',
@@ -36,13 +35,13 @@ const debugErrors = [
 
 const options = {
   // anonymous user is set by migrations, do not change it
-  pgDefaultRole: 'ontology_editor_anonymous',
+  pgDefaultRole: process.env.POSTGRESQL_ROLE_ANONYMOUS,
   graphqlRoute: '/graphql',
   graphiqlRoute: '/graphiql',
   enableCors: false,
   ignoreRBAC: false,
   jwtSecret: process.env.POSTGRAPHILE_TOKEN_SECRET,
-  jwtPgTypeIdentifier: 'ontology_editor.jwt_token',
+  jwtPgTypeIdentifier: 'editor_schema.jwt_token',
   simpleSubscriptions: false,
   appendPlugins: [PgMutationUpsertPlugin],
   dynamicJson: true,

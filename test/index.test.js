@@ -1,7 +1,10 @@
 import { resolve } from 'path'
 import { Nuxt, Builder } from 'nuxt'
-import dotenv from 'dotenv'
 import axios from 'axios'
+
+const envInit = require('../setup/env-init')
+// load env vars
+envInit('test')
 
 jest.setTimeout(60000)
 
@@ -25,8 +28,6 @@ let nuxt = null
 // Init Nuxt.js and create a server listening on localhost:4000
 describe('basic dev', () => {
   beforeAll(async () => {
-    // load env vars
-    dotenv.config()
 
     const config = {
       dev: true,
