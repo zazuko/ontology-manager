@@ -27,8 +27,10 @@
 
         <div class="discussion">
           <discussion-card
+            v-if="discussion"
             :discussion="discussion"
             @refreshDiscussion="refreshDiscussion" />
+          <div v-else />
         </div>
         <div
           v-if="_get($auth, '$state.loggedIn', false)"
@@ -109,13 +111,15 @@ export default {
     const h = {
       title: 'Discussion'
     }
-    if (this.discussion.headline) {
-      h.title += ' ' + headTitle("'" + this.discussion.headline + "'")
-    }
-    if (this.comment) {
-      h.meta = [
-        { hid: 'description', name: 'description', content: `Discussion '${this.discussion.headline}' on '${this.discussion.iri}'` }
-      ]
+    if (this.discussion) {
+      if (this.discussion.headline) {
+        h.title += ' ' + headTitle("'" + this.discussion.headline + "'")
+      }
+      if (this.comment) {
+        h.meta = [
+          { hid: 'description', name: 'description', content: `Discussion '${this.discussion.headline}' on '${this.discussion.iri}'` }
+        ]
+      }
     }
     return h
   }
