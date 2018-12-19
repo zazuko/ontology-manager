@@ -7,7 +7,8 @@
             class="footer-icon"
             src="~/assets/images/dcf-logo.svg">
         </nuxt-link>
-        @ 2018 DCF. All rights reserved
+        <!-- TODO: make it configurable -->
+        © 2018 DCF. All rights reserved
       </div>
 
       <div class="level-right">
