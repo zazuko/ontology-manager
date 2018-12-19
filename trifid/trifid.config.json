@@ -16,7 +16,7 @@
       "module": "cwd:node_modules/trifid-handler-fetch",
       "priority": 100,
       "options": {
-        "url": "env:ONTOLOGY_RAW_URL",
+        "url": "env:STRUCTURE_RAW_URL",
         "contentType": "application/n-triples",
         "split": "true"
       }
@@ -25,7 +25,7 @@
       "module": "cwd:node_modules/trifid-handler-fetch",
       "priority": 101,
       "options": {
-        "url": "env:STRUCTURE_RAW_URL",
+        "url": "env:ONTOLOGY_RAW_URL",
         "contentType": "application/n-triples",
         "split": "true"
       }

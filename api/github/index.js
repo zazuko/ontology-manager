@@ -36,6 +36,10 @@ router.get('/', (req, res, next) => {
   res.send('Ontology Editor currently using GitHub')
 })
 
+router.get('/cache', (req, res) => {
+  res.json(apicache.getIndex())
+})
+
 router.get('/blob/:branch/:file', cache('5 minutes'), async (req, res, next) => {
   const path = req.params.file
   const branch = req.params.branch
@@ -46,8 +50,8 @@ router.get('/blob/:branch/:file', cache('5 minutes'), async (req, res, next) => 
 })
 
 router.get('/blob/:file', cache('5 minutes'), async (req, res, next) => {
-  req.apicacheGroup = 'files'
   const path = req.params.file
+  req.apicacheGroup = `file:${path}`
   const content = await api.getFile({ path })
   res.type('application/n-triples')
 
@@ -212,7 +216,10 @@ router.post('/proposal/submit', async (req, res, next) => {
 })
 
 router.post('/proposal/merge', async (req, res, next) => {
-  apicache.clear('files')
+  [process.env.ONTOLOGY_FILENAME, process.env.STRUCTURE_FILENAME].forEach((file) => {
+    apicache.clear(`file:${file}`)
+  })
+
   const { threadId, number } = req.body
 
   try {
@@ -251,7 +258,10 @@ router.post('/proposal/merge', async (req, res, next) => {
 })
 
 router.post('/proposal/close', async (req, res, next) => {
-  apicache.clear('files')
+  [process.env.ONTOLOGY_FILENAME, process.env.STRUCTURE_FILENAME].forEach((file) => {
+    apicache.clear(`file:${file}`)
+  })
+
   const { threadId, number, status } = req.body
 
   if (!['resolved', 'hidden', 'rejected'].includes(status.toLowerCase())) {

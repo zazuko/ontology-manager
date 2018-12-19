@@ -156,11 +156,11 @@ module.exports = {
 
   // https://nuxtjs.org/api/configuration-env
   env: {
-    customer: process.env.CUSTOMER_NAME,
-    datasetBaseUrl: process.env.DATASET_BASE_URL,
-    classBaseUrl: process.env.CLASS_BASE_URL,
-    propertyBaseUrl: process.env.PROPERTY_BASE_URL,
-    containersNestingPredicates: [process.env.CONTAINERS_NESTING_PREDICATE],
+    CUSTOMER_NAME: process.env.CUSTOMER_NAME,
+    DATASET_BASE_URL: process.env.DATASET_BASE_URL,
+    CLASS_BASE_URL: process.env.CLASS_BASE_URL,
+    PROPERTY_BASE_URL: process.env.PROPERTY_BASE_URL,
+    CONTAINERS_NESTING_PREDICATE: process.env.CONTAINERS_NESTING_PREDICATE,
     ONTOLOGY_FILENAME: process.env.ONTOLOGY_FILENAME,
     STRUCTURE_FILENAME: process.env.STRUCTURE_FILENAME
   },

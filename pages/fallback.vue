@@ -107,7 +107,7 @@ import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI, term } from '@/libs/rdf'
 
-const datasetBaseUrl = process.env.datasetBaseUrl
+const datasetBaseUrl = process.env.DATASET_BASE_URL
 
 export default {
   layout: 'background',
