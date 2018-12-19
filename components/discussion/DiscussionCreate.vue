@@ -35,10 +35,7 @@
           </div>
           <div class="field">
             <div class="control">
-              <textarea
-                v-model="body"
-                class="textarea"
-                placeholder="What's on your mind" />
+              <editor v-model="body" />
             </div>
           </div>
         </div>
@@ -60,8 +57,9 @@
 </template>
 
 <script>
-import createDiscussion from '@/apollo/mutations/createDiscussion'
 import _get from 'lodash/get'
+import createDiscussion from '@/apollo/mutations/createDiscussion'
+import Editor from '@/components/editor/Editor'
 
 export default {
   name: 'DiscussionCreate',
@@ -76,6 +74,9 @@ export default {
       required: false,
       default: ''
     }
+  },
+  components: {
+    Editor
   },
   data () {
     return {
