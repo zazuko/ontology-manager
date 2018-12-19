@@ -1,8 +1,10 @@
 import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
-import { datasetBaseUrl, containersNestingPredicates } from '@/trifid/trifid.config.json'
 import { termIRI } from '@/libs/rdf'
 import { website } from '@/editor.config'
+
+const datasetBaseUrl = process.env.datasetBaseUrl
+const containersNestingPredicates = process.env.containersNestingPredicates
 
 export const toastClose = {
   action: {

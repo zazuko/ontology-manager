@@ -8,7 +8,7 @@
             src="~/assets/images/dcf-logo.svg">
         </nuxt-link>
         <!-- TODO: make it configurable -->
-        © 2018 DCF. All rights reserved
+        © 2018 {{ customer }}. All rights reserved
       </div>
 
       <div class="level-right">
@@ -24,7 +24,14 @@
 </template>
 
 <script>
+const customer = process.env.customer
+
 export default {
-  name: 'Footer'
+  name: 'Footer',
+  data () {
+    return {
+      customer
+    }
+  }
 }
 </script>

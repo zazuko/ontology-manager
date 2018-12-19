@@ -4,7 +4,7 @@ dbup:
 
 # starts all services
 up: dbup
-	node migrations/migrate.js
+	node setup/migrate.js
 
 # stops all services
 down:

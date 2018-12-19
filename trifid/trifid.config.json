@@ -1,11 +1,9 @@
 {
   "baseConfig": "cwd:trifid/trifid.config-base.json",
-  "datasetBaseUrl": "http://example.com/",
-  "propertyBaseUrl": "http://example.com/schema/",
-  "classBaseUrl": "http://example.com/schema/",
-  "containersNestingPredicates": [
-    "http://schema.org/hasPart"
-  ],
+  "datasetBaseUrl": "env:DATASET_BASE_URL",
+  "classBaseUrl": "env:CLASS_BASE_URL",
+  "propertyBaseUrl": "env:PROPERTY_BASE_URL",
+  "containersNestingPredicate": "env:CONTAINERS_NESTING_PREDICATE",
   "patchHeaders": {
     "root": {
       "static": {
@@ -18,16 +16,16 @@
       "module": "cwd:node_modules/trifid-handler-fetch",
       "priority": 100,
       "options": {
-        "url": "https://raw.githubusercontent.com/vhf/o/example-com/structure.nt",
+        "url": "env:ONTOLOGY_RAW_URL",
         "contentType": "application/n-triples",
         "split": "true"
       }
     },
     "ontology": {
       "module": "cwd:node_modules/trifid-handler-fetch",
-      "priority": 100,
+      "priority": 101,
       "options": {
-        "url": "https://raw.githubusercontent.com/vhf/o/example-com/ontology.nt",
+        "url": "env:STRUCTURE_RAW_URL",
         "contentType": "application/n-triples",
         "split": "true"
       }

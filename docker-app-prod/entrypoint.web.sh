@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-node migrations/migrate.js
+node setup/migrate.js
 
 npm run start

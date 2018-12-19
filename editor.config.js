@@ -10,10 +10,6 @@ module.exports = {
     repo: 'o',
     owner: 'vhf',
     branch: 'example-com',
-    files: {
-      structure: 'structure.nt',
-      ontology: 'ontology.nt'
-    },
     committer: {
       // system user, the git identity of the committer who attributes commits
       // to the ontology editor user
