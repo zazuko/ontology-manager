@@ -3,7 +3,7 @@ import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal, externalIRIToQuad, mergedEditedOntology } from '@/libs/rdf'
 import { proposalDataset as classToDataset } from '@/models/Class'
 
-const propertyBaseUrl = process.env.propertyBaseUrl
+const propertyBaseUrl = process.env.PROPERTY_BASE_URL
 
 export function Property ({
   baseIRI = propertyBaseUrl,

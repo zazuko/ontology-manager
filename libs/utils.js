@@ -3,8 +3,8 @@ import { quadToNTriples } from '@rdfjs/to-ntriples'
 import { termIRI } from '@/libs/rdf'
 import { website } from '@/editor.config'
 
-const datasetBaseUrl = process.env.datasetBaseUrl
-const containersNestingPredicates = process.env.containersNestingPredicates
+const datasetBaseUrl = process.env.DATASET_BASE_URL
+const containersNestingPredicates = [process.env.CONTAINERS_NESTING_PREDICATE]
 
 export const toastClose = {
   action: {
