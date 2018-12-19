@@ -9,7 +9,8 @@ const app = express()
 Except when linking github oauth token with postgraphile JWT, all
 API requests that come through here need a valid postgraphile JWT
 */
-const filesRoutes = Object.values(config.github.files).map((file) => `/blob/${file}`)
+const filesRoutes = [process.env.ONTOLOGY_FILENAME, process.env.STRUCTURE_FILENAME].map((file) => `/blob/${file}`)
+
 const unprotectedRoutes = ['', '/link']
   .concat(filesRoutes)
   .reduce((routes, route) => {

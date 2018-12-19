@@ -107,7 +107,7 @@ import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI, term } from '@/libs/rdf'
 
-const datasetBaseUrl = require('@/trifid/trifid.config.json').datasetBaseUrl
+const datasetBaseUrl = process.env.datasetBaseUrl
 
 export default {
   layout: 'background',

@@ -1,10 +1,8 @@
-const dotenv = require('dotenv')
-const env = process.env.NODE_TEST ? `${__dirname}/test/.env` : `${__dirname}/docker-app-dev/.env`
+const envInit = require('./setup/env-init')
 const editorConfig = require('./editor.config')
 const feedCreate = require('./libs/feed')
 
-// load env vars
-dotenv.config({ path: env })
+envInit(process.env.NODE_TEST ? 'test' : 'dev')
 
 module.exports = {
   mode: 'universal',
@@ -154,6 +152,17 @@ module.exports = {
         component: resolve(__dirname, 'pages/fallback.vue')
       })
     }
+  },
+
+  // https://nuxtjs.org/api/configuration-env
+  env: {
+    customer: process.env.CUSTOMER_NAME,
+    datasetBaseUrl: process.env.DATASET_BASE_URL,
+    classBaseUrl: process.env.CLASS_BASE_URL,
+    propertyBaseUrl: process.env.PROPERTY_BASE_URL,
+    containersNestingPredicates: [process.env.CONTAINERS_NESTING_PREDICATE],
+    ONTOLOGY_FILENAME: process.env.ONTOLOGY_FILENAME,
+    STRUCTURE_FILENAME: process.env.STRUCTURE_FILENAME
   },
 
   /*
