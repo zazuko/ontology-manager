@@ -45,7 +45,6 @@
           class="container layout-objects-list-item">
           <structure
             :obj="subtree"
-            :name="subtree.label"
             :ontology="ontology"
             :structure="structure"
             :is-class="termIRI.Class.equals(objectType)" />
@@ -173,7 +172,7 @@ export default {
       if (!(termIRI.Class.equals(this.objectType) || termIRI.Property.equals(this.objectType))) {
         return null
       }
-      if (_get(this.subtree, 'children.length', 0) === 0) {
+      if (_get(this, 'subtree.children.length', 0) === 0) {
         return this.ontology.match(rdf.namedNode(this.iri))
       }
       return null
@@ -186,7 +185,7 @@ export default {
       else if (this.object) {
         label = this.object.match(rdf.namedNode(this.iri), termIRI.label).toArray()[0]
       }
-      if (label) {
+      if (label && label.object) {
         return label.object.value
       }
       return ''
