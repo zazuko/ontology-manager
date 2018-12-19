@@ -2,18 +2,18 @@
   <div class="has-primary-background">
     <top-nav />
     <nuxt />
-    <Footer />
+    <page-footer />
   </div>
 </template>
 
 <script>
 import TopNav from '@/components/layout/TopNav.vue'
-import Footer from '@/components/layout/Footer.vue'
+import PageFooter from '@/components/layout/PageFooter.vue'
 
 export default {
   components: {
     TopNav,
-    Footer
+    PageFooter
   },
   methods: {}
 }

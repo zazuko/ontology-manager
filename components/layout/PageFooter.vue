@@ -7,7 +7,6 @@
             class="footer-icon"
             src="~/assets/images/dcf-logo.svg">
         </nuxt-link>
-        <!-- TODO: make it configurable -->
         © 2018 {{ customer }}. All rights reserved
       </div>
 
@@ -24,13 +23,13 @@
 </template>
 
 <script>
-const customer = process.env.customer
+const customer = process.env.CUSTOMER_NAME
 
 export default {
-  name: 'Footer',
+  name: 'PageFooter',
   data () {
     return {
-      customer
+      customer: customer || 'Zazuko GmbH'
     }
   }
 }

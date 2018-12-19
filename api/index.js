@@ -11,7 +11,7 @@ API requests that come through here need a valid postgraphile JWT
 */
 const filesRoutes = [process.env.ONTOLOGY_FILENAME, process.env.STRUCTURE_FILENAME].map((file) => `/blob/${file}`)
 
-const unprotectedRoutes = ['', '/link']
+const unprotectedRoutes = ['', '/link', '/cache']
   .concat(filesRoutes)
   .reduce((routes, route) => {
     const path = `/api${route}`
