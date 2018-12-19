@@ -3,7 +3,7 @@
     <div class="tile is-parent">
       <article class="tile is-child container-box">
         <h1 class="title">
-          {{ name }}: Logistics objects
+          {{ _get(obj, 'label') }}: Logistics objects
         </h1>
 
         <div class="tile is-child container-box">
@@ -50,10 +50,6 @@ import _get from 'lodash/get'
 export default {
   name: 'Structure',
   props: {
-    name: {
-      type: String,
-      required: true
-    },
     obj: {
       type: Object,
       required: false,
