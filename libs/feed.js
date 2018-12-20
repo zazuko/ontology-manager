@@ -1,6 +1,5 @@
 const gql = require('graphql-tag')
 const _get = require('lodash/get')
-const editorConfig = require('../editor.config')
 
 module.exports = factory
 
@@ -18,9 +17,9 @@ function factory (name) {
     const anonApolloClient = apolloClientFactory()
 
     feed.options = {
-      title: `${editorConfig.website.head.title} - Activity List`,
-      link: `${editorConfig.website.head.title}/${name}.xml`,
-      description: editorConfig.website.head.description
+      title: `${process.env.EDITOR_TITLE} - Activity List`,
+      link: `${process.env.EDITOR_TITLE}/${name}.xml`,
+      description: process.env.EDITOR_DESCRIPTION
     }
 
     const result = await anonApolloClient.query({
@@ -83,8 +82,8 @@ function factory (name) {
 
         feed.addItem({
           title,
-          id: editorConfig.website.url + path,
-          link: editorConfig.website.url + path,
+          id: process.env.EDITOR_URL + path,
+          link: process.env.EDITOR_URL + path,
           date: new Date(item.eventDate)
         })
       })

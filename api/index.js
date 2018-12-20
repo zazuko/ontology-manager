@@ -1,7 +1,6 @@
 const jwt = require('express-jwt')
 const bodyParser = require('body-parser')
 const express = require('express')
-const config = require(require.resolve('../editor.config.js'))
 
 const app = express()
 
@@ -32,10 +31,10 @@ module.exports = { path: '/api', handler: app }
 
 function apiMiddleware () {
   let api
-  if (config.github) {
+  if (process.env.EDITOR_GITHUB_OWNER) {
     api = require('./github')
   }
-  else if (config.gitlab) {
+  else if (process.env.EDITOR_GITLAB_URL) {
     api = require('./gitlab')
   }
   else {

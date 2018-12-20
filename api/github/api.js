@@ -11,15 +11,17 @@ octokit.authenticate({
 const { getRefSHA, getFileSHA } = helpersFactory(octokit)
 
 module.exports = class GitHubAPIv3 {
-  constructor ({ branch, committer, owner, repo } = {}) {
-    if (!branch || !committer || !owner || !repo) {
-      throw new Error('GitHubAPIv3 should be instantiated with a config object')
+  constructor () {
+    this.branch = process.env.EDITOR_GITHUB_BRANCH
+    this.owner = process.env.EDITOR_GITHUB_OWNER
+    this.repo = process.env.EDITOR_GITHUB_REPO
+    this.committer = {
+      name: process.env.EDITOR_COMMITTER_NAME,
+      email: process.env.EDITOR_COMMITTER_EMAIL,
+      get date () {
+        return (new Date()).toISOString()
+      }
     }
-
-    this.branch = branch
-    this.owner = owner
-    this.repo = repo
-    this.committer = committer
     this.ontologyPath = process.env.ONTOLOGY_FILENAME
     this.structurePath = process.env.STRUCTURE_FILENAME
   }

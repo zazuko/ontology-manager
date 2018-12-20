@@ -1,7 +1,6 @@
 import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import { termIRI } from '@/libs/rdf'
-import { website } from '@/editor.config'
 
 const datasetBaseUrl = process.env.DATASET_BASE_URL
 const containersNestingPredicates = [process.env.CONTAINERS_NESTING_PREDICATE]
@@ -170,5 +169,5 @@ export function debounce (fn, delay) {
 }
 
 export function headTitle (title) {
-  return `${title} - ${website.head.title}`
+  return `${title} - ${process.env.EDITOR_TITLE}`
 }

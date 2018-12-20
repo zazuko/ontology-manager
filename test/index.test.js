@@ -28,7 +28,6 @@ let nuxt = null
 // Init Nuxt.js and create a server listening on localhost:4000
 describe('basic dev', () => {
   beforeAll(async () => {
-
     const config = {
       dev: true,
       rootDir: resolve(__dirname, '..'),
