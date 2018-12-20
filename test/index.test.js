@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const envInit = require('../setup/env-init')
 // load env vars
-envInit('test')
+envInit()
 
 jest.setTimeout(60000)
 
@@ -35,18 +35,18 @@ describe('basic dev', () => {
     }
     nuxt = new Nuxt(config)
     await new Builder(nuxt).build()
-    await nuxt.listen(3000, 'localhost')
+    return nuxt.listen(3000, 'localhost')
   })
 
   // Close server and ask nuxt to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    return nuxt.close()
   })
 
   test('render HTML', async () => {
     const context = {}
     const { html } = await nuxt.renderRoute('/', context)
-    expect(html).toContain('<!doctype html>')
+    return expect(html).toContain('<!doctype html>')
   })
 
   describe('Route /', () => {
@@ -54,7 +54,7 @@ describe('basic dev', () => {
       const result = await getHTML('/')
 
       expect(result.status).toBe(200)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('html for jsonld', async () => {
@@ -63,28 +63,28 @@ describe('basic dev', () => {
       expect(result.status).toBe(200)
       expect(() => JSON.parse(result.data)).toThrow()
 
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('html for rdfxml', async () => {
       const result = await getRDFXML('/')
 
       expect(result.status).toBe(200)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('html for nt', async () => {
       const result = await getNT('/')
 
       expect(result.status).toBe(200)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('html for turtle', async () => {
       const result = await getTURTLE('/')
 
       expect(result.status).toBe(200)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
   })
 
@@ -93,25 +93,22 @@ describe('basic dev', () => {
       const result = await getHTML('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('jsonld in html', async () => {
       const result = await getHTML('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
-      const start = '<script id="data" type="application/ld+json">'
-      const end = '"}]}</script>'
-      const a = result.data.indexOf(start) + start.length
-      const b = result.data.indexOf(end) + '"}]}'.length
-      expect(result.data.substring(a, b)).toMatchSnapshot()
+      const found = result.data.match(/<script id="data" type="application\/ld\+json">([\s\S]+?)]<\/script>/m)
+      return expect(found[1]).toMatchSnapshot()
     })
 
     test('json for jsonld', async () => {
       const result = await getJSONLD('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
-      expect(Object.keys(result.data)).toMatchSnapshot()
+      return expect(Object.keys(result.data)).toMatchSnapshot()
     })
 
     test('html for rdfxml', async () => {
@@ -121,21 +118,21 @@ describe('basic dev', () => {
       //   at ServerResponse.sendGraph [as graph] (ontology-editor/node_modules/rdf-body-parser/index.js:28:29)
       //   at rdfBodyParser.attach.then.then (ontology-editor/node_modules/trifid-handler-fetch/index.js:53:18)
       expect(result.status).toBe(406)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
     test('html for nt', async () => {
       const result = await getNT('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
-      expect(result.data).toMatchSnapshot()
+      return expect(result.data).toMatchSnapshot()
     })
 
     test('html for turtle', async () => {
       const result = await getTURTLE('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(404)
-      expect(result.data.toLowerCase()).toContain('<!doctype html>')
+      return expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
   })
 
@@ -143,31 +140,31 @@ describe('basic dev', () => {
     test('html for html', async () => {
       const result = await getHTML('/pouch/CargoFOOBARPouch')
 
-      expect(result.status).toBe(404)
+      return expect(result.status).toBe(404)
     })
 
     test('json for jsonld', async () => {
       const result = await getJSONLD('/pouch/CargoFOOBARPouch')
 
-      expect(result.status).toBe(404)
+      return expect(result.status).toBe(404)
     })
 
     test('html for rdfxml', async () => {
       const result = await getRDFXML('/pouch/CargoFOOBARPouch')
 
-      expect(result.status).toBe(404)
+      return expect(result.status).toBe(404)
     })
 
     test('html for nt', async () => {
       const result = await getNT('/pouch/CargoFOOBARPouch')
 
-      expect(result.status).toBe(404)
+      return expect(result.status).toBe(404)
     })
 
     test('html for turtle', async () => {
       const result = await getTURTLE('/pouch/CargoFOOBARPouch')
 
-      expect(result.status).toBe(404)
+      return expect(result.status).toBe(404)
     })
   })
 })
