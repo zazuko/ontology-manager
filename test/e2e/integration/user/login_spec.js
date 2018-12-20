@@ -44,7 +44,6 @@ import { randomString } from '@nuxtjs/auth/lib/core/utilities'
 
 const _ = Cypress._
 
-
 describe('Logging In - Single Sign on', function () {
   Cypress.Commands.add('loginBySingleSignOn', (overrides = {}) => {
     Cypress.log({

@@ -3,15 +3,13 @@ import stringToStream from 'string-to-stream'
 import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
 
-const config = require('../editor.config')
-
 // * used by a trifid plugin on first server requests
 // * used by the store to refresh client-side dataset after a merge
 export default async function fetchDataset () {
   try {
     const [ontologyDataset, structureDataset] = await Promise.all([
-      axios.get(`${config.website.url}/api/blob/${process.env.ONTOLOGY_FILENAME}`),
-      axios.get(`${config.website.url}/api/blob/${process.env.STRUCTURE_FILENAME}`)
+      axios.get(`${process.env.EDITOR_URL}/api/blob/${process.env.ONTOLOGY_FILENAME}`),
+      axios.get(`${process.env.EDITOR_URL}/api/blob/${process.env.STRUCTURE_FILENAME}`)
     ]).then(([ontologyResponse, structureResponse] = []) => {
       const ontologyString = ontologyResponse.data
       const structureString = structureResponse.data

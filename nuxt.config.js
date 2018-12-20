@@ -1,5 +1,4 @@
 const envInit = require('./setup/env-init')
-const editorConfig = require('./editor.config')
 const feedCreate = require('./libs/feed')
 
 envInit(process.env.NODE_TEST ? 'test' : 'dev')
@@ -11,11 +10,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: editorConfig.website.head.title,
+    title: process.env.EDITOR_TITLE,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: editorConfig.website.head.description }
+      { hid: 'description', name: 'description', content: process.env.EDITOR_DESCRIPTION }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -156,6 +155,14 @@ module.exports = {
 
   // https://nuxtjs.org/api/configuration-env
   env: {
+    EDITOR_URL: process.env.EDITOR_URL,
+    EDITOR_TITLE: process.env.EDITOR_TITLE,
+    EDITOR_DESCRIPTION: process.env.EDITOR_DESCRIPTION,
+    EDITOR_GITHUB_OWNER: process.env.EDITOR_GITHUB_OWNER,
+    EDITOR_GITHUB_REPO: process.env.EDITOR_GITHUB_REPO,
+    EDITOR_GITHUB_BRANCH: process.env.EDITOR_GITHUB_BRANCH,
+    EDITOR_COMMITTER_NAME: process.env.EDITOR_COMMITTER_NAME,
+    EDITOR_COMMITTER_EMAIL: process.env.EDITOR_COMMITTER_EMAIL,
     CUSTOMER_NAME: process.env.CUSTOMER_NAME,
     DATASET_BASE_URL: process.env.DATASET_BASE_URL,
     CLASS_BASE_URL: process.env.CLASS_BASE_URL,

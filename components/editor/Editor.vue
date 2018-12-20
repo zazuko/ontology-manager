@@ -131,7 +131,9 @@
               }"
               class="editor-link-modal modal">
               <div class="modal-background"></div>
-              <form class="default-modal modal-card" @submit.prevent>
+              <form
+                class="default-modal modal-card"
+                @submit.prevent>
                 <section class="modal-card-head">
                   <h1>
                     Edit link
