@@ -1,7 +1,8 @@
 import Vue from 'vue'
-import ontologyConfig from '@/editor.config'
 
-const { owner, repo } = ontologyConfig.github
+// TODO: make this forge-agnostic
+const owner = process.env.EDITOR_GITHUB_OWNER
+const repo = process.env.EDITOR_GITHUB_REPO
 
 Vue.filter('formatDate', (date) => {
   const dateObj = new Date(date)

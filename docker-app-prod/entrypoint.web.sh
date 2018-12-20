@@ -3,6 +3,8 @@ set -euo pipefail
 
 node setup/migrate.js
 
-npm run build
+if [ ! -f .built ]; then
+  npm run build && touch .built
+fi
 
 npm run start

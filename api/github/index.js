@@ -3,7 +3,6 @@ const Router = require('express').Router
 const axios = require('axios')
 const apicache = require('apicache')
 const gql = require('graphql-tag')
-const ontology = require('../../editor.config')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
@@ -11,7 +10,7 @@ const router = Router()
 
 module.exports = router
 
-const api = new GitHubAPIv3(ontology.github)
+const api = new GitHubAPIv3()
 const onlyStatus200 = (req, res) => res.statusCode === 200
 const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 

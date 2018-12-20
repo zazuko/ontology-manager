@@ -15,7 +15,9 @@
     <div class="modal signin-modal">
       <div class="modal-background" />
       <div class="modal-card has-text-centered">
-        <a class="signin-modal-close" aria-label="close">
+        <a
+          class="signin-modal-close"
+          aria-label="close">
           ×
         </a>
         <header class="modal-card-head">
