@@ -33,3 +33,21 @@
     color: $theme-dark-primary;
   }
 }
+
+.sort-icon {
+  @extend .icon;
+  height: 1rem;
+  vertical-align: middle;
+  font-size: 1.4em;
+
+  i {
+    @extend .mdi;
+    @extend .mdi-menu-swap;
+    &.asc {
+      @extend .mdi-menu-up;
+    }
+    &.desc {
+      @extend .mdi-menu-down;
+    }
+  }
+}
