@@ -20,7 +20,7 @@
         <div class="columns">
           <div
             sticky-container
-            class="column is-3">
+            class="column is-3 is-hidden-mobile">
             <progression-box
               :proposal-path="path" />
           </div>

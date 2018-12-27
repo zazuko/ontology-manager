@@ -5,10 +5,9 @@
         <th>Title</th>
         <th>Created by</th>
         <th>Last updated</th>
-        <th>Object</th>
+        <th class="is-hidden-mobile">Object</th>
         <th>Status</th>
-        <th>Vote</th>
-        <th></th>
+        <th class="is-hidden-mobile"></th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +34,7 @@
             </span>
           </p>
         </td>
-        <td>
+        <td class="is-hidden-mobile">
           <p>
             <code>{{ discussion.iri }}</code>
           </p>
@@ -43,10 +42,7 @@
         <td>
           <p>{{ discussion.status }}</p>
         </td>
-        <td>
-          <p>?</p>
-        </td>
-        <td class="has-text-right">
+        <td class="has-text-right is-hidden-mobile">
           <button
             v-show="discussion.status !== 'OPEN'"
             class="button is-small is-info"

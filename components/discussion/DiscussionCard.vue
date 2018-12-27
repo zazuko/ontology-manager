@@ -8,7 +8,7 @@
       </div>
       <div
         v-show="canEdit(discussion.author.id)"
-        class="discussion-actions level-right">
+        class="discussion-actions level-right is-hidden-mobile">
         <img
           class="hoverable-icon"
           src="~/assets/images/ic-edit.svg"
@@ -214,7 +214,7 @@
           </div>
           <div
             v-show="canEdit(message.author.id)"
-            class="media-right discussion-actions">
+            class="media-right discussion-actions is-hidden-mobile">
             <img
               class="hoverable-icon"
               src="~/assets/images/ic-edit.svg"
