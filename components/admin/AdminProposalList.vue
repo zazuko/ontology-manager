@@ -5,9 +5,11 @@
         <th>
           <a
             class="sort-by"
-            :class="{ [String(orderBy['HEADLINE']).toLowerCase()]: orderBy['HEADLINE'] }"
             @click.prevent="sort('HEADLINE')">
             Title
+            <span class="sort-icon">
+              <i :class="{ [String(orderBy['HEADLINE']).toLowerCase()]: orderBy['HEADLINE'] }" />
+            </span>
           </a>
         </th>
         <th>
@@ -16,9 +18,11 @@
         <th>
           <a
             class="sort-by"
-            :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }"
             @click.prevent="sort('UPDATED_AT')">
             Last updated
+            <span class="sort-icon">
+              <i :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }" />
+            </span>
           </a>
         </th>
         <th>
