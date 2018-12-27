@@ -120,7 +120,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Holders</th>
-            <th></th>
+            <th class="is-hidden-mobile"></th>
           </tr>
         </thead>
         <tbody>
@@ -148,7 +148,7 @@
                 </li>
               </ul>
             </td>
-            <td class="has-text-right">
+            <td class="has-text-right is-hidden-mobile">
               <button
                 class="button is-small is-info"
                 @click.prevent="edit(hat)">
