@@ -26,7 +26,14 @@
           </a>
         </th>
         <th>
-          Status
+          <a
+            class="sort-by"
+            @click.prevent="sort('STATUS')">
+            Status
+            <span class="sort-icon">
+              <i :class="{ [String(orderBy['STATUS']).toLowerCase()]: orderBy['STATUS'] }" />
+            </span>
+          </a>
         </th>
         <th>
           Votes

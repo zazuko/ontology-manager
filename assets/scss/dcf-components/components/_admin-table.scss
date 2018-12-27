@@ -44,10 +44,10 @@
     @extend .mdi;
     @extend .mdi-menu-swap;
     &.asc {
-      @extend .mdi-menu-up;
+      @extend .mdi-menu-down;
     }
     &.desc {
-      @extend .mdi-menu-down;
+      @extend .mdi-menu-up;
     }
   }
 }
