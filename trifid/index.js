@@ -3,6 +3,8 @@ import Trifid from 'trifid-core'
 import express from 'express'
 
 const app = express()
+app.set('trust proxy', 'loopback')
+app.set('x-powered-by', null)
 
 let middleware
 
