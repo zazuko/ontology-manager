@@ -38,7 +38,7 @@
         <th>
           Votes
         </th>
-        <th>
+        <th class="is-hidden-mobile">
         </th>
       </tr>
     </thead>
@@ -98,7 +98,7 @@
             </div>
           </div>
         </td>
-        <td class="has-text-right">
+        <td class="has-text-right is-hidden-mobile">
           <span
             v-if="!proposal.isDraft">
             <p>
