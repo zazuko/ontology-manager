@@ -3,11 +3,14 @@
     <admin-menu />
 
     <no-ssr>
+      <pagination
+        :page="page"
+        :is-last-page="lastPage"
+        route="admin-proposals" />
       <admin-proposal-list
         v-model="orderBy"
         :proposals="proposals"
         @updated="refetch()" />
-      <pagination />
     </no-ssr>
   </section>
 </template>
@@ -20,8 +23,6 @@ import AdminMenu from '@/components/admin/AdminMenu.vue'
 import Pagination from '@/components/layout/Pagination.vue'
 import { headTitle } from '@/libs/utils'
 
-const pageSize = 10
-
 export default {
   middleware: 'authenticatedAdmin',
   components: {
@@ -33,7 +34,15 @@ export default {
     return {
       proposals: [],
       orderBy: [],
-      page: this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
+      pageSize: 5
+    }
+  },
+  computed: {
+    lastPage () {
+      return this.proposals.length < this.pageSize
+    },
+    page () {
+      return this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
     }
   },
   methods: {
@@ -46,8 +55,8 @@ export default {
       query: adminProposalList,
       variables () {
         const vars = {
-          first: pageSize,
-          offset: this.page * pageSize
+          first: this.pageSize,
+          offset: this.page * this.pageSize
         }
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy

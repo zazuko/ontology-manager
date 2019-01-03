@@ -3,124 +3,95 @@
     class="pagination"
     role="navigation"
     aria-label="pagination">
-    <a class="pagination-previous">Previous</a>
-    <a class="pagination-next">Next page</a>
+    <nuxt-link
+      :to="{ name: 'admin-proposals', query: { page: page - 1 } }"
+      class="pagination-previous"
+      v-show="page && page !== 1"
+      aria-label="Goto previous page">
+      Previous
+    </nuxt-link>
+    <nuxt-link
+      :to="{ name: 'admin-proposals', query: { page: page + 1 } }"
+      class="pagination-next"
+      v-show="!isLastPage"
+      aria-label="Goto next page">
+      Next page
+    </nuxt-link>
     <ul class="pagination-list">
-      <li>
-        <a
+      <li
+        v-for="p in range1"
+        :key="p">
+        <nuxt-link
+          :to="{ name: 'admin-proposals', query: { page: p } }"
+          :class="{ 'is-current': page === p }"
           class="pagination-link"
-          aria-label="Goto page 1">1</a>
+          :aria-label="label(p)">
+          {{ p }}
+        </nuxt-link>
       </li>
-      <li>
+      <li
+        v-show="range2.length">
         <span class="pagination-ellipsis">&hellip;</span>
       </li>
-      <li>
-        <a
+      <li
+        v-for="p in range2"
+        :key="p + 1000">
+        <nuxt-link
+          :to="{ name: 'admin-proposals', query: { page: p } }"
+          :class="{ 'is-current': page === p }"
           class="pagination-link"
-          aria-label="Goto page 45">45</a>
-      </li>
-      <li>
-        <a
-          class="pagination-link is-current"
-          aria-label="Page 46"
-          aria-current="page">46</a>
-      </li>
-      <li>
-        <a
-          class="pagination-link"
-          aria-label="Goto page 47">47</a>
-      </li>
-      <li>
-        <span class="pagination-ellipsis">&hellip;</span>
-      </li>
-      <li>
-        <a
-          class="pagination-link"
-          aria-label="Goto page 86">86</a>
+          :aria-label="label(p)">
+          {{ p }}
+        </nuxt-link>
       </li>
     </ul>
   </nav>
 </template>
 
 <script>
-import { findBestMatch } from '@/libs/string-similarity'
-import { rebaseIRI } from '@/libs/rdf'
+import _range from 'lodash/range'
 
 export default {
   name: 'Pagination',
-  data () {
-    return {
-      ratings: [],
-      searchString: '',
-      searchIndex: this.$store.state.graph.searchIndex,
-      searchTexts: this.$store.state.graph.searchIndex.map(x => x.text)
+  props: {
+    page: {
+      type: Number,
+      required: true
+    },
+    isLastPage: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
-  watch: {
-    'searchString' () {
-      this.search(this.searchString)
+  computed: {
+    range1 () {
+      const range = [1]
+      for (let i = 2; i <= this.page && range.length < 4; i++) {
+        range.push(i)
+      }
+      if (this.page >= 5) {
+        return range.slice(0, 2)
+      }
+      console.log({ range1: JSON.stringify(range) })
+      return range
+    },
+    range2 () {
+      const n = this.page
+      let firstPage = n > 4 ? Math.max(n - 4, 4) : n
+      const range = _range(firstPage, n + 1)
+      console.log({ range2: JSON.stringify(range) })
+      if (range.length < 2) {
+        return []
+      }
+      return range
     }
   },
   methods: {
-    clear () {
-      this.searchString = ''
-    },
-    search (str) {
-      let { ratings = [] } = findBestMatch(str, this.searchTexts)
-      ratings.sort((a, b) => b.rating - a.rating)
-      ratings = ratings
-        .slice(0, 21)
-        .filter(item => item.rating > 0.05)
-        .reduce((acc, found) => {
-          const object = this.searchIndex[found.index]
-          if (!acc[object.iri]) {
-            found.objects = this.searchIndex.filter(({ iri }) => iri === object.iri)
-            acc[object.iri] = found
-            found.href = rebaseIRI(object.iri)
-            if (object.type === 'label') {
-              found.target = object.text
-              found.details = object.objectType
-            }
-            else {
-              const match = found.target
-              found.target = found.objects[0].part
-              found.details = highlight(str, match)
-            }
-          }
-          return acc
-        }, {})
-
-      this.ratings = Object.values(ratings).filter((rating) => !!rating.target).slice(0, 10)
+    label (p) {
+      return `Goto page ${p}`
     }
   }
 }
 
-function highlight (word, sentence) {
-  const xs = []
-  const submatch = findBestMatch(word, sentence.split(' '))
-  const highlightedText = submatch.ratings[submatch.bestMatchIndex].target
-  if (submatch.bestMatchIndex > 0) {
-    let beforeHighlight = submatch.ratings.slice(0, submatch.bestMatchIndex).map(p => p.target).join(' ')
-    let trimmed = false
-    while (beforeHighlight.includes(' ') && (beforeHighlight.length + highlightedText.length) > 35) {
-      beforeHighlight = beforeHighlight.substr(beforeHighlight.indexOf(' ') + 1)
-      trimmed = true
-    }
-    xs.push({
-      text: (trimmed ? '…' : '') + beforeHighlight,
-      highlight: false
-    })
-  }
-  xs.push({
-    text: highlightedText,
-    highlight: true
-  })
-  if (submatch.bestMatchIndex < submatch.ratings.length - 1) {
-    xs.push({
-      text: submatch.ratings.slice(submatch.bestMatchIndex + 1).map(p => p.target).join(' '),
-      highlight: false
-    })
-  }
-  return xs
-}
 </script>
