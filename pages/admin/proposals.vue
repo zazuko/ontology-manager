@@ -7,6 +7,7 @@
         v-model="orderBy"
         :proposals="proposals"
         @updated="refetch()" />
+      <pagination />
     </no-ssr>
   </section>
 </template>
@@ -16,18 +17,25 @@ import _get from 'lodash/get'
 import adminProposalList from '@/apollo/queries/adminProposalList'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
+import Pagination from '@/components/layout/Pagination.vue'
 import { headTitle } from '@/libs/utils'
+
+const pageSize = 10
 
 export default {
   middleware: 'authenticatedAdmin',
   components: {
+    AdminMenu,
     AdminProposalList,
-    AdminMenu
+    Pagination
   },
-  data: () => ({
-    proposals: [],
-    orderBy: []
-  }),
+  data () {
+    return {
+      proposals: [],
+      orderBy: [],
+      page: this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
+    }
+  },
   methods: {
     refetch () {
       this.$apollo.queries.discussions.refetch()
@@ -37,7 +45,10 @@ export default {
     discussions: {
       query: adminProposalList,
       variables () {
-        const vars = {}
+        const vars = {
+          first: pageSize,
+          offset: this.page * pageSize
+        }
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy
         }
