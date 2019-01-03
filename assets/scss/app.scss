@@ -2,10 +2,12 @@
 
 @import "../../node_modules/@mdi/font/scss/materialdesignicons";
 
-@import "../../node_modules/bulma/sass/utilities/initial-variables";
+// base variables, needs to be imported before any bulma import
+@import "./dcf-components/_initial-variables";
 
 @import "../../node_modules/bulma/sass/utilities/_all";
 
+// other variables, variables built upon bulma utilities
 @import "./dcf-components/_variables";
 
 @import "../../node_modules/bulma/sass/base/_all";
