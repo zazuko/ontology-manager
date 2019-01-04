@@ -1,12 +1,8 @@
-html {
-  height: 100%;
-}
-
-body {
-  min-height: 100%;
-  padding: 0 0 2em 0; margin: 0;
+.has-primary-background,
+.has-secondary-background {
+  min-height: 100vh;
+  padding: 0 0 100px 0; margin: 0;
   position: relative;
-  background: $theme-main-background;
 }
 
 .has-primary-background {
@@ -15,12 +11,6 @@ body {
 
 .has-secondary-background {
   background: white;
-}
-
-body::after {
-  content: '';
-  display: block;
-  height: 80px;
 }
 
 footer {

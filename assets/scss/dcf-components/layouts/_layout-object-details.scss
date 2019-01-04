@@ -9,7 +9,7 @@
 .layout-object-details-sidenav {
   position: relative;
   background: $theme-dark-grey;
-  padding: 2rem 2rem 2rem 0;
+  padding: 2rem 2rem 6rem 0;
 
   min-height: calc(100vh - 186px);
 
@@ -34,6 +34,8 @@
   }
 
   .menu-list {
+    overflow: hidden;
+
     ul {
       margin: 0;
       margin-left: 24px;
