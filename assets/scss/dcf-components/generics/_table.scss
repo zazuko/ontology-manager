@@ -1,5 +1,4 @@
 table.generic-table {
-
   thead th {
     border-bottom: solid 1px $theme-light-primary;
   }
@@ -51,5 +50,12 @@ table.generic-table {
     &:hover, &:focus {
       opacity: 1;
     }
+  }
+}
+
+@include touch {
+  .responsive-table {
+    max-width: 100%;
+    overflow-x: scroll;
   }
 }
