@@ -7,10 +7,12 @@
         :page="page"
         :is-last-page="lastPage"
         route="admin-proposals" />
-      <admin-proposal-list
-        v-model="orderBy"
-        :proposals="proposals"
-        @updated="refetch()" />
+      <div class="responsive-table">
+        <admin-proposal-list
+          v-model="orderBy"
+          :proposals="proposals"
+          @updated="refetch()" />
+      </div>
     </no-ssr>
   </section>
 </template>
