@@ -112,3 +112,9 @@
     color: black;
   }
 }
+
+@include mobile {
+  .proposal-author-info {
+    text-align: center;
+  }
+}
