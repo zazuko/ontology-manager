@@ -7,7 +7,7 @@
             class="footer-icon"
             src="~/assets/images/dcf-logo.svg">
         </nuxt-link>
-        © 2018 {{ customer }}. All rights reserved
+        <span>© 2018 {{ customer }}. All rights reserved</span>
       </div>
 
       <div class="level-right">
