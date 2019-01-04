@@ -134,3 +134,76 @@
     }
   }
 }
+
+@include touch {
+  .discussion {
+    .discussion-form {
+      padding-bottom: 50px;
+
+      .media-right {
+        position: absolute;
+        bottom: 0; right: 0;
+        width: 100%;
+        text-align: right;
+        display: block;
+
+        .field {
+          display: inline-block;
+          margin: 0;
+        }
+
+        .select {
+          width: 150px;
+        }
+
+        .discussion-post-button {
+          position: static;
+        }
+      }
+    }
+  }
+}
+
+/*
+
+
+  .discussion-form {
+    position: relative;
+
+    .media-left {
+      min-width: 58px;
+      text-align: right;
+    }
+
+    .media-right {
+      width: 150px;
+      text-align: right;
+
+      .icon i {
+        font-size: 2em;
+        cursor: pointer;
+      }
+
+      .discussion-post-button {
+        position: absolute;
+        bottom: 0; right: 0;
+
+        .button {
+          width: 150px;
+        }
+      }
+    }
+
+    &.discussion-message {
+      .media-left {
+        min-width: 40px;
+      }
+
+      .media-right {
+        .discussion-post-button {
+          bottom: 1em; right: 1em;
+        }
+      }
+    }
+  }
+*/
