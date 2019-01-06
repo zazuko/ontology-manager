@@ -86,6 +86,10 @@
         overflow-x: initial;
       }
 
+      .level {
+        display: flex;
+      }
+
       .level-left + .level-right {
         margin-top: 0;
       }

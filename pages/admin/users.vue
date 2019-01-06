@@ -3,9 +3,11 @@
     <admin-menu />
 
     <no-ssr>
-      <admin-user-list
-        :users="users"
-        @updated="refetch()" />
+      <div class="responsive-table">
+        <admin-user-list
+          :users="users"
+          @updated="refetch()" />
+      </div>
     </no-ssr>
   </section>
 </template>

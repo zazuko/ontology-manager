@@ -19,6 +19,19 @@ footer {
   width: 100%;
   height: 100px;
   overflow: hidden;
+  @include touch {
+    .level-left {
+      display: flex;
+      a {
+        // for the logo
+        padding-left: 15px;
+      }
+    }
+    .level-right {
+      // hide link "go to top"
+      display: none;
+    }
+  }
 }
 
 .main-title {
