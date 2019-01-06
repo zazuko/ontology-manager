@@ -3,9 +3,11 @@
     <admin-menu />
 
     <no-ssr>
-      <admin-discussion-list
-        :discussions="rows"
-        @updated="refetch()" />
+      <div class="responsive-table">
+        <admin-discussion-list
+          :discussions="rows"
+          @updated="refetch()" />
+      </div>
     </no-ssr>
   </section>
 </template>

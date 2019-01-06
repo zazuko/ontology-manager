@@ -3,10 +3,12 @@
     <admin-menu />
 
     <no-ssr>
-      <admin-hat-list
-        :hats="hats"
-        :users="users"
-        @updated="refetch()" />
+      <div class="responsive-table">
+        <admin-hat-list
+          :hats="hats"
+          :users="users"
+          @updated="refetch()" />
+      </div>
     </no-ssr>
   </section>
 </template>
