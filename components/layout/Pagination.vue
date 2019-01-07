@@ -73,14 +73,12 @@ export default {
       if (this.page >= 5) {
         return range.slice(0, 2)
       }
-      console.log({ range1: JSON.stringify(range) })
       return range
     },
     range2 () {
       const n = this.page
       let firstPage = n > 4 ? Math.max(n - 4, 4) : n
       const range = _range(firstPage, n + 1)
-      console.log({ range2: JSON.stringify(range) })
       if (range.length < 2) {
         return []
       }
