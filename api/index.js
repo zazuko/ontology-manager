@@ -10,7 +10,7 @@ API requests that come through here need a valid postgraphile JWT
 */
 const filesRoutes = [process.env.ONTOLOGY_FILENAME, process.env.STRUCTURE_FILENAME].map((file) => `/blob/${file}`)
 
-const unprotectedRoutes = ['', '/link', '/cache']
+const unprotectedRoutes = ['', '/link', '/cache', '/auth/login', '/auth/logout', '/auth/user']
   .concat(filesRoutes)
   .reduce((routes, route) => {
     const path = `/api${route}`
@@ -31,15 +31,20 @@ module.exports = { path: '/api', handler: app }
 
 function apiMiddleware () {
   let api
-  if (process.env.EDITOR_GITHUB_OWNER) {
-    api = require('./github')
+
+  if (process.env.E2E) {
+    api = 'e2e-helpers'
+  }
+  else if (process.env.EDITOR_GITHUB_OWNER) {
+    api = 'github'
   }
   else if (process.env.EDITOR_GITLAB_URL) {
-    api = require('./gitlab')
+    api = 'gitlab'
   }
   else {
     throw new Error('No forge API configured or configured forge API not found.')
   }
+  console.warn(`Starting API server with ${api} support`)
 
-  return api
+  return require(`./${api}`)
 }
