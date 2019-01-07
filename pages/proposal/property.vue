@@ -9,7 +9,7 @@
             <h1 class="title is-1">
               {{ edit ? 'Request Changes on Property' : 'Request New Property' }}<span
                 v-show="prop.label">:
-              "{{ prop.label }}"
+                "{{ prop.label }}"
               </span>
             </h1>
 

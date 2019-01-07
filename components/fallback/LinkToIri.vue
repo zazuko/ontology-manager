@@ -24,7 +24,7 @@
 import { term, rebaseIRI } from '@/libs/rdf'
 
 export default {
-  name: 'LinkToIRI',
+  name: 'LinkToIri',
   props: {
     term: {
       type: Object,

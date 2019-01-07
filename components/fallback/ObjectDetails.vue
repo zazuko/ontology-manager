@@ -94,7 +94,7 @@
             <li
               v-for="clss in rangeOf"
               :key="clss.value">
-              <link-to-IRI :term="clss" />
+              <link-to-iri :term="clss" />
             </li>
           </ul>
         </section>
@@ -123,7 +123,7 @@
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
-import LinkToIRI from './LinkToIRI'
+import LinkToIri from './LinkToIri'
 import { termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
 import { findClassProperties } from '@/libs/utils'
 import cloneDeep from 'lodash/cloneDeep'
@@ -132,7 +132,7 @@ export default {
   name: 'ObjectDetails',
   components: {
     PropertiesTable,
-    LinkToIRI
+    LinkToIri
   },
   props: {
     object: {

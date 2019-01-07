@@ -55,7 +55,7 @@
         <li
           v-for="(property, index) in properties"
           :key="index">
-          <link-to-IRI
+          <link-to-iri
             :term="property.subject"
             :link-class="{ 'is-current': sameIRI(property.subject.value) }" />
         </li>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import LinkToIRI from '../LinkToIRI'
+import LinkToIri from '../LinkToIri'
 
 export default {
   name: 'ObjectNode',
@@ -88,7 +88,7 @@ export default {
     }
   },
   components: {
-    LinkToIRI
+    LinkToIri
   },
   data () {
     return {
