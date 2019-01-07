@@ -32,7 +32,7 @@ module.exports = { path: '/api', handler: app }
 function apiMiddleware () {
   let api
 
-  if (process.env.E2E) {
+  if (process.env.NODE_TEST) {
     api = 'e2e-helpers'
   }
   else if (process.env.EDITOR_GITHUB_OWNER) {

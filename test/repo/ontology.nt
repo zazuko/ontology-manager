@@ -1,0 +1,589 @@
+<http://example.com/schema/Accelerometer> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/accelerometer> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/accelerometer> <http://schema.org/rangeIncludes> <http://example.com/schema/Accelerometer> .
+<http://example.com/schema/accelerometer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Accelerometer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Accelerometer> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of accelerometer." .
+<http://example.com/schema/accelerometer> <http://www.w3.org/2000/01/rdf-schema#label> "Accelerometer" .
+<http://example.com/schema/Accelerometer> <http://www.w3.org/2000/01/rdf-schema#label> "Accelerometer" .
+<http://example.com/schema/accelerometer> <http://www.w3.org/2004/02/skos/core#note> "A device accelerometer reading submitted as a track update." .
+<http://example.com/schema/airport> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/airport> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/airport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/airport> <http://www.w3.org/2000/01/rdf-schema#label> "Airport" .
+<http://example.com/schema/airport> <http://www.w3.org/2004/02/skos/core#note> "Airport  IATA 3-letter Code ." .
+<http://example.com/schema/AirStatusUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/AirStatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/AirStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "A status update on a logistics object in the transport mode of air." .
+<http://example.com/schema/AirStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "Air Status Update" .
+<http://example.com/schema/AirStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/AirStatusUpdate> <http://www.w3.org/2004/02/skos/core#note> "A status update on a logistics object in the transport mode of air." .
+<http://example.com/schema/arrivalTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/arrivalTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/arrivalTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/arrivalTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Arrival Timestamp" .
+<http://example.com/schema/arrivalTimestamp> <http://www.w3.org/2004/02/skos/core#note> "A timestamp for the arrival of the airwaybill ." .
+<http://example.com/schema/ata-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/ata-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/ata-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/ata-Location> <http://www.w3.org/2000/01/rdf-schema#label> "ATA-Location" .
+<http://example.com/schema/ata-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel arrives at a specified location, as per port section standards." .
+<http://example.com/schema/atd-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/atd-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/atd-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/atd-Location> <http://www.w3.org/2000/01/rdf-schema#label> "ATD-Location" .
+<http://example.com/schema/atd-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel departs from a specified location, as per port section standards." .
+<http://example.com/schema/attentionTo> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/attentionTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbManifestedPieces> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/awbManifestedPieces> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#integer> .
+<http://example.com/schema/awbManifestedPieces> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbManifestedPieces> <http://www.w3.org/2000/01/rdf-schema#label> "AWB Manifested Pieces" .
+<http://example.com/schema/awbManifestedPieces> <http://www.w3.org/2004/02/skos/core#note> "The number of pieces manifested on the AWB ." .
+<http://example.com/schema/awbManifestedWeight> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/awbManifestedWeight> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/awbManifestedWeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbManifestedWeight> <http://www.w3.org/2000/01/rdf-schema#label> "AWB Manifested Weight" .
+<http://example.com/schema/awbManifestedWeight> <http://www.w3.org/2004/02/skos/core#note> "The weight of pieces manifested on the AWB ." .
+<http://example.com/schema/awbTotalPieces> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/awbTotalPieces> <http://schema.org/domainIncludes> <http://example.com/schema/EmptyGood> .
+<http://example.com/schema/awbTotalPieces> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#integer> .
+<http://example.com/schema/awbTotalPieces> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbTotalPieces> <http://www.w3.org/2000/01/rdf-schema#label> "AWB Total Pieces" .
+<http://example.com/schema/awbTotalPieces> <http://www.w3.org/2004/02/skos/core#note> "The total number of pieces on the AWB ." .
+<http://example.com/schema/awbTotalWeight> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/awbTotalWeight> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/awbTotalWeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbTotalWeight> <http://www.w3.org/2000/01/rdf-schema#label> "AWB Total Weight" .
+<http://example.com/schema/awbTotalWeight> <http://www.w3.org/2004/02/skos/core#note> "The total weight of pieces on the AWB ." .
+<http://example.com/schema/awbTotalWeightUom> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/awbTotalWeightUom> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/awbTotalWeightUom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/awbTotalWeightUom> <http://www.w3.org/2000/01/rdf-schema#label> "AWB Total Weight UoM" .
+<http://example.com/schema/awbTotalWeightUom> <http://www.w3.org/2004/02/skos/core#note> "The unit of measure for the total weight of pieces on the AWB ." .
+<http://example.com/schema/Battery> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/battery> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/battery> <http://schema.org/rangeIncludes> <http://example.com/schema/Battery> .
+<http://example.com/schema/battery> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Battery> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Battery> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of battery status." .
+<http://example.com/schema/battery> <http://www.w3.org/2000/01/rdf-schema#label> "Battery" .
+<http://example.com/schema/Battery> <http://www.w3.org/2000/01/rdf-schema#label> "Battery" .
+<http://example.com/schema/battery> <http://www.w3.org/2004/02/skos/core#note> "A device battery reading submitted as a track update." .
+<http://example.com/schema/batteryPercentage> <http://schema.org/domainIncludes> <http://example.com/schema/Battery> .
+<http://example.com/schema/batteryPercentage> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/batteryPercentage> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/batteryPercentage> <http://www.w3.org/2000/01/rdf-schema#label> "Battery Percentage" .
+<http://example.com/schema/batteryPercentage> <http://www.w3.org/2004/02/skos/core#note> "A device battery reading in Percentage submitted as a track update." .
+<http://example.com/schema/batteryVoltage> <http://schema.org/domainIncludes> <http://example.com/schema/Battery> .
+<http://example.com/schema/batteryVoltage> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/batteryVoltage> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/batteryVoltage> <http://www.w3.org/2000/01/rdf-schema#label> "Battery Voltage" .
+<http://example.com/schema/batteryVoltage> <http://www.w3.org/2004/02/skos/core#note> "A device battery reading in Voltage submitted as a track update." .
+<http://example.com/schema/Boat> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Boat> <http://www.w3.org/2000/01/rdf-schema#comment> "Boaty McBoatface" .
+<http://example.com/schema/Boat> <http://www.w3.org/2000/01/rdf-schema#label> "Boat" .
+<http://example.com/schema/Boat> <http://www.w3.org/2004/02/skos/core#note> "a potentially dangerous boat" .
+<http://example.com/schema/buyer> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/buyer> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/buyer> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/buyer> <http://www.w3.org/2000/01/rdf-schema#label> "Buyer" .
+<http://example.com/schema/buyer> <http://www.w3.org/2004/02/skos/core#note> "The buyer party for this consignment." .
+<http://example.com/schema/cargoType> <http://schema.org/domainIncludes> <http://example.com/schema/Port> .
+<http://example.com/schema/cargoType> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#literal> .
+<http://example.com/schema/cargoType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/cargoType> <http://www.w3.org/2000/01/rdf-schema#label> "Cargo Type" .
+<http://example.com/schema/cargoType> <http://www.w3.org/2004/02/skos/core#note> "Types of cargo handled by the port." .
+<http://example.com/schema/cargoVolume> <http://schema.org/domainIncludes> <http://example.com/schema/Port> .
+<http://example.com/schema/cargoVolume> <http://schema.org/rangeIncludes> <http://example.com/schema/Port> .
+<http://example.com/schema/cargoVolume> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/cargoVolume> <http://www.w3.org/2000/01/rdf-schema#label> "Cargo Weight" .
+<http://example.com/schema/cargoVolume> <http://www.w3.org/2004/02/skos/core#note> "Weight of Goods or number of containers per calendar year in tonnes." .
+<http://example.com/schema/Color> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Color> <http://www.w3.org/2000/01/rdf-schema#comment> "It's a color." .
+<http://example.com/schema/Color> <http://www.w3.org/2000/01/rdf-schema#label> "Color" .
+<http://example.com/schema/Color> <http://www.w3.org/2004/02/skos/core#example> "Bright grey." .
+<http://example.com/schema/Color> <http://www.w3.org/2004/02/skos/core#note> "Whatever you want it to be. Green, red, yellow…" .
+<http://example.com/schema/CommercialInvoice> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/CommercialInvoice> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/CommercialInvoice> <http://www.w3.org/2000/01/rdf-schema#comment> "Need a good definition of a package. Here is one from wikipedia.org - When used in foreign trade, a commercial invoice is a customs document. It is used as a customs declaration provided by the person or corporation that is exporting an item across international borders." .
+<http://example.com/schema/CommercialInvoice> <http://www.w3.org/2000/01/rdf-schema#label> "Commercial Invoice" .
+<http://example.com/schema/CommercialInvoice> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/consignee> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/consignee> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/consignee> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/consignee> <http://www.w3.org/2000/01/rdf-schema#label> "Consignee" .
+<http://example.com/schema/consignee> <http://www.w3.org/2004/02/skos/core#note> "The consignee party for this consignment." .
+<http://example.com/schema/Consignment> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/consignment> <http://purl.org/dc/terms/modified> "2018-06-06T21:03:26.478Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/consignment> <http://schema.org/domainIncludes> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/schema/consignment> <http://schema.org/rangeIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/consignment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Consignment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Consignment> <http://www.w3.org/2000/01/rdf-schema#comment> "A separately identifiable collection of goods items to be transported or available to be transported from one consignor to one consignee via one or more modes of transport where each consignment is the subject of one single transport contract." .
+<http://example.com/schema/consignment> <http://www.w3.org/2000/01/rdf-schema#label> "consignment" .
+<http://example.com/schema/Consignment> <http://www.w3.org/2000/01/rdf-schema#label> "Consignment" .
+<http://example.com/schema/Consignment> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/consignment> <http://www.w3.org/2004/02/skos/core#note> "A consignment has one pick up address, one delivery address and contain multiple packages." .
+<http://example.com/schema/Consignment> <http://www.w3.org/2004/02/skos/core#note> "A separately identifiable collection of goods items to be transported or available to be transported from one consignor to one consignee via one or more modes of transport where each consignment is the subject of one single transport contract." .
+<http://example.com/schema/consignor> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/consignor> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/consignor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/consignor> <http://www.w3.org/2000/01/rdf-schema#label> "Consignor" .
+<http://example.com/schema/consignor> <http://www.w3.org/2004/02/skos/core#note> "The consignor party for this consignment." .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://www.w3.org/2000/01/rdf-schema#comment> "Need a good definition of a package. Here is one from businessdictionary.com - Document(s) prepared by a consignor or shipper to certify that the dangerous goods being transported have been packaged, labeled, and declared in accordance with the standard international shipping regulations." .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://www.w3.org/2000/01/rdf-schema#label> "Dangerous Goods Declaration" .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/dangerousness> <http://schema.org/domainIncludes> <http://example.com/schema/Boat> .
+<http://example.com/schema/dangerousness> <http://schema.org/domainIncludes> <http://example.com/schema/DangerousGoodsDeclaration> .
+<http://example.com/schema/dangerousness> <http://schema.org/rangeIncludes> <http://example.com/schema/Color> .
+<http://example.com/schema/dangerousness> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/dangerousness> <http://www.w3.org/2000/01/rdf-schema#comment> "A color-coded dangerousness level." .
+<http://example.com/schema/dangerousness> <http://www.w3.org/2000/01/rdf-schema#label> "dangerousness" .
+<http://example.com/schema/dangerousness> <http://www.w3.org/2004/02/skos/core#note> "It's very useful. Very. Useful." .
+<http://example.com/schema/deliveredTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/deliveredTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/deliveredTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/deliveredTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Delivered Timestamp" .
+<http://example.com/schema/deliveredTimestamp> <http://www.w3.org/2004/02/skos/core#note> "A time stamp for the delivery of the airwaybill ." .
+<http://example.com/schema/deliverTo> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/deliverTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/departureTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/departureTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/departureTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/departureTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Departure Timestamp" .
+<http://example.com/schema/departureTimestamp> <http://www.w3.org/2004/02/skos/core#note> "The departure time stamp of the airwaybill ." .
+<http://example.com/schema/destination> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/destination> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/destination> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/destination> <http://www.w3.org/2000/01/rdf-schema#label> "Destination" .
+<http://example.com/schema/destination> <http://www.w3.org/2004/02/skos/core#note> "An abbreviation for the destination of the airwaybill ." .
+<http://example.com/schema/deviceIdentifier> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/deviceIdentifier> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/deviceIdentifier> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/deviceIdentifier> <http://www.w3.org/2000/01/rdf-schema#label> "Device Identifier" .
+<http://example.com/schema/deviceIdentifier> <http://www.w3.org/2004/02/skos/core#note> "An identifier for the device submitting the track update." .
+<http://example.com/schema/deviceName> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/deviceName> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/deviceName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/deviceName> <http://www.w3.org/2000/01/rdf-schema#label> "Device Name" .
+<http://example.com/schema/deviceName> <http://www.w3.org/2004/02/skos/core#note> "A name for the device submitting the track update." .
+<http://example.com/schema/discrepancyDescription> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/discrepancyDescription> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/discrepancyDescription> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/discrepancyDescription> <http://www.w3.org/2000/01/rdf-schema#label> "Discrepancy Description" .
+<http://example.com/schema/discrepancyDescription> <http://www.w3.org/2004/02/skos/core#note> "This is the discrepancy description." .
+<http://example.com/schema/EmptyGood> <http://purl.org/dc/terms/modified> "2018-06-06T20:58:07.672Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/EmptyGood> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/EmptyGood> <http://www.w3.org/2000/01/rdf-schema#label> "Empty Good" .
+<http://example.com/schema/EmptyGood> <http://www.w3.org/2004/02/skos/core#note> "This is an empty good." .
+<http://example.com/schema/engine> <http://purl.org/dc/terms/modified> "2018-07-08T19:46:57.279Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/engine> <http://schema.org/domainIncludes> <http://example.com/schema/RailroadEngine> .
+<http://example.com/schema/engine> <http://www.w3.org/2000/01/rdf-schema#comment> "Diesel, electric, steam" .
+<http://example.com/schema/engine> <http://www.w3.org/2000/01/rdf-schema#label> "engine" .
+<http://example.com/schema/engine> <http://www.w3.org/2004/02/skos/core#note> "Engine type." .
+<http://example.com/schema/eta-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/eta-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/eta-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/eta-Location> <http://www.w3.org/2000/01/rdf-schema#label> "ETA-Location" .
+<http://example.com/schema/eta-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel estimates it will arrive at a specified location, as per port section standards." .
+<http://example.com/schema/etd-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/etd-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/etd-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/etd-Location> <http://www.w3.org/2000/01/rdf-schema#label> "ETD-Location" .
+<http://example.com/schema/etd-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel estimates it will depart from a specified location, as per port section standards." .
+<http://example.com/schema/FlightManifest> <http://purl.org/dc/terms/modified> "2018-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/FlightManifest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/FlightManifest> <http://www.w3.org/2000/01/rdf-schema#comment> "It's a manifest for flights" .
+<http://example.com/schema/FlightManifest> <http://www.w3.org/2000/01/rdf-schema#label> "Flight Manifest" .
+<http://example.com/schema/FlightManifest> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/FlightManifest> <http://www.w3.org/2002/07/owl#deprecated> "true"^^<xsd:boolean> .
+<http://example.com/schema/footCandles> <http://schema.org/domainIncludes> <http://example.com/schema/Light> .
+<http://example.com/schema/footCandles> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/footCandles> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/footCandles> <http://www.w3.org/2000/01/rdf-schema#label> "Footcandles" .
+<http://example.com/schema/footCandles> <http://www.w3.org/2004/02/skos/core#note> "A footcandle reading in submitted as a track update." .
+<http://example.com/schema/forwarder> <http://schema.org/domainIncludes> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/schema/forwarder> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/forwarder> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/forwarder> <http://www.w3.org/2000/01/rdf-schema#label> "forwarder" .
+<http://example.com/schema/forwarder> <http://www.w3.org/2004/02/skos/core#note> "The party undertaking the freight forwarding of these consignments." .
+<http://example.com/schema/grossWeight> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/grossWeight> <http://schema.org/domainIncludes> <http://example.com/schema/RailroadWaggon> .
+<http://example.com/schema/grossWeight> <http://schema.org/domainIncludes> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/schema/grossWeight> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/grossWeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/grossWeight> <http://www.w3.org/2000/01/rdf-schema#label> "grossWeight" .
+<http://example.com/schema/grossWeight> <http://www.w3.org/2004/02/skos/core#note> "A measure of the gross weight (mass) of these consignments which includes the weight of packaging but which excludes the weight of any transport equipment." .
+<http://example.com/schema/handoverTo> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/handoverTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/HAWB> <http://purl.org/dc/terms/modified> "2018-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/HAWB> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/HAWB> <http://www.w3.org/2000/01/rdf-schema#comment> "TBD" .
+<http://example.com/schema/HAWB> <http://www.w3.org/2000/01/rdf-schema#label> "House AirWayBill" .
+<http://example.com/schema/HAWB> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/height> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/height> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/height> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/height> <http://www.w3.org/2000/01/rdf-schema#label> "Height" .
+<http://example.com/schema/height> <http://www.w3.org/2004/02/skos/core#note> "A measure of the height of this trade line item." .
+<http://example.com/schema/Humidity> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/humidity> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/humidity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Humidity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/humidity> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of humidity." .
+<http://example.com/schema/humidity> <http://www.w3.org/2000/01/rdf-schema#label> "Humidity" .
+<http://example.com/schema/humidity> <http://www.w3.org/2004/02/skos/core#note> "A device humidity reading submitted as a track update." .
+<http://example.com/schema/humidityPercent> <http://schema.org/domainIncludes> <http://example.com/schema/Humidity> .
+<http://example.com/schema/humidityPercent> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/humidityPercent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/humidityPercent> <http://www.w3.org/2000/01/rdf-schema#label> "Humidity in Percentage" .
+<http://example.com/schema/humidityPercent> <http://www.w3.org/2004/02/skos/core#note> "A device humidity reading in percentage submitted as a track update." .
+<http://example.com/schema/imoNumber> <http://schema.org/domainIncludes> <http://example.com/schema/Vessel> .
+<http://example.com/schema/imoNumber> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#literal> .
+<http://example.com/schema/imoNumber> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/imoNumber> <http://www.w3.org/2000/01/rdf-schema#label> "IMO Number" .
+<http://example.com/schema/imoNumber> <http://www.w3.org/2004/02/skos/core#note> "A number assigned to sea-going merchant vessels under the International Convention for the Safety of Life at Sea (SOLAS). These are assigned by IHS Fairplay to individual vessels. Format: The characters “IMO” followed by a unique seven-digit number, e.g. “IMO 9227338”." .
+<http://example.com/schema/incoterm> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/incoterm> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+<http://example.com/schema/incoterm> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/incoterm> <http://www.w3.org/2000/01/rdf-schema#label> "Incoterm" .
+<http://example.com/schema/incoterm> <http://www.w3.org/2004/02/skos/core#note> "A code specifying a type of delivery for these delivery terms such as the INCOTERMS Terms of Delivery." .
+<http://example.com/schema/incotermsLocation> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/incotermsLocation> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+<http://example.com/schema/incotermsLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/incotermsLocation> <http://www.w3.org/2000/01/rdf-schema#label> "IncotermsLocation" .
+<http://example.com/schema/incotermsLocation> <http://www.w3.org/2004/02/skos/core#note> "A location relevant for these delivery terms." .
+<http://example.com/schema/infrared> <http://schema.org/domainIncludes> <http://example.com/schema/Light> .
+<http://example.com/schema/infrared> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/infrared> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/infrared> <http://www.w3.org/2000/01/rdf-schema#label> "Infrared Light" .
+<http://example.com/schema/infrared> <http://www.w3.org/2004/02/skos/core#note> "A device infrared reading submitted as a track update." .
+<http://example.com/schema/IOLIdentifier> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/iolIdentifier> <http://schema.org/rangeIncludes> <http://example.com/schema/IOLIdentifier> .
+<http://example.com/schema/iolIdentifier> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/IOLIdentifier> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/iolIdentifier> <http://www.w3.org/2000/01/rdf-schema#comment> "The Internet of Logistics Identifier for a connected company." .
+<http://example.com/schema/iolIdentifier> <http://www.w3.org/2000/01/rdf-schema#label> "IOL Identifier" .
+<http://example.com/schema/length> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/length> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/length> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/length> <http://www.w3.org/2000/01/rdf-schema#label> "Length" .
+<http://example.com/schema/length> <http://www.w3.org/2004/02/skos/core#note> "A measure of the length of this trade line item." .
+<http://example.com/schema/Light> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/light> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/light> <http://schema.org/rangeIncludes> <http://example.com/schema/Light> .
+<http://example.com/schema/light> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Light> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Light> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of light status." .
+<http://example.com/schema/light> <http://www.w3.org/2000/01/rdf-schema#label> "Light" .
+<http://example.com/schema/Light> <http://www.w3.org/2000/01/rdf-schema#label> "Light" .
+<http://example.com/schema/light> <http://www.w3.org/2004/02/skos/core#note> "A device light reading submitted as a track update." .
+<http://example.com/schema/logisticObjectReference> <http://schema.org/domainIncludes> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/logisticObjectReference> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/logisticObjectReference> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#anyURI> .
+<http://example.com/schema/logisticObjectReference> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/logisticObjectReference> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/logisticObjectReference> <http://www.w3.org/2000/01/rdf-schema#label> "Logistics Object Reference" .
+<http://example.com/schema/logisticObjectReference> <http://www.w3.org/2004/02/skos/core#note> "A URI reference to the Logistics Object." .
+<http://example.com/schema/LogisticsObject> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/LogisticsObject> <http://www.w3.org/2000/01/rdf-schema#comment> "Hasse changed again, Need a good definition. Here is a place holder - A general classifcation of all objects that are used in the logistics process.  A logistics object might be a plane, a truck. It might also be a document, or a package or a consignment." .
+<http://example.com/schema/LogisticsObject> <http://www.w3.org/2000/01/rdf-schema#label> "Logistics Object" .
+<http://example.com/schema/LogisticsVehicle> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/LogisticsVehicle> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/LogisticsVehicle> <http://www.w3.org/2000/01/rdf-schema#comment> "Need a good definition of a logistics vehicle. Here is one from businessdictionary.com - Document(s) prepared by a consignor or shipper to certify that the dangerous goods being transported have been packaged, labeled, and declared in accordance with the standard international shipping regulations." .
+<http://example.com/schema/LogisticsVehicle> <http://www.w3.org/2000/01/rdf-schema#label> "Logistics Vehicle" .
+<http://example.com/schema/LogisticsVehicle> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/lux> <http://schema.org/domainIncludes> <http://example.com/schema/Light> .
+<http://example.com/schema/lux> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/lux> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/lux> <http://www.w3.org/2000/01/rdf-schema#label> "Light measured in Lux" .
+<http://example.com/schema/lux> <http://www.w3.org/2004/02/skos/core#note> "A device light reading in lux submitted as a track update." .
+<http://example.com/schema/MAWB> <http://purl.org/dc/terms/modified> "2018-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/MAWB> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/MAWB> <http://www.w3.org/2000/01/rdf-schema#comment> "TBD" .
+<http://example.com/schema/MAWB> <http://www.w3.org/2000/01/rdf-schema#label> "Master AirWayBill" .
+<http://example.com/schema/MAWB> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/netWeight> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/netWeight> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/netWeight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/netWeight> <http://www.w3.org/2000/01/rdf-schema#label> "netWeight" .
+<http://example.com/schema/netWeight> <http://www.w3.org/2004/02/skos/core#note> "A measure of the net weight (mass) of this trade line item which excludes all packaging.." .
+<http://example.com/schema/notifiedTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/notifiedTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/notifiedTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/notifiedTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Notified Timestamp" .
+<http://example.com/schema/notifiedTimestamp> <http://www.w3.org/2004/02/skos/core#note> "A time stamp for the notification of the status update ." .
+<http://example.com/schema/origin> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/origin> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/origin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/origin> <http://www.w3.org/2000/01/rdf-schema#label> "Origin" .
+<http://example.com/schema/origin> <http://www.w3.org/2004/02/skos/core#note> "An abbreviation for the origin of the airwaybill ." .
+<http://example.com/schema/Package> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/Package> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Package> <http://www.w3.org/2000/01/rdf-schema#comment> "A physical package for this trade line item." .
+<http://example.com/schema/Package> <http://www.w3.org/2000/01/rdf-schema#label> "Package" .
+<http://example.com/schema/Package> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/Package> <http://www.w3.org/2004/02/skos/core#note> "A physical package for this trade line item." .
+<http://example.com/schema/packageReference> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/packageReference> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+<http://example.com/schema/packageReference> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/packageReference> <http://www.w3.org/2000/01/rdf-schema#label> "PackageReference" .
+<http://example.com/schema/packageReference> <http://www.w3.org/2004/02/skos/core#note> "A packaging identifier, expressed as text, for this trade line item" .
+<http://example.com/schema/packageType> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/packageType> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+<http://example.com/schema/packageType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/packageType> <http://www.w3.org/2000/01/rdf-schema#label> "PackageType" .
+<http://example.com/schema/packageType> <http://www.w3.org/2004/02/skos/core#note> "A packaging type, expressed as text, for this trade line item" .
+<http://example.com/schema/pickupFrom> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/pickupFrom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Port> <http://purl.org/dc/terms/modified> "2018-03-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/Port> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Port> <http://www.w3.org/2000/01/rdf-schema#comment> "Any port, terminal, offshore terminal, ship and repair yard or roadstead which is normally used for the loading, unloading, repair and anchoring of ships, or any other place at which a ship can call. The word also embraces, geographically, the city or borough which serves shipping interests." .
+<http://example.com/schema/Port> <http://www.w3.org/2000/01/rdf-schema#label> "Port" .
+<http://example.com/schema/Port> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/portName> <http://schema.org/domainIncludes> <http://example.com/schema/Port> .
+<http://example.com/schema/portName> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#literal> .
+<http://example.com/schema/portName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/portName> <http://www.w3.org/2000/01/rdf-schema#label> "Port Name" .
+<http://example.com/schema/portName> <http://www.w3.org/2004/02/skos/core#note> "Any port, terminal, offshore terminal, ship and repair yard or roadstead which is normally used for the loading, unloading, repair and anchoring of ships, or any other place at which a ship can call. The word also embraces, geographically, the city or borough which serves shipping interests." .
+<http://example.com/schema/Pressure> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/pressure> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/pressure> <http://schema.org/rangeIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressure> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Pressure> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/pressure> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of pressure." .
+<http://example.com/schema/pressure> <http://www.w3.org/2000/01/rdf-schema#label> "Pressure" .
+<http://example.com/schema/pressure> <http://www.w3.org/2004/02/skos/core#note> "A device pressure reading submitted as a track update." .
+<http://example.com/schema/pressureAltFeet> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressureAltFeet> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressureAltFeet> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressureAltFeet> <http://www.w3.org/2000/01/rdf-schema#label> "Altitude in Feet" .
+<http://example.com/schema/pressureAltFeet> <http://www.w3.org/2004/02/skos/core#note> "A device altitude reading in feet submitted as a track update." .
+<http://example.com/schema/pressureAltMeter> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressureAltMeter> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressureAltMeter> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressureAltMeter> <http://www.w3.org/2000/01/rdf-schema#label> "Altitude in Meter" .
+<http://example.com/schema/pressureAltMeter> <http://www.w3.org/2004/02/skos/core#note> "A device altitude reading in meters submitted as a track update." .
+<http://example.com/schema/pressureHPascal> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressureHPascal> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressureHPascal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressureHPascal> <http://www.w3.org/2000/01/rdf-schema#label> "Pressure in Hecto Pascal" .
+<http://example.com/schema/pressureHPascal> <http://www.w3.org/2004/02/skos/core#note> "A device pressure reading in Hecto Pascal submitted as a track update." .
+<http://example.com/schema/pressureKPascal> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressureKPascal> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressureKPascal> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressureKPascal> <http://www.w3.org/2000/01/rdf-schema#label> "Pressure in Kilo Pascal" .
+<http://example.com/schema/pressureKPascal> <http://www.w3.org/2004/02/skos/core#note> "A device pressure reading in Kilo Pascal submitted as a track update." .
+<http://example.com/schema/pressurePmb> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressurePmb> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressurePmb> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressurePmb> <http://www.w3.org/2000/01/rdf-schema#label> "Pressure in in millibar" .
+<http://example.com/schema/pressurePmb> <http://www.w3.org/2004/02/skos/core#note> "A device pressure reading in  millibar submitted as a track update." .
+<http://example.com/schema/pressurePsi> <http://schema.org/domainIncludes> <http://example.com/schema/Pressure> .
+<http://example.com/schema/pressurePsi> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/pressurePsi> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pressurePsi> <http://www.w3.org/2000/01/rdf-schema#label> "Pressure in PSI" .
+<http://example.com/schema/pressurePsi> <http://www.w3.org/2004/02/skos/core#note> "A device pressure reading in PSI submitted as a track update." .
+<http://example.com/schema/pta-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/pta-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/pta-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/pta-Location> <http://www.w3.org/2000/01/rdf-schema#label> "PTA-Location" .
+<http://example.com/schema/pta-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel is planned to arrive at a specified location, as per port section standards." .
+<http://example.com/schema/ptd-Location> <http://schema.org/domainIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/ptd-Location> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/ptd-Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/ptd-Location> <http://www.w3.org/2000/01/rdf-schema#label> "PTD-Location" .
+<http://example.com/schema/ptd-Location> <http://www.w3.org/2004/02/skos/core#note> "The Date/Time when a vessel is planned to depart from a specified location, as per port section standards." .
+<http://example.com/schema/quantityOfPackages> <http://schema.org/domainIncludes> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/schema/quantityOfPackages> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#int> .
+<http://example.com/schema/quantityOfPackages> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/quantityOfPackages> <http://www.w3.org/2000/01/rdf-schema#label> "Quantity of packages" .
+<http://example.com/schema/quantityOfPackages> <http://www.w3.org/2004/02/skos/core#note> "The number of packages in the complete shippers instruction" .
+<http://example.com/schema/RailPort> <http://purl.org/dc/terms/modified> "2018-07-08T20:29:53.436Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/RailPort> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/RailPort> <http://www.w3.org/2000/01/rdf-schema#label> "RailPort" .
+<http://example.com/schema/RailPort> <http://www.w3.org/2004/02/skos/core#note> "Class for large railway ports" .
+<http://example.com/schema/RailroadEngine> <http://purl.org/dc/terms/modified> "2018-07-08T19:46:57.279Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/RailroadEngine> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/RailroadEngine> <http://www.w3.org/2000/01/rdf-schema#comment> "Unlike a waggon, this is the engine." .
+<http://example.com/schema/RailroadEngine> <http://www.w3.org/2000/01/rdf-schema#label> "RailroadEngine" .
+<http://example.com/schema/RailroadEngine> <http://www.w3.org/2004/02/skos/core#note> "This is a class for a railroad engine. " .
+<http://example.com/schema/RailroadWaggon> <http://purl.org/dc/terms/modified> "2018-07-08T20:08:22.459Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/RailroadWaggon> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/RailroadWaggon> <http://www.w3.org/2000/01/rdf-schema#comment> "Each waggon of the railroad should have an instance of this class." .
+<http://example.com/schema/RailroadWaggon> <http://www.w3.org/2000/01/rdf-schema#label> "RailroadWaggon" .
+<http://example.com/schema/RailroadWaggon> <http://www.w3.org/2004/02/skos/core#note> "This is a waggon of the railroad" .
+<http://example.com/schema/RailStatusUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/RailStatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/RailStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "A status update on a logistics object in the transport mode of rail." .
+<http://example.com/schema/RailStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "Rail Status Update" .
+<http://example.com/schema/RailStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/rejectionReason> <http://schema.org/domainIncludes> <http://example.com/schema/AirStatusUpdate> .
+<http://example.com/schema/rejectionReason> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/rejectionReason> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/rejectionReason> <http://www.w3.org/2000/01/rdf-schema#label> "Rejection Reason" .
+<http://example.com/schema/rejectionReason> <http://www.w3.org/2004/02/skos/core#note> "This is why the MAWB was rejected ." .
+<http://example.com/schema/requestedDeliveryDate> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/requestedDeliveryDate> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/requestedDeliveryDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/requestedDeliveryDate> <http://www.w3.org/2000/01/rdf-schema#label> "RequestedDeliveryDate" .
+<http://example.com/schema/requestedDeliveryDate> <http://www.w3.org/2004/02/skos/core#note> "Ultimate Ship To Delivery Date Time." .
+<http://example.com/schema/requestedPickupDate> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/requestedPickupDate> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/requestedPickupDate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/requestedPickupDate> <http://www.w3.org/2000/01/rdf-schema#label> "RequestedPickupDate" .
+<http://example.com/schema/requestedPickupDate> <http://www.w3.org/2004/02/skos/core#note> "A date, time, date time, or other date time value when this trade delivery is available for pick-up." .
+<http://example.com/schema/RoadStatusUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/RoadStatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/RoadStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "A status update on a logistics object in the transport mode of road." .
+<http://example.com/schema/RoadStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "Road Status Update" .
+<http://example.com/schema/RoadStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/SeaStatusUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/seaStatusUpdate> <http://schema.org/domainIncludes> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/seaStatusUpdate> <http://schema.org/rangeIncludes> <http://example.com/schema/SeaStatusUpdate> .
+<http://example.com/schema/seaStatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/SeaStatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/seaStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "A status update on a logistics object in the transport mode of sea." .
+<http://example.com/schema/seaStatusUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "Sea Status Update" .
+<http://example.com/schema/seaStatusUpdate> <http://www.w3.org/2004/02/skos/core#note> "A status update on a logistics object in the transport mode of Sea." .
+<http://example.com/schema/seller> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/seller> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/seller> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/seller> <http://www.w3.org/2000/01/rdf-schema#label> "Buyer" .
+<http://example.com/schema/seller> <http://www.w3.org/2004/02/skos/core#note> "The Seller party for this consignment." .
+<http://example.com/schema/ShippersInstruction> <http://example.com/schema/example> "# A shippers instruction in real life\n\n```\n@prefix tcf <http://localhost:8080/schema/> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n\n<instruction> a tcf:ShippersInstruction ;\n  rdfs:label \"This is a shippers instruction\" .\n```\n" .
+<http://example.com/schema/ShippersInstruction> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/ShippersInstruction> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/ShippersInstruction> <http://www.w3.org/2000/01/rdf-schema#comment> "Need a good definition. Here is one from shippingsolutions.com - The Shipper's Letter of Instruction helps to convey specific instructions from the exporter to his agent, usually an international freight forwarder." .
+<http://example.com/schema/ShippersInstruction> <http://www.w3.org/2000/01/rdf-schema#label> "Shippers Instruction" .
+<http://example.com/schema/ShippersInstruction> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/size> <http://purl.org/dc/terms/modified> "2018-06-06T19:26:33.400Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/size> <http://schema.org/domainIncludes> <http://example.com/schema/EmptyGood> .
+<http://example.com/schema/size> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#int> .
+<http://example.com/schema/size> <http://www.w3.org/2000/01/rdf-schema#label> "size" .
+<http://example.com/schema/Status> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/status> <http://schema.org/domainIncludes> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/status> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#string> .
+<http://example.com/schema/status> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Status> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Status> <http://www.w3.org/2000/01/rdf-schema#comment> "A status on a logistics object of different states such as departed, arrived, deviation, etc." .
+<http://example.com/schema/status> <http://www.w3.org/2000/01/rdf-schema#label> "Status" .
+<http://example.com/schema/Status> <http://www.w3.org/2000/01/rdf-schema#label> "StatusUpdate" .
+<http://example.com/schema/Status> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/status> <http://www.w3.org/2004/02/skos/core#note> "An abbreviation for the status submitted ." .
+<http://example.com/schema/statusBy> <http://schema.org/domainIncludes> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/statusBy> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/statusBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/statusBy> <http://www.w3.org/2000/01/rdf-schema#label> "Status By" .
+<http://example.com/schema/statusBy> <http://www.w3.org/2004/02/skos/core#note> "Which organization has submitted the status update ." .
+<http://example.com/schema/StatusUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/StatusUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/StatusUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "A status update on a logistics object of different events such as departed, arrived, deviation, etc." .
+<http://example.com/schema/StatusUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "Status Update" .
+<http://example.com/schema/statusUpdateTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/StatusUpdate> .
+<http://example.com/schema/statusUpdateTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/statusUpdateTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/statusUpdateTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Status Update Timestamp" .
+<http://example.com/schema/statusUpdateTimestamp> <http://www.w3.org/2004/02/skos/core#note> "A time stamp for the status update ." .
+<http://example.com/schema/Temperature> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/temperature> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/temperature> <http://schema.org/rangeIncludes> <http://example.com/schema/Temperature> .
+<http://example.com/schema/temperature> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Temperature> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Temperature> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of temperature." .
+<http://example.com/schema/temperature> <http://www.w3.org/2000/01/rdf-schema#label> "Temperature" .
+<http://example.com/schema/Temperature> <http://www.w3.org/2000/01/rdf-schema#label> "Temperature" .
+<http://example.com/schema/temperature> <http://www.w3.org/2004/02/skos/core#note> "A temperature reading submitted as a track update from a device." .
+<http://example.com/schema/temperatureCelsius> <http://schema.org/domainIncludes> <http://example.com/schema/Temperature> .
+<http://example.com/schema/temperatureCelsius> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/temperatureCelsius> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/temperatureCelsius> <http://www.w3.org/2000/01/rdf-schema#label> "Temperature in Celsius" .
+<http://example.com/schema/temperatureCelsius> <http://www.w3.org/2004/02/skos/core#note> "A temperature reading in Celsius submitted as a track update from a device." .
+<http://example.com/schema/temperatureFahrenheit> <http://schema.org/domainIncludes> <http://example.com/schema/Temperature> .
+<http://example.com/schema/temperatureFahrenheit> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/temperatureFahrenheit> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/temperatureFahrenheit> <http://www.w3.org/2000/01/rdf-schema#label> "Temperature in Fahrenheit" .
+<http://example.com/schema/temperatureFahrenheit> <http://www.w3.org/2004/02/skos/core#note> "A temperature reading in Fahrenheit submitted as a track update from a device." .
+<http://example.com/schema/temperatureKelvin> <http://schema.org/domainIncludes> <http://example.com/schema/Temperature> .
+<http://example.com/schema/temperatureKelvin> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#decimal> .
+<http://example.com/schema/temperatureKelvin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/temperatureKelvin> <http://www.w3.org/2000/01/rdf-schema#label> "Temperature in Kelvin" .
+<http://example.com/schema/temperatureKelvin> <http://www.w3.org/2004/02/skos/core#note> "A temperature reading in Kelvin submitted as a track update from a device." .
+<http://example.com/schema/TrackUpdate> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/TrackUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/TrackUpdate> <http://www.w3.org/2000/01/rdf-schema#comment> "An update on a logistics object of different sensoring data such as location, temperature, humidity, accelerometer, or pressure." .
+<http://example.com/schema/TrackUpdate> <http://www.w3.org/2000/01/rdf-schema#label> "TrackUpdate" .
+<http://example.com/schema/TrackUpdate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/trackUpdateBy> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/trackUpdateBy> <http://schema.org/rangeIncludes> <http://schema.org/Organization> .
+<http://example.com/schema/trackUpdateBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/trackUpdateBy> <http://www.w3.org/2000/01/rdf-schema#label> "Track Update " .
+<http://example.com/schema/trackUpdateBy> <http://www.w3.org/2004/02/skos/core#note> "Which organization has submitted the track update ." .
+<http://example.com/schema/trackUpdateTimestamp> <http://schema.org/domainIncludes> <http://example.com/schema/TrackUpdate> .
+<http://example.com/schema/trackUpdateTimestamp> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#datetime> .
+<http://example.com/schema/trackUpdateTimestamp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/trackUpdateTimestamp> <http://www.w3.org/2000/01/rdf-schema#label> "Track Update Timestamp" .
+<http://example.com/schema/trackUpdateTimestamp> <http://www.w3.org/2004/02/skos/core#note> "A time stamp for the track update ." .
+<http://example.com/schema/transportAgreementLaneID> <http://schema.org/domainIncludes> <http://example.com/schema/Consignment> .
+<http://example.com/schema/transportAgreementLaneID> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#Literal> .
+<http://example.com/schema/transportAgreementLaneID> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/transportAgreementLaneID> <http://www.w3.org/2000/01/rdf-schema#label> "TransportAgreementLaneID" .
+<http://example.com/schema/transportAgreementLaneID> <http://www.w3.org/2004/02/skos/core#note> "TBD." .
+<http://example.com/schema/Vessel> <http://purl.org/dc/terms/modified> "2018-03-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/vessel> <http://schema.org/domainIncludes> <http://example.com/schema/Vessel> .
+<http://example.com/schema/vessel> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#literal> .
+<http://example.com/schema/vessel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/Vessel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://example.com/schema/Vessel> <http://www.w3.org/2000/01/rdf-schema#comment> "Vessel is defined as watercraft or other artificial contrivance used, or capable of being used, as a means of transportation on water." .
+<http://example.com/schema/vessel> <http://www.w3.org/2000/01/rdf-schema#label> "Vessel" .
+<http://example.com/schema/Vessel> <http://www.w3.org/2000/01/rdf-schema#label> "Vessel" .
+<http://example.com/schema/Vessel> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://example.com/schema/LogisticsObject> .
+<http://example.com/schema/vessel> <http://www.w3.org/2004/02/skos/core#note> "Vessel is defined as watercraft or other artificial contrivance used, or capable of being used, as a means of transportation on water." .
+<http://example.com/schema/vesselType> <http://schema.org/domainIncludes> <http://example.com/schema/Vessel> .
+<http://example.com/schema/vesselType> <http://schema.org/rangeIncludes> <http://www.w3.org/2000/01/rdf-schema#literal> .
+<http://example.com/schema/vesselType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/vesselType> <http://www.w3.org/2000/01/rdf-schema#label> "Vessel Type" .
+<http://example.com/schema/vesselType> <http://www.w3.org/2004/02/skos/core#note> "The purpose of the vessel. A comprehensive list of unique vessel types exists in the IHS Fairplay’s comprehensive “statcode”." .
+<http://example.com/schema/visibleLight> <http://schema.org/domainIncludes> <http://example.com/schema/Light> .
+<http://example.com/schema/visibleLight> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/visibleLight> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/visibleLight> <http://www.w3.org/2000/01/rdf-schema#label> "Visible Light" .
+<http://example.com/schema/visibleLight> <http://www.w3.org/2004/02/skos/core#note> "A visible light reading ubmitted as a track update." .
+<http://example.com/schema/volume> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/volume> <http://schema.org/domainIncludes> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/schema/volume> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/volume> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/volume> <http://www.w3.org/2000/01/rdf-schema#label> "Volume" .
+<http://example.com/schema/volume> <http://www.w3.org/2004/02/skos/core#note> "A measure of the gross volume of this trade line item." .
+<http://example.com/schema/volume> <http://www.w3.org/2004/02/skos/core#note> "The volume related to the shippers instruction" .
+<http://example.com/schema/wheelArrangement> <http://example.com/schema/example> "<http://www.example.org/engine/1234> <http://localhost:8080/schema/wheelArangement> \"12334\"" .
+<http://example.com/schema/wheelArrangement> <http://purl.org/dc/terms/modified> "2018-07-08T19:54:35.313Z"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/schema/wheelArrangement> <http://schema.org/domainIncludes> <http://example.com/schema/RailroadEngine> .
+<http://example.com/schema/wheelArrangement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/wheelArrangement> <http://www.w3.org/2000/01/rdf-schema#comment> "Wheel arrangement in UIC classification, also known as German classification or German system." .
+<http://example.com/schema/wheelArrangement> <http://www.w3.org/2000/01/rdf-schema#label> "wheelArrangement" .
+<http://example.com/schema/wheelArrangement> <http://www.w3.org/2004/02/skos/core#note> "Wheel arrangement in UIC classification" .
+<http://example.com/schema/width> <http://schema.org/domainIncludes> <http://example.com/schema/Package> .
+<http://example.com/schema/width> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#double> .
+<http://example.com/schema/width> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/width> <http://www.w3.org/2000/01/rdf-schema#label> "Width" .
+<http://example.com/schema/width> <http://www.w3.org/2004/02/skos/core#note> "A measure of the width of this trade line item." .
+<http://example.com/schema/x_gvt> <http://schema.org/domainIncludes> <http://example.com/schema/Accelerometer> .
+<http://example.com/schema/x_gvt> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/x_gvt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/x_gvt> <http://www.w3.org/2000/01/rdf-schema#label> "X-axis acceleration" .
+<http://example.com/schema/x_gvt> <http://www.w3.org/2004/02/skos/core#note> "A device accelerometer x-axis reading submitted as a track update." .
+<http://example.com/schema/y_gvt> <http://schema.org/domainIncludes> <http://example.com/schema/Accelerometer> .
+<http://example.com/schema/y_gvt> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/y_gvt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/y_gvt> <http://www.w3.org/2000/01/rdf-schema#label> "Y-axis acceleration" .
+<http://example.com/schema/y_gvt> <http://www.w3.org/2004/02/skos/core#note> "A device accelerometer y-axis reading submitted as a track update." .
+<http://example.com/schema/z_gvt> <http://schema.org/domainIncludes> <http://example.com/schema/Accelerometer> .
+<http://example.com/schema/z_gvt> <http://schema.org/rangeIncludes> <http://www.w3.org/2001/XMLSchema#float> .
+<http://example.com/schema/z_gvt> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> .
+<http://example.com/schema/z_gvt> <http://www.w3.org/2000/01/rdf-schema#label> "Z-axis acceleration" .
+<http://example.com/schema/z_gvt> <http://www.w3.org/2004/02/skos/core#note> "A device accelerometer z-axis reading submitted as a track update." .
+<http://schema.org/geo> <http://schema.org/domainIncludes> <http://example.com/pouch/TrackUpdate> .
