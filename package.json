@@ -6,13 +6,13 @@
   "private": true,
   "scripts": {
     "dev": "NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
-    "dev-api": "nodemon --watch api --watch trifid --exec 'nuxt dev'",
     "build": "nuxt build",
     "start": "nuxt start",
     "lint": "eslint --ext .js,.vue .",
     "precommit": "npm run lint",
     "test": "jest",
     "e2e": "cypress run",
+    "e2e:server": "E2E=true nuxt",
     "e2e:open": "cypress open"
   },
   "precommit": "npm run lint",

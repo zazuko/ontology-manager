@@ -7,7 +7,7 @@ module.exports = {
   mode: 'universal',
 
   // https://nuxtjs.org/api/configuration-modern
-  modern: true,
+  modern: false,
 
   /*
   ** Headers of the page
@@ -77,7 +77,15 @@ module.exports = {
   ** Module config: auth
   */
   auth: {
-    strategies: {
+    strategies: process.env.E2E ? {
+      local: {
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+        }
+      }
+    } : {
       local: false,
       github: {
         client_id: process.env.OAUTH_CLIENT_ID,
@@ -166,6 +174,7 @@ module.exports = {
     EDITOR_GITHUB_BRANCH: process.env.EDITOR_GITHUB_BRANCH,
     EDITOR_COMMITTER_NAME: process.env.EDITOR_COMMITTER_NAME,
     EDITOR_COMMITTER_EMAIL: process.env.EDITOR_COMMITTER_EMAIL,
+    AUTH_STRATEGY: process.env.AUTH_STRATEGY,
     CUSTOMER_NAME: process.env.CUSTOMER_NAME,
     DATASET_BASE_URL: process.env.DATASET_BASE_URL,
     CLASS_BASE_URL: process.env.CLASS_BASE_URL,

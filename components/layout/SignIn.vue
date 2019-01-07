@@ -73,7 +73,7 @@ export default {
       try {
         this.$toast.show('Logging in...').goAway(1600)
         const loggedIn = this.$auth.$state.loggedIn
-        await this.$auth.loginWith('github')
+        await this.$auth.loginWith(process.env.AUTH_STRATEGY)
         await this.authenticate(loggedIn)
       }
       catch (err) {
@@ -83,7 +83,7 @@ export default {
       }
     },
     async signOut () {
-      this.$auth.logout()
+      await this.$auth.logout()
       await this.$apolloHelpers.onLogout()
       this.$emit('loggedOut')
     },
@@ -99,7 +99,7 @@ export default {
             // if github user set their email as 'private', email ends up 'null' here
             // so we have to fetch it via the API
             if (!email) {
-              const headers = { headers: { authorization: this.$auth.getToken('github') } }
+              const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
               const result = await axios.get('https://api.github.com/user/emails', headers)
               email = _get(result, 'data[0].email')
               if (!email) {
@@ -108,7 +108,7 @@ export default {
             }
 
             // check token then link oauth account/token to local account/token
-            const headers = { headers: { authorization: this.$auth.getToken('github') } }
+            const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
             const result = await axios.post('/api/link', { email, name, id, username }, headers)
               .catch((err) => {
                 this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
