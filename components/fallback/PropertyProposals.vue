@@ -40,7 +40,7 @@
               <li
                 v-for="(range, index) in proposal.proposalObject.ranges"
                 :key="index">
-                <link-to-IRI
+                <link-to-iri
                   :term="range.predicate ? range.subject : { value: range.iri }" />
               </li>
             </ul>
@@ -59,7 +59,7 @@
 
 <script>
 import _get from 'lodash/get'
-import LinkToIRI from './LinkToIRI'
+import LinkToIri from './LinkToIri'
 import proposals from '@/apollo/queries/proposalsByIri'
 import { proposalDeserializer } from '@/libs/proposals'
 
@@ -72,7 +72,7 @@ export default {
     }
   },
   components: {
-    LinkToIRI
+    LinkToIri
   },
   methods: {
     _get,
