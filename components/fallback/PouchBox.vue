@@ -1,5 +1,7 @@
 <template>
-  <article class="tile is-child class-box">
+  <article
+    :id="iriToId(iri)"
+    class="tile is-child class-box">
     <nuxt-link :to="(to.name || to.path) ? to : ''">
       <span
         v-show="isProposal"
@@ -53,6 +55,8 @@
 </template>
 
 <script>
+import { iriToId } from '@/libs/utils'
+
 export default {
   name: 'PouchBox',
   props: {
@@ -67,6 +71,10 @@ export default {
     },
     propertiesCount: {
       type: Number,
+      required: true
+    },
+    iri: {
+      type: String,
       required: true
     },
     classesCount: {
@@ -89,6 +97,9 @@ export default {
       required: false,
       default: false
     }
+  },
+  methods: {
+    iriToId
   }
 }
 </script>
