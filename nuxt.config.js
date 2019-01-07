@@ -6,6 +6,9 @@ envInit(process.env.NODE_TEST ? 'test' : 'dev')
 module.exports = {
   mode: 'universal',
 
+  // https://nuxtjs.org/api/configuration-modern
+  modern: true,
+
   /*
   ** Headers of the page
   */
