@@ -8,7 +8,7 @@
             <h1 class="title is-1">
               New {{ type }} Request<span
                 v-show="obj.label">:
-              "{{ obj.label }}"
+                "{{ obj.label }}"
               </span>
             </h1>
             <h2 class="subtitle is-1">

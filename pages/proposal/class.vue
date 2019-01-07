@@ -9,7 +9,7 @@
             <h1 class="title is-1">
               {{ edit ? 'Request Changes on Class' : 'Request New Class' }}<span
                 v-show="clss.label">:
-              "{{ clss.label }}"
+                "{{ clss.label }}"
               </span>
             </h1>
             <h2 class="subtitle is-1">

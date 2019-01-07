@@ -142,13 +142,13 @@ describe('Logging In - Single Sign on', function () {
           // whenever we turn off following redirects
           //
           // and use node's url.parse module (and parse the query params)
-          const uri = url.parse(resp.redirectedToUrl, true)
+          const uri = new url.URL(resp.redirectedToUrl, true)
 
           // we now have query params as an object and can return
           // the id_token
-          return uri.query.id_token
+          return uri.searchParams.get('id_token')
         })
-        .then((id_token) => {
+        .then((idToken) => {
           cy.server()
           cy.route('/config').as('getConfig')
 
@@ -157,7 +157,7 @@ describe('Logging In - Single Sign on', function () {
             onBeforeLoad (win) {
               // and before the page finishes loading
               // set the id_token in local storage
-              win.localStorage.setItem('id_token', id_token)
+              win.localStorage.setItem('id_token', idToken)
             }
           })
 
