@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const Router = require('express').Router
-const axios = require('axios')
 const apicache = require('apicache')
 const gql = require('graphql-tag')
 const apolloClientFactory = require('../getApolloClient')
@@ -27,7 +26,6 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/auth/login', (req, res, next) => {
-  console.warn('auth/login')
   res.json({
     status: 'success',
     token: '222c3475226496afebcc295013eef94e6344d624'
@@ -323,7 +321,6 @@ router.post('/proposal/close', async (req, res, next) => {
 
 // TODO: factor these out
 function getToken (req) {
-  console.warn(req.headers)
   if (!req.get('Authorization')) {
     return
   }
