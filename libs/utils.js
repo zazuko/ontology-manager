@@ -168,6 +168,10 @@ export function debounce (fn, delay) {
   }
 }
 
+export function iriToId (iri) {
+  return iri.toLowerCase().replace(/[^a-z]/g, '_')
+}
+
 export function headTitle (title) {
   return `${title} - ${process.env.EDITOR_TITLE}`
 }

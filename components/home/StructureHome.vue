@@ -1,7 +1,9 @@
 <template>
   <div class="tile is-vertical is-12">
     <div class="tile is-parent">
-      <article class="tile is-child container-box">
+      <article
+        :id="iriToId(object.iri)"
+        class="tile is-child container-box">
         <p class="title">
           <nuxt-link
             v-if="object.path"
@@ -35,6 +37,7 @@
               <pouch-box
                 :label="child.label"
                 :to="{ path: child.path, params: {} }"
+                :iri="child.iri"
                 :properties-count="childPropertiesCount(child)"
                 :classes-count="childClassesCount(child)"
                 :modified="child.modified"
@@ -51,7 +54,7 @@
 <script>
 import _get from 'lodash/get'
 import { cloneDeep } from 'lodash'
-import { hasCreativeWorkChild, arrayToGroups } from '@/libs/utils'
+import { hasCreativeWorkChild, arrayToGroups, iriToId } from '@/libs/utils'
 import PouchBox from '@/components/fallback/PouchBox'
 
 export default {
@@ -81,6 +84,7 @@ export default {
     }
   },
   methods: {
+    iriToId,
     hasCreativeWorkChild,
     arrayToGroups,
     childPropertiesCount (obj) {

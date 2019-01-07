@@ -21,6 +21,7 @@
                 <pouch-box
                   :label="child.label"
                   :to="{ path: child.path, params: {} }"
+                  :iri="child.iri"
                   :properties-count="_get(child, 'properties.length', 0)"
                   :modified="child.modified"
                   :type="child.type"
