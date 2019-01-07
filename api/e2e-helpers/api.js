@@ -1,7 +1,10 @@
+const fs = require('fs')
+const util = require('util')
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
-
 const octokit = octokitFactory({ debug: process.env.NODE_ENV !== 'production' })
+
+const readFile = util.promisify(fs.readFile)
 
 octokit.authenticate({
   type: 'oauth',
@@ -49,12 +52,7 @@ module.exports = class GitHubAPIv3 {
   }
 
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
-    const owner = this.owner
-    const repo = this.repo
-    const ref = `heads/${this.branch}`
-    const result = await octokit.repos.getContents({ owner, repo, path, ref })
-    const content = Buffer.from(result.data.content, 'base64').toString()
-    return content
+    return readFile(require.resolve(`../../test/repo/${path}`))
   }
 
   async updateFile ({ message, content, branch, author, structure = false }) {

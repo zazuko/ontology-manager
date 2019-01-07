@@ -2,14 +2,16 @@ const fs = require('fs')
 const path = require('path')
 const glob = require('glob-promise')
 const knex = require('knex')
+const ora = require('ora')
+
 const envInit = require('./env-init')
 
 let client
 
 up()
 
-async function up (env = 'dev') {
-  envInit(env)
+async function up () {
+  envInit()
 
   console.warn('Starting migrations!')
 
@@ -22,34 +24,34 @@ async function up (env = 'dev') {
   ].reduce((obj, envVar) => {
     obj[envVar] = process.env[envVar] || envVar
     if (obj[envVar] !== envVar) {
-      console.warn(`  * Will replace $${envVar} with environment value!`)
+      ora(`Replaced with env value: $${envVar}`).info()
     }
     return obj
   }, {})
 
   async function waitForDB () {
     let attemptsCount = 0
+    const spinner = ora('Waiting for postgres to start').start()
     return new Promise(async (resolve) => {
       const wait = setInterval(waiting, 5000)
 
       async function waiting () {
-        if (attemptsCount === 1) {
-          console.warn('* Waiting ~30s for postgres to start')
-        }
         attemptsCount += 1
         try {
           await testConnection()
           clearInterval(wait)
-          console.warn('* Database is up and running')
+          spinner.succeed('Database is up and running')
           resolve()
         }
         catch (err) {
           if (err.message.includes('starting')) {
-            console.warn('    * … database is starting up')
+            spinner.text = 'Database is starting up'
           }
-          else if (attemptsCount > 7) {
-            console.warn(`  * Err: ${err.message}`)
-            console.warn('    * … waiting 5s before retrying')
+          else if (attemptsCount > 30) {
+            spinner.fail(err.message)
+          }
+          else {
+            spinner.text = 'Waiting 5s before retrying'
           }
         }
       }
@@ -57,6 +59,7 @@ async function up (env = 'dev') {
   }
 
   await waitForDB()
+  await dropTestDatabase()
   await createDatabase()
   await run(stringsToReplace)
 
@@ -79,10 +82,10 @@ async function run (stringsToReplace) {
       table.boolean('succeeded').defaultTo(false)
       table.timestamps()
     })
-    console.warn('* Created migrations table!')
+    ora('Created migrations table!').succeed()
   }
   catch (err) {
-    console.warn('* Found migrations table!')
+    ora('Found migrations table!').info()
   }
 
   for (const file of files) {
@@ -92,15 +95,25 @@ async function run (stringsToReplace) {
     if (!done.length) {
       await client('__migrations').insert({ filename })
     }
-    if (!done.length || !done[0].succeeded) {
-      console.warn('  *', filename, 'running')
-      await execute(file, stringsToReplace)
+    const spinner = ora(`Running: ${filename}`)
+    try {
+      if (!done.length || !done[0].succeeded) {
+        spinner.start()
+        await execute(file, stringsToReplace)
+        spinner.succeed(`Applied: ${filename}`)
+      }
+      else {
+        spinner.info(`Already applied: ${filename}`)
+      }
     }
-    else {
-      console.warn('  *', filename, 'already applied')
+    catch (err) {
+      spinner.fail()
+      await client.destroy()
+      console.error(err)
+      process.exit(1)
     }
   }
-  console.warn('* Migration is done!')
+  ora('Migration is done!').succeed()
   return client.destroy()
 }
 
@@ -145,7 +158,47 @@ async function testConnection () {
   await client.select(client.raw('1'))
 }
 
+async function dropTestDatabase () {
+  if (!process.env.NODE_TEST) {
+    return
+  }
+  const spinner = ora('Dropping test database').start()
+  try {
+    const client = knex({
+      client: 'pg',
+      connection: {
+        user: 'postgres',
+        host: process.env.POSTGRESQL_HOST || 'localhost',
+        database: 'postgres',
+        password: process.env.POSTGRESQL_PASSWORD
+      }
+    })
+
+    // if this doesn't throw, we're connected!
+    await client.select(client.raw('1'))
+
+    await client.raw(`drop database ${process.env.POSTGRESQL_DATABASE}`)
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_ANONYMOUS}`)
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_PERSON}`)
+
+    spinner.succeed(`Dropped test database '${process.env.POSTGRESQL_DATABASE}' and its roles`)
+    client.destroy()
+  }
+  catch (err) {
+    if (err.message.endsWith('does not exist')) {
+      spinner.info(err.message)
+      return
+    }
+    throw err
+  }
+  if (client) {
+    await client.destroy()
+  }
+}
+
 async function createDatabase () {
+  const spinner = ora('Setting up database and roles').start()
   try {
     const client = knex({
       client: 'pg',
@@ -165,12 +218,12 @@ async function createDatabase () {
     await client.raw(`create role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE} login password '${process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD}'`)
     await client.raw(`grant all privileges on database ${process.env.POSTGRESQL_DATABASE} to ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
 
-    console.warn(`* Created database '${process.env.POSTGRESQL_DATABASE}' and role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
-    client.destroy()
+    spinner.succeed(`Created database '${process.env.POSTGRESQL_DATABASE}' and role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
+    await client.destroy()
   }
   catch (err) {
     if (/database "[\w_]+" already exists/.test(err.message)) {
-      console.warn(`* ${err.message}`)
+      spinner.info(err.message)
       return
     }
     throw err

@@ -3,10 +3,10 @@ const dotenv = require('dotenv')
 
 const environments = {
   dev: `${__dirname}/../docker-app-dev/.env`,
-  test: `${__dirname}/test/.env`
+  test: `${__dirname}/../test/.env`
 }
 
-module.exports = function envInit (env = 'dev') {
+module.exports = function envInit (env = process.env.NODE_TEST ? 'test' : 'dev') {
   if (!environments.hasOwnProperty(env)) {
     throw new Error('env arg missing')
   }

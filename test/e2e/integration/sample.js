@@ -3,7 +3,7 @@
 describe('Sample tests', () => {
   it('Visits index page', () => {
     cy.visit('/');
-    cy.contains('h1', 'Nuxt.js + Cypress');
+    cy.contains('p', 'Shippers Pouch');
   });
 
   it('Go to about page', () => {

@@ -6,15 +6,17 @@
   "license": "AGPLv3",
   "private": true,
   "scripts": {
-    "dev": "NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "NUXT_HOST=0.0.0.0 NUXT_PORT=3000 nuxt",
     "lint": "eslint --ext .js,.vue .",
+    "migrate": "node setup/migrate.js",
     "precommit": "npm run lint",
+    "start": "nuxt start",
     "test": "jest",
-    "e2e": "cypress run",
-    "e2e:server": "E2E=true AUTH_STRATEGY=local nuxt",
-    "e2e:open": "cypress open"
+    "e2e:migrate": "NODE_TEST=1 npm run migrate",
+    "e2e:open": "cypress open",
+    "e2e:server": "NODE_TEST=1 npm run dev",
+    "e2e": "cypress run"
   },
   "precommit": "npm run lint",
   "dependencies": {
@@ -84,6 +86,7 @@
     "jest": "^23.6.0",
     "knex": "^0.16.3",
     "node-sass": "^4.11.0",
+    "ora": "^3.0.0",
     "pg": "^7.7.1",
     "sass-loader": "^7.1.0"
   },
