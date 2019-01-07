@@ -1,0 +1,98 @@
+<http://example.com/groups/> <http://schema.org/hasPart> <http://example.com/letsnest/> .
+<http://example.com/groups/> <http://schema.org/hasPart> <http://example.com/pouch/> .
+<http://example.com/groups/> <http://schema.org/hasPart> <http://example.com/updates/> .
+<http://example.com/groups/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/letsnest/> <http://schema.org/hasPart> <http://example.com/letsnest/container/> .
+<http://example.com/letsnest/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/letsnest/> <http://www.w3.org/2000/01/rdf-schema#comment> "This container is a group at the root" .
+<http://example.com/letsnest/> <http://www.w3.org/2000/01/rdf-schema#label> "Let's Nest" .
+<http://example.com/letsnest/container/> <http://schema.org/hasPart> <http://example.com/letsnest/container/container/> .
+<http://example.com/letsnest/container/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/letsnest/container/> <http://www.w3.org/2000/01/rdf-schema#comment> "This container is inside the 'letsnest' group" .
+<http://example.com/letsnest/container/> <http://www.w3.org/2000/01/rdf-schema#label> "Container" .
+<http://example.com/letsnest/container/container/> <http://schema.org/hasPart> <http://example.com/pouch/MaritimePouch> .
+<http://example.com/letsnest/container/container/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/letsnest/container/container/> <http://www.w3.org/2000/01/rdf-schema#comment> "This container is inside a container inside the 'letsnest' group" .
+<http://example.com/letsnest/container/container/> <http://www.w3.org/2000/01/rdf-schema#label> "Deeper Container" .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/CargoHandlersPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/CarriersPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/CustomsPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/ForwarderPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/MaritimePouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/RailPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/ShippersPouch> .
+<http://example.com/pouch/> <http://schema.org/hasPart> <http://example.com/pouch/TruckersPouch> .
+<http://example.com/pouch/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/> <http://www.w3.org/2000/01/rdf-schema#label> "Pouches" .
+<http://example.com/pouch/CargoHandlersPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/CargoHandlersPouch> <http://schema.org/hasPart> <http://example.com/schema/Boat> .
+<http://example.com/pouch/CargoHandlersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Cargo Handlers Pouch, you will find data typically from the following documents; TBD." .
+<http://example.com/pouch/CargoHandlersPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Cargo Handlers Pouch" .
+<http://example.com/pouch/CarriersPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/CarriersPouch> <http://schema.org/hasPart> <http://example.com/schema/FlightManifest> .
+<http://example.com/pouch/CarriersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/CarriersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Carriers Pouch, you will find data typically from the following documents; Flight Manifest, Freight Booked List, NOTOC." .
+<http://example.com/pouch/CarriersPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Carriers Pouch" .
+<http://example.com/pouch/CustomsPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/CustomsPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/CustomsPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Customs Pouch, you will find data typically from the following documents; TBD." .
+<http://example.com/pouch/CustomsPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Customs Pouch" .
+<http://example.com/pouch/ForwarderPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/ForwarderPouch> <http://schema.org/hasPart> <http://example.com/schema/HAWB> .
+<http://example.com/pouch/ForwarderPouch> <http://schema.org/hasPart> <http://example.com/schema/MAWB> .
+<http://example.com/pouch/ForwarderPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/ForwarderPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Forwarders Pouch, you will find data typically from the following documents; House Waybill, Waybill, House Manifest, Consignment Security Declaration, Booking." .
+<http://example.com/pouch/ForwarderPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Forwarder Pouch" .
+<http://example.com/pouch/MaritimePouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/MaritimePouch> <http://schema.org/hasPart> <http://example.com/schema/Port> .
+<http://example.com/pouch/MaritimePouch> <http://schema.org/hasPart> <http://example.com/schema/Vessel> .
+<http://example.com/pouch/MaritimePouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/MaritimePouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Maritime Pouch, you will find data typically from the following documents; Bill-of-Lading, Sea Waybill." .
+<http://example.com/pouch/MaritimePouch> <http://www.w3.org/2000/01/rdf-schema#label> "Maritime Pouch" .
+<http://example.com/pouch/org/EricssonAB> <http://schema.org/url> <http://www.ericsson.com/> .
+<http://example.com/pouch/org/EricssonAB> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Corporation> .
+<http://example.com/pouch/org/EricssonAB> <http://www.w3.org/2000/01/rdf-schema#label> "Ericsson AB" .
+<http://example.com/pouch/org/FinnairAbp> <http://schema.org/url> <http://www.finnair.com/> .
+<http://example.com/pouch/org/FinnairAbp> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Corporation> .
+<http://example.com/pouch/org/FinnairAbp> <http://www.w3.org/2000/01/rdf-schema#label> "Finnair Abp" .
+<http://example.com/pouch/org/PanalpinaAB> <http://schema.org/url> <http://www.panalpina.com/> .
+<http://example.com/pouch/org/PanalpinaAB> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Corporation> .
+<http://example.com/pouch/org/PanalpinaAB> <http://www.w3.org/2000/01/rdf-schema#label> "Panalpina AB" .
+<http://example.com/pouch/RailPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/RailPouch> <http://schema.org/hasPart> <http://example.com/schema/RailPort> .
+<http://example.com/pouch/RailPouch> <http://schema.org/hasPart> <http://example.com/schema/RailroadEngine> .
+<http://example.com/pouch/RailPouch> <http://schema.org/hasPart> <http://example.com/schema/RailroadWaggon> .
+<http://example.com/pouch/RailPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/RailPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Rail Pouch, you will find data typically from the following documents; Rail Consignment Note." .
+<http://example.com/pouch/RailPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Rail Pouch" .
+<http://example.com/pouch/ShippersPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/contributor> <http://example.com/pouch/org/PanalpinaAB> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/hasPart> <http://example.com/schema/Consignment> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/hasPart> <http://example.com/schema/DangerousGoodsDeclaration> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/hasPart> <http://example.com/schema/EmptyGood> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/hasPart> <http://example.com/schema/Package> .
+<http://example.com/pouch/ShippersPouch> <http://schema.org/hasPart> <http://example.com/schema/ShippersInstruction> .
+<http://example.com/pouch/ShippersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/ShippersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Shippers Pouch, you will find data typically from the following documents; Shippers Instruction, Packing List, Commercial Invoice, Certificate of Origin, Dangerous Goods Certificate, Health Certificate." .
+<http://example.com/pouch/ShippersPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Shippers Pouch" .
+<http://example.com/pouch/StatusUpdatePouch> <http://purl.org/dc/terms/modified> "2018-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/StatusUpdatePouch> <http://schema.org/hasPart> <http://example.com/schema/StatusUpdate> .
+<http://example.com/pouch/StatusUpdatePouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/StatusUpdatePouch> <http://www.w3.org/2000/01/rdf-schema#comment> "TODO" .
+<http://example.com/pouch/StatusUpdatePouch> <http://www.w3.org/2000/01/rdf-schema#label> "Status Update Pouch" .
+<http://example.com/pouch/TrackUpdatePouch> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/TrackUpdatePouch> <http://schema.org/hasPart> <http://example.com/schema/Light> .
+<http://example.com/pouch/TrackUpdatePouch> <http://schema.org/hasPart> <http://example.com/schema/TrackUpdate> .
+<http://example.com/pouch/TrackUpdatePouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/TrackUpdatePouch> <http://www.w3.org/2000/01/rdf-schema#comment> "TODO" .
+<http://example.com/pouch/TrackUpdatePouch> <http://www.w3.org/2000/01/rdf-schema#label> "Track Update Pouch" .
+<http://example.com/pouch/TruckersPouch> <http://purl.org/dc/terms/modified> "2017-11-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<http://example.com/pouch/TruckersPouch> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/pouch/TruckersPouch> <http://www.w3.org/2000/01/rdf-schema#comment> "A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Trucker Pouch, you will find data typically from the following documents; TBD." .
+<http://example.com/pouch/TruckersPouch> <http://www.w3.org/2000/01/rdf-schema#label> "Truckers Pouch" .
+<http://example.com/schema/DangerousGoodsDeclaration> <http://schema.org/hasPart> <http://example.com/schema/Color> .
+<http://example.com/updates/> <http://schema.org/hasPart> <http://example.com/pouch/StatusUpdatePouch> .
+<http://example.com/updates/> <http://schema.org/hasPart> <http://example.com/pouch/TrackUpdatePouch> .
+<http://example.com/updates/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/CreativeWork> .
+<http://example.com/updates/> <http://www.w3.org/2000/01/rdf-schema#label> "Updates" .

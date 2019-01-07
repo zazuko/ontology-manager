@@ -3,13 +3,13 @@ const Router = require('express').Router
 const apicache = require('apicache')
 const gql = require('graphql-tag')
 const apolloClientFactory = require('../getApolloClient')
-const GitHubAPIv3 = require('./api')
+const E2EApi = require('./api')
 
 const router = Router()
 
 module.exports = router
 
-const api = new GitHubAPIv3()
+const api = new E2EApi()
 const onlyStatus200 = (req, res) => res.statusCode === 200
 const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
@@ -342,6 +342,6 @@ async function checkToken (req, res) {
   return {
     token: bearerToken,
     serverId: 789,
-    avatarUrl: 'http://example.com/avatars/e2e.png'
+    avatarUrl: 'https://www.gravatar.com/avatar/00000000000000000000000000000000'
   }
 }

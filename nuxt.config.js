@@ -1,7 +1,7 @@
 const envInit = require('./setup/env-init')
 const feedCreate = require('./libs/feed')
 
-envInit(process.env.NODE_TEST ? 'test' : 'dev')
+envInit()
 
 module.exports = {
   mode: 'universal',
@@ -77,7 +77,7 @@ module.exports = {
   ** Module config: auth
   */
   auth: {
-    strategies: process.env.E2E ? {
+    strategies: process.env.NODE_TEST ? {
       local: {
         endpoints: {
           login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },

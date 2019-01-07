@@ -7,6 +7,6 @@
   "supportFile": "test/e2e/support/index.js",
   "videosFolder": "test/e2e/videos",
   "env": {
-    "envFile": "docker-app-dev/.env"
+    "envFile": "docker-app-dev/test.env"
   }
 }
