@@ -317,7 +317,7 @@ export function mergedEditedOntology (_originalIRI, _newIRI, baseDataset, newDat
 export function buildSearchIndex (dataset) {
   const indexedPredicates = [stringIRI.label, stringIRI.comment, stringIRI.description]
 
-  return dataset._quads.reduce((iris, quad) => {
+  return dataset.toArray().reduce((iris, quad) => {
     if (!indexedPredicates.includes(quad.predicate.value)) {
       return iris
     }

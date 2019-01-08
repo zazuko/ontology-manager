@@ -127,6 +127,7 @@ import LinkToIri from './LinkToIri'
 import { termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
 import { findClassProperties } from '@/libs/utils'
 import cloneDeep from 'lodash/cloneDeep'
+import Dataset from 'indexed-dataset/dataset'
 
 export default {
   name: 'ObjectDetails',
@@ -143,12 +144,12 @@ export default {
     ontology: {
       type: Object,
       required: true,
-      default: () => rdf.dataset()
+      default: () => new Dataset()
     },
     structure: {
       type: Object,
       required: true,
-      default: () => rdf.dataset()
+      default: () => new Dataset()
     }
   },
   data () {

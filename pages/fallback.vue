@@ -106,6 +106,7 @@ import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI, term } from '@/libs/rdf'
+import Dataset from 'indexed-dataset/dataset'
 
 export default {
   layout: 'background',
@@ -116,7 +117,7 @@ export default {
       iri += '/'
     }
 
-    let iriDataset = rdf.dataset()
+    let iriDataset = new Dataset()
     let jsonld = ''
     // try {
     //   jsonld = await new Promise((resolve, reject) => {
@@ -207,8 +208,8 @@ export default {
       iri: 'loading',
       termIRI,
       objectType: '',
-      ontology: rdf.dataset(),
-      structure: rdf.dataset(),
+      ontology: new Dataset(),
+      structure: new Dataset(),
       dataReady: false
     }
   },
