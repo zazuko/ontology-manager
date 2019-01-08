@@ -6,6 +6,7 @@ import { serialize, buildTree } from '@/libs/utils'
 import { buildSearchIndex } from '@/libs/rdf'
 import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch'
+import Dataset from 'indexed-dataset/dataset'
 
 export const state = () => ({
   ontology: {},
@@ -21,20 +22,20 @@ export const state = () => ({
 
 export const getters = {
   ontology: (state) => {
-    if (!(state.ontology instanceof rdf.defaults.Dataset)) {
-      return rdf.dataset()
+    if (!(state.ontology instanceof Dataset)) {
+      return new Dataset()
     }
     return state.ontology.clone()
   },
   structure: (state) => {
-    if (!(state.structure instanceof rdf.defaults.Dataset)) {
-      return rdf.dataset()
+    if (!(state.structure instanceof Dataset)) {
+      return new Dataset()
     }
     return state.structure.clone()
   },
   ontologyGraph: (state) => {
-    if (!(state.ontologyGraph instanceof rdf.defaults.Dataset)) {
-      return rdf.dataset()
+    if (!(state.ontologyGraph instanceof Dataset)) {
+      return new Dataset()
     }
     return state.ontologyGraph.clone()
   },
@@ -64,7 +65,7 @@ export const mutations = {
 export const actions = {
   async [DESERIALIZE] ({ commit, state }) {
     const toDeserialize = ['ontology', 'structure']
-      .filter((prop) => !(state[prop] instanceof rdf.defaults.Dataset))
+      .filter((prop) => !(state[prop] instanceof Dataset))
 
     const deserialized = await Promise.all(
       toDeserialize.map((prop) => deserialize(state[`${prop}Serialized`]))
@@ -80,7 +81,7 @@ export const actions = {
     const { ontologyDataset, structureDataset } = await fetchDataset()
     commit('ontologyInit', ontologyDataset)
     commit('structureInit', structureDataset)
-    return dispatch('DESERIALIZE')
+    return dispatch(DESERIALIZE)
   }
 }
 
@@ -95,6 +96,6 @@ async function deserialize (string) {
   })
 
   const quadStream = parser.import(input)
-  const dataset = await rdf.dataset().import(quadStream)
-  return dataset
+
+  return new Dataset().import(quadStream)
 }

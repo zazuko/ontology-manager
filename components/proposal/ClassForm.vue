@@ -246,13 +246,13 @@
 
 <script>
 import _get from 'lodash/get'
-import rdf from 'rdf-ext'
 import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
 import Editor from '@/components/editor/Editor'
 import { Property } from '@/models/Property'
 import { generateClassProposal, proposalDataset, validate } from '@/models/Class'
+import Dataset from 'indexed-dataset/dataset'
 
 export default {
   name: 'ClassForm',
@@ -300,8 +300,8 @@ export default {
     return {
       searchFunction: () => ([]),
       renderTypeahead: process.client,
-      ontology: rdf.dataset(),
-      structure: rdf.dataset(),
+      ontology: new Dataset(),
+      structure: new Dataset(),
       debugNT: ''
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="_get(ontology, '_quads.length') !== 0">
+    <div v-if="_get(ontology, '.length') !== 0">
       <table class="table generic-table is-fullwidth">
         <thead>
           <tr>

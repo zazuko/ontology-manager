@@ -52,8 +52,7 @@
 </template>
 
 <script>
-import _get from 'lodash/get'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, get } from 'lodash'
 import { hasCreativeWorkChild, arrayToGroups, iriToId } from '@/libs/utils'
 import PouchBox from '@/components/fallback/PouchBox'
 
@@ -105,7 +104,7 @@ export default {
         return obj.childClassesCount
       }
       let count
-      if (_get(obj, 'children.length', false)) {
+      if (get(obj, 'children.length', false)) {
         const childCount = obj.children.reduce((acc, child) => this.childClassesCount(child, acc, true), sum)
         count = (obj.type === 'class' ? 1 : 0) + childCount
       }
