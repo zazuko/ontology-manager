@@ -46,6 +46,7 @@ const xsdTypes = [
   ['http://www.w3.org/2001/XMLSchema#date', 'Date'],
   ['http://www.w3.org/2001/XMLSchema#dateTime', 'Date and time'],
   ['http://www.w3.org/2001/XMLSchema#double', 'Double'],
+  ['http://www.w3.org/2001/XMLSchema#decimal', 'Decimal'],
   ['http://www.w3.org/2001/XMLSchema#int', 'Integer'],
   ['http://www.w3.org/2001/XMLSchema#string', 'String'],
   ['http://www.w3.org/2001/XMLSchema#time', 'Time']
