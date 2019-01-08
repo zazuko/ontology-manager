@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
-import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
+// import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
 import { serialize, buildTree } from '@/libs/utils'
 import { buildSearchIndex } from '@/libs/rdf'
 import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
@@ -47,12 +47,12 @@ export const mutations = {
   ontologyInit (state, ontologyDataset) {
     state.ontologySerialized = serialize(ontologyDataset)
     state.ontology = ontologyDataset
-    state.ontologyGraph = resourcesToGraph(ontologyDataset)
+    // state.ontologyGraph = resourcesToGraph(ontologyDataset)
   },
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
     state.structure = structureDataset
-    state.structureGraph = resourcesToGraph(structureDataset)
+    // state.structureGraph = resourcesToGraph(structureDataset)
     state.structureTree = buildTree(structureDataset, state.ontology)
   },
   clientReady (state) {
