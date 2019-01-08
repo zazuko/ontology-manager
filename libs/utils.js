@@ -26,7 +26,8 @@ export function arrayToGroups (obj, groupSize = 4) {
 }
 
 export function serialize (dataset) {
-  return dataset._quads
+  return dataset
+    .toArray()
     .map((quad) => quadToNTriples(quad))
     .join('\n')
 }
