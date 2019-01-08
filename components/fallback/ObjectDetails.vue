@@ -236,7 +236,7 @@ export default {
   methods: {
     init () {
       if (!this.bothDatasets) {
-        this.bothDatasets = this.ontology.clone().merge(this.structure)
+        this.bothDatasets = this.ontology.merge(this.structure)
       }
     },
     label (iri, dataset) {

@@ -56,7 +56,7 @@ export const mutations = {
     state.structureTree = buildTree(structureDataset, state.ontology)
   },
   clientReady (state) {
-    state.searchIndex = buildSearchIndex(state.ontology.clone().merge(state.structure))
+    state.searchIndex = buildSearchIndex(state.ontology.merge(state.structure))
     state.clientReady = true
   }
 }

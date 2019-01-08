@@ -318,8 +318,8 @@ export default {
     mergedDatasets () {
       const datasets = this.datasets
       return {
-        ontology: datasets.ontology.clone().merge(this.ontology),
-        structure: datasets.structure.clone().merge(this.structure)
+        ontology: datasets.ontology.merge(this.ontology),
+        structure: datasets.structure.merge(this.structure)
       }
     },
     validBase () {
