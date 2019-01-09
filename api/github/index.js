@@ -68,11 +68,22 @@ router.post('/link', async (req, res, next) => {
     id: clientId
   } = req.body
 
-  const { token, avatarUrl, serverId } = await checkToken(req, res)
+  console.warn(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
+  console.error(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
 
-  if (!clientId || clientId !== serverId) {
-    res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
-    return
+  let { token, avatarUrl, serverId } = {}
+
+  try {
+    ({ token, avatarUrl, serverId } = await checkToken(req, res))
+
+    if (!clientId || clientId !== serverId) {
+      console.error({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
+      res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
+      return
+    }
+  }
+  catch (err) {
+    console.error(err)
   }
 
   const variables = {
