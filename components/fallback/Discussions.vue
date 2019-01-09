@@ -15,11 +15,13 @@
             </span>-->
           </p>
         </div>
-        <nuxt-link
-          :to="{ name: 'discussion-new', query: { iri: iri } }"
-          class="button is-pulled-right is-info">
-          New Thread
-        </nuxt-link>
+        <template v-if="$auth && $auth.$state.loggedIn">
+          <nuxt-link
+            :to="{ name: 'discussion-new', query: { iri: iri } }"
+            class="button is-pulled-right is-info">
+            New Thread
+          </nuxt-link>
+        </template>
       </div>
       <div class="discussion-list-body">
         <template v-if="_get(discussions, 'discussions.length', 0) === 0">

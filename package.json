@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt",
+    "dev": "NUXT_HOST=0.0.0.0 nuxt",
     "lint": "eslint --ext .js,.vue .",
     "migrate": "node setup/migrate.js",
     "precommit": "npm run lint",
