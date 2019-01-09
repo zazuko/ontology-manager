@@ -87,10 +87,6 @@
       "priority": 100,
       "module": "trifid-core:./plugins/locals"
     },
-    "markdown": {
-      "priority": 110,
-      "module": "trifid-plugin-markdown"
-    },
     "handler": {
       "priority": 150,
       "module": "trifid-core:./plugins/handler"

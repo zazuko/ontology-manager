@@ -18,7 +18,7 @@
       "options": {
         "url": "env:STRUCTURE_RAW_URL",
         "contentType": "application/n-triples",
-        "split": "true"
+        "split": true
       }
     },
     "ontology": {
@@ -27,7 +27,7 @@
       "options": {
         "url": "env:ONTOLOGY_RAW_URL",
         "contentType": "application/n-triples",
-        "split": "true"
+        "split": true
       }
     }
   }
