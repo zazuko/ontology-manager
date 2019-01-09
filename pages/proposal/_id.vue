@@ -122,15 +122,10 @@
         </div>
       </section>
       <div
-        v-else
-        class="modal is-active">
-        <div class="modal-background" />
-        <div class="modal-content has-text-centered">
-          <div class="box">
-            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-            <p class="subtitle">Loading Proposal</p>
-          </div>
-        </div>
+        v-else>
+        <loader :show-if="true">
+          <p class="subtitle">Loading Proposal</p>
+        </loader>
       </div>
     </div>
   </div>
@@ -145,6 +140,7 @@ import ClassForm from '@/components/proposal/ClassForm'
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Vote from '@/components/proposal/Vote'
+import Loader from '@/components/layout/Loader'
 
 import discussionById from '@/apollo/queries/discussionById'
 import { LOAD } from '@/store/action-types'
@@ -171,7 +167,8 @@ export default {
     ProgressionBox,
     DiscussionCard,
     DiscussionReply,
-    Vote
+    Vote,
+    Loader
   },
   data () {
     return {
