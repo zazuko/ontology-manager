@@ -13,8 +13,8 @@
       <span>Sign Out</span>
     </button>
     <div
-      class="modal signin-modal"
-      :class="{ 'is-active': modalIsOpen }">
+      v-show="modalIsOpen"
+      class="modal signin-modal is-active">
       <div class="modal-background" />
       <div class="modal-card has-text-centered">
         <a

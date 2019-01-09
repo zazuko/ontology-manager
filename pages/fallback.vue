@@ -16,17 +16,7 @@
         type="application/ld+json"
         v-html="jsonld" />
 
-      <div
-        v-show="!dataReady"
-        class="modal is-active">
-        <div class="modal-background" />
-        <div class="modal-content has-text-centered">
-          <div class="box">
-            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-            <p class="subtitle">Loading Data</p>
-          </div>
-        </div>
-      </div>
+      <loader :show-if="!dataReady" />
 
       <!-- layout-objects-list -->
       <div
@@ -104,6 +94,8 @@ import SideNav from '@/components/fallback/sidenav/SideNav'
 import Discussions from '@/components/fallback/Discussions'
 import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
+import Loader from '@/components/layout/Loader'
+
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI, term } from '@/libs/rdf'
 import Dataset from 'indexed-dataset/dataset'
@@ -159,7 +151,8 @@ export default {
     ObjectDetails,
     Discussions,
     PropertyProposals,
-    ClassProposals
+    ClassProposals,
+    Loader
   },
   computed: {
     subtree () {
