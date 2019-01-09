@@ -89,10 +89,11 @@ export default {
     },
     async authenticate (loggedIn) {
       if (!loggedIn && Object.keys(this.$store.state.auth || {}).length) {
+        const tmp = Math.floor(Math.random() * 100000)
         const name = _get(this, '$store.state.auth.user.name', '')
-        const username = _get(this, '$store.state.auth.user.login', '')
-        const id = _get(this, '$store.state.auth.user.id', '')
-        let email = _get(this, '$store.state.auth.user.email', '')
+        const username = _get(this, '$store.state.auth.user.login', `anonymous-${tmp}`)
+        const id = _get(this, '$store.state.auth.user.id', `${tmp}`)
+        let email = _get(this, '$store.state.auth.user.email')
 
         if ([name, id].every(Boolean)) {
           try {
@@ -101,7 +102,7 @@ export default {
             if (!email) {
               const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
               const result = await axios.get('https://api.github.com/user/emails', headers)
-              email = _get(result, 'data[0].email')
+              email = _get(result, 'data[0].email', `${tmp}-unknown@example.com`)
               if (!email) {
                 throw new Error('OAuth login failed: email not found')
               }
@@ -111,7 +112,7 @@ export default {
             const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
             const result = await axios.post('/api/link', { email, name, id, username }, headers)
               .catch((err) => {
-                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
+                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
               })
 
             const jwtToken = _get(result, 'data.jwtToken')
@@ -125,7 +126,7 @@ export default {
             this.$apolloHelpers.onLogin(jwtToken)
           }
           catch (err) {
-            this.$toast.error(err, toastClose).goAway(1600)
+            this.$toast.error(err, toastClose)
             await this.$apolloHelpers.onLogout()
           }
         }
