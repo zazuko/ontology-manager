@@ -110,7 +110,7 @@ export default {
 
             // check token then link oauth account/token to local account/token
             const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
-            const result = await axios.post('/api/link', { email, name, id, username }, headers)
+            const result = await axios.post(`${process.env.EDITOR_URL}/api/link`, { email, name, id, username }, headers)
               .catch((err) => {
                 this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
               })
