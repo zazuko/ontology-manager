@@ -14,8 +14,7 @@
     </button>
     <div
       class="modal signin-modal"
-      :class="{ 'is-active': modalIsOpen }"
-      >
+      :class="{ 'is-active': modalIsOpen }">
       <div class="modal-background" />
       <div class="modal-card has-text-centered">
         <a
@@ -65,10 +64,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import _get from 'lodash/get'
-import { toastClose } from '@/libs/utils'
-
 export default {
   name: 'SignIn',
   components: {},
@@ -77,72 +72,19 @@ export default {
       return this.$auth && this.$auth.$state.loggedIn
     }
   },
-  mounted () {
-    this.authenticate()
+  data () {
+    return {
+      modalIsOpen: false
+    }
   },
   methods: {
     async signIn () {
-      try {
-        this.$toast.show('Logging in...').goAway(1600)
-        const loggedIn = this.$auth.$state.loggedIn
-        await this.$auth.loginWith(process.env.AUTH_STRATEGY)
-        await this.authenticate(loggedIn)
-      }
-      catch (err) {
-        console.error(err)
-        this.$sentry.captureException(err)
-        this.$toast.error('Error while authenticating', toastClose).goAway(1600)
-      }
+      await this.$auth.loginWith(process.env.AUTH_STRATEGY)
     },
     async signOut () {
       await this.$auth.logout()
       await this.$apolloHelpers.onLogout()
       this.$emit('loggedOut')
-    },
-    async authenticate (loggedIn) {
-      if (!loggedIn && Object.keys(this.$store.state.auth || {}).length) {
-        const tmp = Math.floor(Math.random() * 100000)
-        const name = _get(this, '$store.state.auth.user.name', '')
-        const username = _get(this, '$store.state.auth.user.login', `anonymous-${tmp}`)
-        const id = _get(this, '$store.state.auth.user.id', `${tmp}`)
-        let email = _get(this, '$store.state.auth.user.email')
-
-        if ([name, id].every(Boolean)) {
-          try {
-            // if github user set their email as 'private', email ends up 'null' here
-            // so we have to fetch it via the API
-            if (!email) {
-              const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
-              const result = await axios.get('https://api.github.com/user/emails', headers)
-              email = _get(result, 'data[0].email', `${tmp}-unknown@example.com`)
-              if (!email) {
-                throw new Error('OAuth login failed: email not found')
-              }
-            }
-
-            // check token then link oauth account/token to local account/token
-            const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
-            const result = await axios.post(`${process.env.EDITOR_URL}/api/link`, { email, name, id, username }, headers)
-              .catch((err) => {
-                this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
-              })
-
-            const jwtToken = _get(result, 'data.jwtToken')
-            this.$auth.$storage.setState('isAdmin', _get(result, 'data.isAdmin'))
-            this.$auth.$storage.setState('personId', _get(result, 'data.personId'))
-            this.$auth.$storage.setState('hats', _get(result, 'data.personHats'))
-
-            if (!jwtToken) {
-              throw new Error('Account linking failed.')
-            }
-            this.$apolloHelpers.onLogin(jwtToken)
-          }
-          catch (err) {
-            this.$toast.error(err, toastClose)
-            await this.$apolloHelpers.onLogout()
-          }
-        }
-      }
     }
   }
 }
