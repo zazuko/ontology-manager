@@ -24,27 +24,29 @@
       <h1 class="title is-1">
         {{ label(iri, ontology) }}
 
-        <nuxt-link
-          v-if="isClass"
-          :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
-          class="title-edit-button">
-          <img
-            class="hoverable-icon"
-            src="~/assets/images/ic-edit.svg"
-            alt="Edit class"
-            title="Edit class">
-        </nuxt-link>
-        <nuxt-link
-          v-else-if="isProperty"
-          :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
-          class="title-edit-button">
-          <img
-            class="hoverable-icon"
-            src="~/assets/images/ic-edit.svg"
-            alt="Edit property"
-            title="Edit property">
-        </nuxt-link>
-        <span v-else />
+        <template v-if="$auth && $auth.$state.loggedIn">
+          <nuxt-link
+            v-if="isClass"
+            :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
+            class="title-edit-button">
+            <img
+              class="hoverable-icon"
+              src="~/assets/images/ic-edit.svg"
+              alt="Edit class"
+              title="Edit class">
+          </nuxt-link>
+          <nuxt-link
+            v-else-if="isProperty"
+            :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
+            class="title-edit-button">
+            <img
+              class="hoverable-icon"
+              src="~/assets/images/ic-edit.svg"
+              alt="Edit property"
+              title="Edit property">
+          </nuxt-link>
+          <span v-else />
+        </template>
       </h1>
 
       <div class="content">

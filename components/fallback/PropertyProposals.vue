@@ -2,12 +2,14 @@
   <section class="section">
     <h2 class="title is-2">
       Proposals
-      <nuxt-link
-        :to="{ name: 'proposal-property', query: { iri: iri } }"
-        title="Request new property"
-        class="title-edit-button">
-        +
-      </nuxt-link>
+      <template v-if="$auth && $auth.$state.loggedIn">
+        <nuxt-link
+          :to="{ name: 'proposal-property', query: { iri: iri } }"
+          title="Request new property"
+          class="title-edit-button">
+          +
+        </nuxt-link>
+      </template>
     </h2>
 
     <table

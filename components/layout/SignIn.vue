@@ -3,7 +3,7 @@
     <button
       v-show="!loggedIn"
       class="button is-small is-info is-outlined"
-      @click.prevent="signIn">
+      @click="modalIsOpen = true">
       <span>Sign In</span>
     </button>
     <button
@@ -12,12 +12,16 @@
       @click.prevent="signOut">
       <span>Sign Out</span>
     </button>
-    <div class="modal signin-modal">
+    <div
+      class="modal signin-modal"
+      :class="{ 'is-active': modalIsOpen }"
+      >
       <div class="modal-background" />
       <div class="modal-card has-text-centered">
         <a
           class="signin-modal-close"
-          aria-label="close">
+          aria-label="close"
+          @click="modalIsOpen = false">
           ×
         </a>
         <header class="modal-card-head">
@@ -39,11 +43,19 @@
           <div class="columns">
             <div class="column">
               <p class="info">I already have a GitHub account</p>
-              <button class="button is-info is-fullwidth">Sign In</button>
+              <button
+                class="button is-info is-fullwidth"
+                @click.prevent="signIn">
+                Sign In
+              </button>
             </div>
             <div class="column">
               <p class="info">I don't have a GitHub account</p>
-              <button class="button is-dark-info is-fullwidth">Sign Up</button>
+              <button
+                class="button is-dark-info is-fullwidth"
+                @click.prevent="signIn">
+                Sign Up
+              </button>
             </div>
           </div>
         </section>
