@@ -99,29 +99,10 @@
         </div>
       </section>
 
-      <div
-        v-show="!storeReady"
-        class="modal is-active">
-        <div class="modal-background" />
-        <div class="modal-content has-text-centered">
-          <div class="box">
-            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-            <p class="subtitle">Loading Data</p>
-          </div>
-        </div>
-      </div>
-
-      <div
-        :class="{ 'is-active': isLoading }"
-        class="modal">
-        <div class="modal-background" />
-        <div class="modal-content has-text-centered">
-          <div class="box">
-            <div class="lds-roller"><div /><div /><div /><div /><div /><div /><div /><div /></div>
-            <p class="subtitle">Generating Proposal</p>
-          </div>
-        </div>
-      </div>
+      <loader :show-if="!storeReady" />
+      <loader :show-if="isLoading">
+        <p class="subtitle">Generating Proposal</p>
+      </loader>
     </div>
   </div>
 </template>
@@ -131,6 +112,8 @@ import { createNamespacedHelpers } from 'vuex'
 
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
+import Loader from '@/components/layout/Loader'
+
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { hydrate } from '@/models/Property'
 import { headTitle } from '@/libs/utils'
@@ -152,7 +135,8 @@ export default {
   middleware: 'authenticated',
   components: {
     PropertyForm,
-    ProgressionBox
+    ProgressionBox,
+    Loader
   },
   data () {
     return {
