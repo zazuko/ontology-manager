@@ -96,7 +96,8 @@ describe('basic dev', () => {
       expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
 
-    test('jsonld in html', async () => {
+    // code generating this jsonld was removed for perf reasons
+    test.skip('jsonld in html', async () => {
       const result = await getHTML('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
