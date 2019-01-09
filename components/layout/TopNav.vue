@@ -29,12 +29,14 @@
             class="navbar-item">
             Home
           </nuxt-link>
-          <draft-tab class="navbar-item" />
-          <nuxt-link
-            :to="{ name: 'admin-proposals', params: {} }"
-            class="navbar-item">
-            Admin
-          </nuxt-link>
+          <template v-if="$auth && $auth.$state.loggedIn">
+            <draft-tab class="navbar-item" />
+            <nuxt-link
+              :to="{ name: 'admin-proposals', params: {} }"
+              class="navbar-item">
+              Admin
+            </nuxt-link>
+          </template>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
