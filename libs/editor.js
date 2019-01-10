@@ -27,7 +27,7 @@ export function toHTML (md) {
   // const state = new SanitizeState()
 
   return marked(md, {
-    sanitize: true,
+    sanitize: true
     // sanitizer: state.getSanitizer()
   })
 }
