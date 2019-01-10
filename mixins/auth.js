@@ -11,18 +11,14 @@ export default {
       }
 
       if (!_get(this, '$auth.$state.loggedIn')) {
-        console.log('loggedIn:', _get(this, '$auth.$state.loggedIn'))
         this.localUserRegistrationDone = true
       }
       if (_get(this, '$auth.$state.localUser') === true) {
-        console.log('localUser:', _get(this, '$auth.$state.localUser'))
         this.localUserRegistrationDone = true
       }
       if (this.localUserRegistrationDone === true) {
-        console.log('not linking account')
         return
       }
-      console.log('linking account attempt')
       this.authenticate().then(() => {
         this.localUserRegistrationDone = true
       })
@@ -40,7 +36,6 @@ export default {
       const id = _get(this, '$store.state.auth.user.id')
       const name = _get(this, '$store.state.auth.user.name') || username
       let email = _get(this, '$store.state.auth.user.email')
-      console.log('payload', JSON.stringify({ email, name, id, username }))
 
       if ([username, id].every(Boolean)) {
         // if github user set their email as 'private', email ends up 'null' here
@@ -48,7 +43,7 @@ export default {
         if (!email) {
           const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
           const result = await axios.get('https://api.github.com/user/emails', headers)
-          email = _get(result, 'data[0].email', `${tmp}-unknown@example.com`)
+          email = _get(result, 'data[0].email') || `${tmp}-unknown@example.com`
         }
 
         // check token then link oauth account/token to local account/token
@@ -73,7 +68,6 @@ export default {
         }
         this.$apolloHelpers.onLogin(jwtToken)
         this.$auth.$storage.setState('localUser', true)
-        console.log('linking account success')
       }
     }
   }
