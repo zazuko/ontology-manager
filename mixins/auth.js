@@ -37,8 +37,8 @@ export default {
     async authenticate () {
       const tmp = Math.floor(Math.random() * 100000)
       const username = _get(this, '$store.state.auth.user.login')
-      const name = _get(this, '$store.state.auth.user.name', username)
       const id = _get(this, '$store.state.auth.user.id')
+      const name = _get(this, '$store.state.auth.user.name') || username
       let email = _get(this, '$store.state.auth.user.email')
       console.log('payload', JSON.stringify({ email, name, id, username }))
 
