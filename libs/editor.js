@@ -1,7 +1,7 @@
 import TurndownService from 'turndown'
 import { gfm } from 'turndown-plugin-gfm'
 import marked from 'marked'
-import SanitizeState from 'marked-sanitizer-github'
+// import SanitizeState from 'marked-sanitizer-github'
 
 const turndownService = new TurndownService()
 turndownService.use(gfm)
@@ -24,11 +24,11 @@ export function toMarkdown (html) {
 }
 
 export function toHTML (md) {
-  const state = new SanitizeState()
+  // const state = new SanitizeState()
 
   return marked(md, {
     sanitize: true,
-    sanitizer: state.getSanitizer()
+    // sanitizer: state.getSanitizer()
   })
 }
 

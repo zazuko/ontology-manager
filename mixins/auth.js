@@ -4,13 +4,19 @@ import { toastClose } from '@/libs/utils'
 
 export default {
   name: 'Auth',
-  async mounted () {
+  mounted () {
+    if (process.server) {
+      this.localUserRegistrationDone = true
+      return
+    }
+
     if (!this.$auth.$state.loggedIn || this.$apolloHelpers.getToken()) {
       this.localUserRegistrationDone = true
       return
     }
-    await this.authenticate()
-    this.localUserRegistrationDone = true
+    this.authenticate().then(() => {
+      this.localUserRegistrationDone = true
+    })
   },
   data () {
     return {
