@@ -5,17 +5,27 @@ import { toastClose } from '@/libs/utils'
 export default {
   name: 'Auth',
   mounted () {
-    if (process.server) {
-      this.localUserRegistrationDone = true
-      return
-    }
+    this.$nextTick(() => {
+      if (process.server) {
+        this.localUserRegistrationDone = true
+      }
 
-    if (!this.$auth.$state.loggedIn || this.$apolloHelpers.getToken()) {
-      this.localUserRegistrationDone = true
-      return
-    }
-    this.authenticate().then(() => {
-      this.localUserRegistrationDone = true
+      if (!_get(this, '$auth.$state.loggedIn')) {
+        console.log('loggedIn:', _get(this, '$auth.$state.loggedIn'))
+        this.localUserRegistrationDone = true
+      }
+      if (_get(this, '$auth.$state.localUser') === true) {
+        console.log('localUser:', _get(this, '$auth.$state.localUser'))
+        this.localUserRegistrationDone = true
+      }
+      if (this.localUserRegistrationDone === true) {
+        console.log('not linking account')
+        return
+      }
+      console.log('linking account attempt')
+      this.authenticate().then(() => {
+        this.localUserRegistrationDone = true
+      })
     })
   },
   data () {
@@ -64,6 +74,8 @@ export default {
           throw new Error('Account linking failed.')
         }
         this.$apolloHelpers.onLogin(jwtToken)
+        this.$auth.$storage.setState('localUser', true)
+        console.log('linking account success')
       }
     }
   }
