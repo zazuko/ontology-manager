@@ -1,25 +1,29 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+/* global Cypress,cy */
+require('@cypress/snapshot').register()
+
+Cypress.Commands.add('login', () => {
+  cy.visit('/')
+  let $nuxt
+  cy.window()
+    .its('$nuxt')
+    .then((_$nuxt) => {
+      $nuxt = _$nuxt
+      return $nuxt.$auth.loginWith('local')
+    })
+    .then(() => {
+      return cy.request({
+        method: 'POST',
+        url: 'http://localhost:3000/api/link',
+        headers: { authorization: $nuxt.$auth.getToken('local') },
+        body: { email: 'e2e@example.com', name: 'e2e test user', id: 789, username: 'e2e' }
+      })
+    })
+    .then((resp) => {
+      const jwtToken = resp.body.jwtToken
+      $nuxt.$auth.$storage.setState('isAdmin', resp.body.isAdmin)
+      $nuxt.$auth.$storage.setState('personId', resp.body.personId)
+      $nuxt.$auth.$storage.setState('hats', resp.body.personHats)
+      $nuxt.$apolloHelpers.onLogin(jwtToken)
+      $nuxt.$auth.$storage.setState('localUser', true)
+    })
+})
