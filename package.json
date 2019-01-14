@@ -23,10 +23,10 @@
     "@nuxtjs/apollo": "git://github.com/nuxt-community/apollo-module.git#3ad51bf70574d8240398b0a0d9dcb02e6897bf6c",
     "@nuxtjs/auth": "^4.5.2",
     "@nuxtjs/axios": "^5.3.3",
-    "@nuxtjs/feed": "^0.2.0",
+    "@nuxtjs/feed": "^1.1.0",
     "@nuxtjs/sentry": "^2.0.0",
     "@nuxtjs/toast": "^3.0.2",
-    "@octokit/rest": "^16.8.0",
+    "@octokit/rest": "^16.8.1",
     "@rdfjs/serializer-jsonld": "^1.2.0",
     "@rdfjs/serializer-ntriples": "^1.0.1",
     "@rdfjs/to-ntriples": "^1.0.1",
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@cypress/browserify-preprocessor": "^1.1.2",
-    "ava": "^1.0.1",
+    "ava": "^1.1.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
@@ -92,7 +92,7 @@
     "knex": "^0.16.3",
     "node-sass": "^4.11.0",
     "ora": "^3.0.0",
-    "pg": "^7.7.1",
+    "pg": "^7.8.0",
     "sass-loader": "^7.1.0"
   },
   "engines": {
