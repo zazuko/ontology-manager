@@ -1,4 +1,4 @@
-query GetUserContent ($authorId: Int!) {
+query UserDrafts ($authorId: Int!) {
   proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true, status: OPEN}) {
     drafts: nodes {
       id,

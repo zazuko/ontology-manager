@@ -143,9 +143,13 @@ export default {
     }
   },
   mounted () {
+    let interval = 300
+    if (this.$auth && this.$auth.$state.loggedIn) {
+      interval = 45
+    }
     this.interval = setInterval(() => {
       this.$apollo.queries.logs.refetch()
-    }, 45 * 1000)
+    }, interval * 1000)
   },
   beforeDestroy () {
     if (this.interval) {
