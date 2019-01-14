@@ -255,6 +255,9 @@ export default {
       })
     }
   },
+  mounted () {
+    this.editor.setContent(toHTML(this.value))
+  },
   watch: {
     value (newVal) {
       if (this.markdown !== newVal) {
