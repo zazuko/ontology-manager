@@ -15,13 +15,12 @@
             {{ name }}
           </span>
         </p>
-        <p
-          v-if="true || object.type === 'class'"
+        <!--<p
           class="subtitle">
           {{ childClassesCount(object) }} Logistics Object{{ childClassesCount(object) === 1 ? '' : 's' }}
           <br>
           {{ childPropertiesCount(object) }} Propert{{ childPropertiesCount(object) === 1 ? 'y' : 'ies' }}
-        </p>
+        </p>-->
 
         <div
           v-if="hasCreativeWorkChild(object)"
@@ -38,7 +37,7 @@
                 :label="child.label"
                 :to="{ path: child.path, params: {} }"
                 :iri="child.iri"
-                :properties-count="childPropertiesCount(child)"
+                :properties-count="0"
                 :classes-count="childClassesCount(child)"
                 :modified="child.modified"
                 :type="child.type"
@@ -86,19 +85,22 @@ export default {
     iriToId,
     hasCreativeWorkChild,
     arrayToGroups,
-    childPropertiesCount (obj) {
-      if (obj.hasOwnProperty('childPropertiesCount')) {
-        return obj.childPropertiesCount
-      }
-      const properties = childPropertiesCount(obj)
-        .reduce((tmp, p) => {
-          tmp[p.subject.value] = true
-          return tmp
-        }, {})
-      const count = Object.keys(properties).length
-      obj.childPropertiesCount = count
-      return count
-    },
+    // childPropertiesCount (obj) {
+    //   // returned cached version if we have it
+    //   if (obj.hasOwnProperty('childPropertiesCount')) {
+    //     return obj.childPropertiesCount
+    //   }
+    //   // compute it
+    //   const properties = childPropertiesCount(obj)
+    //     .reduce((tmp, p) => {
+    //       tmp[p.subject.value] = true
+    //       return tmp
+    //     }, {})
+    //   const count = Object.keys(properties).length
+    //   // cache it
+    //   obj.childPropertiesCount = count
+    //   return count
+    // },
     childClassesCount (obj, sum = 0, recursing = false) {
       if (obj.hasOwnProperty('childClassesCount')) {
         return obj.childClassesCount
@@ -119,12 +121,12 @@ export default {
   }
 }
 
-function childPropertiesCount (obj, properties = []) {
-  if (obj.children) {
-    const prop = Array.isArray(obj.properties) ? obj.properties : obj.properties.toArray()
-    const childProps = obj.children.reduce((acc, child) => childPropertiesCount(child, acc), properties)
-    return prop.concat(childProps)
-  }
-  return obj.properties.toArray()
-}
+// function childPropertiesCount (obj, properties = []) {
+//   if (obj.children) {
+//     const prop = Array.isArray(obj.properties) ? obj.properties : obj.properties.toArray()
+//     const childProps = obj.children.reduce((acc, child) => childPropertiesCount(child, acc), properties)
+//     return prop.concat(childProps)
+//   }
+//   return obj.properties.toArray()
+// }
 </script>
