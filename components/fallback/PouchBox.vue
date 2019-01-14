@@ -41,14 +41,14 @@
             {{ classesCount }}
           </span>
         </div>
-        <div class="class-box-level-item">
+        <!--<div class="class-box-level-item">
           <span class="class-box-label">
             Propert{{ propertiesCount === 1 ? 'y' : 'ies' }}
           </span>
           <span class="class-box-value">
             {{ propertiesCount }}
           </span>
-        </div>
+        </div>-->
       </div>
     </nuxt-link>
   </article>
@@ -69,10 +69,6 @@ export default {
       required: false,
       default: null
     },
-    propertiesCount: {
-      type: Number,
-      required: true
-    },
     iri: {
       type: String,
       required: true
@@ -81,6 +77,10 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    propertiesCount: {
+      type: Number,
+      required: true
     },
     modified: {
       type: String,
