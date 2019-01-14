@@ -23,4 +23,6 @@ EXPOSE 3000
 RUN cp docker-app-prod/entrypoint.web.sh /usr/src/app/entrypoint.web.sh
 RUN chmod 755 /usr/src/app/entrypoint.web.sh
 
+HEALTHCHECK --interval=10s --timeout=20s --start-period=30s --retries=20 CMD node ./healthcheck.js
+
 ENTRYPOINT [ "/usr/src/app/entrypoint.web.sh"]
