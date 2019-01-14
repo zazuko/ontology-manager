@@ -2,12 +2,14 @@
   <div>
     <button
       v-show="!loggedIn"
+      id="sign-in"
       class="button is-small is-info is-outlined"
       @click="modalIsOpen = true">
       <span>Sign In</span>
     </button>
     <button
       v-show="loggedIn"
+      id="sign-out"
       class="button is-small is-info is-outlined"
       @click.prevent="signOut">
       <span>Sign Out</span>
@@ -43,6 +45,7 @@
             <div class="column">
               <p class="info">I already have a GitHub account</p>
               <button
+                id="sign-in-from-modal"
                 class="button is-info is-fullwidth"
                 @click.prevent="signIn">
                 Sign In
@@ -51,6 +54,7 @@
             <div class="column">
               <p class="info">I don't have a GitHub account</p>
               <button
+                id="sign-up-from-modal"
                 class="button is-dark-info is-fullwidth"
                 @click.prevent="signIn">
                 Sign Up
@@ -83,6 +87,7 @@ export default {
   methods: {
     async signIn () {
       await this.$auth.loginWith(process.env.AUTH_STRATEGY)
+      this.modalIsOpen = false
     },
     async signOut () {
       await this.$auth.logout()

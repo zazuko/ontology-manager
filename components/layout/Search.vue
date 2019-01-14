@@ -3,6 +3,7 @@
     <div class="field">
       <p class="control has-icons-left">
         <input
+          id="topbar-search"
           class="input"
           type="text"
           placeholder="Search"

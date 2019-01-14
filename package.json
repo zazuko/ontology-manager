@@ -15,7 +15,8 @@
     "e2e:migrate": "NODE_TEST=1 npm run migrate",
     "e2e:open": "cypress open",
     "e2e:server": "NODE_TEST=1 npm run dev",
-    "e2e": "cypress run"
+    "e2e:test": "cypress run",
+    "e2e": "npm run migrate && npm run e2e:server"
   },
   "precommit": "npm run lint",
   "dependencies": {
@@ -68,6 +69,7 @@
   },
   "devDependencies": {
     "@cypress/browserify-preprocessor": "^1.1.2",
+    "@cypress/snapshot": "^2.0.1",
     "ava": "^1.1.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
