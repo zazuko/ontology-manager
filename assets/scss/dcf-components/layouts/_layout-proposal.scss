@@ -12,14 +12,14 @@
     &.is-1 {
       @extend .is-size-1;
 
-      font-weight: normal;
+      font-weight: 300;
       color: $theme-light-primary;
     }
 
     &.is-2 {
       @extend .is-size-4;
 
-      font-weight: normal;
+      font-weight: 300;
       color: $theme-light-primary;
     }
   }
