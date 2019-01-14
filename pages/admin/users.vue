@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import users from '@/apollo/queries/adminUserList'
 import AdminUserList from '@/components/admin/AdminUserList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
@@ -43,7 +44,7 @@ export default {
       fetchPolicy: 'cache-and-network',
       result ({ data, loading }) {
         if (!loading) {
-          this.users = data.users.nodes
+          this.users = _get(data, 'users.nodes', [])
         }
       }
     }
