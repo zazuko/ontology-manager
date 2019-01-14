@@ -103,6 +103,8 @@
       background-color: white;
       border: 1px solid #c9c9c9;
       @extend .discussion-message-content;
+      resize: vertical;
+      overflow-y: scroll;
     }
   }
 }
