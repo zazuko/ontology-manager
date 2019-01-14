@@ -64,8 +64,11 @@
 </template>
 
 <script>
+import Auth from '@/mixins/auth'
+
 export default {
   name: 'SignIn',
+  extends: Auth,
   components: {},
   computed: {
     loggedIn () {

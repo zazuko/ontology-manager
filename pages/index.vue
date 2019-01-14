@@ -1,9 +1,5 @@
 <template>
   <div class="container layout-objects-list">
-    <loader :show-if="!localUserRegistrationDone">
-      <p class="subtitle">Preparing the Editor</p>
-    </loader>
-
     <section class="container layout-objects-list-head">
       <h1 class="main-title">
         ontology-editor
@@ -42,16 +38,11 @@
 import _get from 'lodash/get'
 
 import StructureHome from '@/components/home/StructureHome'
-import Loader from '@/components/layout/Loader'
-
-import Auth from '@/mixins/auth'
 
 export default {
   layout: 'background',
-  extends: Auth,
   components: {
-    StructureHome,
-    Loader
+    StructureHome
   },
   data () {
     return {
