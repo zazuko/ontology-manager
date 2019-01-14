@@ -4,25 +4,22 @@ import { toastClose } from '@/libs/utils'
 
 export default {
   name: 'Auth',
-  mounted () {
-    this.$nextTick(() => {
-      if (process.server) {
-        this.localUserRegistrationDone = true
-      }
+  async created () {
+    if (process.server) {
+      this.localUserRegistrationDone = true
+    }
 
-      if (!_get(this, '$auth.$state.loggedIn')) {
-        this.localUserRegistrationDone = true
-      }
-      if (_get(this, '$auth.$state.localUser') === true) {
-        this.localUserRegistrationDone = true
-      }
-      if (this.localUserRegistrationDone === true) {
-        return
-      }
-      this.authenticate().then(() => {
-        this.localUserRegistrationDone = true
-      })
-    })
+    if (!_get(this, '$auth.$state.loggedIn')) {
+      this.localUserRegistrationDone = true
+    }
+    if (_get(this, '$auth.$state.localUser') === true) {
+      this.localUserRegistrationDone = true
+    }
+    if (this.localUserRegistrationDone === true) {
+      return
+    }
+    await this.authenticate()
+    this.localUserRegistrationDone = true
   },
   data () {
     return {
