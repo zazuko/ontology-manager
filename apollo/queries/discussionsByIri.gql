@@ -1,4 +1,4 @@
-query GetUserContent ($iri: String!) {
+query DiscussionsByIri ($iri: String!) {
   discussions: allThreads (condition: {iri: $iri, threadType: DISCUSSION, status: OPEN}) {
     discussions: nodes {
       id,

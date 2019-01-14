@@ -1,4 +1,4 @@
-query GetAllDiscussions ($first: Int!, $offset: Int!, $orderBy: [ThreadsOrderBy!]) {
+query AdminProposalList ($first: Int!, $offset: Int!, $orderBy: [ThreadsOrderBy!]) {
   discussions: allThreads (condition: {threadType: PROPOSAL, isDraft: false}, orderBy: $orderBy, first: $first, offset: $offset) {
     nodes {
       id,

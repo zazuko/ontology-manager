@@ -1,4 +1,4 @@
-query GetAllDiscussions ($orderBy: [ThreadsOrderBy!]) {
+query AdminDiscussionList ($orderBy: [ThreadsOrderBy!]) {
   discussions: allThreads (condition: {threadType: DISCUSSION}, orderBy: $orderBy) {
     nodes {
       id,

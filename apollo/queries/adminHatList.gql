@@ -1,4 +1,4 @@
-query ListHats {
+query AdminHatList {
   allHats (orderBy: TITLE_ASC) {
     hats: nodes {
       id,

@@ -1,4 +1,4 @@
-query GetProposal ($id: Int!) {
+query ProposalById ($id: Int!) {
   proposal: threadById (id: $id) {
     id,
     proposalObject,

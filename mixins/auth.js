@@ -18,6 +18,7 @@ export default {
     if (this.localUserRegistrationDone === true) {
       return
     }
+    await this.$apolloHelpers.onLogout()
     await this.authenticate()
     this.localUserRegistrationDone = true
   },
