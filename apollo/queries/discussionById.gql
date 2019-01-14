@@ -1,4 +1,4 @@
-query GetDiscussion ($id: Int!) {
+query DiscussionById ($id: Int!) {
   discussion: threadById (id: $id) {
     id,
     headline,
