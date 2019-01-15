@@ -2,7 +2,9 @@
   <div
     :id="prop['label']"
     :class="{
+      'is-prop-form': !subform,
       'is-prop-subform': subform,
+      'is-subform': subform,
       'proposal-draft': !disabled
     }">
 
@@ -44,8 +46,7 @@
         <div class="columns">
           <div class="column is-8">
             <h2 class="title is-2">
-              <span v-show="!prop['isEdit']">New</span>
-              Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
+              <span v-show="!prop['isEdit']">New</span> Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
             </h2>
             <p
               v-show="prop['iri']"
@@ -58,9 +59,9 @@
           </div>
         </div>
 
-        <div class="columns">
-          <div class="column is-6 field">
-            <div class="field">
+        <div class="columns property-details">
+          <div class="column is-6">
+            <div class="field property-name">
               <label class="label">Property Name</label>
               <div class="control">
                 <input
@@ -78,12 +79,12 @@
                 Please enter the property name.
               </p>
             </div>
-            <div class="field">
+            <div class="field short-description">
               <label class="label">Short Description</label>
               <div class="control">
                 <textarea
-                  :disabled="disabled"
                   class="textarea"
+                  :disabled="disabled"
                   :class="{'is-danger': !prop['comment']}"
                   v-debounce
                   v-model.lazy="prop['comment']" />
@@ -94,7 +95,7 @@
                 Please write a short description.
               </p>
             </div>
-            <div class="field">
+            <div class="field deprecated">
               <div class="control">
                 <label class="checkbox">
                   <input
@@ -106,7 +107,7 @@
             </div>
           </div>
           <div class="column">
-            <div class="field">
+            <div class="field long-description">
               <label class="label">Long Description (optional)</label>
               <div class="control">
                 <editor
@@ -120,7 +121,7 @@
 
         <div class="columns">
           <div class="column">
-            <div class="field">
+            <div class="field example">
               <label class="label">Example</label>
               <div class="control">
                 <textarea
@@ -138,7 +139,7 @@
 
         <div
           v-show="canContinue"
-          class="columns">
+          class="columns fold">
           <div class="column">
             <div
               v-if="renderTypeahead">

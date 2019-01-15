@@ -6,7 +6,7 @@
     <p class="label">
       Proposal Progression
     </p>
-    <ul class="progression">
+    <ul class="progression progression-steps">
       <li
         v-for="(step, index) in progressionSteps"
         :key="index"
@@ -125,7 +125,7 @@ export default {
 
       return {
         check: () => this.obj[`${path}label`] && this.obj[`${path}comment`],
-        textError: `Enter ${this.adjective}${child && child.proposalType} Details:`,
+        textError: `Enter ${this.adjective}${child && child.proposalType} Details${_get(this.obj, `${path}label`) ? ':' : ''}`,
         textSuccess: `${this.adjective}${child && child.proposalType}`,
         path: `${path}label`
       }

@@ -1,7 +1,7 @@
 /* global cy */
-describe('Login', () => {
+describe('Admin Users List', () => {
   beforeEach(() => {
-    cy.login()
+    cy.visit('/').login()
     cy.visit('/admin/users')
   })
   it('should see myself in the list', () => {
