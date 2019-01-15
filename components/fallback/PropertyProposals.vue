@@ -5,6 +5,7 @@
       <template v-if="$auth && $auth.$state.loggedIn">
         <nuxt-link
           :to="{ name: 'proposal-property', query: { iri: iri } }"
+          id="proposal-add-property"
           title="Request new property"
           class="title-edit-button">
           +

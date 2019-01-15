@@ -19,3 +19,5 @@ dist
 # Secrets
 docker-app-dev/.env
 
+test/e2e/screenshots/
+test/e2e/videos/

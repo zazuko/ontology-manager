@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="_get(ontology, '.length') !== 0">
-      <table class="table generic-table is-fullwidth">
+      <table class="properties-table">
         <thead>
           <tr>
             <th>

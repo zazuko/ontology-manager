@@ -27,6 +27,7 @@
         <template v-if="$auth && $auth.$state.loggedIn">
           <nuxt-link
             v-if="isClass"
+            id="proposal-change-object"
             :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
             class="title-edit-button">
             <img
@@ -37,6 +38,7 @@
           </nuxt-link>
           <nuxt-link
             v-else-if="isProperty"
+            id="proposal-change-object"
             :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
             class="title-edit-button">
             <img
