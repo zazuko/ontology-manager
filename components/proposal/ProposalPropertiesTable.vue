@@ -1,5 +1,5 @@
 <template>
-  <table class="table generic-table is-fullwidth">
+  <table class="properties-table">
     <thead>
       <tr>
         <th>

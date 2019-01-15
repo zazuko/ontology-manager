@@ -40,6 +40,7 @@
         <div
           class="layout-objects-list-tools">
           <nuxt-link
+            id="proposal-new-class"
             :to="{ name: 'proposal-class', query: { iri: iri } }"
             class="button">
             Request New Class

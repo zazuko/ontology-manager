@@ -1,8 +1,8 @@
 /* global Cypress,cy */
-require('@cypress/snapshot').register()
+
+let resp
 
 Cypress.Commands.add('login', () => {
-  cy.visit('/')
   let $nuxt
   cy.window()
     .its('$nuxt')
@@ -11,6 +11,9 @@ Cypress.Commands.add('login', () => {
       return $nuxt.$auth.loginWith('local')
     })
     .then(() => {
+      if (resp) {
+        return Promise.resolve(resp)
+      }
       return cy.request({
         method: 'POST',
         url: 'http://localhost:3000/api/link',
@@ -18,7 +21,8 @@ Cypress.Commands.add('login', () => {
         body: { email: 'e2e@example.com', name: 'e2e test user', id: 789, username: 'e2e' }
       })
     })
-    .then((resp) => {
+    .then((_resp) => {
+      resp = resp || _resp
       const jwtToken = resp.body.jwtToken
       $nuxt.$auth.$storage.setState('isAdmin', resp.body.isAdmin)
       $nuxt.$auth.$storage.setState('personId', resp.body.personId)
