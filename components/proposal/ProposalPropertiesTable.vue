@@ -20,7 +20,7 @@
       <tr
         v-for="(property, index) in properties"
         :key="index">
-        <td>
+        <td class="property-name">
           <a
             v-if="property.isNew"
             :href="`#${property.label}`">
@@ -32,7 +32,7 @@
             {{ property.label }}
           </a>
         </td>
-        <td>
+        <td class="property-ranges">
           <ul class="types-list">
             <li
               v-for="range in rangeOf(property.iri, dataset)"
@@ -46,7 +46,7 @@
             </li>
           </ul>
         </td>
-        <td>
+        <td class="property-used-on">
           <ul>
             <li
               v-for="otherClass in usedOnClasses(property.iri, dataset)"
@@ -66,7 +66,9 @@
             </li>
           </ul>
         </td>
-        <td v-show="!disabled">
+        <td
+          v-show="!disabled"
+          class="property-actions">
           <div class="is-pulled-right">
             <button
               class="table-action-button"

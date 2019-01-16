@@ -238,10 +238,10 @@
 
         <div
           v-show="subform && !disabled"
-          class="columns">
+          class="columns subform-actions">
           <div class="column is-6">
             <button
-              class="button is-info"
+              class="button is-info subform-submit"
               :disabled="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ prop['label'] }}</em>" to the proposal
@@ -249,10 +249,10 @@
           </div>
 
           <div class="column is-6">
-            <button
-              class="button is-dark-info is-pulled-right">
+            <!-- <button
+              class="button is-dark-info is-pulled-right subform-cancel">
               Cancel
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -278,12 +278,12 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="subtitle">New Property "<em>{{ prop['label'] }}</em>"</h2>
+            <h2 class="subtitle collapsed-title">New Property "<em>{{ prop['label'] }}</em>"</h2>
           </div>
           <div class="column">
             <button
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, false)"
-              class="button is-info is-pulled-right">
+              class="button is-info is-pulled-right subform-reopen">
               Reopen
             </button>
           </div>

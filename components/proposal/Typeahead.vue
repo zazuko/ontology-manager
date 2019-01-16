@@ -37,13 +37,13 @@ which seems much more robust
               name="custom-options" />
             <div
               v-show="searchResults.length === 0"
-              class="dropdown-item">
+              class="dropdown-item no-result">
               <em>No result</em>
             </div>
             <div
               v-for="option in searchResults"
               :key="option.key"
-              class="dropdown-item">
+              class="dropdown-item result-item">
               <a
                 href="#"
                 @click.prevent="selection(option)">{{ option.label }}</a>
