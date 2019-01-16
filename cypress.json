@@ -10,5 +10,6 @@
   "videosFolder": "test/e2e/videos",
   "env": {
     "envFile": "test/.env"
-  }
+  },
+  "projectId": "csjzs2"
 }
