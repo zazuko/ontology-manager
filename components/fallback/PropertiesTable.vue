@@ -19,10 +19,10 @@
           <tr
             v-for="(property, index) in properties"
             :key="index">
-            <td>
+            <td class="property-name">
               <link-to-iri :term="property.subject" />
             </td>
-            <td>
+            <td class="property-ranges">
               <ul>
                 <li
                   v-for="range in rangeOf(property.subject.value, ontology)"
@@ -31,7 +31,9 @@
                 </li>
               </ul>
             </td>
-            <td>{{ getComment(property.subject.value).object.value }}</td>
+            <td class="property-comment">
+              {{ getComment(property.subject.value).object.value }}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -166,7 +166,7 @@
                   v-if="typeahead.inputString"
                   slot="custom-options"
                   slot-scope="typeahead"
-                  class="dropdown-item">
+                  class="dropdown-item create-property">
                   Create <a
                     title="Add as a new property"
                     @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
@@ -190,20 +190,20 @@
 
         <div
           v-show="subform && !disabled"
-          class="columns">
+          class="columns subform-actions">
           <div class="column is-6">
             <button
-              class="button is-info"
+              class="button is-info subform-submit"
               :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ clss['label'] }}</em>" to the proposal
             </button>
           </div>
           <div class="column is-6">
-            <button
-              class="button is-dark-info is-pulled-right">
+            <!-- <button
+              class="button is-dark-info is-pulled-right subform-cancel">
               Cancel
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -229,12 +229,12 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="subtitle">New Class "<em>{{ clss['label'] }}</em>"</h2>
+            <h2 class="subtitle collapsed-title">New Class "<em>{{ clss['label'] }}</em>"</h2>
           </div>
           <div class="column">
             <button
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, false)"
-              class="button is-info is-pulled-right">
+              class="button is-info is-pulled-right subform-reopen">
               Reopen
             </button>
           </div>
