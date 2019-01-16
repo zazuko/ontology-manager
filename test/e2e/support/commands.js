@@ -2,7 +2,7 @@
 
 let resp
 
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (path) => {
   let $nuxt
   cy.window()
     .its('$nuxt')
@@ -29,5 +29,16 @@ Cypress.Commands.add('login', () => {
       $nuxt.$auth.$storage.setState('hats', resp.body.personHats)
       $nuxt.$apolloHelpers.onLogin(jwtToken)
       $nuxt.$auth.$storage.setState('localUser', true)
+      if (path) {
+        cy.goto(path)
+      }
+    })
+})
+
+Cypress.Commands.add('goto', (path) => {
+  cy.window()
+    .its('$nuxt')
+    .then(($nuxt) => {
+      $nuxt.$router.push(path)
     })
 })

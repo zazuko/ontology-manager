@@ -3,8 +3,7 @@
 describe('Proposal', () => {
   describe('on fallback', () => {
     beforeEach(() => {
-      cy.visit('/').login()
-      cy.visit('/pouch/CargoHandlersPouch')
+      cy.visit('/pouch/CargoHandlersPouch').login()
     })
 
     it('should have one class', () => {
@@ -19,8 +18,7 @@ describe('Proposal', () => {
 
   describe('on object details', () => {
     beforeEach(() => {
-      cy.visit('/').login()
-      cy.visit('/schema/ShippersInstruction')
+      cy.visit('/schema/ShippersInstruction').login()
     })
 
     it('should have 5 properties', () => {
@@ -40,8 +38,7 @@ describe('Proposal', () => {
 
   describe('create class proposal', () => {
     before(() => {
-      cy.visit('/').login()
-      cy.visit('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+      cy.visit('/').login('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
     })
 
     it('has a title and subtitle', () => {
