@@ -28,8 +28,7 @@ deploy:
   image: cdrx/rancher-gitlab-deploy
   script:
     # - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
-    - upgrade --environment default --stack ontology-editor --service editor-zazuko-com --new-image $CI_REGISTRY_IMAGE/web:latest
-    # - upgrade --environment default --stack ontology-editor --service tcfplayground-org --new-image $CI_REGISTRY_IMAGE/web:latest
-    # - upgrade --environment default --stack ontology-editor --service schema-alod-ch --new-image $CI_REGISTRY_IMAGE/web:latest
+    - upgrade --environment default --stack ontology-editor --service editor-zazuko-com --new-image $CI_REGISTRY_IMAGE/web:latest --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
+    - upgrade --environment default --stack ontology-editor --service tcfplayground-org --new-image $CI_REGISTRY_IMAGE/web:latest --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
   only:
     - tags
