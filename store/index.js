@@ -1,10 +1,19 @@
 import * as VueDeepSet from 'vue-deepset'
 
-export const state = () => ({})
+export const state = () => ({
+  authProcessDone: false
+})
 
-export const mutations = VueDeepSet.extendMutation()
+export const mutations = VueDeepSet.extendMutation({
+  authProcessDone (state) {
+    state.authProcessDone = true
+  }
+})
 
 export const actions = {
+  async authProcessDone ({ commit, dispatch }) {
+    commit('authProcessDone')
+  },
   // Note: this gets called during SSR, which is
   // a. why we have access to `req`
   // b. why it will be broken client-side: data will be (de)serialized to/from JSON for the client

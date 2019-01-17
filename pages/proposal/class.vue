@@ -171,22 +171,28 @@ export default {
     }
     // if we have an ID from the URL here, we load
     else if (this.id) {
-      this.load(this.id)
-        .then((isDraft) => {
-          this.storeReady = true
-          this.edit = this.clss.isEdit
-          if (isDraft !== true) {
-            this.disabled = true
-            return
-          }
+      const waitForAuth = setInterval(() => {
+        if (!this.$store.state.authProcessDone) {
+          return
+        }
+        clearInterval(waitForAuth)
+        this.load(this.id)
+          .then((isDraft) => {
+            this.storeReady = true
+            this.edit = this.clss.isEdit
+            if (isDraft !== true) {
+              this.disabled = true
+              return
+            }
 
-          if (this.clss['proposalType'] === 'Property') {
-            this.$router.push({
-              name: 'proposal-property',
-              query: { id: this.clss['threadId'] }
-            })
-          }
-        })
+            if (this.clss['proposalType'] === 'Property') {
+              this.$router.push({
+                name: 'proposal-property',
+                query: { id: this.clss['threadId'] }
+              })
+            }
+          })
+      }, 200)
     }
     else {
       // otherwise we .clear() which creates a new one

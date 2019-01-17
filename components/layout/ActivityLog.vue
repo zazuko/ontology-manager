@@ -164,6 +164,9 @@ export default {
         if (!loading) {
           this.logs = data.logs
         }
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     }
   }
