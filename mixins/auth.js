@@ -4,9 +4,10 @@ import { toastClose } from '@/libs/utils'
 
 export default {
   name: 'Auth',
-  async created () {
-    if (process.server) {
+  async beforeMount () {
+    if (!process.browser) {
       this.localUserRegistrationDone = true
+      this.$store.dispatch('authProcessDone')
     }
 
     if (!_get(this, '$auth.$state.loggedIn')) {
@@ -21,6 +22,7 @@ export default {
     await this.$apolloHelpers.onLogout()
     await this.authenticate()
     this.localUserRegistrationDone = true
+    this.$store.dispatch('authProcessDone')
   },
   data () {
     return {
@@ -64,7 +66,7 @@ export default {
         if (!jwtToken) {
           throw new Error('Account linking failed.')
         }
-        this.$apolloHelpers.onLogin(jwtToken)
+        await this.$apolloHelpers.onLogin(jwtToken)
         this.$auth.$storage.setState('localUser', true)
       }
     }
