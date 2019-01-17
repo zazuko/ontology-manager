@@ -225,6 +225,9 @@ export default {
       else if (this.isClass) {
         const path = []
         let child = this.findInTree(this.iri.value, structureTree[0])
+        if (!child) {
+          return ''
+        }
         while (child.parent) {
           const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
           const target = rebaseIRI(child.iri)
