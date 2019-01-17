@@ -7,7 +7,6 @@ export default {
   async beforeMount () {
     if (!process.browser) {
       this.localUserRegistrationDone = true
-      this.$store.dispatch('authProcessDone')
     }
 
     if (!_get(this, '$auth.$state.loggedIn')) {
@@ -17,6 +16,7 @@ export default {
       this.localUserRegistrationDone = true
     }
     if (this.localUserRegistrationDone === true) {
+      this.$store.dispatch('authProcessDone')
       return
     }
     await this.$apolloHelpers.onLogout()
