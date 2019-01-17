@@ -36,7 +36,7 @@ export default {
     return {
       proposals: [],
       orderBy: [],
-      pageSize: 5
+      pageSize: 10
     }
   },
   computed: {
@@ -44,7 +44,8 @@ export default {
       return this.proposals.length < this.pageSize
     },
     page () {
-      return this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
+      const page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 1
+      return page
     }
   },
   methods: {
@@ -58,7 +59,7 @@ export default {
       variables () {
         const vars = {
           first: this.pageSize,
-          offset: this.page * this.pageSize
+          offset: (this.page - 1) * this.pageSize
         }
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy
