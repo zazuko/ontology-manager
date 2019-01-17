@@ -16,7 +16,7 @@
     "e2e:open": "cypress open",
     "e2e:server": "NODE_TEST=1 npm run dev",
     "e2e:test": "cypress run",
-    "e2e": "npm run migrate && npm run e2e:server"
+    "e2e": "npm run e2e:migrate && npm run e2e:server"
   },
   "precommit": "npm run lint",
   "dependencies": {
