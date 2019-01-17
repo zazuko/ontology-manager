@@ -17,12 +17,12 @@
 
     <div
       v-show="ratings.length"
-      class="navbar-dropdown search-results"
-      @click="clear">
+      class="navbar-dropdown search-results">
       <nuxt-link
         v-for="(item, index) in ratings"
         :key="index"
         :to="{ path: item.href }"
+        @click="clear"
         class="navbar-item">
         <p class="result-title">
           {{ item.target }}
@@ -60,30 +60,45 @@ export default {
   data () {
     return {
       ratings: [],
-      searchString: '',
-      searchIndex: this.$store.state.graph.searchIndex,
-      searchTexts: this.$store.state.graph.searchIndex.map(x => x.text)
+      searchString: ''
     }
   },
   watch: {
     'searchString' () {
       this.search(this.searchString)
+    },
+    '$route': {
+      handler () {
+        if (this.searchString || this.ratings.length) {
+          this.clear()
+        }
+      },
+      deep: true
+    }
+  },
+  computed: {
+    searchTexts () {
+      return this.$store.state.graph.searchIndex.map(x => x.text || '')
     }
   },
   methods: {
     clear () {
       this.searchString = ''
+      this.ratings = []
     },
     search (str) {
+      if (str.length < 2) {
+        return
+      }
       let { ratings = [] } = findBestMatch(str, this.searchTexts)
       ratings.sort((a, b) => b.rating - a.rating)
       ratings = ratings
         .slice(0, 21)
         .filter(item => item.rating > 0.05)
         .reduce((acc, found) => {
-          const object = this.searchIndex[found.index]
+          const object = this.$store.state.graph.searchIndex[found.index]
           if (!acc[object.iri]) {
-            found.objects = this.searchIndex.filter(({ iri }) => iri === object.iri)
+            found.objects = this.$store.state.graph.searchIndex.filter(({ iri }) => iri === object.iri)
             acc[object.iri] = found
             found.href = rebaseIRI(object.iri)
             if (object.type === 'label') {
