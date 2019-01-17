@@ -2,10 +2,17 @@
   padding-top: 3em;
   padding-bottom: 4em;
 
-  .is-prop-subform .box {
+  .is-subform .box {
     border-top: solid 1px $theme-shadow;
     border-radius: 0 0 8px 8px;
+  }
+
+  .is-prop-subform .box {
     background: $theme-main-background;
+  }
+
+  .is-class-subform .box {
+    background: white;
   }
 
   .title {
