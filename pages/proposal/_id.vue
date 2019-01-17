@@ -225,12 +225,19 @@ export default {
           message: 'Not found'
         })
       }
-      loader(this.id)
-        .then((isDraft) => {
-          if (isDraft !== true) {
-            this.disabled = true
-          }
-        })
+      const waitForAuth = setInterval(() => {
+        if (!this.$store.state.authProcessDone) {
+          return
+        }
+        clearInterval(waitForAuth)
+
+        loader(this.id)
+          .then((isDraft) => {
+            if (isDraft !== true) {
+              this.disabled = true
+            }
+          })
+      }, 200)
     }
   },
   validate ({ params }) {
@@ -260,6 +267,9 @@ export default {
           }
           this.init()
         }
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     }
   },

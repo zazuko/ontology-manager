@@ -7,11 +7,11 @@
     border-radius: 0 0 8px 8px;
   }
 
-  .is-prop-subform .box {
+  .is-prop-subform > div > .box {
     background: $theme-main-background;
   }
 
-  .is-class-subform .box {
+  .is-class-subform > div > .box {
     background: white;
   }
 
