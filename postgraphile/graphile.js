@@ -46,7 +46,7 @@ const options = {
   appendPlugins: [PgMutationUpsertPlugin],
   dynamicJson: true,
   // all the following options can be helpful in dev or debug mode
-  graphiql: true,
+  graphiql: pgConfig.host === 'localhost',
   showErrorStack: true,
   extendedErrors: debugErrors
 }
