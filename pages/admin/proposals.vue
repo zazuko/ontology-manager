@@ -68,7 +68,7 @@ export default {
       result ({ data, loading }) {
         if (!loading) {
           this.proposals = _get(data, 'discussions.nodes', [])
-            .filter(node => node.status !== 'HIDDEN')
+          //   .filter(node => node.status !== 'HIDDEN')
         }
       },
       fetchPolicy: 'cache-and-network'
