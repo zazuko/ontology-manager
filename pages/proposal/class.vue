@@ -69,7 +69,18 @@
               :edit="edit"
               :iri="_iri">
 
-              <p v-show="error">{{ error }}</p>
+              <div
+                v-show="error"
+                class="modal is-active">
+                <div class="modal-background" />
+                <div class="modal-content has-text-centered">
+                  <div class="box">
+                    <p class="subtitle">
+                      {{ error }}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div
                 v-show="!disabled"
