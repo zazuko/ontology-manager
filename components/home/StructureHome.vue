@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { cloneDeep, get } from 'lodash'
-import { hasCreativeWorkChild, arrayToGroups, iriToId } from '@/libs/utils'
+import { cloneDeep } from 'lodash'
+import { hasCreativeWorkChild, arrayToGroups, iriToId, childClassesCount } from '@/libs/utils'
 import PouchBox from '@/components/fallback/PouchBox'
 
 export default {
@@ -84,48 +84,7 @@ export default {
     iriToId,
     hasCreativeWorkChild,
     arrayToGroups,
-    // childPropertiesCount (obj) {
-    //   // returned cached version if we have it
-    //   if (obj.hasOwnProperty('childPropertiesCount')) {
-    //     return obj.childPropertiesCount
-    //   }
-    //   // compute it
-    //   const properties = childPropertiesCount(obj)
-    //     .reduce((tmp, p) => {
-    //       tmp[p.subject.value] = true
-    //       return tmp
-    //     }, {})
-    //   const count = Object.keys(properties).length
-    //   // cache it
-    //   obj.childPropertiesCount = count
-    //   return count
-    // },
-    childClassesCount (obj, sum = 0, recursing = false) {
-      if (obj.hasOwnProperty('childClassesCount')) {
-        return obj.childClassesCount
-      }
-      let count
-      if (get(obj, 'children.length', false)) {
-        const childCount = obj.children.reduce((acc, child) => this.childClassesCount(child, acc, true), sum)
-        count = (obj.type === 'class' ? 1 : 0) + childCount
-      }
-      else {
-        count = sum + (obj.type === 'class' ? 1 : 0)
-      }
-      if (!recursing) {
-        obj.childClassesCount = count
-      }
-      return count
-    }
+    childClassesCount
   }
 }
-
-// function childPropertiesCount (obj, properties = []) {
-//   if (obj.children) {
-//     const prop = Array.isArray(obj.properties) ? obj.properties : obj.properties.toArray()
-//     const childProps = obj.children.reduce((acc, child) => childPropertiesCount(child, acc), properties)
-//     return prop.concat(childProps)
-//   }
-//   return obj.properties.toArray()
-// }
 </script>

@@ -1,3 +1,4 @@
+import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import { termIRI } from '@/libs/rdf'
@@ -175,4 +176,47 @@ export function iriToId (iri) {
 
 export function headTitle (title) {
   return `${title} - ${process.env.EDITOR_TITLE}`
+}
+
+export function childClassesCount (obj, sum = 0, recursing = false) {
+  if (obj.hasOwnProperty('childClassesCount')) {
+    return obj.childClassesCount
+  }
+  let count
+  if (_get(obj, 'children.length', false)) {
+    const childCount = obj.children.reduce((acc, child) => childClassesCount(child, acc, true), sum)
+    count = (obj.type === 'class' ? 1 : 0) + childCount
+  }
+  else {
+    count = sum + (obj.type === 'class' ? 1 : 0)
+  }
+  if (!recursing) {
+    obj.childClassesCount = count
+  }
+  return count
+}
+export function childPropertiesCount (obj) {
+  // returned cached version if we have it
+  if (obj.hasOwnProperty('childPropertiesCount')) {
+    return obj.childPropertiesCount
+  }
+  // compute it
+  const properties = _childPropertiesCount(obj)
+    .reduce((tmp, p) => {
+      tmp[p.subject.value] = true
+      return tmp
+    }, {})
+  const count = Object.keys(properties).length
+  // cache it
+  obj.childPropertiesCount = count
+  return count
+}
+
+function _childPropertiesCount (obj, properties = []) {
+  if (obj.children) {
+    const prop = Array.isArray(obj.properties) ? obj.properties : obj.properties.toArray()
+    const childProps = obj.children.reduce((acc, child) => _childPropertiesCount(child, acc), properties)
+    return prop.concat(childProps)
+  }
+  return obj.properties.toArray()
 }
