@@ -8,7 +8,9 @@
           type="text"
           placeholder="Search"
           v-debounce="150"
-          v-model.lazy="searchString">
+          v-model.lazy="searchString"
+          @focus="showResult = true"
+          @blur="showResult = false">
         <span class="icon is-small is-left">
           <i class="mdi mdi-magnify"></i>
         </span>
@@ -16,10 +18,10 @@
     </div>
 
     <div
-      v-show="ratings.length"
+      v-show="showResult && results.length && searchString.length >= 2"
       class="navbar-dropdown search-results">
       <nuxt-link
-        v-for="(item, index) in ratings"
+        v-for="(item, index) in results"
         :key="index"
         :to="{ path: item.href }"
         @click="clear"
@@ -28,23 +30,17 @@
           {{ item.target }}
         </p>
         <p
-          v-if="Array.isArray(item.details)"
           class="result-detail">
-          <span
-            v-for="(detail, idx) in item.details"
-            :key="idx">
-            <strong v-if="detail.highlight">
-              {{ detail.text }}
+          <template v-if="item.details">
+            {{ item.details }}
+          </template>
+          <template v-else>
+            {{ item.highlight.before }}
+            <strong>
+              {{ item.highlight.highlighted }}
             </strong>
-            <span v-else>
-              {{ detail.text }}
-            </span>
-          </span>
-        </p>
-        <p
-          v-else
-          class="result-detail">
-          {{ item.details }}
+            {{ item.highlight.after }}
+          </template>
         </p>
       </nuxt-link>
     </div>
@@ -52,15 +48,16 @@
 </template>
 
 <script>
-import { findBestMatch } from '@/libs/string-similarity'
+import Fuse from 'fuse.js'
 import { rebaseIRI } from '@/libs/rdf'
 
 export default {
   name: 'Search',
   data () {
     return {
-      ratings: [],
-      searchString: ''
+      results: [],
+      searchString: '',
+      showResult: false
     }
   },
   watch: {
@@ -69,82 +66,108 @@ export default {
     },
     '$route': {
       handler () {
-        if (this.searchString || this.ratings.length) {
+        if (this.searchString || this.results.length) {
           this.clear()
         }
       },
       deep: true
     }
   },
-  computed: {
-    searchTexts () {
-      return this.$store.state.graph.searchIndex.map(x => x.text || '')
+  created () {
+    const options = {
+      keys: ['part', 'label', 'comment'],
+      minMatchCharLength: 3,
+      shouldSort: true,
+      includeMatches: true,
+      includeScore: true,
+      distance: 10000,
+      threshold: 0.05
     }
+    this.fuse = new Fuse(this.$store.state.graph.searchIndex, options)
   },
   methods: {
     clear () {
       this.searchString = ''
-      this.ratings = []
+      this.results = []
     },
     search (str) {
-      if (str.length < 2) {
-        return
-      }
-      let { ratings = [] } = findBestMatch(str, this.searchTexts)
-      ratings.sort((a, b) => b.rating - a.rating)
-      ratings = ratings
-        .slice(0, 21)
-        .filter(item => item.rating > 0.05)
-        .reduce((acc, found) => {
-          const object = this.$store.state.graph.searchIndex[found.index]
-          if (!acc[object.iri]) {
-            found.objects = this.$store.state.graph.searchIndex.filter(({ iri }) => iri === object.iri)
-            acc[object.iri] = found
-            found.href = rebaseIRI(object.iri)
-            if (object.type === 'label') {
-              found.target = object.text
-              found.details = object.objectType
-            }
-            else {
-              const match = found.target
-              found.target = found.objects[0].part
-              found.details = highlight(str, match)
+      const results = this.fuse.search(str)
+        .filter(({ matches, score }) => matches && matches.length)
+        .slice(0, 10)
+        .map((result) => {
+          const { item, matches } = result
+          const href = rebaseIRI(result.item.iri)
+          const firstMatch = matches[0]
+          const found = {
+            href,
+            target: item.label
+          }
+
+          if (firstMatch.key === 'comment') {
+            found.highlight = highlight(item.comment, firstMatch.indices[0])
+            if (!found.highlight.highlighted.toLocaleLowerCase().includes(str.toLowerCase())) {
+              found.details = ''
+              found.details += found.highlight.before + ' '
+              found.details += found.highlight.highlighted + ' '
+              found.details += found.highlight.after
             }
           }
-          return acc
-        }, {})
-
-      this.ratings = Object.values(ratings).filter((rating) => !!rating.target).slice(0, 10)
+          else {
+            found.details = item.type
+          }
+          return found
+        })
+      this.results = results
     }
   }
 }
 
-function highlight (word, sentence) {
-  const xs = []
-  const submatch = findBestMatch(word, sentence.split(' '))
-  const highlightedText = submatch.ratings[submatch.bestMatchIndex].target
-  if (submatch.bestMatchIndex > 0) {
-    let beforeHighlight = submatch.ratings.slice(0, submatch.bestMatchIndex).map(p => p.target).join(' ')
-    let trimmed = false
-    while (beforeHighlight.includes(' ') && (beforeHighlight.length + highlightedText.length) > 35) {
-      beforeHighlight = beforeHighlight.substr(beforeHighlight.indexOf(' ') + 1)
-      trimmed = true
+function highlight (sentence, [from, to]) {
+  const before = []
+  const highlighted = []
+  const after = []
+  const lastSpace = sentence.lastIndexOf(' ')
+
+  let lastSpaceIndex = 0
+  let spaceIndex = -1
+  while (lastSpaceIndex < from && spaceIndex < lastSpace) {
+    spaceIndex = sentence.indexOf(' ', lastSpaceIndex + 1)
+    if (spaceIndex < from) {
+      before.push(sentence.substring(lastSpaceIndex, spaceIndex))
+      lastSpaceIndex = spaceIndex + 1
     }
-    xs.push({
-      text: (trimmed ? '…' : '') + beforeHighlight,
-      highlight: false
-    })
+    else {
+      break
+    }
   }
-  xs.push({
-    text: highlightedText,
-    highlight: true
-  })
-  if (submatch.bestMatchIndex < submatch.ratings.length - 1) {
-    xs.push({
-      text: submatch.ratings.slice(submatch.bestMatchIndex + 1).map(p => p.target).join(' '),
-      highlight: false
-    })
+
+  while (lastSpaceIndex < to && spaceIndex < lastSpace) {
+    spaceIndex = sentence.indexOf(' ', lastSpaceIndex + 1)
+    highlighted.push(sentence.substring(lastSpaceIndex, spaceIndex))
+    lastSpaceIndex = spaceIndex + 1
   }
-  return xs
+
+  while (spaceIndex < lastSpace) {
+    spaceIndex = sentence.indexOf(' ', lastSpaceIndex + 1)
+    after.push(sentence.substring(lastSpaceIndex, spaceIndex))
+    lastSpaceIndex = spaceIndex + 1
+  }
+  after.push(sentence.substring(lastSpaceIndex))
+
+  let trimmed = false
+  while (before.join(' ').length + highlighted.join(' ').length + 1 >= 35) {
+    before.shift()
+    trimmed = true
+  }
+
+  if (trimmed) {
+    before.unshift('… ')
+  }
+
+  return {
+    before: before.join(' '),
+    highlighted: highlighted.join(' '),
+    after: after.join(' ')
+  }
 }
 </script>
