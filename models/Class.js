@@ -200,7 +200,7 @@ export function proposalDataset (clss, validation = true) {
   const ontology = new Dataset().addAll(quads)
   const structure = new Dataset().addAll(structureQuads)
 
-  return clss.propChildren.reduce((acc, propChild) => {
+  return (clss.propChildren || []).reduce((acc, propChild) => {
     const childDatasets = propToDataset(propChild, validation)
 
     const ontology = acc.ontology.merge(childDatasets.ontology)
