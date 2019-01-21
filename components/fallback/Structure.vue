@@ -13,11 +13,11 @@
             <div
               v-for="(group, index) in arrayToGroups(obj)"
               :key="index"
-              class="tile is-ancestor">
+              class="tile is-ancestor object-tiles">
               <div
                 v-for="child in group"
                 :key="child.path"
-                class="tile is-parent is-3">
+                class="tile is-parent">
                 <pouch-box
                   :label="child.label"
                   :to="{ path: child.path, params: {} }"
