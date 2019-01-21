@@ -317,7 +317,7 @@ export function mergedEditedOntology (_originalIRI, _newIRI, baseDataset, newDat
 export function buildSearchIndex (dataset) {
   const indexedPredicates = [stringIRI.label, stringIRI.comment, stringIRI.description]
 
-  return dataset.toArray().reduce((iris, quad) => {
+  const indexObject = dataset.toArray().reduce((iris, quad) => {
     if (!indexedPredicates.includes(quad.predicate.value)) {
       return iris
     }
@@ -331,13 +331,16 @@ export function buildSearchIndex (dataset) {
       type = 'Pouch'
     }
 
-    iris.push({
+    iris[iri] = iris[iri] || {}
+
+    Object.assign(iris[iri], {
       iri,
+      type,
       part: iri.substr(iri.lastIndexOf('/') + 1),
-      type: term(quad.predicate),
-      text: term(quad.object),
-      objectType: type
+      [term(quad.predicate)]: term(quad.object)
     })
+
     return iris
-  }, [])
+  }, {})
+  return Object.values(indexObject)
 }
