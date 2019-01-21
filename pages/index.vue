@@ -2,21 +2,47 @@
   <div class="container layout-objects-list">
     <section class="container layout-objects-list-head">
       <h1 class="main-title">
-        ontology-editor
+        Ontology Manager
       </h1>
-      <h2 class="subtitle">
-        RDF ontology/schema editor
-      </h2>
 
       <div class="columns">
         <div class="column">
           <p>
-            One-to-one frictionless standards-compliant tagclouds matrix transparent strategic applications action-items leverage. Authentic ubiquitous transform." Embedded, benchmark brand: integrate visualize e-commerce, citizen-media Cluetrain unleash systems turn-key applications? Integrate redefine networks niches user-centred aggregate harness whiteboard.
+            The Ontology Manager is based on a web interface and Github for repository functions. It has been created in order
+            to enable collaboration on schema definition beyond the developer community and enabling the business process experts
+            to engage and drive the creation of the best possible schema for the logistics industry, while ensuring a correct
+            schema definition in Turtle (Terse RDF Triple Language) format.
           </p>
         </div>
+
         <div class="column">
           <p>
-            Web services interfaces efficient A-list e-commerce web services e-business syndicate, "innovate one-to-one methodologies architect eyeballs," web services: enable networking bandwidth enterprise. Social reintermediate, harness wireless target vortals vertical integrateAJAX-enabled infomediaries revolutionary models experiences, bandwidth.
+            The Ontology Manager consists of the following functions;
+          </p>
+
+          <ul class="dash-bullet">
+            <li>
+              repository of schema in Turtle format (Github)
+            </li>
+            <li>
+              logical visualization of schema
+            </li>
+            <li>
+              forum capability
+            </li>
+            <li>
+              proposal, voting, and acceptance of new schema entries, changes, and deprecation
+            </li>
+            <li>
+              search in all defined schemas
+            </li>
+            <li>
+              activity list view
+            </li>
+          </ul>
+
+          <p>
+            In order to join you will need a Github account.
           </p>
         </div>
       </div>
