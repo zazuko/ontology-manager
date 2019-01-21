@@ -204,7 +204,8 @@ export function proposalDataset (clss, validation = true) {
     const childDatasets = propToDataset(propChild, validation)
 
     const ontology = acc.ontology.merge(childDatasets.ontology)
-    const structure = acc.structure.merge(childDatasets.structure)
+    // child classes should not become structure objects i.e. logistic objects
+    // const structure = acc.structure.merge(childDatasets.structure)
 
     return { ontology, structure }
   }, { ontology, structure })
