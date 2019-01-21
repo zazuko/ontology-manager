@@ -32,6 +32,7 @@
           <template v-if="$auth && $auth.$state.loggedIn">
             <draft-tab class="navbar-item" />
             <nuxt-link
+              v-show="$auth.$state.isAdmin"
               :to="{ name: 'admin-proposals', params: {} }"
               class="navbar-item">
               Admin
