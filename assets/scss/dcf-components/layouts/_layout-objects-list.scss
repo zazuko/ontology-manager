@@ -35,9 +35,10 @@
 
 .object-tiles {
   flex-wrap: wrap;
-  .tile {
+  .object-tile {
+    @extend .is-3;
     @media screen and (min-width: 769px) and (max-width: 1023px) {
-      flex: 1 1 50%;
+      width: 50% !important;
     }
   }
 }

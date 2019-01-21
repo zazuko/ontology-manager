@@ -32,7 +32,7 @@
             <div
               v-for="child in group"
               :key="child.path"
-              class="tile is-parent">
+              class="tile is-parent object-tile">
               <pouch-box
                 :label="child.label"
                 :to="{ path: child.path, params: {} }"
@@ -40,8 +40,7 @@
                 :properties-count="0"
                 :classes-count="childClassesCount(child)"
                 :modified="child.modified"
-                :type="child.type"
-                class="" />
+                :type="child.type" />
             </div>
           </div>
         </div>

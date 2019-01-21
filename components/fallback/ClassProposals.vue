@@ -25,8 +25,7 @@
                       :iri="proposal.proposalObject.iri"
                       :modified="proposal.updatedAt"
                       :is-proposal="true"
-                      type="class"
-                      class="" />
+                      type="class" />
                   </div>
                 </div>
               </div>
