@@ -23,6 +23,7 @@
                   :to="{ path: child.path, params: {} }"
                   :iri="child.iri"
                   :properties-count="_get(child, 'properties.length', 0)"
+                  :classes-count="childClassesCount(child)"
                   :modified="child.modified"
                   :type="child.type" />
               </div>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { arrayToGroups } from '@/libs/utils'
+import { arrayToGroups, childClassesCount } from '@/libs/utils'
 import PouchBox from './PouchBox'
 import _get from 'lodash/get'
 import Dataset from 'indexed-dataset/dataset'
@@ -81,7 +82,8 @@ export default {
   },
   methods: {
     _get,
-    arrayToGroups
+    arrayToGroups,
+    childClassesCount
   }
 }
 </script>
