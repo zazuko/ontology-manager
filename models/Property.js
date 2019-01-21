@@ -226,7 +226,7 @@ export function proposalDataset (property, validation = true) {
   const ontology = new Dataset().addAll(quads)
   const structure = new Dataset()
 
-  return property.classChildren.reduce((acc, classChild) => {
+  return (property.classChildren || []).reduce((acc, classChild) => {
     const childDatasets = classToDataset(classChild, validation)
 
     const ontology = acc.ontology.merge(childDatasets.ontology)
