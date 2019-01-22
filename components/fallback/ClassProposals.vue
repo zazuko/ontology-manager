@@ -18,14 +18,16 @@
                     v-for="(proposal, index) in group"
                     :key="index"
                     class="tile is-parent object-tile">
-                    <pouch-box
-                      :label="proposal.proposalObject.label"
-                      :to="{ name: 'proposal-id', params: { id: proposal.id } }"
-                      :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
-                      :iri="proposal.proposalObject.iri"
-                      :modified="proposal.updatedAt"
-                      :is-proposal="true"
-                      type="class" />
+                    <template v-if="proposal.proposalObject.label">
+                      <pouch-box
+                        :label="proposal.proposalObject.label"
+                        :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                        :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
+                        :iri="proposal.proposalObject.iri"
+                        :modified="proposal.updatedAt"
+                        :is-proposal="true"
+                        type="class" />
+                    </template>
                   </div>
                 </div>
               </div>
