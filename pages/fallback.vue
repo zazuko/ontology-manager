@@ -198,7 +198,6 @@ export default {
   },
   data () {
     return {
-      iri: 'loading',
       termIRI,
       objectType: '',
       ontology: new Dataset(),
