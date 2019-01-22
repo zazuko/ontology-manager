@@ -4,7 +4,7 @@
     Drafts
     <span
       v-show="counter"
-      class="tag is-info">
+      class="notification-counter">
       {{ counter }}
     </span>
   </nuxt-link>
