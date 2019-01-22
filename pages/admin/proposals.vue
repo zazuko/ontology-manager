@@ -9,8 +9,9 @@
         route="admin-proposals" />
       <div class="responsive-table">
         <admin-proposal-list
-          v-model="orderBy"
           :proposals="proposals"
+          @sort="sortUpdate"
+          @status-filter="statusFilterUpdate"
           @updated="refetch()" />
       </div>
     </no-ssr>
@@ -36,6 +37,7 @@ export default {
     return {
       proposals: [],
       orderBy: [],
+      filterStatus: false,
       pageSize: 10
     }
   },
@@ -51,6 +53,17 @@ export default {
   methods: {
     refetch () {
       this.$apollo.queries.discussions.refetch()
+    },
+    sortUpdate (sortBy) {
+      this.orderBy = sortBy
+    },
+    statusFilterUpdate (status) {
+      if (status === 'all') {
+        this.filterStatus = false
+      }
+      else {
+        this.filterStatus = status
+      }
     }
   },
   apollo: {
@@ -64,12 +77,14 @@ export default {
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy
         }
+        if (this.filterStatus) {
+          vars.status = this.filterStatus.toUpperCase()
+        }
         return vars
       },
       result ({ data, loading }) {
         if (!loading) {
           this.proposals = _get(data, 'discussions.nodes', [])
-          //   .filter(node => node.status !== 'HIDDEN')
         }
       },
       fetchPolicy: 'cache-and-network'

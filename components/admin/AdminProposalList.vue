@@ -3,14 +3,7 @@
     <thead>
       <tr>
         <th>
-          <a
-            class="sort-by"
-            @click.prevent="sort('HEADLINE')">
-            Title
-            <span class="sort-icon">
-              <i :class="{ [String(orderBy['HEADLINE']).toLowerCase()]: orderBy['HEADLINE'] }" />
-            </span>
-          </a>
+          Title
         </th>
         <th>
           Created by
@@ -26,14 +19,58 @@
           </a>
         </th>
         <th>
-          <a
-            class="sort-by"
-            @click.prevent="sort('STATUS')">
-            Status
-            <span class="sort-icon">
-              <i :class="{ [String(orderBy['STATUS']).toLowerCase()]: orderBy['STATUS'] }" />
-            </span>
-          </a>
+          <div
+            class="dropdown"
+            :class="{ 'is-active': statusDropdown }">
+            <div class="dropdown-trigger">
+              <button
+                aria-haspopup="true"
+                aria-controls="dropdown-menu"
+                @click.prevent="statusDropdown = true">
+                <span>Status</span>
+                <span class="sort-icon">
+                  <i class="asc"></i>
+                </span>
+              </button>
+            </div>
+            <div
+              class="dropdown-menu"
+              role="menu">
+              <div class="dropdown-content">
+                <a
+                  class="dropdown-item"
+                  :class="{ 'is-active': statusFilter === 'all' }"
+                  @click.prevent="filterStatus('all')">
+                  All
+                </a>
+                <hr class="dropdown-divider">
+                <a
+                  class="dropdown-item"
+                  :class="{ 'is-active': statusFilter === 'open' }"
+                  @click.prevent="filterStatus('open')">
+                  Open
+                </a>
+                <a
+                  class="dropdown-item"
+                  :class="{ 'is-active': statusFilter === 'resolved' }"
+                  @click.prevent="filterStatus('resolved')">
+                  Resolved
+                </a>
+                <a
+                  class="dropdown-item"
+                  :class="{ 'is-active': statusFilter === 'rejected' }"
+                  @click.prevent="filterStatus('rejected')">
+                  Rejected
+                </a>
+                <a
+                  class="dropdown-item"
+                  :class="{ 'is-active': statusFilter === 'hidden' }"
+                  @click.prevent="filterStatus('hidden')">
+                  Hidden
+                </a>
+              </div>
+            </div>
+          </div>
         </th>
         <th>
           Votes
@@ -157,13 +194,6 @@ export default {
       default () {
         return []
       }
-    },
-    value: {
-      type: Array,
-      required: true,
-      default () {
-        return []
-      }
     }
   },
   components: {
@@ -180,6 +210,8 @@ export default {
   },
   data () {
     return {
+      statusDropdown: false,
+      statusFilter: 'all',
       orderBy: {
         ID: false,
         HEADLINE: false,
@@ -274,7 +306,12 @@ export default {
       const filters = Object.entries(this.orderBy)
         .filter(([key, val]) => val)
         .map(([key, val]) => `${key}_${val}`)
-      this.$emit('input', filters)
+      this.$emit('sort', filters)
+    },
+    filterStatus (status) {
+      this.statusFilter = status
+      this.statusDropdown = false
+      this.$emit('status-filter', status)
     }
   }
 }
