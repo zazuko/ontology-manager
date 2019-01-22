@@ -18,6 +18,33 @@
     a {
       color: white;
     }
+
+    .dropdown {
+      .dropdown-trigger {
+        cursor: pointer;
+        button, button:hover {
+          border: none;
+          color: white;
+          background: $theme-dark-primary;
+          padding: 0;
+          margin: 0;
+          font-size: 1em;
+        }
+      }
+      .dropdown-divider {
+        background: $theme-dark-primary;
+      }
+      a {
+        color: $theme-dark-primary;
+        background: white;
+      }
+      .dropdown-item {
+        &.is-active, &:hover {
+          color: white;
+          background: $theme-dark-primary;
+        }
+      }
+    }
   }
 
   tbody td {
