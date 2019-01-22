@@ -1,4 +1,4 @@
-.navbar {
+.top-nav {
   .navbar-brand {
     img {
       height: 70px;
@@ -73,5 +73,11 @@
         color: $theme-dark-grey;
       }
     }
+  }
+
+  .notification-counter {
+    @extend .tag;
+    @extend .is-info;
+    margin-left: 4px;
   }
 }
