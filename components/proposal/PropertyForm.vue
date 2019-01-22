@@ -45,7 +45,14 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title is-2">
+            <h2
+              v-if="prop['isEdit']"
+              class="title is-2">
+              <span v-show="!prop['isEdit']">Changed</span> Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
+            </h2>
+            <h2
+              v-else
+              class="title is-2">
               <span v-show="!prop['isEdit']">New</span> Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
             </h2>
             <p
@@ -278,7 +285,16 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="subtitle collapsed-title">New Property "<em>{{ prop['label'] }}</em>"</h2>
+            <h2
+              v-if="prop['isEdit']"
+              class="subtitle collapsed-title">
+              Changed Property "<em>{{ prop['label'] }}</em>"
+            </h2>
+            <h2
+              v-else
+              class="subtitle collapsed-title">
+              New Property "<em>{{ prop['label'] }}</em>"
+            </h2>
           </div>
           <div class="column">
             <button

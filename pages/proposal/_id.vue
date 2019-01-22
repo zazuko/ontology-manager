@@ -5,11 +5,15 @@
         <div class="columns">
           <div class="column is-3" />
           <div class="column">
-            <h1 class="title is-1">
-              New {{ type }} Request<span
-                v-show="obj.label">:
-                "{{ obj.label }}"
-              </span>
+            <h1
+              v-if="obj.isEdit"
+              class="title is-1">
+              Change {{ type }} Request: "{{ obj.label }}"
+            </h1>
+            <h1
+              v-else
+              class="title is-1">
+              New {{ type }} Request: "{{ obj.label }}"
             </h1>
             <h2 class="subtitle is-1">
               On <span class="title-url">{{ obj.parentStructureIRI }}</span>

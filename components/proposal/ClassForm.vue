@@ -53,8 +53,16 @@
 
         <div class="columns">
           <div class="column is-8">
-            <h2 class="title is-2">
-              <span v-show="!edit">New</span> Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span></h2>
+            <h2
+              v-if="clss['isEdit']"
+              class="title is-2">
+              <span v-show="!edit">Changed</span> Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span>
+            </h2>
+            <h2
+              v-else
+              class="title is-2">
+              <span v-show="!edit">New</span> Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span>
+            </h2>
             <p
               v-show="clss['iri']"
               class="subtitle is-1">
@@ -229,7 +237,16 @@
       <div class="box">
         <div class="columns">
           <div class="column is-8">
-            <h2 class="subtitle collapsed-title">New Class "<em>{{ clss['label'] }}</em>"</h2>
+            <h2
+              v-if="clss['isEdit']"
+              class="subtitle collapsed-title">
+              Changed Class "<em>{{ clss['label'] }}</em>"
+            </h2>
+            <h2
+              v-else
+              class="subtitle collapsed-title">
+              New Class "<em>{{ clss['label'] }}</em>"
+            </h2>
           </div>
           <div class="column">
             <button
