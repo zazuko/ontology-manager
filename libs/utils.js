@@ -170,7 +170,7 @@ export function debounce (fn, delay) {
   }
 }
 
-export function iriToId (iri) {
+export function iriToId (iri = '') {
   return iri.toLowerCase().replace(/[^a-z]/g, '_')
 }
 
