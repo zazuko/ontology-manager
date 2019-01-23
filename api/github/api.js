@@ -1,11 +1,9 @@
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
 
-const octokit = octokitFactory({ debug: process.env.NODE_ENV !== 'production' })
-
-octokit.authenticate({
-  type: 'oauth',
-  token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+const octokit = octokitFactory({
+  debug: process.env.NODE_ENV !== 'production',
+  auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
 })
 
 const { getRefSHA, getFileSHA } = helpersFactory(octokit)
@@ -117,7 +115,7 @@ module.exports = class GitHubAPIv3 {
 
     return {
       success: !!result.data.merged, // true | undefined => bool
-      message: result.data.message
+      message: result.data.message // shown to user if !success
     }
   }
 
@@ -131,7 +129,5 @@ module.exports = class GitHubAPIv3 {
       number,
       state: 'closed'
     })
-
-    return {}
   }
 }

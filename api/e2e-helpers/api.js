@@ -1,19 +1,19 @@
-const fs = require('fs')
-const util = require('util')
-const helpersFactory = require('./helpers')
-const octokitFactory = require('@octokit/rest')
-const octokit = octokitFactory({ debug: process.env.NODE_ENV !== 'production' })
+const fs = require('fs').promises
+const path = require('path')
 
-const readFile = util.promisify(fs.readFile)
+const tmpTestFolder = path.resolve('../../test/repo/tmp')
+fs.mkdir(tmpTestFolder).catch(() => {})
+const log = path.resolve('../../test/repo/tmp/log.txt')
 
-octokit.authenticate({
-  type: 'oauth',
-  token: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
-})
+async function append (str, obj) {
+  await fs.appendFile(log, `${str}\n`)
+  if (obj) {
+    await fs.appendFile(log, `${JSON.stringify(obj, null, 2)}\n`)
+  }
+  await fs.appendFile(log, '---\n')
+}
 
-const { getRefSHA, getFileSHA } = helpersFactory(octokit)
-
-module.exports = class GitHubAPIv3 {
+module.exports = class FSAPI {
   constructor () {
     this.branch = process.env.EDITOR_GITHUB_BRANCH
     this.owner = process.env.EDITOR_GITHUB_OWNER
@@ -32,16 +32,10 @@ module.exports = class GitHubAPIv3 {
   async createBranch () {
     const owner = this.owner
     const repo = this.repo
-    const sha = await getRefSHA({
-      ref: `heads/${this.branch}`,
-      owner,
-      repo
-    })
 
     const branchName = (new Date()).toISOString().replace(/:/g, '')
-    await octokit.gitdata.createRef({
+    await append('createBranch', {
       ref: `refs/heads/${branchName}`,
-      sha,
       owner,
       repo
     })
@@ -52,7 +46,7 @@ module.exports = class GitHubAPIv3 {
   }
 
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
-    return readFile(require.resolve(`../../test/repo/${path}`))
+    return fs.readFile(require.resolve(`../../test/repo/${path}`))
   }
 
   async updateFile ({ message, content, branch, author, structure = false }) {
@@ -61,33 +55,23 @@ module.exports = class GitHubAPIv3 {
     const committer = this.committer
     const path = structure ? this.structurePath : this.ontologyPath
 
-    const sha = await getFileSHA({
-      ref: `refs/heads/${branch}`,
-      path,
-      owner,
-      repo
-    })
-
-    const result = await octokit.repos.updateFile({
-      content: Buffer.from(content).toString('base64'),
+    await append('updateFile', {
+      content,
       path,
       owner,
       repo,
       message,
-      sha,
       branch,
       committer,
       author
     })
-
-    return result
   }
 
   async createPR ({ title, body, branch } = {}) {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await octokit.pullRequests.create({
+    await append('createPR', {
       head: branch,
       base: this.branch,
       maintainer_can_modify: true,
@@ -98,7 +82,7 @@ module.exports = class GitHubAPIv3 {
     })
 
     return {
-      number: result.data.number
+      number: Math.floor(Math.random() * 1000000)
     }
   }
 
@@ -106,7 +90,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await octokit.pullRequests.merge({
+    await append('mergePR', {
       owner,
       repo,
       number,
@@ -114,8 +98,8 @@ module.exports = class GitHubAPIv3 {
     })
 
     return {
-      success: !!result.data.merged, // true | undefined => bool
-      message: result.data.message
+      success: true, // true | undefined => bool
+      message: ''
     }
   }
 
@@ -123,13 +107,11 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    await octokit.pullRequests.update({
+    await append('closePR', {
       owner,
       repo,
       number,
       state: 'closed'
     })
-
-    return {}
   }
 }

@@ -8,8 +8,7 @@
       'proposal-draft': !disabled
     }">
 
-    <div
-      v-if="disabled || !clss['isSubFormCollapsed']">
+    <template v-if="disabled || !clss['isSubFormCollapsed']">
       <!--
       <div
         v-show="!subform && clss['iri']"
@@ -217,7 +216,7 @@
 
       </div>
 
-      <div v-if="clss['propChildren'] && clss['propChildren'].length">
+      <template v-if="clss['propChildren'] && clss['propChildren'].length">
         <property-form
           v-for="(newProp, index) in clss['propChildren']"
           :key="index"
@@ -226,13 +225,12 @@
           :disabled="disabled"
           :store-path="`${storePath}.propChildren[${index}]`"
           :base-datasets="mergedDatasets" />
-      </div>
-      <div v-else />
+      </template>
 
       <slot />
 
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
 
       <div class="box">
         <div class="columns">
@@ -258,7 +256,7 @@
         </div>
       </div>
 
-    </div>
+    </template>
   </div>
 </template>
 
