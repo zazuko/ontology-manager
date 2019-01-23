@@ -72,12 +72,23 @@
               :edit="edit"
               :iri="_iri">
 
-              <p v-show="error">{{ error }}</p>
+              <div
+                v-show="error"
+                class="modal is-active">
+                <div class="modal-background" />
+                <div class="modal-content has-text-centered">
+                  <div class="box">
+                    <p class="subtitle">
+                      {{ error }}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div
                 v-show="!disabled"
                 class="columns proposal-submit">
-                <p class="column is-6">
+                <p class="column">
                   <button
                     id="submit"
                     class="button is-info"
@@ -86,16 +97,48 @@
                     Submit Proposal
                   </button>
                 </p>
-                <p class="column is-6">
+                <p class="column">
+                  <a
+                    v-show="savingIndicator === 'spinning'"
+                    class="button is-primary is-loading">
+                    Loading
+                  </a>
                   <button
-                    class="button is-dark-info is-pulled-right"
-                    @click.prevent="clear">
+                    v-show="savingIndicator !== 'spinning'"
+                    class="button is-primary"
+                    @click.prevent="saveDraft">
+                    <span v-show="savingIndicator === 'done'">
+                      Draft Saved <i class="mdi mdi-check"></i>
+                    </span>
+                    <span v-show="savingIndicator !== 'done'">
+                      Save Draft
+                    </span>
+                  </button>
+                </p>
+                <p
+                  v-show="isEditingExistingDraft"
+                  class="column">
+                  <button
+                    class="button is-dark-info"
+                    @click.prevent="discard">
+                    Discard Draft
+                  </button>
+                </p>
+                <p
+                  v-show="!isEditingExistingDraft"
+                  class="column">
+                  <button
+                    class="button is-dark-info"
+                    @click.prevent="cancel">
                     Cancel
                   </button>
                 </p>
               </div>
+
             </property-form>
+
           </div>
+
         </div>
       </section>
 
@@ -110,6 +153,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
+import discardDraft from '@/apollo/mutations/discardDraft'
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
@@ -125,11 +169,13 @@ const {
 
 export default {
   async asyncData ({ query }) {
-    const id = parseInt(query.id, 10)
+    let id = parseInt(query.id, 10)
+    id = Number.isNaN(id) ? null : id
     return {
-      id: Number.isNaN(id) ? null : id,
+      id,
+      isEditingExistingDraft: !!id,
       iri: query.iri || '',
-      edit: Boolean(query.edit)
+      edit: Boolean(query.edit) // it's a change proposal, not a new thing proposal
     }
   },
   middleware: 'authenticated',
@@ -142,6 +188,7 @@ export default {
     return {
       saveTmp: '', // only save if this string changed
       saveInterval: null,
+      savingIndicator: false,
       disabled: false,
       isLoading: false,
       proposalReady: true,
@@ -151,11 +198,11 @@ export default {
   mounted () {
     if (process.browser) {
       this.saveInterval = setInterval(() => {
-        if (this.prop && this.prop['isDraft'] === false) {
-          clearInterval(this.saveInterval)
+        if ((this.prop && this.prop['isDraft'] === false) || this.disabled) {
+          this.stopAutosave()
           return
         }
-        this.saveDraft()
+        this.autosaveDraft()
       }, 2500)
     }
   },
@@ -169,23 +216,29 @@ export default {
       this.storeReady = true
     }
     // if we have an ID from the URL here, we load
-    else if (this.id) {
-      this.load(this.id)
-        .then((isDraft) => {
-          this.storeReady = true
-          this.edit = this.prop.isEdit
-          if (isDraft !== true) {
-            this.disabled = true
-            return
-          }
+    else if (this.isEditingExistingDraft) {
+      const waitForAuth = setInterval(() => {
+        if (!this.$store.state.authProcessDone) {
+          return
+        }
+        clearInterval(waitForAuth)
+        this.load(this.id)
+          .then((isDraft) => {
+            this.storeReady = true
+            this.edit = this.prop.isEdit
+            if (isDraft !== true) {
+              this.disabled = true
+              return
+            }
 
-          if (this.prop['proposalType'] === 'Class') {
-            this.$router.push({
-              name: 'proposal-class',
-              query: { id: this.prop['threadId'] }
-            })
-          }
-        })
+            if (this.prop['proposalType'] === 'Class') {
+              this.$router.push({
+                name: 'proposal-class',
+                query: { id: this.prop['threadId'] }
+              })
+            }
+          })
+      }, 200)
     }
     else {
       // otherwise we .clear() which creates a new one
@@ -196,7 +249,7 @@ export default {
   beforeDestroy () {
     if (this.saveInterval) {
       this.saveDraft()
-      clearInterval(this.saveInterval)
+      this.stopAutosave()
     }
   },
   computed: {
@@ -239,7 +292,8 @@ export default {
       // remove draft status from the json proposalObject
       this.$vuexSet('prop.prop.isDraft', false)
       // save the changes
-      await this.saveDraft()
+      await this.autosaveDraft()
+      this.stopAutosave()
 
       const token = this.$apolloHelpers.getToken()
       // create the PR etc
@@ -247,20 +301,61 @@ export default {
       // submit will commit success or error to the store,
       // see this page's `watch`ers
     },
-    saveDraft () {
+    stopAutosave () {
+      clearInterval(this.saveInterval)
+      this.saveInterval = null
+    },
+    async cancel () {
+      await this.clear()
+      this.$router.push({ path: '/' })
+    },
+    async autosaveDraft () {
+      const serialized = this.serialized
+      if (this.prop.label && this.prop.comment && this.saveTmp !== serialized) {
+        this.saveTmp = serialized
+        this.$store.dispatch('drafts/LOAD')
+        await this.save()
+      }
+    },
+    async saveDraft () {
+      if (this.savingIndicator === 'spinning') {
+        return
+      }
+      this.savingIndicator = 'spinning'
       const serialized = this.serialized
       if (!this.prop.label && !this.prop.comment) {
-        return Promise.resolve()
+        // console.log('not saved: no label or no comment')
       }
       if (this.saveTmp !== serialized) {
         this.saveTmp = serialized
         this.$store.dispatch('drafts/LOAD')
-        return this.save()
+        await this.save()
       }
-      return Promise.resolve()
+      setTimeout(() => {
+        this.savingIndicator = 'done'
+      }, 300)
+      if (this.savingIndicatorTimeout) {
+        clearTimeout(this.savingIndicatorTimeout)
+      }
+      this.savingIndicatorTimeout = setTimeout(() => {
+        this.savingIndicator = false
+      }, 5 * 1000)
     },
     finalize (flag) {
       this.proposalReady = flag
+    },
+    async discard () {
+      this.stopAutosave()
+      const variables = { threadId: this.id }
+      try {
+        await this.$apollo.mutate({ mutation: discardDraft, variables })
+        this.$emit('discarded', this.id)
+        this.$router.push({ path: '/' })
+      }
+      catch (err) {
+        console.error(err)
+        this.$sentry.captureException(err)
+      }
     }
   },
   validate ({ query }) {
