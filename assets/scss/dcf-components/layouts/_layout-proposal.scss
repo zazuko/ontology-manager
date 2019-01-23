@@ -5,13 +5,14 @@
   .is-subform .box {
     border-top: solid 1px $theme-shadow;
     border-radius: 0 0 8px 8px;
+    margin-bottom: 2em;
   }
 
-  .is-prop-subform > div > .box {
+  .is-prop-subform > .box {
     background: $theme-main-background;
   }
 
-  .is-class-subform > div > .box {
+  .is-class-subform > .box {
     background: white;
   }
 
