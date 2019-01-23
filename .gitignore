@@ -5,7 +5,7 @@ node_modules
 npm-debug.log
 
 # Nuxt build
-.nuxt
+/.nuxt
 
 # Nuxt generate
 dist
@@ -17,7 +17,8 @@ dist
 .npm_cache
 
 # Secrets
-docker-app-dev/.env
+/docker-app-dev/.env
 
-test/e2e/screenshots/
-test/e2e/videos/
+/test/e2e/screenshots/
+/test/e2e/videos/
+/test/repo/tmp/
