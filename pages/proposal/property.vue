@@ -88,11 +88,12 @@
               <div
                 v-show="!disabled"
                 class="columns proposal-submit">
-                <p class="column">
+                <p
+                  v-show="proposalReady"
+                  class="column">
                   <button
                     id="submit"
-                    class="button is-info"
-                    :disabled="!proposalReady"
+                    class="submit-proposal"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
@@ -100,12 +101,12 @@
                 <p class="column">
                   <a
                     v-show="savingIndicator === 'spinning'"
-                    class="button is-primary is-loading">
+                    class="save-proposal is-loading">
                     Loading
                   </a>
                   <button
                     v-show="savingIndicator !== 'spinning'"
-                    class="button is-primary"
+                    class="save-proposal"
                     @click.prevent="saveDraft">
                     <span v-show="savingIndicator === 'done'">
                       Draft Saved <i class="mdi mdi-check"></i>
@@ -119,7 +120,7 @@
                   v-show="isEditingExistingDraft"
                   class="column">
                   <button
-                    class="button is-dark-info"
+                    class="discard-proposal"
                     @click.prevent="discard">
                     Discard Draft
                   </button>
@@ -128,7 +129,7 @@
                   v-show="!isEditingExistingDraft"
                   class="column">
                   <button
-                    class="button is-dark-info"
+                    class="cancel-proposal"
                     @click.prevent="cancel">
                     Cancel
                   </button>
@@ -218,7 +219,7 @@ export default {
     // if we have an ID from the URL here, we load
     else if (this.isEditingExistingDraft) {
       const waitForAuth = setInterval(() => {
-        if (!this.$store.state.authProcessDone) {
+        if (!this.$store.state.authProcessDone || typeof this.prop === 'undefined') {
           return
         }
         clearInterval(waitForAuth)

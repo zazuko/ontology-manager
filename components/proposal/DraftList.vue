@@ -20,22 +20,22 @@
           <td>
             <p>{{ draft.updatedAt | formatTime }}</p>
           </td>
-          <td class="has-text-right">
+          <td class="draft-actions">
             <nuxt-link
               v-if="proposalType(draft.proposalObject) === 'Class'"
               :to="{ name: 'proposal-class', query: { id: draft.id } }"
-              class="button is-small is-info">
+              class="edit-draft">
               Edit Proposal
             </nuxt-link>
             <nuxt-link
               v-else
               :to="{ name: 'proposal-property', query: { id: draft.id } }"
-              class="button is-small is-info">
+              class="edit-draft">
               Edit Proposal
             </nuxt-link>
             <button
               @click.prevent="discard(draft.id)"
-              class="button is-small is-dark-info">
+              class="discard-draft">
               Discard
             </button>
           </td>

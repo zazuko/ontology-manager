@@ -96,13 +96,30 @@
   }
 
   .proposal-submit {
-    .button {
-      @extend .is-medium;
+    @mixin proposal-submit-button {
       height: 3em;
-
       width: 100%;
       border-radius: 8px;
       font-size: 1em;
+    }
+    .submit-proposal {
+      @extend .button;
+      @extend .is-medium;
+      @extend .is-info;
+      @include proposal-submit-button;
+    }
+    .save-proposal {
+      @extend .button;
+      @extend .is-medium;
+      @extend .is-primary;
+      @include proposal-submit-button;
+    }
+    .discard-proposal,
+    .cancel-proposal {
+      @extend .button;
+      @extend .is-medium;
+      @extend .is-dark-info;
+      @include proposal-submit-button;
     }
   }
 
