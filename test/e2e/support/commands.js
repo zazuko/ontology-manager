@@ -42,3 +42,10 @@ Cypress.Commands.add('goto', (path) => {
       $nuxt.$router.push(path)
     })
 })
+
+Cypress.Commands.add('clearDrafts', () => {
+  cy.goto('/proposal/drafts')
+  cy.get('table.table.admin-table .discard-draft').each(($button) => {
+    cy.wrap($button).click()
+  })
+})
