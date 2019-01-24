@@ -44,8 +44,17 @@ Cypress.Commands.add('goto', (path) => {
 })
 
 Cypress.Commands.add('clearDrafts', () => {
-  cy.goto('/proposal/drafts')
-  cy.get('table.table.admin-table .discard-draft').each(($button) => {
-    cy.wrap($button).click()
-  })
+  cy.window()
+    .its('$nuxt')
+    .then(($nuxt) => {
+      return new Promise((resolve) => setTimeout(() => {
+        if ($nuxt.$store.state.drafts.drafts.length > 0) {
+          cy.goto('/proposal/drafts')
+          cy.get('table.table.admin-table .discard-draft').each(($button) => {
+            cy.wrap($button).click()
+          })
+        }
+        resolve()
+      }, 500))
+    })
 })

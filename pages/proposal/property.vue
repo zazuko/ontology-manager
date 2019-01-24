@@ -116,22 +116,11 @@
                     </span>
                   </button>
                 </p>
-                <p
-                  v-show="isEditingExistingDraft"
-                  class="column">
+                <p class="column">
                   <button
                     class="discard-proposal"
                     @click.prevent="discard">
                     Discard Draft
-                  </button>
-                </p>
-                <p
-                  v-show="!isEditingExistingDraft"
-                  class="column">
-                  <button
-                    class="cancel-proposal"
-                    @click.prevent="cancel">
-                    Cancel
                   </button>
                 </p>
               </div>
@@ -315,7 +304,7 @@ export default {
       if (this.prop.label && this.prop.comment && this.saveTmp !== serialized) {
         this.saveTmp = serialized
         this.$store.dispatch('drafts/LOAD')
-        await this.save()
+        this.id = await this.save()
       }
     },
     async saveDraft () {
@@ -330,7 +319,7 @@ export default {
       if (this.saveTmp !== serialized) {
         this.saveTmp = serialized
         this.$store.dispatch('drafts/LOAD')
-        await this.save()
+        this.id = await this.save()
       }
       setTimeout(() => {
         this.savingIndicator = 'done'
@@ -347,15 +336,17 @@ export default {
     },
     async discard () {
       this.stopAutosave()
-      const variables = { threadId: this.id }
-      try {
-        await this.$apollo.mutate({ mutation: discardDraft, variables })
-        this.$emit('discarded', this.id)
-        this.$router.push({ path: '/' })
-      }
-      catch (err) {
-        console.error(err)
-        this.$sentry.captureException(err)
+      if (typeof this.id === 'number') {
+        const variables = { threadId: this.id }
+        try {
+          await this.$apollo.mutate({ mutation: discardDraft, variables })
+          this.$emit('discarded', this.id)
+          this.$router.push({ path: '/' })
+        }
+        catch (err) {
+          console.error(err)
+          this.$sentry.captureException(err)
+        }
       }
     }
   },
