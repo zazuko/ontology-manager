@@ -41,24 +41,48 @@ describe('Proposal', () => {
   })
 
   describe('create class proposal', () => {
-    before(() => {
+    beforeEach(() => {
       cy.visit('/').login()
-      cy.clearDrafts()
-      cy.goto('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+      cy.clearDrafts().then(() => {
+        cy.goto('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+      })
     })
 
-    it('has a title and subtitle', () => {
+    it.skip('saves a draft and discards it', () => {
       cy.get('.notification-counter').should('not.be.visible')
 
       createDraft()
 
       cy.get('.notification-counter').should('be.visible')
       cy.get('.notification-counter').should('contain', '1')
+
+      cancelDraft()
+      cy.get('.notification-counter').should('not.be.visible')
+    })
+
+    it('submits a proposal', () => {
+      cy.get('.notification-counter').should('not.be.visible')
+
+      createDraft()
+
+      cy.get('.notification-counter').should('be.visible')
+      cy.get('.notification-counter').should('contain', '1')
+
+      submitProposal()
+      cy.get('.notification-counter').should('not.be.visible')
     })
   })
 })
 
 /* global Cypress,cy */
+
+function submitProposal () {
+  cy.get('button.submit-proposal').click()
+}
+
+function cancelDraft () {
+  cy.get('button.discard-proposal').click()
+}
 
 function createDraft () {
   getProposalForm().within(($form) => {
