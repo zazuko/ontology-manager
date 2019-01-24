@@ -1,9 +1,9 @@
 const fs = require('fs').promises
 const path = require('path')
 
-const tmpTestFolder = path.resolve('../../test/repo/tmp')
+const tmpTestFolder = path.resolve('./test/repo/tmp')
 fs.mkdir(tmpTestFolder).catch(() => {})
-const log = path.resolve('../../test/repo/tmp/log.txt')
+const log = path.resolve('./test/repo/tmp/log.txt')
 
 async function append (str, obj) {
   await fs.appendFile(log, `${str}\n`)

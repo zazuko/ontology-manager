@@ -112,7 +112,7 @@ export const actions = {
       const threadIdFromResult = _get(result, 'data.upsertThread.thread.id')
 
       commit(SET_ID, threadIdFromResult)
-      return Promise.resolve()
+      return Promise.resolve(threadIdFromResult)
     }
     catch (error) {
       console.error(error)
