@@ -10,7 +10,7 @@
           v-debounce="150"
           v-model.lazy="searchString"
           @focus="showResult = true"
-          @blur="showResult = false">
+          @blur="hideResults">
         <span class="icon is-small is-left">
           <i class="mdi mdi-magnify"></i>
         </span>
@@ -86,6 +86,12 @@ export default {
     this.fuse = new Fuse(this.$store.state.graph.searchIndex, options)
   },
   methods: {
+    hideResults () {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        this.showResult = false
+      }, 100)
+    },
     clear () {
       this.searchString = ''
       this.results = []
