@@ -1,5 +1,5 @@
 import { postgraphile } from 'postgraphile'
-import PgMutationUpsertPlugin from './graphile-upsert-plugin'
+import PgMutationUpsertPlugin from 'graphile-upsert-plugin'
 
 // https://node-postgres.com/api/client
 const pgConfig = {
