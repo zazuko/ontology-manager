@@ -11,6 +11,11 @@ module.exports = {
         "Cargo Weight\n       \n          Property"
       ],
       "3": [
+        "netWeight\n       \n          Property",
+        "grossWeight\n       \n          Property",
+        "AWB Total Weight\n       \n          Property",
+        "AWB Total Weight UoM\n       \n          Property",
+        "AWB Manifested Weight\n       \n          Property",
         "Cargo Weight\n       \n          Property"
       ]
     }
