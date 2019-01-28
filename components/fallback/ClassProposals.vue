@@ -6,7 +6,7 @@
 
         <div
           v-if="_get(proposals, 'proposals.length')"
-          class="tile is-child container-box">
+          class="tile is-child container-box proposal-boxes">
           <div class="content">
             <div class="tile is-ancestor">
               <div class="tile is-parent is-12">
