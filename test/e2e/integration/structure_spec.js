@@ -23,7 +23,7 @@ describe('Structure', () => {
     cy.get('.main-title').should('be', 'Container')
     cy.get('.class-box-title').then(snapshotBoxes)
     cy.goto('/letsnest/container/container/').wait(500)
-    cy.get('.main-title').should('be', 'Deeper Container')
+    cy.get('.main-title').should('be', 'Deeper Container').wait(200)
     cy.get('.class-box-title').then(snapshotBoxes)
   })
 

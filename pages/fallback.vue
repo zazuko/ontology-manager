@@ -1,7 +1,4 @@
 <template>
-  <!--
-  class="main-content columns is-fullheight"
-  -->
   <div>
     <div
       v-if="iri"
