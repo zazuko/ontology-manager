@@ -6,7 +6,7 @@
           {{ _get(obj, 'label') }}: Logistics objects
         </h1>
 
-        <div class="tile is-child container-box">
+        <div class="tile is-child container-box class-boxes">
           <div
             v-if="_get(obj, 'children.length', false)"
             class="content">

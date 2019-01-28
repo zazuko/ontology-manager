@@ -9,7 +9,7 @@ describe('Proposal', () => {
     })
 
     it('should have one class', () => {
-      cy.get('article.class-box').should('have.length', 1)
+      cy.get('.class-boxes article.class-box').should('have.length', 1)
     })
 
     it('can request a new class', () => {
@@ -48,7 +48,7 @@ describe('Proposal', () => {
       })
     })
 
-    it.skip('saves a draft and discards it', () => {
+    it('saves a draft and discards it', () => {
       cy.get('.notification-counter').should('not.be.visible')
 
       createDraft()
@@ -67,9 +67,12 @@ describe('Proposal', () => {
 
       cy.get('.notification-counter').should('be.visible')
       cy.get('.notification-counter').should('contain', '1')
+      let p = Cypress.$('.proposal-boxes article.class-box').length
 
       submitProposal()
       cy.get('.notification-counter').should('not.be.visible')
+      cy.goto('/pouch/CargoHandlersPouch').wait(500)
+      assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: p + 1 })
     })
   })
 })
@@ -309,4 +312,10 @@ function propertyTitleAndShortDesc ({ scope, title, shortDesc, iriPart, depth = 
   assertProposalTitle('prop', `New Property "${title}"`, depth > 0 ? 'subform' : false)
   assertProposalIri('prop', `http://example.com/schema/${iriPart}`, depth > 0 ? 'subform' : false)
   getFold().should('be.visible')
+}
+
+function assertBoxesCountOn (path, counts) {
+  cy.goto(path)
+  cy.get('.class-boxes article.class-box').should('have.length', counts.class)
+  cy.get('.proposal-boxes article.class-box').should('have.length', counts.proposal)
 }
