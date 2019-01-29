@@ -1,4 +1,5 @@
 import rdf from 'rdf-ext'
+import DatasetExt from 'rdf-ext/lib/Dataset'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
 // import resourcesToGraph from 'rdf-utils-dataset/resourcesToGraph'
@@ -6,7 +7,6 @@ import { serialize, buildTree } from '@/libs/utils'
 import { buildSearchIndex } from '@/libs/rdf'
 import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch'
-import Dataset from 'indexed-dataset/dataset'
 
 export const state = () => ({
   ontology: {},
@@ -22,20 +22,20 @@ export const state = () => ({
 
 export const getters = {
   ontology: (state) => {
-    if (!(state.ontology instanceof Dataset)) {
-      return new Dataset()
+    if (!(state.ontology instanceof DatasetExt)) {
+      return rdf.dataset()
     }
     return state.ontology.clone()
   },
   structure: (state) => {
-    if (!(state.structure instanceof Dataset)) {
-      return new Dataset()
+    if (!(state.structure instanceof DatasetExt)) {
+      return rdf.dataset()
     }
     return state.structure.clone()
   },
   ontologyGraph: (state) => {
-    if (!(state.ontologyGraph instanceof Dataset)) {
-      return new Dataset()
+    if (!(state.ontologyGraph instanceof DatasetExt)) {
+      return rdf.dataset()
     }
     return state.ontologyGraph.clone()
   },
@@ -65,7 +65,7 @@ export const mutations = {
 export const actions = {
   async [DESERIALIZE] ({ commit, state }) {
     const toDeserialize = ['ontology', 'structure']
-      .filter((prop) => !(state[prop] instanceof Dataset))
+      .filter((prop) => !(state[prop] instanceof DatasetExt))
 
     const deserialized = await Promise.all(
       toDeserialize.map((prop) => deserialize(state[`${prop}Serialized`]))
@@ -97,5 +97,5 @@ async function deserialize (string) {
 
   const quadStream = parser.import(input)
 
-  return new Dataset().import(quadStream)
+  return rdf.dataset().import(quadStream)
 }

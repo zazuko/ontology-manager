@@ -2,7 +2,6 @@ import rdf from 'rdf-ext'
 import stringToStream from 'string-to-stream'
 import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
-import Dataset from 'indexed-dataset/dataset'
 
 // * used by a trifid plugin on first server requests
 // * used by the store to refresh client-side dataset after a merge
@@ -21,8 +20,8 @@ export default async function fetchDataset () {
     const structureQuadStream = parser.import(stringToStream(structureString))
 
     const [ontologyDataset, structureDataset] = await Promise.all([
-      new Dataset().import(ontologyQuadStream),
-      new Dataset().import(structureQuadStream)
+      rdf.dataset().import(ontologyQuadStream),
+      rdf.dataset().import(structureQuadStream)
     ])
 
     return { ontologyDataset, structureDataset }
