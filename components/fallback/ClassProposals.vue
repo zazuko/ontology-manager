@@ -8,28 +8,24 @@
           v-if="_get(proposals, 'proposals.length')"
           class="tile is-child container-box proposal-boxes">
           <div class="content">
-            <div class="tile is-ancestor">
-              <div class="tile is-parent is-12">
-                <div
-                  v-for="(group, i) in arrayToGroups({ children: _get(proposals, 'proposals', []) })"
-                  :key="i"
-                  class="tile is-ancestor object-tiles">
-                  <div
-                    v-for="(proposal, index) in group"
-                    :key="index"
-                    class="tile is-parent object-tile">
-                    <template v-if="proposal.proposalObject.label">
-                      <pouch-box
-                        :label="proposal.proposalObject.label"
-                        :to="{ name: 'proposal-id', params: { id: proposal.id } }"
-                        :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
-                        :iri="proposal.proposalObject.iri"
-                        :modified="proposal.updatedAt"
-                        :is-proposal="true"
-                        type="class" />
-                    </template>
-                  </div>
-                </div>
+            <div
+              v-for="(group, index) in groups"
+              :key="index"
+              class="tile is-ancestor object-tiles">
+              <div
+                v-for="(proposal, i) in group"
+                :key="i"
+                class="tile is-parent object-tile">
+                <template v-if="proposal.proposalObject.label">
+                  <pouch-box
+                    :label="proposal.proposalObject.label"
+                    :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                    :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
+                    :iri="proposal.proposalObject.iri"
+                    :modified="proposal.updatedAt"
+                    :is-proposal="true"
+                    type="class" />
+                </template>
               </div>
             </div>
           </div>
@@ -69,6 +65,11 @@ export default {
   },
   components: {
     PouchBox
+  },
+  computed: {
+    groups () {
+      return arrayToGroups({ children: _get(this, 'proposals.proposals', []) })
+    }
   },
   methods: {
     _get,
