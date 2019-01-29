@@ -83,7 +83,7 @@
 import rdf from 'rdf-ext'
 import _get from 'lodash/get'
 // https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
-// import JsonLdSerializer from 'rdf-serializer-jsonld'
+import JsonLdSerializer from 'rdf-serializer-jsonld'
 
 import Structure from '@/components/fallback/Structure'
 import ObjectDetails from '@/components/fallback/ObjectDetails'
@@ -107,33 +107,32 @@ export default {
 
     let iriDataset = rdf.dataset()
     let jsonld = ''
-    // try {
-    //   jsonld = await new Promise((resolve, reject) => {
-    //     iriDataset = matched(store, iri)
-    //     if (!iriDataset) {
-    //       resolve()
-    //     }
-    //     const quadStream = rdf.graph(iriDataset).toStream()
-    //
-    //     const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
-    //
-    //     const jsonStream = serializer.import(quadStream)
-    //
-    //     jsonStream.on('error', (err) => {
-    //       reject(err)
-    //     })
-    //     jsonStream.on('data', (jsonld) => {
-    //       resolve(jsonld)
-    //     })
-    //     jsonStream.on('end', () => {
-    //       resolve()
-    //     })
-    //   })
-    // }
-    // catch (err) {
-    //   console.error(err)
-    //   this.$sentry.captureException(err)
-    // }
+    try {
+      jsonld = await new Promise((resolve, reject) => {
+        iriDataset = matched(store, iri)
+        if (!iriDataset) {
+          resolve()
+        }
+        const quadStream = rdf.graph(iriDataset).toStream()
+
+        const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
+
+        const jsonStream = serializer.import(quadStream)
+
+        jsonStream.on('error', (err) => {
+          reject(err)
+        })
+        jsonStream.on('data', (jsonld) => {
+          resolve(jsonld)
+        })
+        jsonStream.on('end', () => {
+          resolve()
+        })
+      })
+    }
+    catch (err) {
+      console.error(err)
+    }
 
     return {
       iri,
@@ -270,17 +269,17 @@ export default {
   }
 }
 
-// function matched (store, iri) {
-//   const subject = rdf.namedNode(iri)
-//
-//   const ontologyGraph = store.getters['graph/ontologyGraph']
-//   const structureGraph = store.getters['graph/structureGraph']
-//
-//   const foundInOntology = ontologyGraph.match(null, null, null, subject)
-//   if (foundInOntology.toArray().length) {
-//     return foundInOntology
-//   }
-//   const foundInStructure = structureGraph.match(null, null, null, subject)
-//   return foundInStructure
-// }
+function matched (store, iri) {
+  const subject = rdf.namedNode(iri)
+
+  const ontologyGraph = store.getters['graph/ontologyGraph']
+  const structureGraph = store.getters['graph/structureGraph']
+
+  const foundInOntology = ontologyGraph.match(null, null, null, subject)
+  if (foundInOntology.toArray().length) {
+    return foundInOntology
+  }
+  const foundInStructure = structureGraph.match(null, null, null, subject)
+  return foundInStructure
+}
 </script>
