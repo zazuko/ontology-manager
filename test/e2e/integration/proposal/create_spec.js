@@ -67,12 +67,14 @@ describe('Proposal', () => {
 
       cy.get('.notification-counter').should('be.visible')
       cy.get('.notification-counter').should('contain', '1')
-      let p = Cypress.$('.proposal-boxes article.class-box').length
 
-      submitProposal()
-      cy.get('.notification-counter').should('not.be.visible')
-      cy.goto('/pouch/CargoHandlersPouch').wait(500)
-      assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: p + 1 })
+      cy.countProposalsOn('http://example.com/pouch/CargoHandlersPouch')
+        .then((count) => {
+          submitProposal()
+          cy.get('.notification-counter').should('not.be.visible')
+          cy.goto('/pouch/CargoHandlersPouch').wait(500)
+          assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })
+        })
     })
   })
 })

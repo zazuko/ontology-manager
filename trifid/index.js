@@ -19,7 +19,7 @@ async function initMiddleware () {
 
 app.use(async function (req, res, next) {
   if (!middleware) {
-    initMiddleware()
+    await initMiddleware()
   }
   middleware(req, res, next)
 })
