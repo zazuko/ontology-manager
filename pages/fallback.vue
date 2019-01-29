@@ -95,7 +95,6 @@ import Loader from '@/components/layout/Loader'
 
 import { findSubtreeInForest, headTitle } from '@/libs/utils'
 import { termIRI, term } from '@/libs/rdf'
-import Dataset from 'indexed-dataset/dataset'
 
 export default {
   layout: 'background',
@@ -106,7 +105,7 @@ export default {
       iri += '/'
     }
 
-    let iriDataset = new Dataset()
+    let iriDataset = rdf.dataset()
     let jsonld = ''
     // try {
     //   jsonld = await new Promise((resolve, reject) => {
@@ -197,8 +196,8 @@ export default {
     return {
       termIRI,
       objectType: '',
-      ontology: new Dataset(),
-      structure: new Dataset(),
+      ontology: rdf.dataset(),
+      structure: rdf.dataset(),
       dataReady: false
     }
   },
