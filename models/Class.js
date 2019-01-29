@@ -2,7 +2,6 @@ import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import { termIRI, datasetToCanonicalN3, normalizeLabel, firstVal, mergedEditedOntology } from '@/libs/rdf'
 import { proposalDataset as propToDataset } from '@/models/Property'
-import Dataset from 'indexed-dataset/dataset'
 
 const classBaseUrl = process.env.CLASS_BASE_URL
 
@@ -197,8 +196,8 @@ export function proposalDataset (clss, validation = true) {
     rdf.quad(rdf.namedNode(clss.parentStructureIRI), termIRI.hasPart, classIRI)
   ]
 
-  const ontology = new Dataset().addAll(quads)
-  const structure = new Dataset().addAll(structureQuads)
+  const ontology = rdf.dataset(quads)
+  const structure = rdf.dataset(structureQuads)
 
   return (clss.propChildren || []).reduce((acc, propChild) => {
     const childDatasets = propToDataset(propChild, validation)
@@ -212,7 +211,7 @@ export function proposalDataset (clss, validation = true) {
 }
 
 export function _debugNT (baseDataset, newQuadsDataset) {
-  const base = baseDataset ? baseDataset.clone() : new Dataset()
+  const base = baseDataset ? baseDataset.clone() : rdf.dataset()
   const dataset = base.merge(newQuadsDataset)
 
   return datasetToCanonicalN3(dataset)

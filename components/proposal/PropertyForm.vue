@@ -310,13 +310,13 @@
 
 <script>
 import _get from 'lodash/get'
+import rdf from 'rdf-ext'
 import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, externalIRIToQuad } from '@/libs/rdf'
 import { debounce } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import { Class } from '@/models/Class'
 import { proposalDataset, generatePropertyProposal, validate } from '@/models/Property'
-import Dataset from 'indexed-dataset/dataset'
 
 export default {
   name: 'PropertyForm',
@@ -363,8 +363,8 @@ export default {
     return {
       searchFunction: () => ([]),
       renderTypeahead: process.client,
-      ontology: new Dataset(),
-      structure: new Dataset(),
+      ontology: rdf.dataset(),
+      structure: rdf.dataset(),
       debugNT: '',
       termIRI
     }

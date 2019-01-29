@@ -43,10 +43,10 @@
 </template>
 
 <script>
+import rdf from 'rdf-ext'
 import { arrayToGroups, childClassesCount } from '@/libs/utils'
 import PouchBox from './PouchBox'
 import _get from 'lodash/get'
-import Dataset from 'indexed-dataset/dataset'
 
 export default {
   name: 'Structure',
@@ -64,12 +64,12 @@ export default {
     ontology: {
       type: Object,
       required: true,
-      default: () => new Dataset()
+      default: () => rdf.dataset()
     },
     structure: {
       type: Object,
       required: true,
-      default: () => new Dataset()
+      default: () => rdf.dataset()
     },
     isClass: {
       type: Boolean,
