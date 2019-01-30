@@ -47,6 +47,7 @@ const options = {
   dynamicJson: true,
   // all the following options can be helpful in dev or debug mode
   graphiql: pgConfig.host === 'localhost',
+  enhanceGraphiql: pgConfig.host === 'localhost',
   showErrorStack: true,
   extendedErrors: debugErrors
 }

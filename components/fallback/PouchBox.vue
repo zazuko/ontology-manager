@@ -8,7 +8,9 @@
         class="class-box-toast">
         Proposal
       </span>
-      <p class="class-box-update">
+      <p
+        v-show="modified"
+        class="class-box-update">
         Last updated:
         <span v-if="modified">
           {{ (new Date(modified)) | formatDate }}
