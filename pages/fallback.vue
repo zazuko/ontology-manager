@@ -81,6 +81,7 @@
 
 <script>
 import rdf from 'rdf-ext'
+import { resource } from 'rdf-utils-dataset'
 import _get from 'lodash/get'
 // https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
 import JsonLdSerializer from 'rdf-serializer-jsonld'
@@ -107,31 +108,33 @@ export default {
 
     let iriDataset = rdf.dataset()
     let jsonld = ''
-    try {
-      jsonld = await new Promise((resolve, reject) => {
-        iriDataset = matched(store, iri)
-        if (!iriDataset) {
-          resolve()
-        }
-        const quadStream = rdf.graph(iriDataset).toStream()
+    if (process.server) {
+      try {
+        jsonld = await new Promise((resolve, reject) => {
+          iriDataset = matched(store, iri)
+          if (!iriDataset) {
+            resolve()
+          }
+          const quadStream = rdf.graph(iriDataset).toStream()
 
-        const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
+          const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
 
-        const jsonStream = serializer.import(quadStream)
+          const jsonStream = serializer.import(quadStream)
 
-        jsonStream.on('error', (err) => {
-          reject(err)
+          jsonStream.on('error', (err) => {
+            reject(err)
+          })
+          jsonStream.on('data', (jsonld) => {
+            resolve(jsonld)
+          })
+          jsonStream.on('end', () => {
+            resolve()
+          })
         })
-        jsonStream.on('data', (jsonld) => {
-          resolve(jsonld)
-        })
-        jsonStream.on('end', () => {
-          resolve()
-        })
-      })
-    }
-    catch (err) {
-      console.error(err)
+      }
+      catch (err) {
+        console.error(err)
+      }
     }
 
     return {
@@ -272,14 +275,12 @@ export default {
 function matched (store, iri) {
   const subject = rdf.namedNode(iri)
 
-  const ontologyGraph = store.getters['graph/ontologyGraph']
-  const structureGraph = store.getters['graph/structureGraph']
+  const ontology = resource(store.getters['graph/ontology'], subject)
+  const structure = resource(store.getters['graph/structure'], subject)
 
-  const foundInOntology = ontologyGraph.match(null, null, null, subject)
-  if (foundInOntology.toArray().length) {
-    return foundInOntology
+  if (ontology.size > 0) {
+    return ontology
   }
-  const foundInStructure = structureGraph.match(null, null, null, subject)
-  return foundInStructure
+  return structure
 }
 </script>

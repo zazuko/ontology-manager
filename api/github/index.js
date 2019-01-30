@@ -68,8 +68,7 @@ router.post('/link', async (req, res, next) => {
     id: clientId
   } = req.body
 
-  console.warn(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
-  console.error(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
+  console.log(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
 
   let { token, avatarUrl, serverId } = {}
 
