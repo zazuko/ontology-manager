@@ -3,7 +3,8 @@
 describe('Proposal', () => {
   describe('on fallback', () => {
     beforeEach(() => {
-      cy.visit('/pouch/CargoHandlersPouch').login()
+      cy.visit('/pouch/CargoHandlersPouch')
+      cy.login()
       cy.clearDrafts()
       cy.goto('/pouch/CargoHandlersPouch')
     })
@@ -20,7 +21,8 @@ describe('Proposal', () => {
 
   describe('on object details', () => {
     beforeEach(() => {
-      cy.visit('/schema/ShippersInstruction').login()
+      cy.visit('/schema/ShippersInstruction')
+      cy.login()
       cy.clearDrafts()
       cy.goto('/schema/ShippersInstruction')
     })
@@ -42,7 +44,8 @@ describe('Proposal', () => {
 
   describe('create class proposal', () => {
     beforeEach(() => {
-      cy.visit('/').login()
+      cy.visit('/')
+      cy.login()
       cy.clearDrafts().then(() => {
         cy.goto('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
       })
@@ -78,8 +81,6 @@ describe('Proposal', () => {
     })
   })
 })
-
-/* global Cypress,cy */
 
 function submitProposal () {
   cy.get('button.submit-proposal').click()
