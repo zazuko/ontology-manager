@@ -3,7 +3,7 @@ const octokitFactory = require('@octokit/rest')
 
 const octokit = octokitFactory({
   debug: process.env.NODE_ENV !== 'production',
-  auth: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+  auth: `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`
 })
 
 const { getRefSHA, getFileSHA } = helpersFactory(octokit)
@@ -34,7 +34,7 @@ module.exports = class GitHubAPIv3 {
     })
 
     const branchName = (new Date()).toISOString().replace(/:/g, '')
-    await octokit.gitdata.createRef({
+    await octokit.git.createRef({
       ref: `refs/heads/${branchName}`,
       sha,
       owner,

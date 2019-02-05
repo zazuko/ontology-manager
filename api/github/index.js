@@ -220,6 +220,9 @@ router.post('/proposal/submit', async (req, res, next) => {
   }
   catch (err) {
     console.error(err)
+    if (_.get(err, 'request.headers.authorization')) {
+      err.request.headers.authorization = '[...]'
+    }
     res.status(500).json(err)
   }
 })
@@ -262,6 +265,9 @@ router.post('/proposal/merge', async (req, res, next) => {
   }
   catch (err) {
     console.error(err)
+    if (_.get(err, 'request.headers.authorization')) {
+      err.request.headers.authorization = '[...]'
+    }
     res.status(500).json(err)
   }
 })
@@ -313,6 +319,9 @@ router.post('/proposal/close', async (req, res, next) => {
   }
   catch (err) {
     console.error(err)
+    if (_.get(err, 'request.headers.authorization')) {
+      err.request.headers.authorization = '[...]'
+    }
     res.status(500).json(err)
   }
 })
