@@ -177,10 +177,10 @@ async function dropTestDatabase () {
     // if this doesn't throw, we're connected!
     await client.select(client.raw('1'))
 
-    await client.raw(`drop database ${process.env.POSTGRESQL_DATABASE}`)
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_ANONYMOUS}`)
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_PERSON}`)
+    await client.raw(`drop database ${process.env.POSTGRESQL_DATABASE}`) // drop database example_com_db;
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)  // drop role example_com_role_postgraphile;
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_ANONYMOUS}`) // drop role example_com_role_anonymous;
+    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_PERSON}`) // drop role example_com_role_person;
 
     spinner.succeed(`Dropped test database '${process.env.POSTGRESQL_DATABASE}' and its roles`)
     client.destroy()
