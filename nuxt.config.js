@@ -109,7 +109,10 @@ module.exports = {
   */
   sentry: {
     disabled: !process.env.SENTRY_DSN,
-    disableClientSide: !process.env.SENTRY_DSN
+    disableClientSide: !process.env.SENTRY_DSN,
+    config: {
+      release: process.env.EDITOR_RELEASE
+    }
   },
 
   /*
@@ -166,6 +169,7 @@ module.exports = {
 
   // https://nuxtjs.org/api/configuration-env
   env: {
+    EDITOR_RELEASE: process.env.EDITOR_RELEASE,
     EDITOR_URL: process.env.EDITOR_URL,
     EDITOR_TITLE: process.env.EDITOR_TITLE,
     EDITOR_DESCRIPTION: process.env.EDITOR_DESCRIPTION,
