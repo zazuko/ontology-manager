@@ -18,14 +18,12 @@
 </template>
 
 <script>
-import { version } from '@/package.json'
-
 export default {
   layout: 'background',
   components: {},
   data () {
     return {
-      version
+      version: process.env.EDITOR_RELEASE
     }
   }
 }
