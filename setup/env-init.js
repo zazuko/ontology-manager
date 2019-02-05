@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const dotenv = require('dotenv')
+const release = require('../package.json').version
 
 const environments = {
   dev: `${__dirname}/../docker-app-dev/.env`,
@@ -39,6 +40,7 @@ module.exports = function envInit (env = process.env.NODE_TEST ? 'test' : 'dev')
   const customer = _.snakeCase(process.env.CUSTOMER_NAME)
 
   const vars = {
+    EDITOR_RELEASE: release,
     EDITOR_URL: `${process.env.EDITOR_PROTOCOL || 'http'}://${process.env.EDITOR_HOST || 'localhost:3000'}`,
     EDITOR_TITLE: editorConfig.head.title,
     EDITOR_DESCRIPTION: editorConfig.head.description,
