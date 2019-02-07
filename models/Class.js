@@ -135,7 +135,7 @@ export function generateClassProposal (data) {
     datasets.ontology = mergedEditedOntology(clss.originalIRI, clss.iri, ontology, datasets.ontology)
     datasets.structure = mergedEditedOntology(clss.originalIRI, clss.iri, structure, datasets.structure)
 
-    clss.domainsRemoved.forEach((iri) => {
+    clss.domainsRemoved.forEach(({ iri }) => {
       datasets.ontology.removeMatches(rdf.namedNode(iri), termIRI.domain, rdf.namedNode(clss.iri))
     })
 
