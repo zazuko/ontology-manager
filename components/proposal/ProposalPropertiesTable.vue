@@ -21,16 +21,20 @@
         v-for="(property, index) in properties"
         :key="index">
         <td class="property-name">
-          <a
-            v-if="property.isNew"
-            :href="`#${property.label}`">
-            {{ property.label }}
-          </a>
-          <a
-            v-else
-            :href="rebaseIRI(property.iri)">
-            {{ property.label }}
-          </a>
+          <template v-if="property.isNew">
+            <a :href="`#${property.label}`">
+              {{ property.label }}
+            </a>
+            &nbsp;
+            <span class="tag is-info">
+              new
+            </span>
+          </template>
+          <template v-else-if="property.iri">
+            <a :href="rebaseIRI(property.iri)">
+              {{ property.label }}
+            </a>
+          </template>
         </td>
         <td class="property-ranges">
           <ul class="types-list">
@@ -47,7 +51,7 @@
           </ul>
         </td>
         <td class="property-used-on">
-          <ul>
+          <ul class="types-list">
             <li
               v-for="otherClass in usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
@@ -70,17 +74,74 @@
           v-show="!disabled"
           class="property-actions">
           <div class="is-pulled-right">
-            <button
-              class="table-action-button"
-              @click.prevent="$emit('delete', index)">
-              Remove
-            </button>
             <a
               class="table-action-button"
               v-show="property.isNew"
               @click.prevent="jumpToProperty(property, index)">
               Edit
             </a>
+            <button
+              class="table-action-button"
+              @click.prevent="$emit('delete', index)">
+              Remove
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr
+        v-for="(property, index) in removedProperties"
+        :key="index + 200000">
+        <td class="property-name">
+          <a :href="rebaseIRI(property.iri)">
+            {{ property.label }}
+          </a>
+          &nbsp;
+          <span class="tag is-danger">
+            removed
+          </span>
+        </td>
+        <td class="property-ranges">
+          <ul class="types-list">
+            <li
+              v-for="range in rangeOf(property.iri, dataset)"
+              :key="range.value">
+              <a
+                :href="rebaseIRI(range.value)"
+                rel="noopener noreferrer"
+                target="_blank">
+                {{ term(range.value) }}
+              </a>
+            </li>
+          </ul>
+        </td>
+        <td class="property-used-on">
+          <ul class="types-list">
+            <li
+              v-for="otherClass in usedOnClasses(property.iri, dataset)"
+              :key="otherClass.object.value">
+              <a
+                :href="rebaseIRI(otherClass.object.value)"
+                rel="noopener noreferrer"
+                target="_blank">
+                <del v-if="otherClass.object.value === iri">
+                  {{ term(otherClass.object) }}
+                </del>
+                <template v-else>
+                  {{ term(otherClass.object) }}
+                </template>
+              </a>
+            </li>
+          </ul>
+        </td>
+        <td
+          v-show="!disabled"
+          class="property-actions">
+          <div class="is-pulled-right">
+            <button
+              class="table-action-button"
+              @click.prevent="reselectDomain(index)">
+              Re-add
+            </button>
           </div>
         </td>
       </tr>
@@ -94,12 +155,20 @@ import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
 export default {
   name: 'ProposalPropertiesTable',
   props: {
+    iri: {
+      type: String,
+      required: true
+    },
     disabled: {
       type: Boolean,
       required: false,
       default: false
     },
     properties: {
+      type: Array,
+      required: true
+    },
+    removedProperties: {
       type: Array,
       required: true
     },
@@ -117,6 +186,9 @@ export default {
     rebaseIRI,
     usedOnClasses,
     rangeOf,
+    reselectDomain (index) {
+      this.$emit('reselectDomain', index)
+    },
     classIsNew ({ object }) {
       const ontology = this.$store.getters['graph/ontology']
       const found = ontology.match(object, termIRI.a, termIRI.class).toArray().length
