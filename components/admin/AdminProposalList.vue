@@ -1,182 +1,187 @@
 <template>
-  <table class="table admin-table">
-    <thead>
-      <tr>
-        <th>
-          Title
-        </th>
-        <th>
-          Created by
-        </th>
-        <th>
-          <a
-            class="sort-by"
-            @click.prevent="sort('UPDATED_AT')">
-            Last updated
-            <span class="sort-icon">
-              <i :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }" />
-            </span>
-          </a>
-        </th>
-        <th>
-          <div
-            class="dropdown"
-            :class="{ 'is-active': statusDropdown }">
-            <div class="dropdown-trigger">
-              <button
-                aria-haspopup="true"
-                aria-controls="dropdown-menu"
-                @click.prevent="statusDropdown = true">
-                <span>Status</span>
-                <span class="sort-icon">
-                  <i class="asc"></i>
-                </span>
-              </button>
-            </div>
+  <div>
+    <table class="table admin-table">
+      <thead>
+        <tr>
+          <th>
+            Title
+          </th>
+          <th>
+            Created by
+          </th>
+          <th>
+            <a
+              class="sort-by"
+              @click.prevent="sort('UPDATED_AT')">
+              Last updated
+              <span class="sort-icon">
+                <i :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }" />
+              </span>
+            </a>
+          </th>
+          <th>
             <div
-              class="dropdown-menu"
-              role="menu">
-              <div class="dropdown-content">
-                <a
-                  class="dropdown-item"
-                  :class="{ 'is-active': statusFilter === 'all' }"
-                  @click.prevent="filterStatus('all')">
-                  All
-                </a>
-                <hr class="dropdown-divider">
-                <a
-                  class="dropdown-item"
-                  :class="{ 'is-active': statusFilter === 'open' }"
-                  @click.prevent="filterStatus('open')">
-                  Open
-                </a>
-                <a
-                  class="dropdown-item"
-                  :class="{ 'is-active': statusFilter === 'resolved' }"
-                  @click.prevent="filterStatus('resolved')">
-                  Resolved
-                </a>
-                <a
-                  class="dropdown-item"
-                  :class="{ 'is-active': statusFilter === 'rejected' }"
-                  @click.prevent="filterStatus('rejected')">
-                  Rejected
-                </a>
-                <a
-                  class="dropdown-item"
-                  :class="{ 'is-active': statusFilter === 'hidden' }"
-                  @click.prevent="filterStatus('hidden')">
-                  Hidden
-                </a>
+              class="dropdown"
+              :class="{ 'is-active': statusDropdown }">
+              <div class="dropdown-trigger">
+                <button
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu"
+                  @click.prevent="statusDropdown = true">
+                  <span>Status</span>
+                  <span class="sort-icon">
+                    <i class="asc"></i>
+                  </span>
+                </button>
+              </div>
+              <div
+                class="dropdown-menu"
+                role="menu">
+                <div class="dropdown-content">
+                  <a
+                    class="dropdown-item"
+                    :class="{ 'is-active': statusFilter === 'all' }"
+                    @click.prevent="filterStatus('all')">
+                    All
+                  </a>
+                  <hr class="dropdown-divider">
+                  <a
+                    class="dropdown-item"
+                    :class="{ 'is-active': statusFilter === 'open' }"
+                    @click.prevent="filterStatus('open')">
+                    Open
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    :class="{ 'is-active': statusFilter === 'resolved' }"
+                    @click.prevent="filterStatus('resolved')">
+                    Resolved
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    :class="{ 'is-active': statusFilter === 'rejected' }"
+                    @click.prevent="filterStatus('rejected')">
+                    Rejected
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    :class="{ 'is-active': statusFilter === 'hidden' }"
+                    @click.prevent="filterStatus('hidden')">
+                    Hidden
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </th>
-        <th>
-          Votes
-        </th>
-        <th class="is-hidden-mobile">
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="proposal in rows"
-        :key="proposal.id">
-        <td>
-          <p>
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
-              {{ proposal.headline }}
-            </nuxt-link>
-            <forge-link
-              :id="proposal.externalId"
-              class="is-link" />
-          </p>
-          <p>
-            <span class="info">on {{ proposal.iri }}</span>
-          </p>
-        </td>
-        <td>
-          {{ proposal.author.name }}
-        </td>
-        <td>
-          <p>
-            {{ proposal.updatedAt|formatDate }}
-          </p>
-          <p>
-            <span class="info">
-              (Created: {{ proposal.createdAt|formatDate }})
-            </span>
-          </p>
-        </td>
-        <td>
-          <p>
-            {{ proposal.status }}
-          </p>
-          <p>
-            <span class="info">
-              {{ proposal.proposalType }}
-            </span>
-          </p>
-        </td>
-        <td>
-          <div class="votes">
-            <div class="vote-cell">
-              <span class="icon">
-                <i class="mdi mdi-thumb-up-outline" />
-              </span>
-              {{ proposal.tally.upvotes }}
-            </div>
-            <div class="vote-cell">
-              <span class="icon">
-                <i class="mdi mdi-thumb-down-outline" />
-              </span>
-              {{ proposal.tally.downvotes }}
-            </div>
-          </div>
-        </td>
-        <td class="has-text-right is-hidden-mobile">
-          <span
-            v-if="!proposal.isDraft">
+          </th>
+          <th>
+            Votes
+          </th>
+          <th class="is-hidden-mobile">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="proposal in rows"
+          :key="proposal.id">
+          <td>
             <p>
-              <button
-                class="button is-small is-info"
-                :disabled="proposal.status !== 'OPEN'"
-                @click.prevent="approve(proposal)">
-                Approve
-              </button>
-              <button
-                class="button is-small is-dark-info"
-                :disabled="proposal.status !== 'OPEN'"
-                @click.prevent="reject(proposal)">
-                Reject
-              </button>
-              <button
-                class="button is-small is-grey is-outlined"
-                :disabled="proposal.status !== 'OPEN'"
-                @click.prevent="hide(proposal)">
-                Delete
-              </button>
+              <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+                {{ proposal.headline }}
+              </nuxt-link>
+              <forge-link
+                :id="proposal.externalId"
+                class="is-link" />
             </p>
-          </span>
-          <span v-else>
-            <nuxt-link
-              v-if="proposal.proposalType === 'Class'"
-              :to="{ name: 'proposal-id', params: { id: proposal.id } }"
-              class="button is-small is-info">
-              See
-            </nuxt-link>
-            <nuxt-link
-              v-if="proposal.proposalType === 'Property'"
-              :to="{ name: 'proposal-id', params: { id: proposal.id } }"
-              class="button is-small is-info">
-              See
-            </nuxt-link>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            <p>
+              <span class="info">on {{ proposal.iri }}</span>
+            </p>
+          </td>
+          <td>
+            {{ proposal.author.name }}
+          </td>
+          <td>
+            <p>
+              {{ proposal.updatedAt|formatDate }}
+            </p>
+            <p>
+              <span class="info">
+                (Created: {{ proposal.createdAt|formatDate }})
+              </span>
+            </p>
+          </td>
+          <td>
+            <p>
+              {{ proposal.status }}
+            </p>
+            <p>
+              <span class="info">
+                {{ proposal.proposalType }}
+              </span>
+            </p>
+          </td>
+          <td>
+            <div class="votes">
+              <div class="vote-cell">
+                <span class="icon">
+                  <i class="mdi mdi-thumb-up-outline" />
+                </span>
+                {{ proposal.tally.upvotes }}
+              </div>
+              <div class="vote-cell">
+                <span class="icon">
+                  <i class="mdi mdi-thumb-down-outline" />
+                </span>
+                {{ proposal.tally.downvotes }}
+              </div>
+            </div>
+          </td>
+          <td class="has-text-right is-hidden-mobile">
+            <span
+              v-if="!proposal.isDraft">
+              <p>
+                <button
+                  class="button is-small is-info"
+                  :disabled="proposal.status !== 'OPEN'"
+                  @click.prevent="approve(proposal)">
+                  Approve
+                </button>
+                <button
+                  class="button is-small is-dark-info"
+                  :disabled="proposal.status !== 'OPEN'"
+                  @click.prevent="reject(proposal)">
+                  Reject
+                </button>
+                <button
+                  class="button is-small is-grey is-outlined"
+                  :disabled="proposal.status !== 'OPEN'"
+                  @click.prevent="hide(proposal)">
+                  Delete
+                </button>
+              </p>
+            </span>
+            <span v-else>
+              <nuxt-link
+                v-if="proposal.proposalType === 'Class'"
+                :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                class="button is-small is-info">
+                See
+              </nuxt-link>
+              <nuxt-link
+                v-if="proposal.proposalType === 'Property'"
+                :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                class="button is-small is-info">
+                See
+              </nuxt-link>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <loader :show-if="working">
+      <p class="subtitle">Working…</p>
+    </loader>
+  </div>
 </template>
 
 <script>
@@ -184,6 +189,7 @@ import axios from 'axios'
 import { toastClose } from '@/libs/utils'
 import { proposalType } from '@/libs/proposals'
 import ForgeLink from './ForgeLink'
+import Loader from '@/components/layout/Loader'
 
 export default {
   name: 'AdminProposalList',
@@ -197,7 +203,8 @@ export default {
     }
   },
   components: {
-    ForgeLink
+    ForgeLink,
+    Loader
   },
   computed: {
     rows () {
@@ -210,6 +217,7 @@ export default {
   },
   data () {
     return {
+      working: false,
       statusDropdown: false,
       statusFilter: 'all',
       orderBy: {
@@ -226,6 +234,7 @@ export default {
   methods: {
     proposalType,
     async approve (proposal) {
+      this.working = true
       const body = {
         threadId: proposal.id,
         number: proposal.externalId
@@ -233,17 +242,20 @@ export default {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
         await axios.post('/api/proposal/merge', body, headers)
+        this.working = false
         this.$emit('updated', proposal.id)
         this.$store.dispatch('graph/RELOAD_DATASET')
         this.$toast.success('Proposal approved!', toastClose).goAway(1600)
       }
       catch (err) {
+        this.working = false
         console.error(err)
         this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
       }
     },
     async reject (proposal, status = 'REJECTED') {
+      this.working = true
       const body = {
         threadId: proposal.id,
         number: proposal.externalId,
@@ -252,16 +264,19 @@ export default {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
         await axios.post('/api/proposal/close', body, headers)
+        this.working = false
         this.$emit('updated', proposal.id)
         this.$toast.success('Proposal rejected!', toastClose).goAway(1600)
       }
       catch (err) {
+        this.working = false
         console.error(err)
         this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
       }
     },
     async hide (proposal, status = 'HIDDEN') {
+      this.working = true
       const body = {
         threadId: proposal.id,
         number: proposal.externalId,
@@ -270,10 +285,12 @@ export default {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
         await axios.post('/api/proposal/close', body, headers)
+        this.working = false
         this.$emit('updated', proposal.id)
         this.$toast.success('Proposal deleted!', toastClose).goAway(1600)
       }
       catch (err) {
+        this.working = false
         console.error(err)
         this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
