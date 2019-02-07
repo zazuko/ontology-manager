@@ -1,8 +1,7 @@
 <template>
   <section class="section">
     <article>
-      <nav
-        class="breadcrumb">
+      <nav class="breadcrumb">
         <ul
           v-for="(breadcrumb, index) in breadcrumbs"
           :key="index">
@@ -72,22 +71,22 @@
         </div>
       </div>
 
-      <div v-if="isClass">
+      <template v-if="isClass">
         <properties-table
           v-if="properties.length"
           :properties="properties"
           :ontology="ontology"
           :structure="structure" />
-        <div
+        <template
           v-else
           class="content">
           <p>
             This class does not have any properties.
           </p>
-        </div>
-      </div>
+        </template>
+      </template>
 
-      <div v-else>
+      <template v-else>
         <section
           class="content"
           v-show="rangeOf.length">
@@ -118,7 +117,19 @@
             </li>
           </ul>
         </section>
-      </div>
+      </template>
+      <section
+        v-show="examples.length"
+        id="example">
+        <h2 class="title is-2">
+          Example{{ examples.length > 1 ? 's' : '' }}
+        </h2>
+        <div>
+          <pre
+            v-for="(example, index) in examples"
+            :key="index">{{ example }}</pre>
+        </div>
+      </section>
     </article>
   </section>
 </template>
@@ -128,7 +139,7 @@ import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
 import LinkToIri from './LinkToIri'
-import { termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
+import { term, termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
 import { findClassProperties } from '@/libs/utils'
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -178,6 +189,7 @@ export default {
         const properties = findClassProperties(this.iri.value, this.ontology).toArray()
         return properties
       }
+
       return null
     },
     usedOn () {
@@ -192,6 +204,11 @@ export default {
     rangeOf () {
       const classes = rangeOf(this.iri.value, this.ontology)
       return classes
+    },
+    examples () {
+      return this.ontology.match(this.iri, termIRI.example)
+        .toArray()
+        .map((quad) => term(quad.object))
     },
     isClass () {
       return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Class).toArray().length)
