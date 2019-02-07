@@ -219,11 +219,11 @@ router.post('/proposal/submit', async (req, res, next) => {
     res.json(result.data)
   }
   catch (err) {
-    console.error(err)
     if (_.get(err, 'request.headers.authorization')) {
       err.request.headers.authorization = '[...]'
     }
-    res.status(500).json(err)
+    console.error(err.message, err.request)
+    res.status(500).json({ message: err.message })
   }
 })
 
@@ -264,11 +264,11 @@ router.post('/proposal/merge', async (req, res, next) => {
     res.json(result.data)
   }
   catch (err) {
-    console.error(err)
     if (_.get(err, 'request.headers.authorization')) {
       err.request.headers.authorization = '[...]'
     }
-    res.status(500).json(err)
+    console.error(err.message, err.request)
+    res.status(500).json({ message: err.message })
   }
 })
 
@@ -318,11 +318,11 @@ router.post('/proposal/close', async (req, res, next) => {
     res.json(result.data)
   }
   catch (err) {
-    console.error(err)
     if (_.get(err, 'request.headers.authorization')) {
       err.request.headers.authorization = '[...]'
     }
-    res.status(500).json(err)
+    console.error(err.message, err.request)
+    res.status(500).json({ message: err.message })
   }
 })
 
