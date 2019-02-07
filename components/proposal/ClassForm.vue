@@ -189,10 +189,13 @@
 
         <proposal-properties-table
           v-if="clss['domains.length']"
+          :iri="clss['iri']"
           :disabled="disabled"
           :properties="clss['domains']"
+          :removed-properties="clss['domainsRemoved']"
           :store-path="storePath"
           :dataset="mergedDatasets.ontology"
+          @reselectDomain="reselectDomain"
           @delete="unselectDomain" />
 
         <div
@@ -375,14 +378,19 @@ export default {
       this.$vuexPush('domains', searchResult)
     },
     unselectDomain (index) {
-      const domain = this.clss[`domains[${index}]`]
+      const domain = this.clss.domains[index]
       const childIndex = this.clss['propChildren'].indexOf(domain)
       this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
 
       if (this.clss['isEdit']) {
-        this.$vuexPush('domainsRemoved', domain.iri)
+        this.$vuexPush('domainsRemoved', domain)
       }
+    },
+    reselectDomain (index) {
+      const domain = this.clss.domainsRemoved[index]
+      this.$vuexPush('domains', domain)
+      this.$vuexDeleteAtIndex('domainsRemoved', index)
     },
     createProperty (label) {
       const prop = new Property({ label, isNew: true })
