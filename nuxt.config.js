@@ -4,6 +4,8 @@ const feedCreate = require('./libs/feed')
 envInit()
 
 module.exports = {
+  rootDir: __dirname,
+
   mode: 'universal',
 
   // https://nuxtjs.org/api/configuration-modern

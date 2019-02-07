@@ -22,7 +22,7 @@ wait_for_pids()
     done
 }
 
-npm run start &
+npm run prod &
 pid1=$!
 
 nginx -g 'daemon off;' &
