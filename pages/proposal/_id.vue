@@ -108,7 +108,7 @@
 
             <h1
               id="conversation"
-              class="title is-2">
+              class="title is-2 conversation-title">
               Conversation
             </h1>
             <div class="discussion">

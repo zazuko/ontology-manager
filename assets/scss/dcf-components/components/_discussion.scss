@@ -135,6 +135,10 @@
   }
 }
 
+.conversation-title {
+  margin-top: 1em;
+}
+
 @include touch {
   .discussion {
     .discussion-form {
