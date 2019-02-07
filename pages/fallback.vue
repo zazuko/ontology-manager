@@ -66,7 +66,6 @@
             v-if="termIRI.Class.equals(objectType)"
             id="proposals"
             :iri="iri" />
-          <div v-else />
 
           <discussions
             id="conversations"
