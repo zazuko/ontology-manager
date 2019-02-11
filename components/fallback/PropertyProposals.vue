@@ -109,6 +109,9 @@ export default {
           })
         }
         return []
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     }
   }

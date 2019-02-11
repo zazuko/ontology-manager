@@ -105,7 +105,10 @@ export default {
           iri: this.iri
         }
       },
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.$store.state.authProcessDone
+      }
     }
   }
 }
