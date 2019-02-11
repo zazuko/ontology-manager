@@ -67,7 +67,7 @@
     "patch-headers": "^1.0.2",
     "pg": "^7.8.0",
     "pm2": "^3.2.9",
-    "postgraphile": "^4.3.2",
+    "postgraphile": "^4.3.3",
     "rdf-ext": "^1.2.2",
     "rdf-parser-n3": "^1.1.1",
     "rdf-serializer-jsonld": "^1.1.2",
