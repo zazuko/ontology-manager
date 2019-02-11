@@ -5,7 +5,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Username</th>
-        <th>Is Admin</th>
+        <th>Status</th>
         <th></th>
       </tr>
     </thead>
@@ -25,30 +25,63 @@
         <td>
           <p>
             <span
-              v-show="user.isAdmin"
-              class="tag is-info admin-flag">
-              Yes
+              v-if="user.isSuperadmin"
+              class="tag is-warning admin-flag">
+              Superadmin
             </span>
             <span
-              v-show="!user.isAdmin"
+              v-else-if="user.isAdmin"
+              class="tag is-info admin-flag">
+              Admin
+            </span>
+            <span
+              v-else
               class="tag is-grey admin-flag">
-              No
+              User
             </span>
           </p>
         </td>
         <td class="has-text-right">
-          <button
-            v-show="user.isAdmin"
-            class="button is-small is-info admin-action"
-            @click.prevent="demote(user.id)">
-            Demote
-          </button>
-          <button
-            v-show="!user.isAdmin"
-            class="button is-small is-dark-info admin-action"
-            @click.prevent="promote(user.id)">
-            Promote
-          </button>
+          <template v-if="$store.state.auth.isSuperadmin">
+            <button
+              v-show="user.isSuperadmin"
+              class="button is-small is-warning admin-action"
+              @click.prevent="demote(user.id, 'superadmin')">
+              Demote from superadmin
+            </button>
+            <button
+              v-show="!user.isSuperadmin && user.isAdmin"
+              class="button is-small is-info admin-action"
+              @click.prevent="demote(user.id, 'admin')">
+              Demote from admin
+            </button>
+            <button
+              v-show="!user.isSuperadmin && user.isAdmin"
+              class="button is-small is-warning admin-action"
+              @click.prevent="promote(user.id, 'superadmin')">
+              Promote to superadmin
+            </button>
+            <button
+              v-show="!user.isSuperadmin && !user.isAdmin"
+              class="button is-small is-dark-info admin-action"
+              @click.prevent="promote(user.id, 'admin')">
+              Promote to admin
+            </button>
+          </template>
+          <template v-else-if="$store.state.auth.isAdmin">
+            <button
+              v-show="!user.isSuperadmin && user.isAdmin"
+              class="button is-small is-info admin-action"
+              @click.prevent="demote(user.id, 'admin')">
+              Demote from admin
+            </button>
+            <button
+              v-show="!user.isSuperadmin && !user.isAdmin"
+              class="button is-small is-dark-info admin-action"
+              @click.prevent="promote(user.id, 'admin')">
+              Promote to admin
+            </button>
+          </template>
         </td>
       </tr>
     </tbody>
@@ -56,22 +89,24 @@
 </template>
 
 <script>
-import mutation from '@/apollo/mutations/changePersonStatus'
+import makeAdmin from '@/apollo/mutations/makeAdmin'
+import makeSuperadmin from '@/apollo/mutations/makeSuperadmin'
 
 export default {
   name: 'AdminUserList',
   props: ['users'],
   methods: {
-    async promote (userId) {
-      this.mutate(userId, true)
+    async promote (userId, status) {
+      this.mutate(userId, true, status)
     },
-    async demote (userId) {
-      this.mutate(userId, false)
+    async demote (userId, status) {
+      this.mutate(userId, false, status)
     },
-    async mutate (userId, adminFlag) {
+    async mutate (userId, adminFlag, status) {
+      const mutation = status === 'superadmin' ? makeSuperadmin : makeAdmin
       const variables = {
         userId,
-        adminFlag
+        [status === 'superadmin' ? 'superadminFlag' : 'adminFlag']: adminFlag
       }
       try {
         await this.$apollo.mutate({ mutation, variables })

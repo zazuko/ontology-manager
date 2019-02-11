@@ -41,7 +41,10 @@ export default {
           this.rows = _get(data, 'discussions.nodes', [])
         }
       },
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return !this.$store.state.authProcessDone
+      }
     }
   },
   head () {

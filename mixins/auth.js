@@ -60,6 +60,7 @@ export default {
 
         const jwtToken = _get(result, 'data.jwtToken')
         this.$auth.$storage.setState('isAdmin', _get(result, 'data.isAdmin'))
+        this.$auth.$storage.setState('isSuperadmin', _get(result, 'data.isSuperadmin'))
         this.$auth.$storage.setState('personId', _get(result, 'data.personId'))
         this.$auth.$storage.setState('hats', _get(result, 'data.personHats'))
 

@@ -110,6 +110,7 @@ router.post('/link', async (req, res, next) => {
           person {
             id,
             isAdmin,
+            isSuperadmin,
             hatPeopleByPersonId {
               nodes {
                 hatByHatId {
@@ -125,6 +126,7 @@ router.post('/link', async (req, res, next) => {
       variables
     })
     const isAdmin = _.get(r, 'data.registerPerson.person.isAdmin')
+    const isSuperadmin = _.get(r, 'data.registerPerson.person.isSuperadmin')
     const personId = _.get(r, 'data.registerPerson.person.id')
     const personHats = _
       .chain(r)
@@ -153,6 +155,7 @@ router.post('/link', async (req, res, next) => {
       throw new Error('Authentication failed.')
     }
     result.data.authenticate.isAdmin = isAdmin
+    result.data.authenticate.isSuperadmin = isSuperadmin
     result.data.authenticate.personId = personId
     result.data.authenticate.personHats = personHats
     res.json(result.data.authenticate)
