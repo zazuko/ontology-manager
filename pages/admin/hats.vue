@@ -42,6 +42,9 @@ export default {
         if (!loading) {
           this.hats = data.allHats.hats
         }
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     },
     users: {
@@ -55,6 +58,9 @@ export default {
         if (!loading) {
           this.users = data.users.nodes
         }
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     }
   },

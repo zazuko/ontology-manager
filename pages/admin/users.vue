@@ -46,6 +46,9 @@ export default {
         if (!loading) {
           this.users = _get(data, 'users.nodes', [])
         }
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     }
   },
