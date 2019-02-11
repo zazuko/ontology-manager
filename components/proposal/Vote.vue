@@ -81,6 +81,9 @@ export default {
       query: userVote,
       result ({ data, loading }) {
         this.userVote = data.userVote
+      },
+      skip () {
+        return !this.$store.state.authProcessDone
       }
     },
     tally: {
@@ -99,7 +102,10 @@ export default {
           this.downvotes = data.tally.downvotes
         }
       },
-      pollInterval: 1000 * 30
+      pollInterval: 1000 * 30,
+      skip () {
+        return !this.$store.state.authProcessDone
+      }
     }
   }
 }

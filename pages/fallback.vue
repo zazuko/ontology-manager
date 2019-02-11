@@ -273,9 +273,11 @@ export default {
 
 function matched (store, iri) {
   const subject = rdf.namedNode(iri)
+  const ontologyDataset = store.getters['graph/ontology']
+  const structureDataset = store.getters['graph/structure']
 
-  const ontology = resource(store.getters['graph/ontology'], subject)
-  const structure = resource(store.getters['graph/structure'], subject)
+  const ontology = resource(ontologyDataset, subject)
+  const structure = resource(structureDataset, subject)
 
   if (ontology.size > 0) {
     return ontology
