@@ -6,7 +6,7 @@ const envInit = require('../setup/env-init')
 // load env vars
 envInit()
 
-jest.setTimeout(60000)
+jest.setTimeout(50000)
 
 // https://github.com/axios/axios/issues/960#issuecomment-320659373
 axios.interceptors.response.use(
@@ -15,11 +15,11 @@ axios.interceptors.response.use(
 )
 
 // https://nuxtjs.org/guide/development-tools#end-to-end-testing
+const getHTML = (url) => axios.get(`http://localhost:3000${url}`)
 const getJSONLD = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'application/ld+json' } })
-const getRDFXML = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'application/rdf+xml' } })
 const getNT = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'application/n-triples' } })
+const getRDFXML = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'application/rdf+xml' } })
 const getTURTLE = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'text/turle' } })
-const getHTML = (url) => axios.get(`http://localhost:3000${url}`, { headers: { accept: 'text/html' } })
 
 // We keep the nuxt and server instance
 // So we can close them at the end of the test
@@ -89,19 +89,20 @@ describe('basic dev', () => {
   })
 
   describe('Renders IRI from dataset wrt Accept header', () => {
+    test.skip('jsonld in html', async () => {
+      const result = await getHTML('/pouch/CargoHandlersPouch')
+
+      expect(result.status).toBe(200)
+
+      const found = result.data.match(/<script data-n-head="true" type="application\/ld\+json" id="data">([\s\S]+?)]<\/script>/m)
+      expect(found[1]).toMatchSnapshot()
+    })
+
     test('html for html', async () => {
       const result = await getHTML('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
       expect(result.data.toLowerCase()).toContain('<!doctype html>')
-    })
-
-    test.skip('jsonld in html', async () => {
-      const result = await getHTML('/pouch/CargoHandlersPouch')
-
-      expect(result.status).toBe(200)
-      const found = result.data.match(/<script id="data" type="application\/ld\+json">([\s\S]+?)]<\/script>/m)
-      expect(found[1]).toMatchSnapshot()
     })
 
     test('json for jsonld', async () => {
