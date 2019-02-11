@@ -7,11 +7,6 @@
         'layout-object-details': !termIRI.creativeWork.equals(objectType)
       }"
       class="container">
-      <script
-        v-if="jsonld"
-        id="data"
-        type="application/ld+json"
-        v-html="jsonld" />
 
       <loader :show-if="!dataReady" />
 
@@ -107,33 +102,32 @@ export default {
 
     let iriDataset = rdf.dataset()
     let jsonld = ''
-    if (process.server) {
-      try {
-        jsonld = await new Promise((resolve, reject) => {
-          iriDataset = matched(store, iri)
-          if (!iriDataset) {
-            resolve()
-          }
-          const quadStream = rdf.graph(iriDataset).toStream()
 
-          const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
+    try {
+      jsonld = await new Promise((resolve, reject) => {
+        iriDataset = matched(store, iri)
+        if (!iriDataset) {
+          resolve()
+        }
+        const quadStream = rdf.graph(iriDataset).toStream()
 
-          const jsonStream = serializer.import(quadStream)
+        const serializer = new JsonLdSerializer({ outputFormat: 'string', compact: true })
 
-          jsonStream.on('error', (err) => {
-            reject(err)
-          })
-          jsonStream.on('data', (jsonld) => {
-            resolve(jsonld)
-          })
-          jsonStream.on('end', () => {
-            resolve()
-          })
+        const jsonStream = serializer.import(quadStream)
+
+        jsonStream.on('error', (err) => {
+          reject(err)
         })
-      }
-      catch (err) {
-        console.error(err)
-      }
+        jsonStream.on('data', (jsonld) => {
+          resolve(JSON.stringify(jsonld))
+        })
+        jsonStream.on('end', () => {
+          resolve()
+        })
+      })
+    }
+    catch (err) {
+      console.error(err)
     }
 
     return {
@@ -266,6 +260,12 @@ export default {
       h.meta = [
         { hid: 'description', name: 'description', content: this.comment }
       ]
+    }
+    if (this.jsonld) {
+      h.script = [
+        { innerHTML: this.jsonld, type: 'application/ld+json', id: 'data' }
+      ]
+      h.__dangerouslyDisableSanitizers = ['script']
     }
     return h
   }
