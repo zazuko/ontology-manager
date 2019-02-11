@@ -4,7 +4,8 @@ query AdminUserList {
       id,
       name,
       username,
-      isAdmin
+      isAdmin,
+      isSuperadmin
     }
   }
 }

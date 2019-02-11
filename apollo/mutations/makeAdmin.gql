@@ -1,5 +1,5 @@
 mutation ($userId: Int!, $adminFlag: Boolean!) {
-  changePersonStatus (input: {
+  makeAdmin (input: {
     userId: $userId,
     adminFlag: $adminFlag
   }) {

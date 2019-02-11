@@ -1,0 +1,11 @@
+mutation ($userId: Int!, $superadminFlag: Boolean!) {
+  makeSuperadmin (input: {
+    userId: $userId,
+    superadminFlag: $superadminFlag
+  }) {
+    person {
+      id,
+      isAdmin
+    }
+  }
+}
