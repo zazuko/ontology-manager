@@ -17,12 +17,14 @@ export const actions = {
   // Note: this gets called during SSR, which is
   // a. why we have access to `req`
   // b. why it will be broken client-side: data will be (de)serialized to/from JSON for the client
-  async nuxtServerInit (store, { req, res }) {
+  async nuxtServerInit ({ commit, dispatch }, { req, res }) {
+    await dispatch('config/LOAD')
+
     if (req && req.ontology) {
-      store.commit('graph/ontologyInit', req.ontology)
+      commit('graph/ontologyInit', req.ontology)
     }
     if (req && req.structure) {
-      store.commit('graph/structureInit', req.structure)
+      commit('graph/structureInit', req.structure)
     }
   },
   async nuxtClientInit ({ dispatch }, context) {

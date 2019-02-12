@@ -1,0 +1,7 @@
+query CurrentPublicConfig {
+  currentPublicConfig {
+    version
+    editor
+    ontology
+  }
+}

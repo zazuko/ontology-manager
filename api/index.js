@@ -1,6 +1,7 @@
 const jwt = require('express-jwt')
 const bodyParser = require('body-parser')
 const express = require('express')
+const knex = require('knex')
 
 const app = express()
 
@@ -25,13 +26,35 @@ app.use(
     .unless({ path: unprotectedRoutes }))
 
 app.use(bodyParser.json({ limit: '2mb' }))
-app.use('/', apiMiddleware())
 
-module.exports = { path: '/api', handler: app }
+async function fetchConfig () {
+  const client = knex({
+    client: 'pg',
+    connection: {
+      user: 'postgres',
+      password: process.env.POSTGRESQL_PASSWORD,
+      host: process.env.POSTGRESQL_HOST,
+      database: process.env.POSTGRESQL_DATABASE
+    }
+  })
+  const results = await client
+    .withSchema('editor_schema')
+    .select('id', 'forge', 'editor', 'ontology')
+    .from('config')
+    .orderBy('id', 'desc')
+    .limit(1)
+  client.destroy()
 
-function apiMiddleware () {
+  if (!results.length) {
+    throw new Error('Config missing from database')
+  }
+  return results[0]
+}
+
+(async () => {
+  const editorConfig = await fetchConfig()
+
   let api
-
   if (process.env.NODE_TEST) {
     api = 'e2e-helpers'
   }
@@ -44,7 +67,9 @@ function apiMiddleware () {
   else {
     throw new Error('No forge API configured or configured forge API not found.')
   }
-  console.warn(`Starting API server with ${api} support`)
+  console.warn(`Starting API middleware with ${api} support, config v${editorConfig.id}`)
 
-  return require(`./${api}`)
-}
+  app.use('/', require(`./${api}`)(editorConfig))
+})()
+
+module.exports = { path: '/api', handler: app }
