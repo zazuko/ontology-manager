@@ -1,6 +1,3 @@
-const PurgecssPlugin = require('purgecss-webpack-plugin')
-const glob = require('glob-all')
-const path = require('path')
 const envInit = require('./setup/env-init')
 const feedCreate = require('./libs/feed')
 
@@ -227,21 +224,6 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
-      }
-
-      if (!isDev) {
-        // Remove unused CSS using purgecss. See https://github.com/FullHuman/purgecss
-        // for more information about purgecss.
-        config.plugins.push(
-          new PurgecssPlugin({
-            paths: glob.sync([
-              path.join(__dirname, './pages/**/*.vue'),
-              path.join(__dirname, './layouts/**/*.vue'),
-              path.join(__dirname, './components/**/*.vue')
-            ]),
-            whitelist: ['html', 'body']
-          })
-        )
       }
 
       /*
