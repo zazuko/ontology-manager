@@ -1,40 +1,43 @@
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
 
-const octokit = octokitFactory({
-  debug: process.env.NODE_ENV !== 'production',
-  auth: `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`
-})
-
-const { getRefSHA, getFileSHA } = helpersFactory(octokit)
-
 module.exports = class GitHubAPIv3 {
-  constructor () {
-    this.branch = process.env.EDITOR_GITHUB_BRANCH
-    this.owner = process.env.EDITOR_GITHUB_OWNER
-    this.repo = process.env.EDITOR_GITHUB_REPO
+  constructor ({forge, editor, ontology}) {
+    this.branch = editor.github.branch
+    this.owner = editor.github.owner
+    this.repo = editor.github.repo
     this.committer = {
-      name: process.env.EDITOR_COMMITTER_NAME,
-      email: process.env.EDITOR_COMMITTER_EMAIL,
+      name: editor.committer.name,
+      email: editor.committer.email,
       get date () {
         return (new Date()).toISOString()
       }
     }
-    this.ontologyPath = process.env.ONTOLOGY_FILENAME
-    this.structurePath = process.env.STRUCTURE_FILENAME
+    this.ontologyPath = ontology.ontologyRawUrl.substr(ontology.ontologyRawUrl.lastIndexOf('/') + 1)
+    this.structurePath = ontology.structureRawUrl.substr(ontology.structureRawUrl.lastIndexOf('/') + 1)
+
+    // private helpers
+    this.__octokit = octokitFactory({
+      debug: process.env.NODE_ENV !== 'production',
+      auth: `token ${forge.committerPersonalAccessToken}`
+    })
+
+    const { getRefSHA, getFileSHA } = helpersFactory(this.__octokit)
+    this.__getRefSHA = getRefSHA
+    this.__getFileSHA = getFileSHA
   }
 
   async createBranch () {
     const owner = this.owner
     const repo = this.repo
-    const sha = await getRefSHA({
+    const sha = await this.__getRefSHA({
       ref: `heads/${this.branch}`,
       owner,
       repo
     })
 
     const branchName = (new Date()).toISOString().replace(/:/g, '')
-    await octokit.git.createRef({
+    await this.__octokit.git.createRef({
       ref: `refs/heads/${branchName}`,
       sha,
       owner,
@@ -50,7 +53,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
     const ref = `heads/${this.branch}`
-    const result = await octokit.repos.getContents({ owner, repo, path, ref })
+    const result = await this.__octokit.repos.getContents({ owner, repo, path, ref })
     const content = Buffer.from(result.data.content, 'base64').toString()
     return content
   }
@@ -61,14 +64,14 @@ module.exports = class GitHubAPIv3 {
     const committer = this.committer
     const path = structure ? this.structurePath : this.ontologyPath
 
-    const sha = await getFileSHA({
+    const sha = await this.__getFileSHA({
       ref: `refs/heads/${branch}`,
       path,
       owner,
       repo
     })
 
-    const result = await octokit.repos.updateFile({
+    const result = await this.__octokit.repos.updateFile({
       content: Buffer.from(content).toString('base64'),
       path,
       owner,
@@ -87,7 +90,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await octokit.pullRequests.create({
+    const result = await this.__octokit.pullRequests.create({
       head: branch,
       base: this.branch,
       maintainer_can_modify: true,
@@ -106,7 +109,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await octokit.pullRequests.merge({
+    const result = await this.__octokit.pullRequests.merge({
       owner,
       repo,
       number,
@@ -123,7 +126,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    await octokit.pullRequests.update({
+    await this.__octokit.pullRequests.update({
       owner,
       repo,
       number,
