@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import Resource from './Resource'
-import { firstVal, datasetToCanonicalN3 } from '@/libs/utils'
+import { firstVal, datasetToCanonicalN3, normalizeLabel } from '@/libs/utils'
 
 export default ({ app, store }, inject) => {
   class Property extends Resource {
@@ -10,6 +10,7 @@ export default ({ app, store }, inject) => {
 
       const {
         baseIRI = store.state.config.ontology.propertyBaseUrl,
+        iri = '',
         ranges = [],
         // ranges removed from this Property, only used when editing a Property
         rangesRemoved = [], // Array<string iri>
@@ -20,6 +21,7 @@ export default ({ app, store }, inject) => {
       this.proposalType = 'Property'
 
       this.baseIRI = baseIRI
+      this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
 
       this.ranges = ranges
       this.rangesRemoved = rangesRemoved

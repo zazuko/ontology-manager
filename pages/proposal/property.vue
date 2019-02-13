@@ -254,7 +254,10 @@ export default {
       }
       return this.iri
     },
-    ...propertyGetters(['success', 'error', 'serialized'])
+    serialized () {
+      return this.$proposalSerializer(this.prop)
+    },
+    ...propertyGetters(['success', 'error'])
   },
   watch: {
     success () {

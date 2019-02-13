@@ -1,25 +1,30 @@
 import * as VueDeepSet from 'vue-deepset'
 import _get from 'lodash/get'
 import gql from 'graphql-tag'
+import rdf from 'rdf-ext'
 
 import proposalById from '@/apollo/queries/proposalById'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { SET_ID, ERROR, SUCCESS } from '@/store/mutation-types'
 
-export function state () {
-  return {
-    prop: {},
-    error: false,
-    success: false
-  }
-}
+export const state = () => ({
+  prop: null,
+  error: false,
+  success: false
+})
 
 export const getters = {
-  dataset: (state) => state.prop.proposalDataset(false),
   error: (state) => state.error,
   success: (state) => state.success,
-  serialized: (state) => this.$proposalSerializer(state.prop)
+  dataset: (state) => {
+    if (state.prop) {
+      if (typeof state.prop.proposalDataset === 'function') {
+        return state.prop.proposalDataset(false)
+      }
+    }
+    return rdf.dataset()
+  }
 }
 
 export const mutations = VueDeepSet.extendMutation({
