@@ -23,7 +23,8 @@ function factory (name) {
             editor
             ontology
           }
-        }`})
+        }`
+    })
     config = _get(config, 'data.currentPublicConfig.editor')
     const editorUrl = `${config.protocol}://${config.host}`
 
@@ -54,7 +55,8 @@ function factory (name) {
               eventDate
             }
           }
-        }`})
+        }`
+    })
 
     _get(result, 'data.logs.lines', [])
       .filter(({ actionType } = {}) => actionTypes.includes(actionType))
