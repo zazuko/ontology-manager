@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import Resource from './Resource'
-import { firstVal, datasetToCanonicalN3 } from '@/libs/utils'
+import { firstVal, datasetToCanonicalN3, normalizeLabel } from '@/libs/utils'
 
 export default ({ app, store }, inject) => {
   class Class extends Resource {
@@ -10,6 +10,7 @@ export default ({ app, store }, inject) => {
 
       const {
         baseIRI = store.state.config.ontology.classBaseUrl,
+        iri = '',
         // properties newly added to this Class
         propChildren = [] // Array<Quad|Property>
       } = args
@@ -17,6 +18,7 @@ export default ({ app, store }, inject) => {
       this.proposalType = 'Class'
 
       this.baseIRI = baseIRI
+      this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
 
       this.propChildren = propChildren
     }
