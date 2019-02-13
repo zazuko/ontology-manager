@@ -139,8 +139,7 @@ import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
 import LinkToIri from './LinkToIri'
-import { term, termIRI, usedOnClasses, rangeOf, rebaseIRI } from '@/libs/rdf'
-import { findClassProperties } from '@/libs/utils'
+import { term, termIRI, usedOnClasses, rangeOf, rebaseIRI, findClassProperties } from '@/libs/rdf'
 import cloneDeep from 'lodash/cloneDeep'
 
 export default {

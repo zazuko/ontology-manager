@@ -38,19 +38,19 @@ export const termIRI = Object
     return acc
   }, {})
 
-const createXsdType = ([iri, label]) =>
+const createExternalType = ([iri, label]) =>
   rdf.quad(rdf.namedNode(iri), termIRI.label, rdf.literal(label))
 
-const xsdTypes = [
-  ['http://www.w3.org/2001/XMLSchema#boolean', 'Boolean'],
-  ['http://www.w3.org/2001/XMLSchema#date', 'Date'],
-  ['http://www.w3.org/2001/XMLSchema#dateTime', 'Date and time'],
-  ['http://www.w3.org/2001/XMLSchema#double', 'Double'],
-  ['http://www.w3.org/2001/XMLSchema#decimal', 'Decimal'],
-  ['http://www.w3.org/2001/XMLSchema#int', 'Integer'],
-  ['http://www.w3.org/2001/XMLSchema#string', 'String'],
-  ['http://www.w3.org/2001/XMLSchema#time', 'Time']
-].map(createXsdType)
+const externalTypes = [
+  ['http://www.w3.org/2001/XMLSchema#boolean', 'Boolean (xsd:boolean)'],
+  ['http://www.w3.org/2001/XMLSchema#date', 'Date (xsd:date)'],
+  ['http://www.w3.org/2001/XMLSchema#dateTime', 'Date and time (xsd:dateTime)'],
+  ['http://www.w3.org/2001/XMLSchema#double', 'Double (xsd:double)'],
+  ['http://www.w3.org/2001/XMLSchema#decimal', 'Decimal (xsd:decimal)'],
+  ['http://www.w3.org/2001/XMLSchema#int', 'Integer (xsd:int)'],
+  ['http://www.w3.org/2001/XMLSchema#string', 'String (xsd:string)'],
+  ['http://www.w3.org/2001/XMLSchema#time', 'Time (xsd:time)']
+].map(createExternalType)
 
 function toObject (domain, dataset) {
   let label = dataset.match(domain.subject, termIRI.label).toArray()
@@ -83,7 +83,7 @@ function toObject (domain, dataset) {
   }
 }
 
-export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) {
+export function domainsSearchFactory (dataset, resultType, includeExternalTypes = false) {
   if (!['Class', 'Property'].includes(resultType)) {
     throw new Error(`Cannot search for unknown type '${resultType}'`)
   }
@@ -91,8 +91,8 @@ export function domainsSearchFactory (dataset, resultType, addXSDTypes = false) 
   const domainsDataset = dataset
     .match(null, termIRI.a, termIRI[resultType])
 
-  if (addXSDTypes) {
-    domainsDataset.addAll(xsdTypes)
+  if (includeExternalTypes) {
+    domainsDataset.addAll(externalTypes)
   }
 
   return (searchInput = '') => {
@@ -344,3 +344,93 @@ export function buildSearchIndex (dataset) {
   }, {})
   return Object.values(indexObject)
 }
+
+export function buildTree (structureDataset, ontologyDataset) {
+  if (!structureDataset) {
+    return {}
+  }
+
+  const nodes = {}
+
+  // we consider <parentIRI> <givenPredicate> <childIRI>
+  ;[stringIRI.hasPart].forEach((predicate) => {
+    structureDataset
+      .match(null, rdf.namedNode(predicate))
+      .toArray()
+      .forEach((quad) => {
+        const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, structureDataset.match(quad.subject)))
+        const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, structureDataset.match(quad.object)))
+        child.parent = parent
+        parent.children.push(child)
+      })
+  })
+
+  const modifiedDataset = structureDataset.merge(ontologyDataset).match(null, termIRI.modified)
+
+  const forest = Object.keys(nodes)
+    .reduce((acc, iri) => {
+      const node = nodes[iri]
+      node.path = `/${iri.replace(datasetBaseUrl, '')}`
+      node.properties = []
+      node.type = 'container'
+
+      const modified = modifiedDataset.match(rdf.namedNode(iri), termIRI.modified).toArray()
+      node.modified = modified.length ? modified[0].object.value : ''
+
+      node.label = iri
+      let label = structureDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
+      if (label.length) {
+        node.label = label[0].object.value
+      }
+      else {
+        label = ontologyDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
+        if (label.length) {
+          node.type = 'class'
+          node.label = label[0].object.value
+          node.properties = findClassProperties(iri, ontologyDataset)
+        }
+      }
+
+      if (!node.parent) {
+        // then it's a root
+        acc.push(node)
+      }
+      node.parent = null
+      return acc
+    }, [])
+
+  return forest
+}
+
+class Node {
+  constructor (iri, parent, quads, children = []) {
+    this.iri = iri
+    this.parent = parent
+    this.quads = quads
+    this.children = children
+    this.isCreativeWork = !!quads.match(
+      rdf.namedNode(this.iri),
+      termIRI.a,
+      termIRI.creativeWork
+    ).length
+  }
+}
+
+export function findClassProperties (classIRI, dataset) {
+  const type = termIRI.a
+  const object = termIRI.Property
+
+  const domain = termIRI.domain
+  const classToSearchFor = rdf.namedNode(classIRI)
+
+  return dataset
+    .match(null, domain, classToSearchFor)
+    .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
+}
+
+// export function _debugNT (baseDataset, newQuadsDataset) {
+//   const base = baseDataset ? baseDataset.clone() : rdf.dataset()
+//   const dataset = base.merge(newQuadsDataset)
+//
+//   return datasetToCanonicalN3(dataset)
+// }

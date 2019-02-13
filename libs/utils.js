@@ -1,10 +1,5 @@
 import _get from 'lodash/get'
-import rdf from 'rdf-ext'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
-import { termIRI } from '@/libs/rdf'
-
-const datasetBaseUrl = process.env.DATASET_BASE_URL
-const containersNestingPredicates = [process.env.CONTAINERS_NESTING_PREDICATE]
 
 export const toastClose = {
   action: {
@@ -33,63 +28,6 @@ export function serialize (dataset) {
     .join('\n')
 }
 
-export function buildTree (structureDataset, ontologyDataset) {
-  if (!structureDataset) {
-    return {}
-  }
-
-  const nodes = {}
-
-  // we consider <parentIRI> <givenPredicate> <childIRI>
-  containersNestingPredicates.forEach((predicate) => {
-    structureDataset
-      .match(null, rdf.namedNode(predicate))
-      .toArray()
-      .forEach((quad) => {
-        const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, structureDataset.match(quad.subject)))
-        const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, structureDataset.match(quad.object)))
-        child.parent = parent
-        parent.children.push(child)
-      })
-  })
-
-  const modifiedDataset = structureDataset.merge(ontologyDataset).match(null, termIRI.modified)
-
-  const forest = Object.keys(nodes)
-    .reduce((acc, iri) => {
-      const node = nodes[iri]
-      node.path = `/${iri.replace(datasetBaseUrl, '')}`
-      node.properties = []
-      node.type = 'container'
-
-      const modified = modifiedDataset.match(rdf.namedNode(iri), termIRI.modified).toArray()
-      node.modified = modified.length ? modified[0].object.value : ''
-
-      node.label = iri
-      let label = structureDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
-      if (label.length) {
-        node.label = label[0].object.value
-      }
-      else {
-        label = ontologyDataset.match(rdf.namedNode(iri), termIRI.label).toArray()
-        if (label.length) {
-          node.type = 'class'
-          node.label = label[0].object.value
-          node.properties = findClassProperties(iri, ontologyDataset)
-        }
-      }
-
-      if (!node.parent) {
-        // then it's a root
-        acc.push(node)
-      }
-      node.parent = null
-      return acc
-    }, [])
-
-  return forest
-}
-
 // Navigate a tree until a node with IRI=iri is found.
 export function findSubtreeInForest (nodes, iri) {
   for (const node of Array.from(nodes)) {
@@ -104,20 +42,6 @@ export function findSubtreeInForest (nodes, iri) {
   }
 }
 
-class Node {
-  constructor (iri, parent, quads, children = []) {
-    this.iri = iri
-    this.parent = parent
-    this.quads = quads
-    this.children = children
-    this.isCreativeWork = !!quads.match(
-      rdf.namedNode(this.iri),
-      termIRI.a,
-      rdf.namedNode('http://schema.org/CreativeWork')
-    ).length
-  }
-}
-
 export function hasCreativeWorkChild (obj) {
   if (!obj || !obj.children || !obj.children.length) {
     return false
@@ -129,18 +53,6 @@ export function hasCreativeWorkChild (obj) {
     }
     return !!hasCreativeWorkChild(child)
   }
-}
-
-export function findClassProperties (classIRI, dataset) {
-  const type = termIRI.a
-  const object = termIRI.Property
-
-  const domain = termIRI.domain
-  const classToSearchFor = rdf.namedNode(classIRI)
-
-  return dataset
-    .match(null, domain, classToSearchFor)
-    .filter(({ subject }) => dataset.match(subject, type, object).toArray().length)
 }
 
 export function collectChildren (obj, steps = {}, path = 'propChildren') {

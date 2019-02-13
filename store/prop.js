@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import { Property, generatePropertyProposal, proposalDataset } from '@/models/Property'
+import Property from '@/models/Property'
 import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
@@ -17,7 +17,7 @@ export const state = () => ({
 })
 
 export const getters = {
-  dataset: (state) => proposalDataset(state.prop, false),
+  dataset: (state) => state.prop.proposalDataset(false),
   error: (state) => state.error,
   success: (state) => state.success,
   serialized: (state) => proposalSerializer(state.prop)
@@ -123,10 +123,9 @@ export const actions = {
 
   async [SUBMIT] ({ dispatch, commit, state, rootState }, token) {
     try {
-      const propertyProposalData = generatePropertyProposal({
+      const propertyProposalData = state.prop.generateProposal({
         ontology: rootState.graph.ontology,
-        structure: rootState.graph.structure,
-        property: state.prop
+        structure: rootState.graph.structure
       })
       const isEdit = state.prop.isEdit
 
