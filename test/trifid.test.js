@@ -6,7 +6,7 @@ const envInit = require('../setup/env-init')
 // load env vars
 envInit()
 
-jest.setTimeout(50000)
+jest.setTimeout(100000)
 
 // https://github.com/axios/axios/issues/960#issuecomment-320659373
 axios.interceptors.response.use(
@@ -28,11 +28,7 @@ let nuxt = null
 // Init Nuxt.js and create a server listening on localhost:4000
 describe('basic dev', () => {
   beforeAll(async () => {
-    const config = {
-      dev: true,
-      rootDir: resolve(__dirname, '..'),
-      ...require(resolve(__dirname, '../nuxt.config.js'))
-    }
+    const config = await require(resolve(__dirname, '../nuxt.config.js'))()
     nuxt = new Nuxt(config)
     await new Builder(nuxt).build()
     return nuxt.listen(3000, 'localhost')

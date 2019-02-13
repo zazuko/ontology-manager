@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     async authenticate () {
+      const strategy = this.$store.state.config.editor.loginStrategy
       const tmp = Math.floor(Math.random() * 100000)
       const username = _get(this, '$store.state.auth.user.login')
       const id = _get(this, '$store.state.auth.user.id')
@@ -41,13 +42,13 @@ export default {
         // if github user set their email as 'private', email ends up 'null' here
         // so we have to fetch it via the API
         if (!email) {
-          const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
+          const headers = { headers: { authorization: this.$auth.getToken(strategy) } }
           const result = await axios.get('https://api.github.com/user/emails', headers)
           email = _get(result, 'data[0].email') || `${tmp}-unknown@example.com`
         }
 
         // check token then link oauth account/token to local account/token
-        const headers = { headers: { authorization: this.$auth.getToken(process.env.AUTH_STRATEGY) } }
+        const headers = { headers: { authorization: this.$auth.getToken(strategy) } }
         let result
         try {
           result = await axios.post('/api/link', { email, name, id, username }, headers)

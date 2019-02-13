@@ -231,7 +231,7 @@ export default {
     }
 
     // check that either the ontology or the structure contains this IRI
-    let iri = process.env.DATASET_BASE_URL + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    let iri = store.state.config.ontology.datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
 
     // we don't have access to asyncData in here
     if (route.path.endsWith('/')) {

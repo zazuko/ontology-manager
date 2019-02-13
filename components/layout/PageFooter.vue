@@ -5,9 +5,9 @@
         <nuxt-link :to="{ name: 'index', params: {} }">
           <img
             class="footer-icon"
-            src="~/assets/images/dcf-logo.svg">
+            :src="logoUrl">
         </nuxt-link>
-        <span>© 2018 {{ customer }}. All rights reserved</span>
+        <span>© {{ year }} {{ customer }}. All rights reserved</span>
       </div>
 
       <div class="level-right">
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-const customer = process.env.CUSTOMER_NAME
-
 export default {
   name: 'PageFooter',
   data () {
     return {
-      customer: customer || 'Zazuko GmbH'
+      customer: this.$store.state.config.editor.customerName,
+      logoUrl: this.$store.state.config.editor.logoUrl,
+      year: (new Date()).getFullYear()
     }
   }
 }

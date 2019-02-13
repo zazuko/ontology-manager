@@ -29,15 +29,15 @@
             class="navbar-item">
             Home
           </nuxt-link>
-          <template v-if="$auth && $auth.$state.loggedIn">
-            <draft-tab class="navbar-item" />
-            <nuxt-link
-              v-show="$store.state.auth.isAdmin"
-              :to="{ name: 'admin-proposals', params: {} }"
-              class="navbar-item">
-              Admin
-            </nuxt-link>
-          </template>
+          <draft-tab
+            v-show="$auth && $auth.$state.loggedIn"
+            class="navbar-item" />
+          <nuxt-link
+            v-show="$auth && $auth.$state.loggedIn && $store.state.auth.isAdmin"
+            :to="{ name: 'admin-proposals', params: {} }"
+            class="navbar-item">
+            Admin
+          </nuxt-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">

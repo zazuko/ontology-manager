@@ -1,8 +1,5 @@
 import Vue from 'vue'
-
-// TODO: make this forge-agnostic
-const owner = process.env.EDITOR_GITHUB_OWNER
-const repo = process.env.EDITOR_GITHUB_REPO
+import _get from 'lodash/get'
 
 Vue.filter('formatDate', (date) => {
   const dateObj = new Date(date)
@@ -22,7 +19,11 @@ Vue.filter('formatTime', (date) => {
   return `${datePart} ${timePart}`
 })
 
-Vue.filter('forgeLink', (id) => {
-  // TODO: make this forge-agnostic
-  return `https://github.com/${owner}/${repo}/pull/${id}`
-})
+export default async ({ store }) => {
+  const owner = _get(store, 'state.config.editor.github.owner', '')
+  const repo = _get(store, 'state.config.editor.github.repo', '')
+  Vue.filter('forgeLink', (id) => {
+    // TODO: make this forge-agnostic
+    return `https://github.com/${owner}/${repo}/pull/${id}`
+  })
+}
