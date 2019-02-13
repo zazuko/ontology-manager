@@ -43,7 +43,6 @@ module.exports = {
     'no-lonely-if': 'error',
     quotes: ['error', 'single', { 'avoidEscape': true }],
     'callback-return': ['error', ['done', 'callback', 'cb', 'send']],
-    curly: 'error',
     'object-shorthand': 'error',
     'vue/html-closing-bracket-newline': ['error', {
       singleline: 'never',
