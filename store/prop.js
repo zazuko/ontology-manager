@@ -4,23 +4,22 @@ import gql from 'graphql-tag'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import Property from '@/models/Property'
-import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
-
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { SET_ID, ERROR, SUCCESS } from '@/store/mutation-types'
 
-export const state = () => ({
-  prop: new Property(),
-  error: false,
-  success: false
-})
+export function state () {
+  return {
+    prop: {},
+    error: false,
+    success: false
+  }
+}
 
 export const getters = {
   dataset: (state) => state.prop.proposalDataset(false),
   error: (state) => state.error,
   success: (state) => state.success,
-  serialized: (state) => proposalSerializer(state.prop)
+  serialized: (state) => this.$proposalSerializer(state.prop)
 }
 
 export const mutations = VueDeepSet.extendMutation({
@@ -36,7 +35,7 @@ export const mutations = VueDeepSet.extendMutation({
     state.prop.threadId = threadId
   },
   [NEW] (state) {
-    state.prop = new Property()
+    state.prop = new this.$Property()
     state.error = false
     state.success = false
   },
@@ -56,7 +55,7 @@ export const actions = {
       })
 
       const proposal = result.data.proposal
-      const deserialized = proposalDeserializer(proposal.proposalObject)
+      const deserialized = this.$proposalDeserializer(proposal.proposalObject)
 
       commit(LOAD, deserialized)
       commit(SET_ID, proposal.id)
@@ -96,7 +95,7 @@ export const actions = {
       const variables = {
         iri: state.prop.parentStructureIRI,
         body: state.prop.motivation,
-        proposalObject: JSON.parse(proposalSerializer(state.prop)),
+        proposalObject: JSON.parse(this.$proposalSerializer(state.prop)),
         headline: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,
         threadType: 'PROPOSAL'
       }
@@ -129,7 +128,7 @@ export const actions = {
       })
       const isEdit = state.prop.isEdit
 
-      const id = await submitProposal({
+      const id = await this.$submitProposal({
         threadId: state.prop.threadId,
         object: state.prop,
         title: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,

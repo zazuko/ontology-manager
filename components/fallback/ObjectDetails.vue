@@ -139,8 +139,8 @@ import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
 import LinkToIri from './LinkToIri'
-import { term, termIRI, usedOnClasses, rangeOf, rebaseIRI, findClassProperties } from '@/libs/rdf'
 import cloneDeep from 'lodash/cloneDeep'
+import { term } from '@/libs/utils'
 
 export default {
   name: 'ObjectDetails',
@@ -176,44 +176,44 @@ export default {
       return iri
     },
     comment () {
-      const commentQuad = this.ontology.match(this.iri, termIRI.comment).toArray()
+      const commentQuad = this.ontology.match(this.iri, this.$termIRI.comment).toArray()
       return _get(commentQuad, '[0].object.value', '')
     },
     description () {
-      const descriptionQuad = this.ontology.match(this.iri, termIRI.description).toArray()
+      const descriptionQuad = this.ontology.match(this.iri, this.$termIRI.description).toArray()
       return _get(descriptionQuad, '[0].object.value', '')
     },
     properties () {
       if (this.isClass) {
-        const properties = findClassProperties(this.iri.value, this.ontology).toArray()
+        const properties = this.$findClassProperties(this.iri.value, this.ontology).toArray()
         return properties
       }
 
       return null
     },
     usedOn () {
-      const classes = usedOnClasses(this.iri.value, this.ontology)
+      const classes = this.$usedOnClasses(this.iri.value, this.ontology)
       return classes.map(({ object }) => {
         return {
           label: this.label(object, this.ontology),
-          url: rebaseIRI(object.value)
+          url: this.$rebaseIRI(object.value)
         }
       })
     },
     rangeOf () {
-      const classes = rangeOf(this.iri.value, this.ontology)
+      const classes = this.$rangeOf(this.iri.value, this.ontology)
       return classes
     },
     examples () {
-      return this.ontology.match(this.iri, termIRI.example)
+      return this.ontology.match(this.iri, this.$termIRI.example)
         .toArray()
         .map((quad) => term(quad.object))
     },
     isClass () {
-      return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Class).toArray().length)
+      return Boolean(this.ontology.match(this.iri, this.$termIRI.a, this.$termIRI.Class).toArray().length)
     },
     isProperty () {
-      return Boolean(this.ontology.match(this.iri, termIRI.a, termIRI.Property).toArray().length)
+      return Boolean(this.ontology.match(this.iri, this.$termIRI.a, this.$termIRI.Property).toArray().length)
     },
     breadcrumbs () {
       this.init()
@@ -229,7 +229,7 @@ export default {
           }
           while (child.parent) {
             const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
-            const target = rebaseIRI(child.iri)
+            const target = this.$rebaseIRI(child.iri)
             path.push({ label, target })
             child = child.parent
           }
@@ -245,7 +245,7 @@ export default {
         }
         while (child.parent) {
           const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
-          const target = rebaseIRI(child.iri)
+          const target = this.$rebaseIRI(child.iri)
           path.push({ label, target })
           child = child.parent
         }
@@ -263,7 +263,7 @@ export default {
       }
     },
     label (iri, dataset) {
-      const label = dataset.match(iri, termIRI.label).toArray()
+      const label = dataset.match(iri, this.$termIRI.label).toArray()
       return _get(label, '[0].object.value', '')
     },
     findInTree (iri, tree) {
@@ -279,11 +279,11 @@ export default {
       }
     },
     findPropertyParents (iri) {
-      return this.ontology.match(iri, termIRI.domain)
+      return this.ontology.match(iri, this.$termIRI.domain)
         .toArray()
         .map(({ object }) => {
           const label = this.label(object, this.bothDatasets)
-          const target = rebaseIRI(object.value)
+          const target = this.$rebaseIRI(object.value)
           return { iri: object.value, label, target }
         })
     }

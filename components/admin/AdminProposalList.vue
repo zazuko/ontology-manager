@@ -187,7 +187,6 @@
 <script>
 import axios from 'axios'
 import { toastClose } from '@/libs/utils'
-import { proposalType } from '@/libs/proposals'
 import ForgeLink from './ForgeLink'
 import Loader from '@/components/layout/Loader'
 
@@ -210,7 +209,7 @@ export default {
     rows () {
       return this.proposals.map((proposal) => {
         proposal.tally = this.tally(proposal.votesByThreadId.votes)
-        proposal.proposalType = this.proposalType(proposal.proposalObject)
+        proposal.proposalType = this.$proposalType(proposal.proposalObject)
         return proposal
       })
     }
@@ -232,7 +231,6 @@ export default {
     }
   },
   methods: {
-    proposalType,
     async approve (proposal) {
       this.working = true
       const body = {

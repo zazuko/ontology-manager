@@ -74,7 +74,7 @@
                 {{ item.thread.headline }}
               </nuxt-link>
               on
-              <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
+              <nuxt-link :to="{ path: $rebaseIRI(item.thread.iri) }">
                 {{ term(item.thread.iri) }}
               </nuxt-link>
             </span>
@@ -84,7 +84,7 @@
                 {{ item.thread.headline }}
               </nuxt-link>
               on
-              <nuxt-link :to="{ path: rebaseIRI(item.thread.iri) }">
+              <nuxt-link :to="{ path: $rebaseIRI(item.thread.iri) }">
                 {{ term(item.thread.iri) }}
               </nuxt-link>
             </span>
@@ -100,7 +100,7 @@
 
 <script>
 import activityLog from '@/apollo/queries/activityLog'
-import { term, rebaseIRI } from '@/libs/rdf'
+import { term } from '@/libs/utils'
 
 const actionTypes = [
   'PROPOSAL_SUBMIT',
@@ -129,7 +129,6 @@ export default {
   },
   methods: {
     term,
-    rebaseIRI,
     authorsAvatar (name = '') {
       return `${name}'s avatar`
     },

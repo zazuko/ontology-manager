@@ -64,7 +64,6 @@
 import _get from 'lodash/get'
 import LinkToIri from './LinkToIri'
 import proposals from '@/apollo/queries/proposalsByIri'
-import { proposalDeserializer } from '@/libs/proposals'
 
 export default {
   name: 'PropertyProposals',
@@ -103,7 +102,7 @@ export default {
           const proposals = _get(data, 'proposals.proposals', [])
           return proposals.map(proposal => {
             if (Array.isArray(proposal.proposalObject)) {
-              proposal.proposalObject = proposalDeserializer(proposal.proposalObject)
+              proposal.proposalObject = this.$proposalDeserializer(proposal.proposalObject)
             }
             return proposal
           })

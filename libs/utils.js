@@ -1,4 +1,6 @@
 import _get from 'lodash/get'
+import _camelCase from 'lodash/camelCase'
+import _upperFirst from 'lodash/upperFirst'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 
 export const toastClose = {
@@ -131,4 +133,47 @@ function _childPropertiesCount (obj, properties = []) {
     return prop.concat(childProps)
   }
   return obj.properties.toArray()
+}
+
+function iri (o) {
+  return o.iri ? o.iri().value : o.toString()
+}
+
+export function term (o) {
+  if (!o) {
+    return undefined
+  }
+
+  const oIri = iri(o)
+  if (oIri === '[object Object]') {
+    throw new Error(`Cannot call term() on '${JSON.stringify(o)}'`)
+  }
+
+  return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
+}
+
+export function normalizeLabel (label, type = 'pascal') {
+  const camel = _camelCase(label)
+  return encodeURIComponent(type === 'pascal' ? _upperFirst(camel) : camel)
+}
+
+export function datasetToCanonicalN3 (dataset) {
+  return dataset.toArray()
+    .map(quad => quad.toString())
+    .sort((a, b) => a.localeCompare(b))
+    .join('\n') + '\n' // files should always end with a nl
+}
+
+export function firstVal (xs = []) {
+  if (!Array.isArray(xs)) {
+    throw new Error('Argument should be an array')
+  }
+  if (xs.length) {
+    const first = xs[0]
+    if (first.hasOwnProperty('subject') && first.hasOwnProperty('predicate') && first.hasOwnProperty('object')) {
+      return first
+    }
+    return first.value
+  }
+  return ''
 }

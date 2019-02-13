@@ -53,7 +53,6 @@
 import _get from 'lodash/get'
 import { arrayToGroups } from '@/libs/utils'
 import proposals from '@/apollo/queries/proposalsByIri'
-import { proposalDeserializer } from '@/libs/proposals'
 import PouchBox from './PouchBox'
 
 export default {
@@ -90,7 +89,7 @@ export default {
           const proposals = _get(data, 'proposals.proposals', [])
           return proposals.map(proposal => {
             if (Array.isArray(proposal.proposalObject)) {
-              proposal.proposalObject = proposalDeserializer(proposal.proposalObject)
+              proposal.proposalObject = this.$proposalDeserializer(proposal.proposalObject)
             }
             return proposal
           })

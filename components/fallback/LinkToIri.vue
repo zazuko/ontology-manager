@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { term, rebaseIRI } from '@/libs/rdf'
+import { term } from '@/libs/utils'
 
 export default {
   name: 'LinkToIri',
@@ -44,7 +44,7 @@ export default {
   data () {
     let path = ''
     let url = ''
-    const rebased = rebaseIRI(this.term.value, 'relative')
+    const rebased = this.$rebaseIRI(this.term.value, 'relative')
     if (rebased.startsWith('/')) {
       path = rebased
     }
@@ -57,8 +57,7 @@ export default {
     }
   },
   methods: {
-    getTerm: term,
-    rebaseIRI
+    getTerm: term
   },
   computed: {
     classes () {

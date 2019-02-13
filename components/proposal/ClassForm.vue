@@ -266,11 +266,10 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
 import Editor from '@/components/editor/Editor'
-import Property from '@/models/Property'
+import { normalizeLabel, term } from '@/libs/utils'
 
 export default {
   name: 'ClassForm',
@@ -357,7 +356,6 @@ export default {
     }
   },
   methods: {
-    term,
     $vuexPush (path, ...values) {
       const currentValues = this.clss[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
@@ -369,8 +367,8 @@ export default {
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
-      const isSelected = ({ subject }) => this.term(subject) === this.term(domain.subject)
-      if (this.clss['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
+      const isSelected = ({ subject }) => term(subject) === term(domain.subject)
+      if (this.clss['domains'].find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
 
@@ -392,7 +390,7 @@ export default {
       this.$vuexDeleteAtIndex('domainsRemoved', index)
     },
     createProperty (label) {
-      const prop = new Property({ label, isNew: true })
+      const prop = new this.$Property({ label, isNew: true })
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true
@@ -413,7 +411,7 @@ export default {
         const originalIRI = this.clss['originalIRI'] || this.clss['iri']
         this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
       }
-      this.searchFunction = domainsSearchFactory(this.ontology, 'Property', false)
+      this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Property', false)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
     },
     debugGenerateNT () {

@@ -31,7 +31,7 @@
             </span>
           </template>
           <template v-else-if="property.iri">
-            <a :href="rebaseIRI(property.iri)">
+            <a :href="$rebaseIRI(property.iri)">
               {{ property.label }}
             </a>
           </template>
@@ -39,10 +39,10 @@
         <td class="property-ranges">
           <ul class="types-list">
             <li
-              v-for="range in rangeOf(property.iri, dataset)"
+              v-for="range in $rangeOf(property.iri, dataset)"
               :key="range.value">
               <a
-                :href="rebaseIRI(range.value)"
+                :href="$rebaseIRI(range.value)"
                 rel="noopener noreferrer"
                 target="_blank">
                 {{ term(range.value) }}
@@ -53,7 +53,7 @@
         <td class="property-used-on">
           <ul class="types-list">
             <li
-              v-for="otherClass in usedOnClasses(property.iri, dataset)"
+              v-for="otherClass in $usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
               <a
                 v-if="classIsNew(otherClass)"
@@ -62,7 +62,7 @@
               </a>
               <a
                 v-else
-                :href="rebaseIRI(otherClass.object.value)"
+                :href="$rebaseIRI(otherClass.object.value)"
                 rel="noopener noreferrer"
                 target="_blank">
                 {{ term(otherClass.object) }}
@@ -92,7 +92,7 @@
         v-for="(property, index) in removedProperties"
         :key="index + 200000">
         <td class="property-name">
-          <a :href="rebaseIRI(property.iri)">
+          <a :href="$rebaseIRI(property.iri)">
             {{ property.label }}
           </a>
           &nbsp;
@@ -106,7 +106,7 @@
               v-for="range in rangeOf(property.iri, dataset)"
               :key="range.value">
               <a
-                :href="rebaseIRI(range.value)"
+                :href="$rebaseIRI(range.value)"
                 rel="noopener noreferrer"
                 target="_blank">
                 {{ term(range.value) }}
@@ -117,10 +117,10 @@
         <td class="property-used-on">
           <ul class="types-list">
             <li
-              v-for="otherClass in usedOnClasses(property.iri, dataset)"
+              v-for="otherClass in $usedOnClasses(property.iri, dataset)"
               :key="otherClass.object.value">
               <a
-                :href="rebaseIRI(otherClass.object.value)"
+                :href="$rebaseIRI(otherClass.object.value)"
                 rel="noopener noreferrer"
                 target="_blank">
                 <del v-if="otherClass.object.value === iri">
@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import { term, termIRI, rebaseIRI, usedOnClasses, rangeOf } from '@/libs/rdf'
+import { term } from '@/libs/utils'
 
 export default {
   name: 'ProposalPropertiesTable',
@@ -183,15 +183,12 @@ export default {
   },
   methods: {
     term,
-    rebaseIRI,
-    usedOnClasses,
-    rangeOf,
     reselectDomain (index) {
       this.$emit('reselectDomain', index)
     },
     classIsNew ({ object }) {
       const ontology = this.$store.getters['graph/ontology']
-      const found = ontology.match(object, termIRI.a, termIRI.class).toArray().length
+      const found = ontology.match(object, this.$termIRI.a, this.$termIRI.class).toArray().length
       return !found
     },
     jumpToProperty (property, index) {
