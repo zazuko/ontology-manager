@@ -1,4 +1,4 @@
-import { LOAD } from '@/store/action-types'
+import { LOAD_CONFIG } from '@/store/action-types'
 import currentPublicConfig from '@/apollo/queries/currentPublicConfig'
 
 export const state = () => ({
@@ -14,7 +14,7 @@ export const getters = {
 }
 
 export const mutations = {
-  [LOAD] (state, config) {
+  [LOAD_CONFIG] (state, config) {
     state.version = config.version
     state.editor = config.editor
     state.ontology = config.ontology
@@ -22,12 +22,12 @@ export const mutations = {
 }
 
 export const actions = {
-  async [LOAD] ({ commit, state }) {
+  async [LOAD_CONFIG] ({ commit, state }) {
     try {
       const result = await this.app.apolloProvider.defaultClient.query({ query: currentPublicConfig })
       const config = result.data.currentPublicConfig
 
-      commit(LOAD, config)
+      commit(LOAD_CONFIG, config)
       return Promise.resolve(config)
     }
     catch (error) {

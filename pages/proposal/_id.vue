@@ -149,7 +149,6 @@ import Loader from '@/components/layout/Loader'
 import discussionById from '@/apollo/queries/discussionById'
 import { LOAD } from '@/store/action-types'
 import { toastClose, headTitle } from '@/libs/utils'
-import { proposalType } from '@/libs/proposals'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 const {
@@ -194,7 +193,6 @@ export default {
     }
   },
   methods: {
-    proposalType,
     ...classActions({
       loadClass: LOAD
     }),
@@ -213,7 +211,7 @@ export default {
         })
     },
     init () {
-      this.type = proposalType(this.discussion.proposalObject)
+      this.type = this.$proposalType(this.discussion.proposalObject)
       let loader
       if (this.type === 'Class') {
         loader = this.loadClass

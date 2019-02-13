@@ -22,7 +22,7 @@
           </td>
           <td class="draft-actions">
             <nuxt-link
-              v-if="proposalType(draft.proposalObject) === 'Class'"
+              v-if="$proposalType(draft.proposalObject) === 'Class'"
               :to="{ name: 'proposal-class', query: { id: draft.id } }"
               class="edit-draft">
               Edit Proposal
@@ -51,12 +51,11 @@
 
 <script>
 import mutation from '@/apollo/mutations/discardDraft'
-import { proposalType } from '@/libs/proposals'
+
 export default {
   name: 'DraftList',
   props: ['drafts'],
   methods: {
-    proposalType,
     async discard (threadId) {
       const variables = { threadId }
       try {

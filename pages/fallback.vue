@@ -3,8 +3,8 @@
     <div
       v-if="iri"
       :class="{
-        'layout-objects-list': termIRI.creativeWork.equals(objectType),
-        'layout-object-details': !termIRI.creativeWork.equals(objectType)
+        'layout-objects-list': $termIRI.creativeWork.equals(objectType),
+        'layout-object-details': !$termIRI.creativeWork.equals(objectType)
       }"
       class="container">
 
@@ -12,7 +12,7 @@
 
       <!-- layout-objects-list -->
       <div
-        v-if="termIRI.creativeWork.equals(objectType)"
+        v-if="$termIRI.creativeWork.equals(objectType)"
         v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
@@ -29,7 +29,7 @@
             :obj="subtree"
             :ontology="ontology"
             :structure="structure"
-            :is-class="termIRI.Class.equals(objectType)" />
+            :is-class="$termIRI.Class.equals(objectType)" />
         </section>
 
         <section
@@ -55,10 +55,10 @@
             :object="object"
             :ontology="ontology"
             :structure="structure"
-            :is-class="termIRI.Class.equals(objectType)" />
+            :is-class="$termIRI.Class.equals(objectType)" />
 
           <property-proposals
-            v-if="termIRI.Class.equals(objectType)"
+            v-if="$termIRI.Class.equals(objectType)"
             id="proposals"
             :iri="iri" />
 
@@ -88,8 +88,7 @@ import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
 import Loader from '@/components/layout/Loader'
 
-import { findSubtreeInForest, headTitle } from '@/libs/utils'
-import { termIRI, term } from '@/libs/rdf'
+import { findSubtreeInForest, headTitle, term } from '@/libs/utils'
 
 export default {
   layout: 'background',
@@ -152,7 +151,7 @@ export default {
       return tree
     },
     object () {
-      if (!(termIRI.Class.equals(this.objectType) || termIRI.Property.equals(this.objectType))) {
+      if (!(this.$termIRI.Class.equals(this.objectType) || this.$termIRI.Property.equals(this.objectType))) {
         return null
       }
       if (_get(this, 'subtree.children.length', 0) === 0) {
@@ -166,7 +165,7 @@ export default {
         return this.subtree.label
       }
       else if (this.object) {
-        label = this.object.match(rdf.namedNode(this.iri), termIRI.label).toArray()[0]
+        label = this.object.match(rdf.namedNode(this.iri), this.$termIRI.label).toArray()[0]
       }
       if (label && label.object) {
         return label.object.value
@@ -176,10 +175,10 @@ export default {
     comment () {
       let comment
       if (this.subtree) {
-        comment = this.subtree.quads.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+        comment = this.subtree.quads.match(rdf.namedNode(this.iri), this.$termIRI.comment).toArray()[0]
       }
       else if (this.object) {
-        comment = this.object.match(rdf.namedNode(this.iri), termIRI.comment).toArray()[0]
+        comment = this.object.match(rdf.namedNode(this.iri), this.$termIRI.comment).toArray()[0]
       }
       if (comment) {
         return comment.object.value
@@ -189,7 +188,6 @@ export default {
   },
   data () {
     return {
-      termIRI,
       objectType: '',
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
@@ -201,11 +199,11 @@ export default {
     setObjectType () {
       if (this.structure) {
         const subject = rdf.namedNode(this.iri)
-        const ontologyMatches = this.ontology.match(subject, termIRI.a).toArray()
+        const ontologyMatches = this.ontology.match(subject, this.$termIRI.a).toArray()
         if (ontologyMatches.length === 1) {
           this.objectType = ontologyMatches[0].object
         }
-        const structureMatches = this.structure.match(subject, termIRI.a).toArray()
+        const structureMatches = this.structure.match(subject, this.$termIRI.a).toArray()
         if (structureMatches.length === 1) {
           this.objectType = structureMatches[0].object
         }

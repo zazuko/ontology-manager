@@ -149,7 +149,6 @@ import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
-import Property from '@/models/Property'
 import { headTitle } from '@/libs/utils'
 
 const {
@@ -201,7 +200,7 @@ export default {
     if (this.edit) {
       const ontology = this.$store.state.graph.ontology
       const structure = this.$store.state.graph.structure
-      const prop = Property.hydrate({ ontology, structure }, this.iri)
+      const prop = this.$Property.hydrate({ ontology, structure }, this.iri)
       this.$store.commit('prop/LOAD', prop)
       this.storeReady = true
     }
