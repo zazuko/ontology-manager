@@ -4,23 +4,22 @@ import gql from 'graphql-tag'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import Class from '@/models/Class'
-import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
-
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 import { SET_ID, ERROR, SUCCESS } from '@/store/mutation-types'
 
-export const state = () => ({
-  clss: new Class(),
-  error: false,
-  success: false
-})
+export function state () {
+  return {
+    clss: {},
+    error: false,
+    success: false
+  }
+}
 
 export const getters = {
   error: (state) => state.error,
   success: (state) => state.success,
   dataset: (state) => state.clss.proposalDataset(false),
-  serialized: (state) => proposalSerializer(state.clss)
+  serialized: (state) => this.$proposalSerializer(state.clss)
 }
 
 export const mutations = VueDeepSet.extendMutation({
@@ -36,7 +35,7 @@ export const mutations = VueDeepSet.extendMutation({
     state.clss.threadId = threadId
   },
   [NEW] (state) {
-    state.clss = new Class()
+    state.clss = new this.$Class()
     state.error = false
     state.success = false
   },
@@ -56,7 +55,7 @@ export const actions = {
       })
 
       const proposal = result.data.proposal
-      const deserialized = proposalDeserializer(proposal.proposalObject)
+      const deserialized = this.$proposalDeserializer(proposal.proposalObject)
 
       commit(LOAD, deserialized)
       commit(SET_ID, proposal.id)
@@ -97,7 +96,7 @@ export const actions = {
       const variables = {
         iri: state.clss.parentStructureIRI,
         body: state.clss.motivation,
-        proposalObject: JSON.parse(proposalSerializer(state.clss)),
+        proposalObject: JSON.parse(this.$proposalSerializer(state.clss)),
         headline: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,
         threadType: 'PROPOSAL'
       }
@@ -134,7 +133,7 @@ export const actions = {
       })
       const isEdit = state.clss.isEdit
 
-      const id = await submitProposal({
+      const id = await this.$submitProposal({
         threadId: state.clss.threadId,
         object: state.clss,
         title: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,

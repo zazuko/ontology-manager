@@ -3,7 +3,6 @@ import DatasetExt from 'rdf-ext/lib/Dataset'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
 import { serialize } from '@/libs/utils'
-import { buildTree, buildSearchIndex } from '@/libs/rdf'
 import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch-client'
 
@@ -42,10 +41,10 @@ export const mutations = {
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
     state.structure = structureDataset
-    state.structureTree = buildTree(structureDataset, state.ontology)
+    state.structureTree = this.$buildTree(structureDataset, state.ontology)
   },
   clientReady (state) {
-    state.searchIndex = buildSearchIndex(state.ontology.merge(state.structure))
+    state.searchIndex = this.$buildSearchIndex(state.ontology.merge(state.structure))
     state.clientReady = true
   }
 }

@@ -228,7 +228,7 @@
                       <i class="mdi mdi-close-circle" />
                     </span>
                     <span
-                      v-if="!range.label && range.predicate.value === termIRI.a.value">
+                      v-if="!range.label && range.predicate.value === $termIRI.a.value">
                       {{ term(range.subject) }}
                     </span>
                     <span v-else>
@@ -311,11 +311,9 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import { domainsSearchFactory, labelQuadForIRI, term, normalizeLabel, termIRI, externalIRIToQuad } from '@/libs/rdf'
-import { debounce } from '@/libs/utils'
+import { debounce, normalizeLabel, term } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
-import Class from '@/models/Class'
 
 export default {
   name: 'PropertyForm',
@@ -364,8 +362,7 @@ export default {
       renderTypeahead: process.client,
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
-      debugNT: '',
-      termIRI
+      debugNT: ''
     }
   },
   computed: {
@@ -423,15 +420,15 @@ export default {
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
-      const isSelected = ({ subject }) => this.term(subject) === this.term(domain.subject)
-      if (this.prop['domains'].find(isSelected) || this.iri === this.term(domain.subject)) {
+      const isSelected = ({ subject }) => term(subject) === term(domain.subject)
+      if (this.prop['domains'].find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
-      this.$vuexPush('domains', labelQuadForIRI(this.ontology, searchResult.iri))
+      this.$vuexPush('domains', this.$labelQuadForIRI(this.ontology, searchResult.iri))
     },
     onParentIRIChange: debounce(function () {
       if (this.subform) {
-        const parentLabelQuad = labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.clss.iri)
+        const parentLabelQuad = this.$labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.clss.iri)
         this.$vuexSet(`${this.storePath}.domains[0]`, parentLabelQuad)
       }
     }, 400),
@@ -448,7 +445,7 @@ export default {
     selectRange (searchResult) {
       const range = searchResult.domain
       // don't add if already in there
-      const isSelected = ({ subject }) => this.term(subject) === this.term(range.subject)
+      const isSelected = ({ subject }) => term(subject) === term(range.subject)
       if (this.prop['ranges'].find(isSelected)) {
         return
       }
@@ -465,7 +462,7 @@ export default {
       }
     },
     createDomain (label) {
-      const clss = new Class({ label, isNew: true })
+      const clss = new this.$Class({ label, isNew: true })
       // should we push 'this.prop' into 'clss' here?
       // or do something like :parentProp="prop" on <class-form in here and display it there?
       this.$vuexPush('domains', clss)
@@ -473,13 +470,13 @@ export default {
       return true
     },
     createRange (label) {
-      const clss = new Class({ label, isNew: true })
+      const clss = new this.$Class({ label, isNew: true })
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true
     },
     addExternalRange (iri) {
-      this.$vuexPush('ranges', externalIRIToQuad(iri))
+      this.$vuexPush('ranges', this.$externalIRIToQuad(iri))
       return true
     },
     init () {
@@ -491,7 +488,7 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
-      this.searchFunction = domainsSearchFactory(this.ontology, 'Class', true)
+      this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Class', true)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
       if (!this.subform) {
         if (this.edit) {
@@ -499,7 +496,7 @@ export default {
           this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
         }
         if (this.prop['domains.length'] === 0) {
-          const currentLabelQuad = labelQuadForIRI(this.ontology, this.iri)
+          const currentLabelQuad = this.$labelQuadForIRI(this.ontology, this.iri)
           this.$vuexPush('domains', currentLabelQuad)
         }
       }

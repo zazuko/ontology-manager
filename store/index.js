@@ -18,7 +18,7 @@ export const actions = {
   // a. why we have access to `req`
   // b. why it will be broken client-side: data will be (de)serialized to/from JSON for the client
   async nuxtServerInit ({ commit, dispatch }, { req, res }) {
-    await dispatch('config/LOAD')
+    await dispatch('config/LOAD_CONFIG')
 
     if (req && req.ontology) {
       commit('graph/ontologyInit', req.ontology)

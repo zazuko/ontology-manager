@@ -25,7 +25,7 @@
             <td class="property-ranges">
               <ul>
                 <li
-                  v-for="range in rangeOf(property.subject.value, ontology)"
+                  v-for="range in $rangeOf(property.subject.value, ontology)"
                   :key="range.value">
                   <link-to-iri :term="range" />
                 </li>
@@ -45,7 +45,6 @@
 
 <script>
 import _get from 'lodash/get'
-import { term, commentQuadForIRI, rebaseIRI, rangeOf } from '@/libs/rdf'
 import LinkToIri from './LinkToIri'
 
 export default {
@@ -69,11 +68,8 @@ export default {
   },
   methods: {
     _get,
-    term,
-    rebaseIRI,
-    rangeOf,
     getComment (iri) {
-      return commentQuadForIRI(this.ontology, iri)
+      return this.$commentQuadForIRI(this.ontology, iri)
     }
   }
 }

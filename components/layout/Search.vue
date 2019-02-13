@@ -49,7 +49,6 @@
 
 <script>
 import Fuse from 'fuse.js'
-import { rebaseIRI } from '@/libs/rdf'
 
 export default {
   name: 'Search',
@@ -102,7 +101,7 @@ export default {
         .slice(0, 10)
         .map((result) => {
           const { item, matches } = result
-          const href = rebaseIRI(result.item.iri)
+          const href = this.$rebaseIRI(result.item.iri)
           const firstMatch = matches[0]
           const found = {
             href,
