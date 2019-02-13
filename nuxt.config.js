@@ -44,12 +44,13 @@ module.exports = async () => {
 
     /*
     ** Plugins to load before mounting the App
+    * Order matters!
     */
     plugins: [
       '@/plugins/libs/rdf',
-      '@/plugins/libs/proposals',
       '@/plugins/models/Class',
       '@/plugins/models/Property',
+      '@/plugins/libs/proposals',
       '@/plugins/filters',
       '@/plugins/directives',
       '@/plugins/nuxt-init.client',

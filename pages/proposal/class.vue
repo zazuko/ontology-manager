@@ -255,7 +255,10 @@ export default {
       }
       return this.iri
     },
-    ...classGetters(['success', 'error', 'serialized'])
+    serialized () {
+      return this.$proposalSerializer(this.clss)
+    },
+    ...classGetters(['success', 'error'])
   },
   watch: {
     success () {

@@ -1,10 +1,7 @@
-import { normalizeLabel } from '@/libs/utils'
-
 export default class Resource {
   constructor ({
     motivation = '',
     threadId = null,
-    iri = '',
     // when editing a Resource, originalIRI is the IRI that this.iri will replace
     originalIRI = '',
     label = '',
@@ -33,7 +30,6 @@ export default class Resource {
 
     this.threadId = threadId
 
-    this.iri = iri || this.baseIRI + normalizeLabel(label, 'camel')
     this.originalIRI = originalIRI
 
     this.label = label
