@@ -14,19 +14,19 @@ async function append (str, obj) {
 }
 
 module.exports = class FSAPI {
-  constructor () {
-    this.branch = process.env.EDITOR_GITHUB_BRANCH
-    this.owner = process.env.EDITOR_GITHUB_OWNER
-    this.repo = process.env.EDITOR_GITHUB_REPO
+  constructor ({ forge, editor, ontology }) {
+    this.branch = editor.github.branch
+    this.owner = editor.github.owner
+    this.repo = editor.github.repo
     this.committer = {
-      name: process.env.EDITOR_COMMITTER_NAME,
-      email: process.env.EDITOR_COMMITTER_EMAIL,
+      name: editor.committer.name,
+      email: editor.committer.email,
       get date () {
         return (new Date()).toISOString()
       }
     }
-    this.ontologyPath = process.env.ONTOLOGY_FILENAME
-    this.structurePath = process.env.STRUCTURE_FILENAME
+    this.ontologyPath = ontology.ontologyRawUrl.substr(ontology.ontologyRawUrl.lastIndexOf('/') + 1)
+    this.structurePath = ontology.structureRawUrl.substr(ontology.structureRawUrl.lastIndexOf('/') + 1)
   }
 
   async createBranch () {

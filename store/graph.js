@@ -5,7 +5,7 @@ import { Readable } from 'readable-stream'
 import { serialize, buildTree } from '@/libs/utils'
 import { buildSearchIndex } from '@/libs/rdf'
 import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
-import fetchDataset from '@/trifid/dataset-fetch'
+import fetchDataset from '@/trifid/dataset-fetch-client'
 
 export const state = () => ({
   ontology: {},
@@ -65,8 +65,8 @@ export const actions = {
     commit('clientReady')
     return Promise.resolve('deserialized')
   },
-  async [RELOAD_DATASET] ({ commit, dispatch }) {
-    const { ontologyDataset, structureDataset } = await fetchDataset()
+  async [RELOAD_DATASET] ({ commit, dispatch, rootState }) {
+    const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
     commit('ontologyInit', ontologyDataset)
     commit('structureInit', structureDataset)
     return dispatch(DESERIALIZE)

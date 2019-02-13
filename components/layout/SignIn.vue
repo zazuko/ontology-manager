@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     async signIn () {
-      await this.$auth.loginWith(process.env.AUTH_STRATEGY)
+      await this.$auth.loginWith(this.$store.state.config.editor.loginStrategy)
       this.modalIsOpen = false
     },
     async signOut () {

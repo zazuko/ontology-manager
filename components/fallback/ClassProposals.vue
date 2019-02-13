@@ -35,6 +35,7 @@
         </div>
 
         <div
+          v-show="$auth && $auth.$state.loggedIn"
           class="layout-objects-list-tools">
           <nuxt-link
             id="proposal-new-class"

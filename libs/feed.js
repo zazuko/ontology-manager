@@ -13,13 +13,25 @@ const actionTypes = [
 
 function factory (name) {
   return async function create (feed) {
-    const apolloClientFactory = require('../api/getApolloClient')
-    const anonApolloClient = apolloClientFactory()
+    const anonApolloClient = await require('../api/getApolloClient')()
+
+    let config = await anonApolloClient.query({
+      query: gql`
+        query CurrentPublicConfig {
+          currentPublicConfig {
+            version
+            editor
+            ontology
+          }
+        }`})
+    config = _get(config, 'data.currentPublicConfig.editor')
+    const editorUrl = `${config.protocol}://${config.host}`
 
     feed.options = {
-      title: `${process.env.EDITOR_TITLE} - Activity List`,
-      link: `${process.env.EDITOR_TITLE}/${name}.xml`,
-      description: process.env.EDITOR_DESCRIPTION
+      id: editorUrl,
+      link: editorUrl,
+      title: `${config.meta.title} - Activity List`,
+      description: `Syndication feed - ${config.meta.description}`
     }
 
     const result = await anonApolloClient.query({
@@ -42,10 +54,7 @@ function factory (name) {
               eventDate
             }
           }
-        }
-      `,
-      variables: {}
-    })
+        }`})
 
     _get(result, 'data.logs.lines', [])
       .filter(({ actionType } = {}) => actionTypes.includes(actionType))
@@ -82,8 +91,8 @@ function factory (name) {
 
         feed.addItem({
           title,
-          id: process.env.EDITOR_URL + path,
-          link: process.env.EDITOR_URL + path,
+          id: editorUrl + path,
+          link: editorUrl + path,
           date: new Date(item.eventDate)
         })
       })

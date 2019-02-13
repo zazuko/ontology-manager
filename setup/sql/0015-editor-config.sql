@@ -26,11 +26,13 @@ update editor_schema.person set is_superadmin = true where id in (select id from
 ------------------------------------------------
 
 create table editor_schema.config (
-  id        serial primary key,
-  author_id integer not null default editor_schema.current_person_id() references editor_schema.person(id),
-  forge     jsonb,
-  editor    jsonb,
-  ontology  jsonb
+  id          serial primary key,
+  author_id   integer default editor_schema.current_person_id() references editor_schema.person(id),
+  forge       jsonb,
+  editor      jsonb,
+  ontology    jsonb,
+  reason      text not null,
+  created_at  timestamp default now()
 );
 
 comment on table editor_schema.config is '@omit all\nEditor configuration';
@@ -53,20 +55,20 @@ $$ language sql stable strict security definer;
 comment on function editor_schema.current_public_config is 'Gets the public editor config, i.e. parts of the config that are not secret.';
 grant execute on function editor_schema.current_public_config to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 
-create function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb)
+create function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, reason text)
 returns editor_schema.config as $$
 declare version editor_schema.config;
 begin
   insert into editor_schema.config
-    (forge, editor, ontology)
+    (forge, editor, ontology, reason)
   values
-    (forge, editor, ontology)
+    (forge, editor, ontology, reason)
   returning * into version;
   return version;
 end;
 $$ language plpgsql strict security definer;
-comment on function editor_schema.save_config(jsonb, jsonb, jsonb) is E'Saves a new version of the config.';
-grant execute on function editor_schema.save_config(jsonb, jsonb, jsonb) to $POSTGRESQL_ROLE_PERSON;
+comment on function editor_schema.save_config(jsonb, jsonb, jsonb, text) is E'Saves a new version of the config.';
+grant execute on function editor_schema.save_config(jsonb, jsonb, jsonb, text) to $POSTGRESQL_ROLE_PERSON;
 grant insert on table editor_schema.config to $POSTGRESQL_ROLE_PERSON;
 create policy insert_config on editor_schema.config for insert to $POSTGRESQL_ROLE_PERSON
   with check (editor_schema.current_person_is_superadmin());

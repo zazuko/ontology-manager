@@ -10,7 +10,7 @@ export const state = () => ({
 export const getters = {
   version: (state) => state.version,
   editor: (state) => state.editor,
-  ontology: (state) => state.ontology,
+  ontology: (state) => state.ontology
 }
 
 export const mutations = {

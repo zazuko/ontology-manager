@@ -8,13 +8,13 @@ const GitHubAPIv3 = require('./api')
 
 const router = Router()
 
-module.exports = function (editorConfig) {
+module.exports = async function (editorConfig) {
   const api = new GitHubAPIv3(editorConfig)
   const onlyStatus200 = (req, res) => res.statusCode === 200
   const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
-  const anonApolloClient = apolloClientFactory()
-  const getApolloClientForUser = (req) => apolloClientFactory({
+  const anonApolloClient = await apolloClientFactory()
+  const getApolloClientForUser = async (req) => apolloClientFactory({
     user: req.user.person_id,
     token: req.get('Authorization'),
     getAuth: () => req.get('Authorization'),
@@ -189,7 +189,7 @@ module.exports = function (editorConfig) {
 
       const { number } = await api.createPR({ title, body, branch })
 
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
@@ -236,7 +236,7 @@ module.exports = function (editorConfig) {
         throw new Error(`Merge failed: ${message}`)
       }
 
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
@@ -290,7 +290,7 @@ module.exports = function (editorConfig) {
     }
 
     try {
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
