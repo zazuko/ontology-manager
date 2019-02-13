@@ -270,8 +270,7 @@ import { domainsSearchFactory, term, normalizeLabel } from '@/libs/rdf'
 import Typeahead from './Typeahead'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
 import Editor from '@/components/editor/Editor'
-import { Property } from '@/models/Property'
-import { generateClassProposal, proposalDataset, validate } from '@/models/Class'
+import Property from '@/models/Property'
 
 export default {
   name: 'ClassForm',
@@ -326,7 +325,7 @@ export default {
   },
   computed: {
     datasets () {
-      return proposalDataset(this.clss, false)
+      return this.clss.proposalDataset(false)
     },
     clss () {
       if (process.server) {
@@ -344,7 +343,7 @@ export default {
     validBase () {
       try {
         // this triggers validation
-        validate(this.clss)
+        this.clss.validate()
         return true
       }
       catch (err) {
@@ -419,10 +418,9 @@ export default {
     },
     debugGenerateNT () {
       try {
-        const datasets = generateClassProposal({
+        const datasets = this.clss.generateProposal({
           ontology: this.ontology,
-          structure: this.structure,
-          clss: this.clss
+          structure: this.structure
         })
         this.debugNT = datasets.ontologyContent
         this.debugNT += `\n\n${'-'.repeat(20)}\n\n`

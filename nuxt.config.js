@@ -206,7 +206,7 @@ module.exports = async () => {
           }
         }
       },
-      extend (config, { isDev }) {
+      extend (config, { isDev, isClient }) {
         // https://github.com/Akryum/vue-cli-plugin-apollo/issues/57
         config.module.rules.push({
           test: /\.mjs$/,
@@ -218,7 +218,8 @@ module.exports = async () => {
         /*
         ** Run ESLint on save
         */
-        if (isDev && process.isClient) {
+        if (isDev && isClient) {
+          config.devtool = '#source-map'
           config.module.rules.push({
             enforce: 'pre',
             test: /\.(js|vue)$/,

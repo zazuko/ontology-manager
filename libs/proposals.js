@@ -2,8 +2,8 @@ import axios from 'axios'
 import rdf from 'rdf-ext'
 import _get from 'lodash/get'
 import { parse, stringify } from 'flatted/cjs'
-import { Class } from '@/models/Class'
-import { Property } from '@/models/Property'
+import Class from '@/models/Class'
+import Property from '@/models/Property'
 
 const ObjectTypes = { Class, Property }
 const termsKeys = ['subject', 'predicate', 'object', 'datatype', 'graph']

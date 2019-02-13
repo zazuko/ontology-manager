@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import { Class, generateClassProposal, proposalDataset } from '@/models/Class'
+import Class from '@/models/Class'
 import { submitProposal, proposalSerializer, proposalDeserializer } from '@/libs/proposals'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
@@ -19,7 +19,7 @@ export const state = () => ({
 export const getters = {
   error: (state) => state.error,
   success: (state) => state.success,
-  dataset: (state) => proposalDataset(state.clss, false),
+  dataset: (state) => state.clss.proposalDataset(false),
   serialized: (state) => proposalSerializer(state.clss)
 }
 
@@ -128,10 +128,9 @@ export const actions = {
 
   async [SUBMIT] ({ dispatch, commit, state, rootState }, token) {
     try {
-      const classProposalData = generateClassProposal({
+      const classProposalData = state.clss.generateProposal({
         ontology: rootState.graph.ontology,
-        structure: rootState.graph.structure,
-        clss: state.clss
+        structure: rootState.graph.structure
       })
       const isEdit = state.clss.isEdit
 

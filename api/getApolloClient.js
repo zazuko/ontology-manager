@@ -54,7 +54,6 @@ module.exports = async (options = {}) => {
   return clients[key]
 }
 
-
 // Create the apollo client
 function createApolloClient ({
   httpEndpoint,
