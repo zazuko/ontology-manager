@@ -2,7 +2,7 @@ const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
 
 module.exports = class GitHubAPIv3 {
-  constructor ({forge, editor, ontology}) {
+  constructor ({ forge, editor, ontology }) {
     this.branch = editor.github.branch
     this.owner = editor.github.owner
     this.repo = editor.github.repo

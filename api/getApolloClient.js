@@ -10,6 +10,51 @@ const { setContext } = require('apollo-link-context')
 const { withClientState } = require('apollo-link-state')
 const fetch = require('isomorphic-fetch')
 
+let clients = {}
+module.exports = async (options = {}) => {
+  const key = JSON.stringify(options)
+  if (clients.hasOwnProperty(key)) {
+    return clients[key]
+  }
+
+  // Config
+  const nuxtOptions = await require('../nuxt.config')()
+  const nuxtApolloOptions = nuxtOptions.apollo.clientConfigs.default
+
+  const defaultOptions = Object.assign({
+    // You can use `https` for secure connection (recommended in production)
+    httpEndpoint: null,
+    // You can use `wss` for secure connection (recommended in production)
+    // Use `null` to disable subscriptions
+    wsEndpoint: null, // nuxtApolloClientConfig.wsEndpoint,
+    // Enable Automatic Query persisting with Apollo Engine
+    persisting: false,
+    // Use websockets for everything (no HTTP)
+    // You need to pass a `wsEndpoint` for this to work
+    websocketsOnly: false,
+    // Is being rendered on the server?
+    ssr: false,
+    // Override default http link
+    // link: myLink,
+    // Override default cache
+    // cache: myCache,
+    // Additional ApolloClient options
+    // apollo: { ... }
+    getAuth: (tokenName) => {
+      return ''
+    }
+  }, nuxtApolloOptions)
+
+  const { apolloClient } = createApolloClient({
+    ...defaultOptions,
+    ...options
+  })
+  clients[key] = apolloClient
+
+  return clients[key]
+}
+
+
 // Create the apollo client
 function createApolloClient ({
   httpEndpoint,
@@ -147,43 +192,4 @@ function createApolloClient ({
     wsClient,
     stateLink
   }
-}
-
-// Config
-const nuxtOptions = require('../nuxt.config').apollo.clientConfigs.default
-const defaultOptions = Object.assign({
-  // You can use `https` for secure connection (recommended in production)
-  httpEndpoint: null,
-  // You can use `wss` for secure connection (recommended in production)
-  // Use `null` to disable subscriptions
-  wsEndpoint: null, // nuxtApolloClientConfig.wsEndpoint,
-  // Enable Automatic Query persisting with Apollo Engine
-  persisting: false,
-  // Use websockets for everything (no HTTP)
-  // You need to pass a `wsEndpoint` for this to work
-  websocketsOnly: false,
-  // Is being rendered on the server?
-  ssr: false,
-  // Override default http link
-  // link: myLink,
-  // Override default cache
-  // cache: myCache,
-  // Additional ApolloClient options
-  // apollo: { ... }
-  getAuth: (tokenName) => {
-    return ''
-  }
-}, nuxtOptions)
-
-let clients = {}
-module.exports = (options = nuxtOptions) => {
-  const key = JSON.stringify(options)
-  if (!clients.hasOwnProperty(key)) {
-    const { apolloClient } = createApolloClient({
-      ...defaultOptions,
-      ...options
-    })
-    clients[key] = apolloClient
-  }
-  return clients[key]
 }

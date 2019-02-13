@@ -2,11 +2,12 @@ import rdf from 'rdf-ext'
 import stringToStream from 'string-to-stream'
 import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
-import fetchConfig from '../setup/fetch-config'
 
-// * used by a trifid plugin on first server requests
-export default async function fetchDataset () {
-  const editorConfig = await fetchConfig()
+// * used by the store to refresh client-side dataset after a merge
+// only used client-side, the other one cannot be used client-side because of
+// knex
+export default async function fetchDataset (editorConfig) {
+  console.warn(editorConfig)
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
   const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
   const editorUrl = `${editorConfig.editor.protocol}://${editorConfig.editor.host}`

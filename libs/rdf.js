@@ -24,7 +24,7 @@ const stringIRI = {
   modified: 'http://purl.org/dc/terms/modified',
   deprecated: 'http://www.w3.org/2002/07/owl#deprecated',
 
-  hasPart: 'http://schema.org/hasPart',
+  hasPart: process.env.CONTAINERS_NESTING_PREDICATE,
   creativeWork: 'http://schema.org/CreativeWork',
 
   html: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML',

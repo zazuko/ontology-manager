@@ -34,7 +34,7 @@ module.exports = function envInit (env = process.env.NODE_TEST ? 'test' : 'dev')
     editorConfig = Object.assign(editorConfig, JSON.parse(process.env.EDITOR_CONFIG))
   }
   catch (err) {
-    console.error(err)
+    console.error('failed to parse EDITOR_CONFIG')
   }
 
   const customer = _.snakeCase(process.env.CUSTOMER_NAME)
@@ -56,9 +56,7 @@ module.exports = function envInit (env = process.env.NODE_TEST ? 'test' : 'dev')
     // anonymous user role
     POSTGRESQL_ROLE_ANONYMOUS: `${customer}_role_anonymous`,
     // postgraphile internal pg role
-    POSTGRESQL_ROLE_POSTGRAPHILE: `${customer}_role_postgraphile`,
-    ONTOLOGY_FILENAME: process.env.ONTOLOGY_RAW_URL.substr(process.env.ONTOLOGY_RAW_URL.lastIndexOf('/') + 1),
-    STRUCTURE_FILENAME: process.env.STRUCTURE_RAW_URL.substr(process.env.STRUCTURE_RAW_URL.lastIndexOf('/') + 1)
+    POSTGRESQL_ROLE_POSTGRAPHILE: `${customer}_role_postgraphile`
   }
 
   Object.entries(vars).forEach(([key, val]) => {
