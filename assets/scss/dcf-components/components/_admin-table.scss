@@ -49,6 +49,10 @@
 
   tbody td {
     padding: 1em;
+    .avatar {
+      height: 40px;
+      width: 40px;
+    }
   }
 
   .info {

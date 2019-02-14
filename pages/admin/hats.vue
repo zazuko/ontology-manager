@@ -16,8 +16,8 @@
 <script>
 import hats from '@/apollo/queries/adminHatList'
 import users from '@/apollo/queries/adminUserList'
-import AdminHatList from '@/components/admin/AdminHatList.vue'
-import AdminMenu from '@/components/admin/AdminMenu.vue'
+import AdminHatList from '@/components/admin/AdminHatList'
+import AdminMenu from '@/components/admin/AdminMenu'
 
 export default {
   middleware: 'authenticatedAdmin',

@@ -1,0 +1,13 @@
+query ConfigList {
+  configList {
+    nodes {
+      createdAt
+      id
+      reason
+      author: personByAuthorId {
+        avatar
+        username
+      }
+    }
+  }
+}

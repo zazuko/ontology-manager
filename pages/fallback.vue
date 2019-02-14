@@ -76,7 +76,6 @@
 <script>
 import rdf from 'rdf-ext'
 import { resource } from 'rdf-utils-dataset'
-import _get from 'lodash/get'
 // https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
 import JsonLdSerializer from 'rdf-serializer-jsonld'
 
@@ -92,9 +91,9 @@ import { findSubtreeInForest, term } from '@/libs/utils'
 
 export default {
   layout: 'background',
-  async asyncData ({ route, store, env }) {
+  async asyncData ({ route, store }) {
     const params = route.params
-    let iri = env.DATASET_BASE_URL + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    let iri = store.state.config.ontology.datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
     if (route.path.endsWith('/')) {
       iri += '/'
     }
@@ -154,10 +153,7 @@ export default {
       if (!(this.$termIRI.Class.equals(this.objectType) || this.$termIRI.Property.equals(this.objectType))) {
         return null
       }
-      if (_get(this, 'subtree.children.length', 0) === 0) {
-        return this.ontology.match(rdf.namedNode(this.iri))
-      }
-      return null
+      return this.ontology.match(rdf.namedNode(this.iri))
     },
     label () {
       let label

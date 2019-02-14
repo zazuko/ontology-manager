@@ -51,8 +51,8 @@
 import _get from 'lodash/get'
 import discussionById from '@/apollo/queries/discussionById'
 import { toastClose } from '@/libs/utils'
-import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
-import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
+import DiscussionCard from '@/components/discussion/DiscussionCard'
+import DiscussionReply from '@/components/discussion/DiscussionReply'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {

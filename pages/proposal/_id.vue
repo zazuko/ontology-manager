@@ -138,8 +138,8 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
-import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
+import DiscussionCard from '@/components/discussion/DiscussionCard'
+import DiscussionReply from '@/components/discussion/DiscussionReply'
 import ClassForm from '@/components/proposal/ClassForm'
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'

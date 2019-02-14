@@ -15,8 +15,8 @@
 <script>
 import _get from 'lodash/get'
 import users from '@/apollo/queries/adminUserList'
-import AdminUserList from '@/components/admin/AdminUserList.vue'
-import AdminMenu from '@/components/admin/AdminMenu.vue'
+import AdminUserList from '@/components/admin/AdminUserList'
+import AdminMenu from '@/components/admin/AdminMenu'
 
 export default {
   middleware: 'authenticatedAdmin',

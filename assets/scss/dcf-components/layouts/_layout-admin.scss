@@ -40,4 +40,9 @@
       padding-bottom: 1em;
     }
   }
+
+  .code {
+    font-family: $family-monospace;
+    color: $theme-dark-primary;
+  }
 }
