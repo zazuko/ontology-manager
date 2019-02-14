@@ -1,6 +1,7 @@
-const envInit = require('./setup/env-init')
-const fetchConfig = require('./setup/fetch-config')
-const feedCreate = require('./libs/feed')
+import envInit from './setup/env-init'
+import fetchConfig from './setup/fetch-config'
+import feedCreate from './libs/feed'
+import { version } from './package.json'
 
 envInit()
 
@@ -51,6 +52,7 @@ module.exports = async () => {
       '@/plugins/models/Class',
       '@/plugins/models/Property',
       '@/plugins/libs/proposals',
+      '@/plugins/libs/utils',
       '@/plugins/filters',
       '@/plugins/directives',
       '@/plugins/nuxt-init.client',
@@ -122,7 +124,7 @@ module.exports = async () => {
       disabled: !process.env.SENTRY_DSN,
       disableClientSide: !process.env.SENTRY_DSN,
       config: {
-        release: process.env.EDITOR_RELEASE
+        release: version
       }
     },
 
@@ -179,22 +181,7 @@ module.exports = async () => {
     },
 
     // https://nuxtjs.org/api/configuration-env
-    env: {
-      EDITOR_RELEASE: process.env.EDITOR_RELEASE,
-      EDITOR_URL: process.env.EDITOR_URL,
-      EDITOR_TITLE: process.env.EDITOR_TITLE,
-      EDITOR_DESCRIPTION: process.env.EDITOR_DESCRIPTION,
-      EDITOR_GITHUB_OWNER: process.env.EDITOR_GITHUB_OWNER,
-      EDITOR_GITHUB_REPO: process.env.EDITOR_GITHUB_REPO,
-      EDITOR_GITHUB_BRANCH: process.env.EDITOR_GITHUB_BRANCH,
-      EDITOR_COMMITTER_NAME: process.env.EDITOR_COMMITTER_NAME,
-      EDITOR_COMMITTER_EMAIL: process.env.EDITOR_COMMITTER_EMAIL,
-      CUSTOMER_NAME: process.env.CUSTOMER_NAME,
-      DATASET_BASE_URL: process.env.DATASET_BASE_URL,
-      CLASS_BASE_URL: process.env.CLASS_BASE_URL,
-      PROPERTY_BASE_URL: process.env.PROPERTY_BASE_URL,
-      CONTAINERS_NESTING_PREDICATE: process.env.CONTAINERS_NESTING_PREDICATE
-    },
+    env: {},
 
     /*
     ** Build configuration

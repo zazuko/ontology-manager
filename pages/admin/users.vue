@@ -17,7 +17,6 @@ import _get from 'lodash/get'
 import users from '@/apollo/queries/adminUserList'
 import AdminUserList from '@/components/admin/AdminUserList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
-import { headTitle } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -54,7 +53,7 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle('Users Management - Admin')
+      title: this.$headTitle('Users Management - Admin')
     }
     return h
   }
