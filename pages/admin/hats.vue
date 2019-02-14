@@ -18,7 +18,6 @@ import hats from '@/apollo/queries/adminHatList'
 import users from '@/apollo/queries/adminUserList'
 import AdminHatList from '@/components/admin/AdminHatList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
-import { headTitle } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -66,7 +65,7 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle('Hats Management - Admin')
+      title: this.$headTitle('Hats Management - Admin')
     }
     return h
   }

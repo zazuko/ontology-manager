@@ -24,7 +24,6 @@ import adminProposalList from '@/apollo/queries/adminProposalList'
 import AdminProposalList from '@/components/admin/AdminProposalList.vue'
 import AdminMenu from '@/components/admin/AdminMenu.vue'
 import Pagination from '@/components/layout/Pagination.vue'
-import { headTitle } from '@/libs/utils'
 
 export default {
   middleware: 'authenticatedAdmin',
@@ -95,7 +94,7 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle('Proposals Management - Admin')
+      title: this.$headTitle('Proposals Management - Admin')
     }
     return h
   }

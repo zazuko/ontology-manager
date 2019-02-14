@@ -148,7 +148,7 @@ import Loader from '@/components/layout/Loader'
 
 import discussionById from '@/apollo/queries/discussionById'
 import { LOAD } from '@/store/action-types'
-import { toastClose, headTitle } from '@/libs/utils'
+import { toastClose } from '@/libs/utils'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 const {
@@ -281,7 +281,7 @@ export default {
     }
     if (this.obj) {
       if (this.obj.label) {
-        h.title += headTitle(` '${this.obj.label}'`)
+        h.title += this.$headTitle(` '${this.obj.label}'`)
       }
       if (this.comment) {
         h.meta = [

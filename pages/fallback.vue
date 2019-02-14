@@ -88,7 +88,7 @@ import PropertyProposals from '@/components/fallback/PropertyProposals'
 import ClassProposals from '@/components/fallback/ClassProposals'
 import Loader from '@/components/layout/Loader'
 
-import { findSubtreeInForest, headTitle, term } from '@/libs/utils'
+import { findSubtreeInForest, term } from '@/libs/utils'
 
 export default {
   layout: 'background',
@@ -249,10 +249,10 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle(term(this.iri))
+      title: this.$headTitle(term(this.iri))
     }
     if (this.label) {
-      h.title = headTitle(this.label)
+      h.title = this.$headTitle(this.label)
     }
     if (this.comment) {
       h.meta = [

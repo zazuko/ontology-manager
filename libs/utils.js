@@ -88,10 +88,6 @@ export function iriToId (iri) {
   return (iri || '').toLowerCase().replace(/[^a-z]/g, '_')
 }
 
-export function headTitle (title) {
-  return `${title} - ${process.env.EDITOR_TITLE}`
-}
-
 export function childClassesCount (obj, sum = 0, recursing = false) {
   if (obj.hasOwnProperty('childClassesCount')) {
     return obj.childClassesCount
