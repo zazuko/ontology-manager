@@ -13,7 +13,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 
-import DraftList from '@/components/proposal/DraftList.vue'
+import DraftList from '@/components/proposal/DraftList'
 import { LOAD } from '@/store/action-types'
 
 const {

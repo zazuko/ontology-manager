@@ -21,9 +21,9 @@
 <script>
 import _get from 'lodash/get'
 import adminProposalList from '@/apollo/queries/adminProposalList'
-import AdminProposalList from '@/components/admin/AdminProposalList.vue'
-import AdminMenu from '@/components/admin/AdminMenu.vue'
-import Pagination from '@/components/layout/Pagination.vue'
+import AdminProposalList from '@/components/admin/AdminProposalList'
+import AdminMenu from '@/components/admin/AdminMenu'
+import Pagination from '@/components/layout/Pagination'
 
 export default {
   middleware: 'authenticatedAdmin',

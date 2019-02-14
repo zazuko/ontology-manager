@@ -1,0 +1,8 @@
+query CurrentPrivateConfig {
+  currentPrivateConfig {
+    reason
+    forge
+    editor
+    ontology
+  }
+}

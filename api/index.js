@@ -45,7 +45,7 @@ app.use(bodyParser.json({ limit: '4mb' }))
   else {
     throw new Error('No forge API configured or configured forge API not found.')
   }
-  console.warn(`Starting API middleware with ${api} support, config v${editorConfig.id}`)
+  console.warn(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
 
   app.use('/', await require(`./${api}`)(editorConfig))
 })()

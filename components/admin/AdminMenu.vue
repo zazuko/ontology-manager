@@ -13,6 +13,13 @@
             {{ tab.title }}
           </nuxt-link>
         </li>
+        <li v-show="$store.state.auth.isSuperadmin">
+          <nuxt-link
+            :to="{ name: 'admin-settings' }"
+            :class="{ 'is-active': currentRoute === 'admin-settings'}">
+            Editor Settings
+          </nuxt-link>
+        </li>
       </ul>
     </nav>
   </div>

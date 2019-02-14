@@ -66,15 +66,14 @@ module.exports = async function (editorConfig) {
 
     try {
       ({ token, avatarUrl, serverId } = await checkToken(req, res))
-
-      if (!clientId || clientId !== serverId) {
-        console.error({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
-        res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
-        return
-      }
     }
     catch (err) {
       console.error(err)
+    }
+    if (!clientId || clientId !== serverId) {
+      console.error({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
+      res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
+      return
     }
 
     const variables = {
