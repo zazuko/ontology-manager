@@ -59,10 +59,10 @@
 
 <script>
 import { toastClose } from '@/libs/utils'
-import ActivityLog from './ActivityLog.vue'
-import DraftTab from './DraftTab.vue'
-import Search from './Search.vue'
-import SignIn from './SignIn.vue'
+import ActivityLog from './ActivityLog'
+import DraftTab from './DraftTab'
+import Search from './Search'
+import SignIn from './SignIn'
 
 export default {
   name: 'TopNav',

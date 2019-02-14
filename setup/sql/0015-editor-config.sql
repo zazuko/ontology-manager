@@ -49,11 +49,43 @@ comment on column editor_schema.config.ontology is 'Ontology configuration.';
 create function editor_schema.current_public_config(out version integer, out editor jsonb, out ontology jsonb) as $$
 select id, editor, ontology
 from editor_schema.config
-order by 1 desc
+order by id desc
 limit 1;
 $$ language sql stable strict security definer;
 comment on function editor_schema.current_public_config is 'Gets the public editor config, i.e. parts of the config that are not secret.';
 grant execute on function editor_schema.current_public_config to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
+
+create or replace function editor_schema.current_private_config()
+returns editor_schema.config as $$
+select *
+from editor_schema.config
+where editor_schema.current_person_is_superadmin()
+order by id desc
+limit 1;
+$$ language sql stable strict security definer;
+comment on function editor_schema.current_private_config() is 'Gets the all configurable settings.';
+grant execute on function editor_schema.current_private_config() to $POSTGRESQL_ROLE_PERSON;
+
+create or replace function editor_schema.private_config_version(version integer)
+returns editor_schema.config as $$
+select *
+from editor_schema.config
+where editor_schema.config.id = version and editor_schema.current_person_is_superadmin()
+order by id desc
+limit 1;
+$$ language sql stable strict security definer;
+comment on function editor_schema.private_config_version(integer) is 'Gets all configurable settings at a specified version.';
+grant execute on function editor_schema.private_config_version(integer) to $POSTGRESQL_ROLE_PERSON;
+
+create or replace function editor_schema.config_list()
+returns setof editor_schema.config as $$
+select *
+from editor_schema.config
+where editor_schema.current_person_is_superadmin()
+order by id asc;
+$$ language sql stable strict security definer;
+comment on function editor_schema.config_list is 'Gets the all configurable settings.';
+grant execute on function editor_schema.config_list to $POSTGRESQL_ROLE_PERSON;
 
 create function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, reason text)
 returns editor_schema.config as $$

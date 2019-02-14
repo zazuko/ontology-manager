@@ -1,0 +1,14 @@
+query PrivateConfigVersion ($version: Int!) {
+  privateConfigVersion(version: $version) {
+    createdAt
+    id
+    reason
+    forge
+    editor
+    ontology
+    personByAuthorId {
+      avatar
+      username
+    }
+  }
+}

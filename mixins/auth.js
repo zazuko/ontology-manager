@@ -54,6 +54,17 @@ export default {
           result = await axios.post('/api/link', { email, name, id, username }, headers)
         }
         catch (err) {
+          // TODO: clear cookies here
+          if (process.browser) {
+            const cookies = document.cookie.split(';')
+
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i]
+              const eqPos = cookie.indexOf('=')
+              const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+              document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+            }
+          }
           this.$sentry.captureException(err)
           this.$toast.error(`Server Error: ${err.response.data.message || err.message}`, toastClose)
           throw err

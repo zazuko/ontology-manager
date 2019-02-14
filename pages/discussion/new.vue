@@ -32,7 +32,7 @@
 
 <script>
 import _get from 'lodash/get'
-import DiscussionCreate from '@/components/discussion/DiscussionCreate.vue'
+import DiscussionCreate from '@/components/discussion/DiscussionCreate'
 
 export default {
   async asyncData (context) {
