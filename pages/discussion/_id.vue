@@ -50,7 +50,7 @@
 <script>
 import _get from 'lodash/get'
 import discussionById from '@/apollo/queries/discussionById'
-import { toastClose, headTitle } from '@/libs/utils'
+import { toastClose } from '@/libs/utils'
 import DiscussionCard from '@/components/discussion/DiscussionCard.vue'
 import DiscussionReply from '@/components/discussion/DiscussionReply.vue'
 import { emptyDiscussion } from '@/libs/fixtures'
@@ -113,7 +113,7 @@ export default {
     }
     if (this.discussion) {
       if (this.discussion.headline) {
-        h.title += ' ' + headTitle("'" + this.discussion.headline + "'")
+        h.title += ' ' + this.$headTitle("'" + this.discussion.headline + "'")
       }
       if (this.comment) {
         h.meta = [

@@ -149,7 +149,6 @@ import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
-import { headTitle } from '@/libs/utils'
 
 const {
   mapActions: propertyActions,
@@ -366,7 +365,7 @@ export default {
       title: 'Proposal'
     }
     if (this.obj && this.obj.label) {
-      h.title += headTitle(` '${this.obj.label}'`)
+      h.title += this.$headTitle(` '${this.obj.label}'`)
     }
     if (this.obj) {
       h.meta = [

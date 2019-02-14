@@ -15,7 +15,6 @@ import { createNamespacedHelpers } from 'vuex'
 
 import DraftList from '@/components/proposal/DraftList.vue'
 import { LOAD } from '@/store/action-types'
-import { headTitle } from '@/libs/utils'
 
 const {
   mapActions: draftsActions,
@@ -39,7 +38,7 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle('Your Drafted Proposals')
+      title: this.$headTitle('Your Drafted Proposals')
     }
     return h
   }

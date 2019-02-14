@@ -33,7 +33,6 @@
 <script>
 import _get from 'lodash/get'
 import DiscussionCreate from '@/components/discussion/DiscussionCreate.vue'
-import { headTitle } from '@/libs/utils'
 
 export default {
   async asyncData (context) {
@@ -54,7 +53,7 @@ export default {
   },
   head () {
     const h = {
-      title: headTitle('Create Discussion')
+      title: this.$headTitle('Create Discussion')
     }
     return h
   }
