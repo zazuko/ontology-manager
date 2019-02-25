@@ -6,9 +6,8 @@ const gql = require('graphql-tag')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
-const router = Router()
-
 module.exports = async function (editorConfig) {
+  const router = Router()
   const api = new GitHubAPIv3(editorConfig)
   const onlyStatus200 = (req, res) => res.statusCode === 200
   const cache = (duration) => apicache.middleware(duration, onlyStatus200)
