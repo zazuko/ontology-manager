@@ -6,11 +6,7 @@
 
 1. Create an OAuth app: https://github.com/settings/applications/new
 1. Homepage / Callback : `http://localhost:3000/`
-1. Fill the env vars in `.env`:
-    ```
-    OAUTH_CLIENT_ID=6bac5524e0e11f1ae9ec
-    OAUTH_CLIENT_SECRET=b5d15ea361b1d28a44152599c72621a36c631751
-    ```
+1. Fill the env vars in `.env`
 
 ### B. Local Setup
 
@@ -63,7 +59,7 @@ Whenever you feel like it:
 ### Helpful Tools
 
 - Vue devtools extension [Chrome, Firefox](https://github.com/vuejs/vue-devtools#installation)
-- Local GraphQL IDE: [Graph*i*QL `http://localhost:5000/graphiql`](http://localhost:5000/graphiql)
+- Local GraphQL IDE: [Graph*i*QL `http://localhost:3000/graphiql`](http://localhost:3000/graphiql)
 - A postgres client (e.g. [Postico](https://eggerapps.at/postico/) for MacOS) to inspect schemas and data
 - Apollo devtools extension [Chrome, Firefox](https://github.com/apollographql/apollo-client-devtools#apollo-client-devtools)
 
