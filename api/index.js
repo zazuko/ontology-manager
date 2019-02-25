@@ -61,7 +61,8 @@ const router = Router()
       }
       console.warn(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
       apiMiddleware = await require(`./${api}`)(editorConfig)
-    } else {
+    }
+    else {
       debug('cached middleware')
     }
     apiMiddleware(req, res, next)
