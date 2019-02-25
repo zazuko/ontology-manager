@@ -5,9 +5,9 @@
         <nuxt-link :to="{ name: 'index', params: {} }">
           <img
             class="footer-icon"
-            :src="logoUrl">
+            :src="$store.state.config.editor.logoUrl">
         </nuxt-link>
-        <span>© {{ year }} {{ customer }}. All rights reserved</span>
+        <span>© {{ (new Date()).getFullYear() }} {{ $store.state.config.editor.meta.customerName }}. All rights reserved</span>
       </div>
 
       <div class="level-right">
@@ -24,13 +24,6 @@
 
 <script>
 export default {
-  name: 'PageFooter',
-  data () {
-    return {
-      customer: this.$store.state.config.editor.customerName,
-      logoUrl: this.$store.state.config.editor.logoUrl,
-      year: (new Date()).getFullYear()
-    }
-  }
+  name: 'PageFooter'
 }
 </script>

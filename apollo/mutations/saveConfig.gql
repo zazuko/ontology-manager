@@ -1,0 +1,15 @@
+mutation ($forge: JSON!, $editor: JSON!, $ontology: JSON!, $reason: String!) {
+  saveConfig (input: {
+    forge: $forge,
+    editor: $editor,
+    ontology: $ontology,
+    reason: $reason
+  }) {
+    config {
+      id
+      ontology
+      reason
+      editor
+    }
+  }
+}

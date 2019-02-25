@@ -32,8 +32,7 @@
         </header>
         <section class="modal-card-body">
           <p>
-            DCF uses GitHub as a collaboration platform for the ontology management.
-            Therefore you require a GitHub account to collaborate on DCF.
+            {{ $store.state.config.editor.text.login }}
           </p>
           <p>
             <img
