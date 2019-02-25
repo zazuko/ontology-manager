@@ -308,119 +308,121 @@
         </div>
       </div>
 
-      <hr>
+      <div style="display: none">
+        <hr>
 
-      <h1 class="title">3. Forge Settings</h1>
-      <h2 class="subtitle">3.1. Login Strategy</h2>
+        <h1 class="title">3. Forge Settings</h1>
+        <h2 class="subtitle">3.1. Login Strategy</h2>
 
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Strategy</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-narrow">
-            <div class="control">
-              <div class="select is-fullwidth">
-                <select
-                  name="loginStrategy"
-                  disabled>
-                  <option>GitHub</option>
-                  <option>Local</option>
-                </select>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Strategy</label>
+          </div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select
+                    name="loginStrategy"
+                    disabled>
+                    <option>GitHub</option>
+                    <option>Local</option>
+                  </select>
+                </div>
               </div>
+              <p class="help">
+                Any OAuth API can be used for users to sign in.
+              </p>
             </div>
-            <p class="help">
-              Any OAuth API can be used for users to sign in.
-            </p>
           </div>
         </div>
-      </div>
 
-      <h2 class="subtitle">3.2. OAuth Settings</h2>
-      <p>
-        Changing these will affect through which GitHub app users
-        are signing in.
-      </p>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">URL</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-              <input
-                :disabled="disabled"
-                class="input"
-                type="text"
-                placeholder="https://github.com/login/oauth"
-                v-model="forge.oauthHost"
-                required>
-            </p>
+        <h2 class="subtitle">3.2. OAuth Settings</h2>
+        <p>
+          Changing these will affect through which GitHub app users
+          are signing in.
+        </p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">URL</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  disabled="disabled"
+                  class="input"
+                  type="text"
+                  placeholder="https://github.com/login/oauth"
+                  v-model="forge.oauthHost"
+                  required>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Client ID</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-              <input
-                :disabled="disabled"
-                class="input"
-                type="text"
-                v-model="forge.oauthClientId"
-                required>
-            </p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Client ID</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  disabled="disabled"
+                  class="input"
+                  type="text"
+                  v-model="forge.oauthClientId"
+                  required>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Client Secret</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-              <input
-                :disabled="disabled"
-                class="input"
-                type="text"
-                v-model="forge.oauthClientSecret"
-                required>
-            </p>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Client Secret</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  disabled="disabled"
+                  class="input"
+                  type="text"
+                  v-model="forge.oauthClientSecret"
+                  required>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <h2 class="subtitle">3.3. GitHub Personal Access Token</h2>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Token</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <p class="control is-expanded">
-              <input
-                :disabled="disabled"
-                class="input"
-                type="text"
-                v-model="forge.committerPersonalAccessToken"
-                placeholder=""
-                required>
-            </p>
-            <p class="help">
-              A GitHub Personal Access Token is required for the editor to interact with GitHub: create
-              pull requests, merge them, etc.
-            </p>
+        <h2 class="subtitle">3.3. GitHub Personal Access Token</h2>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Token</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  disabled="disabled"
+                  class="input"
+                  type="text"
+                  v-model="forge.committerPersonalAccessToken"
+                  placeholder=""
+                  required>
+              </p>
+              <p class="help">
+                A GitHub Personal Access Token is required for the editor to interact with GitHub: create
+                pull requests, merge them, etc.
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       <hr>
 
-      <h1 class="title">4. Save</h1>
+      <h1 class="title">3. Save</h1>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <!-- Left empty for spacing -->

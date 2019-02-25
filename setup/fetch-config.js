@@ -1,5 +1,7 @@
 const knex = require('knex')
 const debug = require('debug')('editor:config')
+const getConfigFromEnvVars = require('./migration-helpers').getConfigFromEnvVars
+const envInit = require('./env-init')
 
 let config
 let lastFetch = (new Date(0)).getTime()
@@ -7,6 +9,13 @@ let lastFetch = (new Date(0)).getTime()
 const shouldRefetch = () => (Date.now() - lastFetch) > 15 * 1000
 
 module.exports = async function fetchConfig () {
+  if (process.env.BUILDING_WITHOUT_PG_ACCESS) {
+    envInit('test')
+    envInit('dev') // override
+    const config = getConfigFromEnvVars()
+    config.id = 1 // fake the config version
+    return config
+  }
   if (config && !shouldRefetch()) {
     debug('config served from cache')
     return config
