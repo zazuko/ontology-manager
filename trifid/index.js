@@ -7,14 +7,8 @@ const app = express()
 app.set('trust proxy', 'loopback')
 app.set('x-powered-by', null)
 
-let middleware
-
-initMiddleware()
-
 app.use(async function (req, res, next) {
-  if (!middleware) {
-    await initMiddleware()
-  }
+  const middleware = await initMiddleware()
   middleware(req, res, next)
 })
 
@@ -24,10 +18,8 @@ export default {
 }
 
 async function initMiddleware () {
-  if (!middleware) {
-    const { ontology: ontologyConfig } = await fetchConfig()
-    middleware = await trifidMiddleware(ontologyConfig)
-  }
+  const { ontology: ontologyConfig } = await fetchConfig()
+  return trifidMiddleware(ontologyConfig)
 }
 
 async function trifidMiddleware (ontologyConfig) {

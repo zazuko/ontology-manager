@@ -1,11 +1,17 @@
 const knex = require('knex')
+const debug = require('debug')('editor:config')
 
 let config
+let lastFetch = (new Date(0)).getTime()
+
+const shouldRefetch = () => (Date.now() - lastFetch) > 15 * 1000
 
 module.exports = async function fetchConfig () {
-  if (config) {
+  if (config && !shouldRefetch()) {
+    debug('config served from cache')
     return config
   }
+  debug('config fetched from db')
   const client = knex({
     client: 'pg',
     connection: {
@@ -27,5 +33,6 @@ module.exports = async function fetchConfig () {
     throw new Error('Config missing from database')
   }
   config = results[0]
+  lastFetch = Date.now()
   return config
 }

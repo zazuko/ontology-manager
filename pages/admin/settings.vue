@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import currentPrivateConfig from '@/apollo/queries/currentPrivateConfig'
 import privateConfigVersion from '@/apollo/queries/privateConfigVersion'
 import configList from '@/apollo/queries/configList'
@@ -52,8 +53,14 @@ export default {
       }
     },
     async refetch () {
-      await this.$store.dispatch('config/LOAD_CONFIG')
       this.$apollo.queries.configList.refetch()
+    },
+    async reloadConfig () {
+      const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
+      Promise.all([
+        this.$store.dispatch('config/LOAD_CONFIG'),
+        axios.post('/api/reload-config', {}, headers)
+      ])
     }
   },
   apollo: {
