@@ -101,8 +101,8 @@ module.exports = async () => {
       } : {
         local: false,
         github: {
-          client_id: editorConfig.forge.oauthClientId,
-          client_secret: editorConfig.forge.oauthClientSecret,
+          client_id: process.env.OAUTH_CLIENT_ID,
+          client_secret: process.env.OAUTH_CLIENT_SECRET,
           scope: ['user:email']
         }
       }
