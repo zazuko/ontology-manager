@@ -2,49 +2,15 @@
   <div class="container layout-objects-list">
     <section class="container layout-objects-list-head">
       <h1 class="main-title">
-        Ontology Manager
+        {{ $store.state.config.editor.meta.title }}
       </h1>
 
       <div class="columns">
-        <div class="column">
-          <p>
-            The Ontology Manager is based on a web interface and Github for repository functions. It has been created in order
-            to enable collaboration on schema definition beyond the developer community and enabling the business process experts
-            to engage and drive the creation of the best possible schema for the logistics industry, while ensuring a correct
-            schema definition in Turtle (Terse RDF Triple Language) format.
-          </p>
-        </div>
-
-        <div class="column">
-          <p>
-            The Ontology Manager consists of the following functions;
-          </p>
-
-          <ul class="dash-bullet">
-            <li>
-              repository of schema in Turtle format (Github)
-            </li>
-            <li>
-              logical visualization of schema
-            </li>
-            <li>
-              forum capability
-            </li>
-            <li>
-              proposal, voting, and acceptance of new schema entries, changes, and deprecation
-            </li>
-            <li>
-              search in all defined schemas
-            </li>
-            <li>
-              activity list view
-            </li>
-          </ul>
-
-          <p>
-            In order to join you will need a Github account.
-          </p>
-        </div>
+        <div
+          v-for="(text, index) in $store.state.config.editor.text.home"
+          :key="index"
+          v-html="text"
+          class="column" />
       </div>
     </section>
 

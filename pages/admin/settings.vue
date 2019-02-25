@@ -6,12 +6,11 @@
       <admin-config-list
         :configs="configs"
         @showVersion="showVersion" />
-      <template v-if="versionToShow">
-        <pre>
-          {{ shownVersion }}
-        </pre>
-      </template>
-      <admin-config-form />
+      <admin-config-form
+        v-if="shownVersion"
+        :disabled="versionToShow < currentPrivateConfig.id"
+        :config="shownVersion"
+        @configSaved="refetch" />
     </no-ssr>
   </section>
 </template>
@@ -31,13 +30,15 @@ export default {
     AdminConfigList,
     AdminConfigForm
   },
-  data: () => ({
-    currentConfig: {},
-    configs: [],
-    versionToShow: null,
-    configVersions: {},
-    shownVersion: {}
-  }),
+  data () {
+    return {
+      currentConfig: null,
+      configs: [],
+      versionToShow: null,
+      configVersions: {},
+      shownVersion: this.currentConfig
+    }
+  },
   methods: {
     showVersion (id) {
       this.versionToShow = parseInt(id, 10)
@@ -50,7 +51,8 @@ export default {
         })
       }
     },
-    refetch () {
+    async refetch () {
+      await this.$store.dispatch('config/LOAD_CONFIG')
       this.$apollo.queries.configList.refetch()
     }
   },
@@ -60,8 +62,7 @@ export default {
       query: privateConfigVersion,
       result ({ data, loading }) {
         if (!loading) {
-          this.configVersions[this.versionToShow] = data.privateConfigVersion
-          this.shownVersion = this.configVersions[this.versionToShow]
+          this.configVersions[this.versionToShow] = this.shownVersion = data.privateConfigVersion
         }
       },
       skip () {

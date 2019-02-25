@@ -24,7 +24,10 @@ export const mutations = {
 export const actions = {
   async [LOAD_CONFIG] ({ commit, state }) {
     try {
-      const result = await this.app.apolloProvider.defaultClient.query({ query: currentPublicConfig })
+      const result = await this.app.apolloProvider.defaultClient.query({
+        query: currentPublicConfig,
+        fetchPolicy: 'no-cache'
+      })
       const config = result.data.currentPublicConfig
 
       commit(LOAD_CONFIG, config)
