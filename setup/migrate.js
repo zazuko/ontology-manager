@@ -8,9 +8,7 @@ const envInit = require('./env-init')
 
 let client
 
-up()
-
-async function up () {
+(async function up () {
   envInit()
 
   console.warn('Starting migrations!')
@@ -62,12 +60,13 @@ async function up () {
   await dropTestDatabase()
   await createDatabase()
   await run(stringsToReplace)
+  await migrateSettings()
 
   if (client) {
     await client.destroy()
   }
   process.exit(0)
-}
+})()
 
 async function run (stringsToReplace) {
   setupClient()
@@ -245,4 +244,98 @@ function setupClient () {
   })
 
   return client
+}
+
+// temp
+async function migrateSettings () {
+  const spinner = ora('Migrating settings from env vars to DB').start()
+  try {
+    const client = knex({
+      client: 'pg',
+      connection: {
+        host: process.env.POSTGRESQL_HOST || 'localhost',
+        database: process.env.POSTGRESQL_DATABASE,
+        user: 'postgres',
+        password: process.env.POSTGRESQL_PASSWORD
+      }
+    })
+
+    const existingConfigs = await client
+      .withSchema('editor_schema')
+      .select('id', 'forge', 'editor', 'ontology')
+      .from('config')
+      .orderBy('id', 'desc')
+      .limit(1)
+
+    if (!existingConfigs.length) {
+      const editorConfig = JSON.parse(process.env.EDITOR_CONFIG)
+
+      const editor = {
+        loginStrategy: process.env.AUTH_STRATEGY || 'github',
+        host: process.env.EDITOR_HOST || 'localhost:3000',
+        protocol: process.env.EDITOR_PROTOCOL || 'http',
+        meta: {
+          title: editorConfig.head.title || 'Zazuko Ontology Editor Demo',
+          customerName: process.env.CUSTOMER_NAME || 'Zazuko GmbH',
+          description: editorConfig.head.description || 'Linked Data Ontology Editor for Domain Specialists'
+        },
+        logoUrl: '/dcf-logo.svg',
+        text: {
+          home: [
+            '<p>The Ontology Manager is based on a web interface and Github for repository functions. It has been created in order to enable collaboration on schema definition beyond the developer community and enabling the business process experts to engage and drive the creation of the best possible schema for the logistics industry, while ensuring a correct schema definition in Turtle (Terse RDF Triple Language) format.</p>',
+            '<p>The Ontology Manager consists of the following functions; </p> <ul class="dash-bullet"> <li> repository of schema in Turtle format (Github) </li> <li> logical visualization of schema </li> <li> forum capability </li> <li> proposal, voting, and acceptance of new schema entries, changes, and deprecation </li> <li> search in all defined schemas </li> <li> activity list view </li> </ul> <p> In order to join you will need a Github account. </p>'
+          ],
+          login: `${process.env.CUSTOMER_NAME} uses GitHub as a collaboration platform for the ontology management. Therefore you require a GitHub account to collaborate on ${process.env.CUSTOMER_NAME}.`
+        },
+        github: {
+          repo: editorConfig.github.repo || 'o',
+          owner: editorConfig.github.owner || 'vhf',
+          branch: editorConfig.github.branch || 'example-com'
+        },
+        committer: {
+          name: editorConfig.committer.name || 'Ontology Editor',
+          email: editorConfig.committer.email || 'victor.felder@zazuko.com'
+        }
+      }
+
+      const ontology = {
+        datasetBaseUrl: process.env.DATASET_BASE_URL || 'http://example.com/',
+        classBaseUrl: process.env.CLASS_BASE_URL || 'http://example.com/schema/',
+        propertyBaseUrl: process.env.PROPERTY_BASE_URL || 'http://example.com/schema/',
+        containersNestingPredicate: process.env.CONTAINERS_NESTING_PREDICATE || 'http://schema.org/hasPart',
+        ontologyRawUrl: process.env.ONTOLOGY_RAW_URL || 'https://raw.githubusercontent.com/vhf/o/example-com/ontology.nt',
+        structureRawUrl: process.env.STRUCTURE_RAW_URL || 'https://raw.githubusercontent.com/vhf/o/example-com/structure.nt'
+      }
+
+      const forge = {
+        oauthHost: process.env.OAUTH_HOST || 'https://github.com/login/oauth',
+        oauthClientId: process.env.OAUTH_CLIENT_ID || '',
+        oauthClientSecret: process.env.OAUTH_CLIENT_SECRET || '',
+        committerPersonalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN || ''
+      }
+
+      await client.raw(`
+        INSERT INTO
+          "editor_schema"."config"("forge", "editor", "ontology", "reason")
+        VALUES(
+          '${JSON.stringify(forge)}'::jsonb,
+          '${JSON.stringify(editor)}'::jsonb,
+          '${JSON.stringify(ontology)}'::jsonb,
+          'Initial config imported from env vars'
+        )
+        RETURNING "id", "forge", "editor", "ontology";
+      `)
+      spinner.succeed(`Imported config from env vars`)
+    } else {
+      spinner.succeed(`Config exists; not importing anything.`)
+    }
+
+    await client.destroy()
+  }
+  catch (err) {
+    throw err
+  }
+  if (client) {
+    await client.destroy()
+  }
 }
