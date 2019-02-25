@@ -6,10 +6,10 @@ module.exports = {
     cwd: __dirname,
     script: 'node_modules/nuxt/bin/nuxt.js',
     args: `-c ${join(__dirname, 'nuxt.config.js')} start`,
-    instances: 3,
+    instances: 1,
     autorestart: true,
     watch: false,
-    max_memory_restart: '1G',
+    max_memory_restart: '350M',
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'production'
