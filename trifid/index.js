@@ -1,25 +1,48 @@
+import jwt from 'express-jwt'
 import Trifid from 'trifid-core'
 import express from 'express'
 import { join } from 'path'
 import fetchConfig from '../setup/fetch-config'
 
+const router = express.Router()
+const debug = require('debug')('editor:trifid')
 const app = express()
 app.set('trust proxy', 'loopback')
 app.set('x-powered-by', null)
 
+let middleware = null
+let installConfigReloader = true
+
 app.use(async function (req, res, next) {
-  const middleware = await initMiddleware()
+  router.post(
+    '/trifid/reload-config',
+    jwt({ secret: process.env.POSTGRAPHILE_TOKEN_SECRET }),
+    (req, res, next) => {
+      middleware = null
+      debug('manually cleared config')
+      res.json({ success: true })
+    }
+  )
+  if (installConfigReloader) {
+    app.use(router)
+    installConfigReloader = false
+  }
+
+  if (!middleware) {
+    debug('new middleware')
+    const { ontology: ontologyConfig } = await fetchConfig()
+    middleware = await trifidMiddleware(ontologyConfig)
+  }
+  else {
+    debug('cached middleware')
+  }
+
   middleware(req, res, next)
 })
 
 export default {
   path: '/',
   handler: app
-}
-
-async function initMiddleware () {
-  const { ontology: ontologyConfig } = await fetchConfig()
-  return trifidMiddleware(ontologyConfig)
 }
 
 async function trifidMiddleware (ontologyConfig) {
