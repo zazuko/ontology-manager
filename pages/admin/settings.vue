@@ -57,7 +57,8 @@ export default {
     },
     async reloadConfig () {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
-      Promise.all([
+      await Promise.all([
+        axios.post('/trifid/reload-config', {}, headers),
         this.$store.dispatch('config/LOAD_CONFIG'),
         axios.post('/api/reload-config', {}, headers)
       ])
