@@ -21,7 +21,7 @@
   },
   "precommit": "npm run lint",
   "dependencies": {
-    "@mdi/font": "^3.5.94",
+    "@mdi/font": "^3.5.95",
     "@nuxtjs/apollo": "git://github.com/nuxt-community/apollo-module.git#3ad51bf70574d8240398b0a0d9dcb02e6897bf6c",
     "@nuxtjs/auth": "^4.5.2",
     "@nuxtjs/axios": "^5.3.3",
@@ -61,7 +61,7 @@
     "marked-sanitizer-github": "^1.0.0",
     "morgan": "^1.9.1",
     "node-sass": "^4.11.0",
-    "nuxt": "^2.4.3",
+    "nuxt": "^2.4.5",
     "ora": "^3.1.0",
     "patch-headers": "^1.0.2",
     "pg": "^7.8.1",
