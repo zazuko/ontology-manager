@@ -63,6 +63,18 @@ Whenever you feel like it:
 - A postgres client (e.g. [Postico](https://eggerapps.at/postico/) for MacOS) to inspect schemas and data
 - Apollo devtools extension [Chrome, Firefox](https://github.com/apollographql/apollo-client-devtools#apollo-client-devtools)
 
+## FAQ
+
+### How to wip a customer DB?
+
+For customer `example_com`:
+```sql
+drop database example_com_db;
+drop role example_com_role_postgraphile;
+drop role example_com_role_anonymous;
+drop role example_com_role_person;
+```
+
 ## References
 
 * GraphQL: https://graphql.org/learn/
