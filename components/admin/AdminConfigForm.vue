@@ -126,6 +126,27 @@
       </div>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
+          <label class="label">Name of a Group</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input
+                :disabled="disabled"
+                class="input"
+                v-model="editor.text.groupName"
+                type="text"
+                placeholder="Group"
+                required>
+            </p>
+            <p class="help">
+              Popular names for a group of classes include "Container", "Group", "Pouch", "Folder"…
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
           <label class="label">Homepage columns</label>
         </div>
         <div class="field-body">

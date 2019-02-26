@@ -32,12 +32,15 @@
             :is-class="$termIRI.Class.equals(objectType)" />
         </section>
 
-        <section
-          class="container layout-objects-list-item">
-          <class-proposals
-            id="proposals"
-            :iri="iri" />
-        </section>
+        <template
+          v-if="!hasChildContainers(subtree)">
+          <section
+            class="container layout-objects-list-item">
+            <class-proposals
+              id="proposals"
+              :iri="iri" />
+          </section>
+        </template>
       </div>
 
       <!-- layout-object-details -->
@@ -78,6 +81,7 @@ import rdf from 'rdf-ext'
 import { resource } from 'rdf-utils-dataset'
 // https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
 import JsonLdSerializer from 'rdf-serializer-jsonld'
+import _get from 'lodash/get'
 
 import Structure from '@/components/fallback/Structure'
 import ObjectDetails from '@/components/fallback/ObjectDetails'
@@ -205,6 +209,9 @@ export default {
         }
       }
       this.dataReady = true
+    },
+    hasChildContainers (obj) {
+      return !!_get(obj, 'children', []).find(x => x.isCreativeWork)
     }
   },
   mounted () {
