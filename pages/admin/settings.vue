@@ -6,6 +6,11 @@
       <admin-config-list
         :configs="configs"
         @showVersion="showVersion" />
+
+      <template v-if="error">
+        <p>{{ error }}</p>
+      </template>
+
       <admin-config-form
         v-if="shownVersion"
         :disabled="versionToShow < currentPrivateConfig.id"
@@ -33,6 +38,7 @@ export default {
   },
   data () {
     return {
+      error: '',
       currentConfig: null,
       configs: [],
       versionToShow: null,
@@ -54,14 +60,22 @@ export default {
     },
     async refetch () {
       this.$apollo.queries.configList.refetch()
+      await this.reloadConfig()
     },
     async reloadConfig () {
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
-      await Promise.all([
-        axios.post('/trifid/reload-config', {}, headers),
-        this.$store.dispatch('config/LOAD_CONFIG'),
-        axios.post('/api/reload-config', {}, headers)
-      ])
+      try {
+        await Promise.all([
+          axios.post('/trifid/reload-datasets', {}, headers),
+          axios.post('/trifid/reload-config', {}, headers),
+          axios.post('/api/reload-config', {}, headers),
+          this.$store.dispatch('config/LOAD_CONFIG')
+        ])
+      }
+      catch (err) {
+        this.error = err.message
+        console.error(err)
+      }
     }
   },
   apollo: {

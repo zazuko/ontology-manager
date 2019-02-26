@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const dotenv = require('dotenv')
+const debug = require('debug')('editor')
 
 const environments = {
   dev: `${__dirname}/../docker-app-dev/.env`,
@@ -30,5 +31,5 @@ module.exports = function envInit (env = process.env.NODE_TEST ? 'test' : 'dev')
   Object.entries(vars).forEach(([key, val]) => {
     process.env[key] = val
   })
-  console.warn(`Environment init: ${env}`)
+  debug(`Environment init: ${env}`)
 }

@@ -23,6 +23,8 @@ module.exports = async function (editorConfig) {
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
   const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
 
+  router.__cacheClear = () => apicache.clear()
+
   router.get('/', (req, res, next) => {
     res.send('Ontology Editor currently using E2E helpers')
   })

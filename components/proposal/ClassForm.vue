@@ -119,6 +119,7 @@
                 <label class="checkbox">
                   <input
                     type="checkbox"
+                    :disabled="disabled"
                     v-model.lazy="clss['isDeprecated']">
                   Deprecate Class
                 </label>

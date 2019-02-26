@@ -3,11 +3,12 @@ import stringToStream from 'string-to-stream'
 import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
 
+const debug = require('debug')('editor:trifid')
+
 // * used by the store to refresh client-side dataset after a merge
 // only used client-side, the other one cannot be used client-side because of
 // knex
 export default async function fetchDataset (editorConfig) {
-  console.warn(editorConfig)
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
   const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
   const editorUrl = `${editorConfig.editor.protocol}://${editorConfig.editor.host}`
@@ -33,7 +34,7 @@ export default async function fetchDataset (editorConfig) {
     return { ontologyDataset, structureDataset }
   }
   catch (err) {
-    console.warn('Failed to fetch dataset from local API')
+    debug('Failed to fetch dataset from local API')
     console.error(err)
     throw err
   }
