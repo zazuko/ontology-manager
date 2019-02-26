@@ -6,7 +6,7 @@ const envInit = require('./env-init')
 let config
 let lastFetch = (new Date(0)).getTime()
 
-const shouldRefetch = () => (Date.now() - lastFetch) > 15 * 1000
+const shouldRefetch = () => (Date.now() - lastFetch) > 3 * 1000
 
 module.exports = async function fetchConfig () {
   if (process.env.BUILDING_WITHOUT_PG_ACCESS) {

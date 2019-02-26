@@ -103,7 +103,7 @@
         <td class="property-ranges">
           <ul class="types-list">
             <li
-              v-for="range in rangeOf(property.iri, dataset)"
+              v-for="range in $rangeOf(property.iri, dataset)"
               :key="range.value">
               <a
                 :href="$rebaseIRI(range.value)"
