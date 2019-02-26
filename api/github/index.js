@@ -12,6 +12,8 @@ module.exports = async function (editorConfig) {
   const onlyStatus200 = (req, res) => res.statusCode === 200
   const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
+  router.__cacheClear = () => apicache.clear()
+
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
     user: req.user.person_id,

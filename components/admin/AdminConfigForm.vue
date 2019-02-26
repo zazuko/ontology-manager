@@ -432,7 +432,6 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
                 class="input"
                 type="text"
                 v-model="reason"
@@ -446,14 +445,26 @@
         </div>
       </div>
       <div class="field is-horizontal">
-        <div class="field-label is-normal">
+        <div
+          class="field-label is-normal">
           <!-- Left empty for spacing -->
-          <label class="label">Save as version {{ config.id + 1 }}</label>
+          <label
+            v-show="!disabled"
+            class="label">Save as version {{ config.id + 1 }}</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control">
               <button
+                v-if="disabled"
+                :disabled="reason.length <= 2"
+                class="button is-danger"
+                type="submit">
+                Revert to Version {{ config.id }}
+              </button>
+              <button
+                v-else
+                :disabled="reason.length <= 2"
                 class="button is-danger"
                 type="submit">
                 Save &amp; Apply

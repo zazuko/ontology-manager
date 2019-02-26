@@ -34,6 +34,7 @@ const router = Router()
   let installConfigReloader = true
   app.use('/', async (req, res, next) => {
     router.post('/reload-config', (req, res, next) => {
+      debug(apiMiddleware.__cacheClear())
       apiMiddleware = null
       debug('manually cleared config')
       res.json({ success: true })
@@ -59,7 +60,7 @@ const router = Router()
       else {
         throw new Error('No forge API configured or configured forge API not found.')
       }
-      console.warn(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
+      debug(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
       apiMiddleware = await require(`./${api}`)(editorConfig)
     }
     else {
