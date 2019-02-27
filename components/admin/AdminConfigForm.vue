@@ -329,6 +329,31 @@
         </div>
       </div>
 
+      <h2 class="subtitle">2.3. Resources Location</h2>
+      <p></p>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Ontology Resource Location</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input
+                :disabled="disabled"
+                class="input"
+                v-model="ontology.ontologyResourceUrl"
+                type="text"
+                required>
+            </p>
+            <p class="help">
+              The ontology will be accessible at <code>{{ ontologyResourceUrl }}</code>
+              by either specifying the format: <code>{{ ontologyResourceUrl }}?format=ttl</code>
+              or using content negotiation.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div style="display: none">
         <hr>
 
@@ -527,6 +552,9 @@ export default {
     }
   },
   computed: {
+    ontologyResourceUrl () {
+      return `${this.ontology.datasetBaseUrl}${(this.ontology.ontologyResourceUrl).replace(new RegExp('^/', 'g'), '')}`
+    }
   },
   watch: {
     config () {
