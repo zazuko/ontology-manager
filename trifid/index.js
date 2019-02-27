@@ -78,7 +78,7 @@ async function trifidMiddleware (config) {
         options: {
           url: config.ontology.ontologyRawUrl,
           contentType: 'application/n-triples',
-          resource: `${config.ontology.datasetBaseUrl}${config.ontology.ontologyResourceUrl.replace(new RegExp('^/', 'g'), '') || ''}`
+          resource: `${config.ontology.datasetBaseUrl}${(config.ontology.ontologyResourceUrl || '').replace(new RegExp('^/', 'g'), '') || ''}`
         }
       }
     }
