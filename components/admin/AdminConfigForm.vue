@@ -553,7 +553,7 @@ export default {
   },
   computed: {
     ontologyResourceUrl () {
-      return `${this.ontology.datasetBaseUrl}${(this.ontology.ontologyResourceUrl).replace(new RegExp('^/', 'g'), '')}`
+      return `${this.ontology.datasetBaseUrl}${(this.ontology.ontologyResourceUrl || '').replace(new RegExp('^/', 'g'), '')}`
     }
   },
   watch: {
