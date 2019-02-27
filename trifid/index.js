@@ -30,8 +30,8 @@ app.use(async function (req, res, next) {
 
   if (!middleware) {
     debug('new middleware')
-    const { ontology: ontologyConfig } = await fetchConfig()
-    middleware = await trifidMiddleware(ontologyConfig)
+    const config = await fetchConfig()
+    middleware = await trifidMiddleware(config)
   }
   else {
     debug('cached middleware')
@@ -45,20 +45,20 @@ export default {
   handler: app
 }
 
-async function trifidMiddleware (ontologyConfig) {
+async function trifidMiddleware (config) {
   const trifid = new Trifid()
-  const config = {
+  const trifidConfig = {
     baseConfig: `${join(__dirname, 'trifid.config-base.json')}`,
-    datasetBaseUrl: ontologyConfig.datasetBaseUrl,
-    classBaseUrl: ontologyConfig.classBaseUrl,
-    propertyBaseUrl: ontologyConfig.propertyBaseUrl,
-    containersNestingPredicate: ontologyConfig.containersNestingPredicate,
+    datasetBaseUrl: config.ontology.datasetBaseUrl,
+    classBaseUrl: config.ontology.classBaseUrl,
+    propertyBaseUrl: config.ontology.propertyBaseUrl,
+    containersNestingPredicate: config.ontology.containersNestingPredicate,
     handler: {
       structure: {
         module: 'trifid-handler-fetch',
         priority: 100,
         options: {
-          url: ontologyConfig.structureRawUrl,
+          url: config.ontology.structureRawUrl,
           contentType: 'application/n-triples',
           split: true
         }
@@ -67,15 +67,24 @@ async function trifidMiddleware (ontologyConfig) {
         module: 'trifid-handler-fetch',
         priority: 101,
         options: {
-          url: ontologyConfig.ontologyRawUrl,
+          url: config.ontology.ontologyRawUrl,
           contentType: 'application/n-triples',
           split: true
+        }
+      },
+      ontologyResource: {
+        module: 'trifid-handler-fetch',
+        priority: 10,
+        options: {
+          url: config.ontology.ontologyRawUrl,
+          contentType: 'application/n-triples',
+          resource: `${config.ontology.datasetBaseUrl}${config.ontology.ontologyResourceUrl.replace(new RegExp('^/', 'g'), '') || ''}`
         }
       }
     }
   }
 
-  await trifid.init(config)
+  await trifid.init(trifidConfig)
 
   return trifid.middleware()
 }
