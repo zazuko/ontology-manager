@@ -83,20 +83,39 @@ export default ({ app, store }, inject) => {
   inject('buildSearchIndex', buildSearchIndex)
   inject('buildTree', buildTree)
   inject('findClassProperties', findClassProperties)
+  inject('unPrefix', unPrefix)
 
   const createExternalType = ([iri, label]) =>
     rdf.quad(rdf.namedNode(iri), termIRI.label, rdf.literal(label))
 
-  const externalTypes = [
-    ['http://www.w3.org/2001/XMLSchema#boolean', 'Boolean (xsd:boolean)'],
-    ['http://www.w3.org/2001/XMLSchema#date', 'Date (xsd:date)'],
-    ['http://www.w3.org/2001/XMLSchema#dateTime', 'Date and time (xsd:dateTime)'],
-    ['http://www.w3.org/2001/XMLSchema#double', 'Double (xsd:double)'],
-    ['http://www.w3.org/2001/XMLSchema#decimal', 'Decimal (xsd:decimal)'],
-    ['http://www.w3.org/2001/XMLSchema#int', 'Integer (xsd:int)'],
-    ['http://www.w3.org/2001/XMLSchema#string', 'String (xsd:string)'],
-    ['http://www.w3.org/2001/XMLSchema#time', 'Time (xsd:time)']
-  ].map(createExternalType)
+  const prefixes = [{
+    prefix: 'http://www.w3.org/2001/XMLSchema#',
+    short: 'xsd:'
+  }, {
+    prefix: 'http://www.w3.org/2000/01/rdf-schema#',
+    short: 'rdfs:'
+  }]
+
+  const allExternalTypes = [
+    ['http://www.w3.org/2000/01/rdf-schema#literal', 'rdfs:literal'],
+    ['http://www.w3.org/2001/XMLSchema#boolean', 'xsd:boolean'],
+    ['http://www.w3.org/2001/XMLSchema#date', 'xsd:date'],
+    ['http://www.w3.org/2001/XMLSchema#dateTime', 'xsd:dateTime'],
+    ['http://www.w3.org/2001/XMLSchema#double', 'xsd:double'],
+    ['http://www.w3.org/2001/XMLSchema#decimal', 'xsd:decimal'],
+    ['http://www.w3.org/2001/XMLSchema#int', 'xsd:int'],
+    ['http://www.w3.org/2001/XMLSchema#string', 'xsd:string'],
+    ['http://www.w3.org/2001/XMLSchema#time', 'xsd:time']
+  ]
+  const externalTypes = allExternalTypes.map(createExternalType)
+
+  function unPrefix (iri) {
+    const found = prefixes.find(p => iri.startsWith(p.prefix))
+    if (found) {
+      return iri.replace(new RegExp(`^${found.prefix}`), found.short)
+    }
+    return iri
+  }
 
   function toObject (domain, dataset) {
     let label = dataset.match(domain.subject, termIRI.label).toArray()
