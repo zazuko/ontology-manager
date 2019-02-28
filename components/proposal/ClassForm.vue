@@ -210,6 +210,7 @@
               Add "<em>{{ clss['label'] }}</em>" to the proposal
             </button>
           </div>
+
           <div class="column is-6">
             <!-- <button
               class="button is-dark-info is-pulled-right subform-cancel">
