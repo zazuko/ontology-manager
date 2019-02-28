@@ -106,12 +106,14 @@
                 <label class="checkbox">
                   <input
                     type="checkbox"
+                    :disabled="disabled"
                     v-model.lazy="prop['isDeprecated']">
                   Deprecate Property
                 </label>
               </div>
             </div>
           </div>
+
           <div class="column">
             <div class="field long-description">
               <label class="label">Long Description (optional)</label>

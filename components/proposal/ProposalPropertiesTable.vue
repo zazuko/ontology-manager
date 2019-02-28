@@ -45,7 +45,7 @@
                 :href="$rebaseIRI(range.value)"
                 rel="noopener noreferrer"
                 target="_blank">
-                {{ term(range.value) }}
+                {{ label(range) }}
               </a>
             </li>
           </ul>
@@ -183,6 +183,13 @@ export default {
   },
   methods: {
     term,
+    label (aTerm) {
+      const label = this.$store.getters['graph/ontology'].match(aTerm, this.$termIRI.label).toArray()[0]
+      if (!label) {
+        return this.$unPrefix(aTerm.value)
+      }
+      return term(label)
+    },
     reselectDomain (index) {
       this.$emit('reselectDomain', index)
     },
