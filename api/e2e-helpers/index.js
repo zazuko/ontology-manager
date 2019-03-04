@@ -203,7 +203,7 @@ module.exports = async function (editorConfig) {
 
       const { number } = await api.createPR({ title, body, branch })
 
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
@@ -247,7 +247,7 @@ module.exports = async function (editorConfig) {
         throw new Error(`Merge failed: ${message}`)
       }
 
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
@@ -298,7 +298,7 @@ module.exports = async function (editorConfig) {
     }
 
     try {
-      const userApolloClient = getApolloClientForUser(req)
+      const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
