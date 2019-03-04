@@ -4,7 +4,8 @@ function getConfigFromEnvVars () {
   let editorConfig
   try {
     editorConfig = JSON.parse(process.env.EDITOR_CONFIG)
-  } catch (err) {
+  }
+  catch (err) {
     editorConfig = {}
   }
 
