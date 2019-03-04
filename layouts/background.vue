@@ -15,6 +15,11 @@ export default {
     TopNav,
     PageFooter
   },
-  methods: {}
+  methods: {},
+  mounted () {
+    if (window.Cypress) {
+      window.appReady = true
+    }
+  }
 }
 </script>

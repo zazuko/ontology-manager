@@ -4,6 +4,7 @@ let resp
 
 Cypress.Commands.add('login', (path) => {
   let $nuxt
+  cy.window().should('have.property', 'appReady', true)
   cy.window()
     .its('$nuxt')
     .then((_$nuxt) => {
@@ -36,6 +37,7 @@ Cypress.Commands.add('login', (path) => {
 })
 
 Cypress.Commands.add('goto', (path) => {
+  cy.window().should('have.property', 'appReady', true)
   cy.window()
     .its('$nuxt')
     .then(($nuxt) => {
@@ -44,6 +46,7 @@ Cypress.Commands.add('goto', (path) => {
 })
 
 Cypress.Commands.add('clearDrafts', () => {
+  cy.window().should('have.property', 'appReady', true)
   cy.window()
     .its('$nuxt')
     .then(($nuxt) => {
@@ -71,6 +74,7 @@ Cypress.Commands.add('clearDrafts', () => {
 })
 
 Cypress.Commands.add('countDrafts', () => {
+  cy.window().should('have.property', 'appReady', true)
   return cy.window()
     .its('$nuxt')
     .then(($nuxt) => {
@@ -94,6 +98,7 @@ Cypress.Commands.add('countDrafts', () => {
 })
 
 Cypress.Commands.add('countProposalsOn', (iri) => {
+  cy.window().should('have.property', 'appReady', true)
   return cy.window()
     .its('$nuxt')
     .then(($nuxt) => {
