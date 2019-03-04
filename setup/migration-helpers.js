@@ -1,14 +1,21 @@
+const _ = require('lodash')
+
 function getConfigFromEnvVars () {
-  const editorConfig = JSON.parse(process.env.EDITOR_CONFIG)
+  let editorConfig
+  try {
+    editorConfig = JSON.parse(process.env.EDITOR_CONFIG)
+  } catch (err) {
+    editorConfig = {}
+  }
 
   const editor = {
     loginStrategy: process.env.AUTH_STRATEGY || 'github',
     host: process.env.EDITOR_HOST || 'localhost:3000',
     protocol: process.env.EDITOR_PROTOCOL || 'http',
     meta: {
-      title: editorConfig.head.title || 'Zazuko Ontology Editor Demo',
+      title: _.get(editorConfig, 'head.title', 'Zazuko Ontology Editor Demo'),
       customerName: process.env.CUSTOMER_NAME || 'Zazuko GmbH',
-      description: editorConfig.head.description || 'Linked Data Ontology Editor for Domain Specialists'
+      description: _.get(editorConfig, 'head.description', 'Linked Data Ontology Editor for Domain Specialists')
     },
     logoUrl: '/dcf-logo.svg',
     text: {
@@ -19,13 +26,13 @@ function getConfigFromEnvVars () {
       login: `${process.env.CUSTOMER_NAME} uses GitHub as a collaboration platform for the ontology management. Therefore you require a GitHub account to collaborate on ${process.env.CUSTOMER_NAME}.`
     },
     github: {
-      repo: editorConfig.github.repo || 'o',
-      owner: editorConfig.github.owner || 'vhf',
-      branch: editorConfig.github.branch || 'example-com'
+      repo: _.get(editorConfig, 'github.repo', 'o'),
+      owner: _.get(editorConfig, 'github.owner', 'vhf'),
+      branch: _.get(editorConfig, 'github.branch', 'example-com')
     },
     committer: {
-      name: editorConfig.committer.name || 'Ontology Editor',
-      email: editorConfig.committer.email || 'victor.felder@zazuko.com'
+      name: _.get(editorConfig, 'committer.name', 'Ontology Editor'),
+      email: _.get(editorConfig, 'committer.email', 'victor.felder@zazuko.com')
     }
   }
 
