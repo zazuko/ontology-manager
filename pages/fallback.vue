@@ -61,7 +61,6 @@
             :is-class="$termIRI.Class.equals(objectType)" />
 
           <property-proposals
-            v-if="$termIRI.Class.equals(objectType)"
             id="proposals"
             :iri="iri" />
 

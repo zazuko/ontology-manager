@@ -52,7 +52,7 @@
 
       <div class="content">
         <ul class="goto-nav">
-          <li v-show="isClass"><a href="#proposals">Proposals</a></li>
+          <li><a href="#proposals">Proposals</a></li>
           <li><a href="#conversations">Conversation</a></li>
         </ul>
 
