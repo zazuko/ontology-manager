@@ -4,11 +4,31 @@ const express = require('express')
 const fetchConfig = require('../setup/fetch-config')
 const debug = require('debug')('editor:api')
 const Router = require('express').Router
+const pm2 = require('pm2')
 
 const app = express()
 app.use(bodyParser.json({ limit: '4mb' }))
 
 const router = Router()
+
+async function createApiMiddleware () {
+  const editorConfig = await fetchConfig()
+  let api
+  if (process.env.NODE_TEST) {
+    api = 'e2e-helpers'
+  }
+  else if (editorConfig.editor.github) {
+    api = 'github'
+  }
+  else if (editorConfig.editor.gitlab) {
+    api = 'gitlab'
+  }
+  else {
+    throw new Error('No forge API configured or configured forge API not found.')
+  }
+  debug(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
+  return require(`./${api}`)(editorConfig)
+}
 
 ;(async () => {
   /**
@@ -31,43 +51,52 @@ const router = Router()
   )
 
   let apiMiddleware = null
-  let installConfigReloader = true
-  app.use('/', async (req, res, next) => {
-    router.post('/reload-config', (req, res, next) => {
-      debug(apiMiddleware.__cacheClear())
-      apiMiddleware = null
-      debug('manually cleared config')
-      res.json({ success: true })
-    })
-    if (installConfigReloader) {
-      app.use(router)
-      installConfigReloader = false
-    }
 
+  process.on('SIGHUP', async () => {
+    apiMiddleware = await createApiMiddleware()
+    debug('Editor API: apiMiddleware reloaded')
+  })
+
+  router.post('/reload-app', async (req, res, next) => {
+    // This endpoint is protected by JWT, preventing malicious users
+    // who found out about it to hit it often enough to DDoS
+    const pids = await new Promise((resolve) => {
+      pm2.list((err, processDescriptionList) => {
+        if (err) {
+          debug(err)
+        }
+        const signaled = []
+        if (Array.isArray(processDescriptionList) && processDescriptionList.length) {
+          // Signal all pm2-run editor servers
+          processDescriptionList.forEach((pm2Process) => {
+            process.kill(pm2Process.pid, 'SIGHUP')
+            signaled.push(pm2Process.pid)
+          })
+        }
+        else {
+          // PM2 isn't running, only signal ourself
+          process.kill(process.pid, 'SIGHUP')
+          signaled.push(process.pid)
+        }
+        resolve(signaled)
+      })
+    })
+    debug(`Sent SIGHUP to ${pids}`)
+    res.json({ reloaded: pids })
+  })
+
+  app.use('/', async (req, res, next) => {
     if (!apiMiddleware) {
+      apiMiddleware = await createApiMiddleware()
       debug('new middleware')
-      const editorConfig = await fetchConfig()
-      let api
-      if (process.env.NODE_TEST) {
-        api = 'e2e-helpers'
-      }
-      else if (editorConfig.editor.github) {
-        api = 'github'
-      }
-      else if (editorConfig.editor.gitlab) {
-        api = 'gitlab'
-      }
-      else {
-        throw new Error('No forge API configured or configured forge API not found.')
-      }
-      debug(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
-      apiMiddleware = await require(`./${api}`)(editorConfig)
     }
     else {
       debug('cached middleware')
     }
     apiMiddleware(req, res, next)
   })
+
+  app.use(router)
 })()
 
 module.exports = { path: '/api', handler: app }
