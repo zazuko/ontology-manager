@@ -3,6 +3,7 @@ const Router = require('express').Router
 const axios = require('axios')
 const apicache = require('apicache')
 const gql = require('graphql-tag')
+const debug = require('debug')('editor:api')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
@@ -12,7 +13,10 @@ module.exports = async function (editorConfig) {
   const onlyStatus200 = (req, res) => res.statusCode === 200
   const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
-  router.__cacheClear = () => apicache.clear()
+  process.on('SIGHUP', () => {
+    apicache.clear()
+    debug('GitHub API: apicache cleared')
+  })
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({

@@ -1,33 +1,22 @@
-import jwt from 'express-jwt'
 import Trifid from 'trifid-core'
 import express from 'express'
 import { join } from 'path'
 import fetchConfig from '../setup/fetch-config'
 
-const router = express.Router()
 const debug = require('debug')('editor:trifid')
 const app = express()
 app.set('trust proxy', 'loopback')
 app.set('x-powered-by', null)
 
 let middleware = null
-let installConfigReloader = true
+
+process.on('SIGHUP', async () => {
+  const config = await fetchConfig()
+  middleware = await trifidMiddleware(config)
+  debug('Trifid: middleware reloaded')
+})
 
 app.use(async function (req, res, next) {
-  router.post(
-    '/trifid/reload-config',
-    jwt({ secret: process.env.POSTGRAPHILE_TOKEN_SECRET }),
-    (req, res, next) => {
-      middleware = null
-      debug('manually cleared config')
-      res.json({ success: true })
-    }
-  )
-  if (installConfigReloader) {
-    app.use(router)
-    installConfigReloader = false
-  }
-
   if (!middleware) {
     debug('new middleware')
     const config = await fetchConfig()
