@@ -9,39 +9,6 @@
     }">
 
     <template v-if="disabled || !clss['isSubFormCollapsed']">
-      <!--
-      <div
-        v-show="!subform && clss['iri']"
-        class="box debug">
-        <div class="columns">
-          <div class="column">
-            <button
-              class="button is-big is-warning"
-              @click.prevent="debugGenerateNT">
-              debug button: refresh NT
-            </button>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <pre
-              class="is-clearfix"
-              v-show="debugNT">{{ debugNT }}</pre>
-          </div>
-        </div>
-        <div
-          v-show="debugNT"
-          class="columns">
-          <div class="column">
-            <button
-              class="button is-big is-warning"
-              @click.prevent="debugGenerateNT">
-              debug button: refresh NT
-            </button>
-          </div>
-        </div>
-      </div>
-      -->
 
       <div
         :class="{
@@ -68,9 +35,9 @@
               <span class="title-url">{{ clss['iri'] }}</span>
             </p>
           </div>
-          <!--<div class="column">
-            <button class="button is-warning is-pulled-right">Remove</button>
-          </div>-->
+          <div class="column">
+            <!-- <button class="button is-warning is-pulled-right">Remove</button> -->
+          </div>
         </div>
 
         <div class="columns class-details">
@@ -162,8 +129,7 @@
           v-show="validBase"
           class="columns fold">
           <div class="column">
-            <div
-              v-if="renderTypeahead">
+            <no-ssr>
               <typeahead
                 :disabled="disabled"
                 :search-function="searchFunction"
@@ -182,8 +148,7 @@
                   </a>
                 </div>
               </typeahead>
-            </div>
-            <div v-else />
+            </no-ssr>
           </div>
           <div class="column" />
         </div>
@@ -318,7 +283,6 @@ export default {
   data () {
     return {
       searchFunction: () => ([]),
-      renderTypeahead: process.client,
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
       debugNT: ''
