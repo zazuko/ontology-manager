@@ -33,7 +33,7 @@
             v-else
             class="content">
             <p>
-              This pouch is empty.
+              This {{ $store.state.config.editor.text.groupName || 'Group' }} is empty.
             </p>
           </div>
         </div>
