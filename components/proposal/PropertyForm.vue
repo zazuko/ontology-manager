@@ -9,37 +9,6 @@
     }">
 
     <template v-if="disabled || !prop['isSubFormCollapsed']">
-      <!-- <div
-        v-show="!subform && prop['iri']"
-        class="box debug">
-        <div class="columns">
-          <div class="column">
-            <button
-              class="button is-big is-warning"
-              @click.prevent="debugGenerateNT">
-              debug button: refresh NT
-            </button>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <pre
-              class="is-clearfix"
-              v-show="debugNT">{{ debugNT }}</pre>
-          </div>
-        </div>
-        <div
-          v-show="debugNT"
-          class="columns">
-          <div class="column">
-            <button
-              class="button is-big is-warning"
-              @click.prevent="debugGenerateNT">
-              debug button: refresh NT
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <div class="box">
         <div class="columns">
@@ -61,7 +30,7 @@
             </p>
           </div>
           <div class="column">
-            <!--<button class="button is-warning is-pulled-right">Remove</button>-->
+            <!-- <button class="button is-warning is-pulled-right">Remove</button> -->
           </div>
         </div>
 
@@ -147,55 +116,14 @@
 
         <div
           v-show="canContinue"
-          class="columns fold">
-          <div class="column">
-            <div
-              v-if="renderTypeahead">
+          class="fold">
+          <div class="columns">
+            <div class="column is-6">
               <typeahead
                 :disabled="disabled"
-                :search-function="searchFunction"
-                label="Applies to the Following Classes"
-                @selectionChanged="selectDomain">
-                <div
-                  v-if="typeahead.inputString"
-                  slot="custom-options"
-                  slot-scope="typeahead"
-                  class="dropdown-item">
-                  Create <a
-                    title="Add as a new class"
-                    @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
-                    class "{{ typeahead.inputString }}"?
-                  </a>
-                </div>
-                <nav
-                  slot="selected-list"
-                  class="panel">
-                  <a
-                    v-for="(domain, index) in prop['domains']"
-                    :key="index"
-                    :class="{ 'is-active': (edit || index > 0) }"
-                    class="panel-block">
-                    <span
-                      v-show="!disabled"
-                      class="panel-icon"
-                      @click.prevent="(edit || index > 0) && unselectDomain(index)">
-                      <i class="mdi mdi-close-circle" />
-                    </span>
-                    {{ (domain.object && term(domain.object)) || domain.label }}
-                  </a>
-                </nav>
-              </typeahead>
-            </div>
-            <div v-else />
-          </div>
-          <div class="column">
-            <div
-              v-if="renderTypeahead">
-              <typeahead
-                :disabled="disabled"
-                :search-function="searchFunction"
-                label="Expected Type"
-                @selectionChanged="selectRange">
+                :search-function="propertiesSearch"
+                label="Same As"
+                @selectionChanged="selectSameAs">
                 <div
                   v-if="typeahead.inputString"
                   slot="custom-options"
@@ -203,16 +131,9 @@
                   class="dropdown-item">
                   <span v-if="typeahead.inputString.startsWith('http')">
                     <a
-                      title="Add external class"
-                      @click.prevent="addExternalRange(typeahead.inputString) && typeahead.hide()">
-                      Add external class "{{ typeahead.inputString }}"?
-                    </a>
-                  </span>
-                  <span v-else>
-                    <a
-                      title="Add as a new class"
-                      @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
-                      Create class "{{ typeahead.inputString }}"?
+                      title="Add external owl:sameAs IRI"
+                      @click.prevent="addExternalSameAs(typeahead.inputString) && typeahead.hide()">
+                      External sameAs: "{{ typeahead.inputString }}"
                     </a>
                   </span>
                 </div>
@@ -220,28 +141,194 @@
                   slot="selected-list"
                   class="panel">
                   <a
-                    v-for="(range, index) in prop['ranges']"
+                    v-for="(sameAs, index) in prop['sameAs']"
                     :key="index"
                     class="panel-block is-active">
+                    <p
+                      v-show="prop['isEdit'] && prop['sameAsRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
                     <span
                       v-show="!disabled"
                       class="panel-icon"
-                      @click.prevent="unselectRange(index)">
+                      @click.prevent="unselectSameAs(index)">
                       <i class="mdi mdi-close-circle" />
                     </span>
-                    <span
-                      v-if="!range.label && range.predicate.value === $termIRI.a.value">
-                      {{ term(range.subject) }}
+                    <span v-if="!sameAs.label && sameAs.predicate.value === $termIRI.a.value">
+                      {{ term(sameAs.subject) }}
                     </span>
                     <span v-else>
-                      {{ (range.object && term(range.object)) || range.label }}
+                      {{ (sameAs.object && sameAs.object.value || term(sameAs.object)) || sameAs.label }}
                     </span>
                   </a>
+                  <template v-if="prop['isEdit'] && disabled">
+                    <p
+                      v-show="prop['sameAsRemoved'].length"
+                      class="is-size-7">
+                      Removed:
+                    </p>
+                    <a
+                      v-for="(sameAsIRI, index) in prop['sameAsRemoved']"
+                      :key="index"
+                      class="panel-block is-active">
+                      <span v-if="_get($labelQuadForIRI(ontology, sameAsIRI), 'object.value')">
+                        {{ _get($labelQuadForIRI(ontology, sameAsIRI), 'object.value') }}
+                      </span>
+                      <span v-else-if="$unPrefix(sameAsIRI)">
+                        {{ $unPrefix(sameAsIRI) }}
+                      </span>
+                      <span v-else>
+                        {{ sameAsIRI }}
+                      </span>
+                    </a>
+                  </template>
                 </nav>
               </typeahead>
             </div>
-            <div v-else />
           </div>
+
+          <no-ssr>
+            <div class="columns">
+              <div class="column">
+                <typeahead
+                  :disabled="disabled"
+                  :search-function="classesSearch"
+                  label="Applies to the Following Classes"
+                  @selectionChanged="selectDomain">
+                  <div
+                    v-if="typeahead.inputString"
+                    slot="custom-options"
+                    slot-scope="typeahead"
+                    class="dropdown-item">
+                    Create <a
+                      title="Add as a new class"
+                      @click.prevent="createDomain(typeahead.inputString) && typeahead.hide()">
+                      class "{{ typeahead.inputString }}"?
+                    </a>
+                  </div>
+                  <nav
+                    slot="selected-list"
+                    class="panel">
+                    <p
+                      v-show="prop['isEdit'] && prop['domainsRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
+                    <a
+                      v-for="(domain, index) in prop['domains']"
+                      :key="index"
+                      :class="{ 'is-active': (disabled || edit || index > 0) }"
+                      class="panel-block">
+                      <span
+                        v-show="!disabled"
+                        class="panel-icon"
+                        @click.prevent="(disabled || edit || index > 0) && unselectDomain(index)">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      {{ (domain.object && term(domain.object)) || domain.label }}
+                    </a>
+                    <template v-if="prop['isEdit'] && disabled">
+                      <p
+                        v-show="prop['domainsRemoved'].length"
+                        class="is-size-7">
+                        Removed:
+                      </p>
+                      <a
+                        v-for="(domainIRI, index) in prop['domainsRemoved']"
+                        :key="index"
+                        class="panel-block is-active">
+                        <span v-if="_get($labelQuadForIRI(ontology, domainIRI), 'object.value')">
+                          {{ _get($labelQuadForIRI(ontology, domainIRI), 'object.value') }}
+                        </span>
+                        <span v-else-if="$unPrefix(domainIRI)">
+                          {{ $unPrefix(domainIRI) }}
+                        </span>
+                        <span v-else>
+                          {{ domainIRI }}
+                        </span>
+                      </a>
+                    </template>
+                  </nav>
+                </typeahead>
+              </div>
+              <div class="column">
+                <typeahead
+                  :disabled="disabled"
+                  :search-function="classesSearch"
+                  label="Expected Type"
+                  @selectionChanged="selectRange">
+                  <div
+                    v-if="typeahead.inputString"
+                    slot="custom-options"
+                    slot-scope="typeahead"
+                    class="dropdown-item">
+                    <span v-if="typeahead.inputString.startsWith('http')">
+                      <a
+                        title="Add external class"
+                        @click.prevent="addExternalRange(typeahead.inputString) && typeahead.hide()">
+                        Add external class "{{ typeahead.inputString }}"?
+                      </a>
+                    </span>
+                    <span v-else>
+                      <a
+                        title="Add as a new class"
+                        @click.prevent="createRange(typeahead.inputString) && typeahead.hide()">
+                        Create class "{{ typeahead.inputString }}"?
+                      </a>
+                    </span>
+                  </div>
+                  <nav
+                    slot="selected-list"
+                    class="panel">
+                    <p
+                      v-show="prop['isEdit'] && prop['rangesRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
+                    <a
+                      v-for="(range, index) in prop['ranges']"
+                      :key="index + 10000"
+                      class="panel-block is-active">
+                      <span
+                        v-show="!disabled"
+                        class="panel-icon"
+                        @click.prevent="unselectRange(index)">
+                        <i class="mdi mdi-close-circle" />
+                      </span>
+                      <span v-if="!range.label && range.predicate.value === $termIRI.a.value">
+                        {{ term(range.subject) }}
+                      </span>
+                      <span v-else>
+                        {{ (range.object && range.object.value || term(range.object)) || range.label }}
+                      </span>
+                    </a>
+                    <template v-if="prop['isEdit'] && disabled">
+                      <p
+                        v-show="prop['rangesRemoved'].length"
+                        class="is-size-7">
+                        Removed:
+                      </p>
+                      <a
+                        v-for="(rangeIRI, index) in prop['rangesRemoved']"
+                        :key="index"
+                        class="panel-block is-active">
+                        <span v-if="_get($labelQuadForIRI(ontology, rangeIRI), 'object.value')">
+                          {{ _get($labelQuadForIRI(ontology, rangeIRI), 'object.value') }}
+                        </span>
+                        <span v-else-if="$unPrefix(rangeIRI)">
+                          {{ $unPrefix(rangeIRI) }}
+                        </span>
+                        <span v-else>
+                          {{ rangeIRI }}
+                        </span>
+                      </a>
+                    </template>
+                  </nav>
+                </typeahead>
+              </div>
+            </div>
+          </no-ssr>
         </div>
 
         <div
@@ -360,8 +447,8 @@ export default {
   },
   data () {
     return {
-      searchFunction: () => ([]),
-      renderTypeahead: process.client,
+      classesSearch: () => ([]),
+      propertiesSearch: () => ([]),
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
       debugNT: ''
@@ -411,6 +498,7 @@ export default {
   },
   methods: {
     term,
+    _get,
     $vuexPush (path, ...values) {
       const currentValues = this.prop[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
@@ -446,6 +534,12 @@ export default {
     },
     selectRange (searchResult) {
       const range = searchResult.domain
+
+      const unRemove = this.prop['rangesRemoved'].indexOf(searchResult.domain.subject.value)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
+        return
+      }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(range.subject)
       if (this.prop['ranges'].find(isSelected)) {
@@ -461,6 +555,29 @@ export default {
 
       if (this.prop['isEdit']) {
         this.$vuexPush('rangesRemoved', range.subject.value)
+      }
+    },
+    selectSameAs (searchResult) {
+      const sameAs = searchResult.domain
+
+      const unRemove = this.prop['sameAsRemoved'].indexOf(searchResult.domain.subject.value)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
+        return
+      }
+      // don't add if already in there
+      const isSelected = ({ subject }) => term(subject) === term(sameAs.subject)
+      if (this.prop['sameAs'].find(isSelected)) {
+        return
+      }
+      this.$vuexPush('sameAs', sameAs)
+    },
+    unselectSameAs (index) {
+      const sameAs = this.prop[`sameAs[${index}]`]
+      this.$vuexDeleteAtIndex('sameAs', index)
+
+      if (this.prop['isEdit']) {
+        this.$vuexPush('sameAsRemoved', sameAs.subject.value)
       }
     },
     createDomain (label) {
@@ -479,6 +596,20 @@ export default {
     },
     addExternalRange (iri) {
       this.$vuexPush('ranges', this.$externalIRIToQuad(iri))
+      const unRemove = this.prop['rangesRemoved'].indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
+        return true
+      }
+      return true
+    },
+    addExternalSameAs (iri) {
+      this.$vuexPush('sameAs', this.$externalIRIToQuad(iri))
+      const unRemove = this.prop['sameAsRemoved'].indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
+        return true
+      }
       return true
     },
     init () {
@@ -490,7 +621,8 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
-      this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Class', true)
+      this.classesSearch = this.$domainsSearchFactory(this.ontology, 'Class', true)
+      this.propertiesSearch = this.$domainsSearchFactory(this.ontology, 'Property', true)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
       if (!this.subform) {
         if (this.edit) {

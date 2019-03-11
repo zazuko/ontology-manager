@@ -64,7 +64,7 @@ export default {
       if (this.edit) {
         return ''
       }
-      if (this.obj.isEdit) {
+      if (this.obj && this.obj.isEdit) {
         return 'Changed '
       }
       return 'New '
