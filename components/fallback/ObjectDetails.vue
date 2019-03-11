@@ -117,6 +117,32 @@
             </li>
           </ul>
         </section>
+        <section
+          class="content"
+          v-show="sameAs.length">
+          <h4 class="title is-2">
+            Same As
+          </h4>
+          <p class="title-url is-size-7">
+            http://www.w3.org/2002/07/owl#equivalentProperty
+          </p>
+          <ul class="types-list">
+            <li
+              v-for="sameAsIRI in sameAs"
+              :key="sameAsIRI">
+              <a
+                v-if="$unPrefix(sameAsIRI)"
+                :href="$rebaseIRI(sameAsIRI)">
+                {{ $unPrefix(sameAsIRI) }}
+              </a>
+              <a
+                v-else
+                :href="$rebaseIRI(sameAsIRI)">
+                {{ sameAsIRI }}
+              </a>
+            </li>
+          </ul>
+        </section>
       </template>
       <section
         v-show="examples.length"
@@ -203,6 +229,13 @@ export default {
     rangeOf () {
       const classes = this.$rangeOf(this.iri.value, this.ontology)
       return classes
+    },
+    sameAs () {
+      const sameAs = this.ontology.match(this.iri, this.$termIRI.sameAs)
+        .toArray()
+        .map((quad) => _get(quad.object, 'value'), '')
+        .filter(Boolean)
+      return sameAs
     },
     examples () {
       return this.ontology.match(this.iri, this.$termIRI.example)

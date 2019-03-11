@@ -34,7 +34,7 @@ export default ({ app, store }, inject) => {
     proposalDataset (validation = true) {
       // proposalDataset only contains changed/newer quads, things to remove
       // from the ontology (e.g. when editing a class to delete a property) need to
-      // handled later
+      // be handled later
       if (validation) {
         this.validate()
       }

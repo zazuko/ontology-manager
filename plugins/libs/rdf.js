@@ -38,17 +38,9 @@ export default ({ app, store }, inject) => {
       return 'http://schema.org/rangeIncludes'
     },
 
-    // not used atm
-    get created () {
-      return 'http://purl.org/dc/terms/created'
+    get sameAs () {
+      return 'http://www.w3.org/2002/07/owl#equivalentProperty'
     },
-    get modified () {
-      return 'http://purl.org/dc/terms/modified'
-    },
-    get deprecated () {
-      return 'http://www.w3.org/2002/07/owl#deprecated'
-    },
-
     get hasPart () {
       return store.state.config.ontology.containersNestingPredicate
     },
@@ -61,6 +53,17 @@ export default ({ app, store }, inject) => {
     },
     get markdown () {
       return 'http://media-type.described.at/text/markdown'
+    },
+
+    // not used atm
+    get created () {
+      return 'http://purl.org/dc/terms/created'
+    },
+    get modified () {
+      return 'http://purl.org/dc/terms/modified'
+    },
+    get deprecated () {
+      return 'http://www.w3.org/2002/07/owl#deprecated'
     }
   }
 
@@ -300,7 +303,7 @@ export default ({ app, store }, inject) => {
     const range = rdf.quad(
       rdf.namedNode(iri),
       termIRI.label,
-      rdf.literal(term(iri))
+      rdf.literal(unPrefix(iri))
     )
     return range
   }

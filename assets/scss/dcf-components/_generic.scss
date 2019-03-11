@@ -89,3 +89,9 @@ section hr {
   margin-top: 3.5px;
   display: inline-block;
 }
+
+.title-url {
+  display: inline-block;
+  font-family: $family-monospace;
+  color: $theme-dark-primary;
+}

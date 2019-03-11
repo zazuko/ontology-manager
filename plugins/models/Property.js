@@ -14,6 +14,9 @@ export default ({ app, store }, inject) => {
         ranges = [],
         // ranges removed from this Property, only used when editing a Property
         rangesRemoved = [], // Array<string iri>
+        sameAs = [],
+        // sameAs removed from this Property, only used when editing a Property
+        sameAsRemoved = [], // Array<string iri>
         // Class to which this Property belongs
         classChildren = [] // Array<Quad|Class>
       } = args
@@ -22,6 +25,9 @@ export default ({ app, store }, inject) => {
 
       this.baseIRI = baseIRI
       this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
+
+      this.sameAs = sameAs
+      this.sameAsRemoved = sameAsRemoved
 
       this.ranges = ranges
       this.rangesRemoved = rangesRemoved
@@ -36,7 +42,7 @@ export default ({ app, store }, inject) => {
     proposalDataset (validation = true) {
       // proposalDataset only contains changed/newer quads, things to remove
       // from the ontology (e.g. when editing a class to delete a property) need to
-      // handled later
+      // be handled later
       if (validation) {
         this.validate()
       }
@@ -72,6 +78,21 @@ export default ({ app, store }, inject) => {
           return xs
         }, [])
         quads.push(...existingRangesQuads)
+      }
+
+      if (this.sameAs.length) {
+        const existingSameAsQuads = this.sameAs.reduce((xs, sameAs) => {
+          let sameAsIRI
+          if (sameAs instanceof QuadExt) {
+            sameAsIRI = sameAs.subject
+          }
+          else {
+            sameAsIRI = rdf.namedNode(sameAs.iri)
+          }
+          xs.push(rdf.quad(propertyIRI, app.$termIRI.sameAs, sameAsIRI))
+          return xs
+        }, [])
+        quads.push(...existingSameAsQuads)
       }
 
       if (this.domains.length) {
@@ -121,6 +142,10 @@ export default ({ app, store }, inject) => {
           datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.range, rdf.namedNode(iri))
         })
 
+        this.sameAsRemoved.forEach((iri) => {
+          datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.sameAs, rdf.namedNode(iri))
+        })
+
         return {
           ontologyContent: datasetToCanonicalN3(datasets.ontology),
           structureContent: datasetToCanonicalN3(datasets.structure)
@@ -155,6 +180,7 @@ export default ({ app, store }, inject) => {
         example: exampleQuad ? exampleQuad.object.value : '',
         domains: ontology.match(existingPropertyIRI, app.$termIRI.domain, null).toArray().map(hydrateDomain),
         ranges: ontology.match(existingPropertyIRI, app.$termIRI.range, null).toArray().map(hydrateRange),
+        sameAs: ontology.match(existingPropertyIRI, app.$termIRI.sameAs, null).toArray().map(hydrateSameAs),
         /*
         TODO: we should show the property change request on a class 'object-details'
         page for ALL CLASSES to which this property applies. We'll need to find a trick
@@ -176,6 +202,16 @@ export default ({ app, store }, inject) => {
       }
 
       function hydrateRange (quad) {
+        const labelQuad = ontology.match(quad.object, app.$termIRI.label).toArray()
+        if (labelQuad.length) {
+          return firstVal(labelQuad)
+        }
+
+        // otherwise it's an external IRI
+        return app.$externalIRIToQuad(quad.object.value)
+      }
+
+      function hydrateSameAs (quad) {
         const labelQuad = ontology.match(quad.object, app.$termIRI.label).toArray()
         if (labelQuad.length) {
           return firstVal(labelQuad)
