@@ -5,7 +5,7 @@
         <h1 class="title">Proposals</h1>
 
         <div
-          v-if="_get(proposals, 'proposals.length')"
+          v-show="_get(proposals, 'proposals.length')"
           class="tile is-child container-box proposal-boxes">
           <div class="content">
             <div
@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div v-else>
+        <div v-show="!_get(proposals, 'proposals.length')">
           <p>No proposal on this object at the moment.</p>
         </div>
 
@@ -63,6 +63,11 @@ export default {
       required: true
     }
   },
+  mounted () {
+    if (!this.$apollo.queries.proposals.loading) {
+      this.$apollo.queries.proposals.refetch()
+    }
+  },
   components: {
     PouchBox
   },
@@ -83,7 +88,7 @@ export default {
           iri: this.iri
         }
       },
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'no-cache',
       result ({ data, loading }) {
         if (!loading) {
           const proposals = _get(data, 'proposals.proposals', [])

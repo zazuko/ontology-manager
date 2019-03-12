@@ -51,6 +51,12 @@ module.exports = async function (editorConfig) {
     })
   })
 
+  router.get('/log', async (req, res, next) => {
+    const content = await api.readLog()
+    await api.clearLog()
+    res.send(content)
+  })
+
   router.get('/cache', (req, res) => {
     res.json(apicache.getIndex())
   })

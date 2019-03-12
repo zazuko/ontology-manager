@@ -96,7 +96,7 @@ export default {
           iri: this.iri
         }
       },
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'no-cache',
       result ({ data, loading }) {
         if (!loading) {
           const proposals = _get(data, 'proposals.proposals', [])

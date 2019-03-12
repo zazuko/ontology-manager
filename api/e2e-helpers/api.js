@@ -1,20 +1,21 @@
 const fs = require('fs').promises
 const path = require('path')
+const debug = require('debug')('editor:e2e')
 
 const tmpTestFolder = path.resolve('./test/repo/tmp')
 fs.mkdir(tmpTestFolder).catch(() => {})
 const log = path.resolve('./test/repo/tmp/log.txt')
 
-async function append (str, obj) {
-  await fs.appendFile(log, `${str}\n`)
-  if (obj) {
-    await fs.appendFile(log, `${JSON.stringify(obj, null, 2)}\n`)
+async function append (str, obj = {}) {
+  const jsonLine = {
+    action: str,
+    payload: obj
   }
-  await fs.appendFile(log, '---\n')
+  await fs.appendFile(log, `${JSON.stringify(jsonLine)}\n`)
 }
 
 module.exports = class FSAPI {
-  constructor ({ forge, editor, ontology }) {
+  constructor ({ editor, ontology }) {
     this.branch = editor.github.branch
     this.owner = editor.github.owner
     this.repo = editor.github.repo
@@ -80,6 +81,7 @@ module.exports = class FSAPI {
       title,
       body
     })
+    debug('PR created!')
 
     return {
       number: Math.floor(Math.random() * 1000000)
@@ -113,5 +115,18 @@ module.exports = class FSAPI {
       number,
       state: 'closed'
     })
+  }
+
+  async readLog () {
+    const content = (await fs.readFile(log, 'utf8'))
+      .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g, 'SOME_DATE')
+      .replace(/\d{4}-\d{2}-\d{2}T\d{6}\.\d{3}Z/g, 'BRANCH_NAME')
+    debug('read file, content:', content)
+    return content
+  }
+
+  async clearLog () {
+    await fs.writeFile(log, '', 'utf8')
+    debug('cleared file')
   }
 }

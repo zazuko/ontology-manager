@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="show"
-    class="modal is-active">
+    class="modal is-active modal-loader">
     <div class="modal-background" />
     <div class="modal-content has-text-centered">
       <div class="box">
