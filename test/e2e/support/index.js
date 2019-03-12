@@ -1,5 +1,6 @@
 import snapshot from '@cypress/snapshot'
 import './commands'
+import './local-forge'
 
 snapshot.register()
 

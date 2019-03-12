@@ -35,18 +35,21 @@ async function createApiMiddleware () {
   Except when linking github oauth token with postgraphile JWT, all
   API requests that come through here need a valid postgraphile JWT
   */
-  const unprotectedRoutes = ['', '/link', '/cache', '/auth/login', '/auth/logout', '/auth/user']
-    .reduce((routes, route) => {
-      const path = `/api${route}`
-      routes.push(path)
-      // no smart trailing slash handling unfortunately
-      routes.push(`${path}/`)
-      return routes
-    }, [])
+  let unprotectedRoutes = ['', '/link', '/cache', '/auth/login', '/auth/logout', '/auth/user']
+  if (process.env.NODE_TEST) {
+    unprotectedRoutes.push('/log')
+  }
+  unprotectedRoutes = unprotectedRoutes.reduce((routes, route) => {
+    const path = `/api${route}`
+    routes.push(path)
+    // no smart trailing slash handling unfortunately
+    routes.push(`${path}/`)
+    return routes
+  }, []).concat(new RegExp('/api/blob/.*'))
 
   app.use(
     jwt({ secret: process.env.POSTGRAPHILE_TOKEN_SECRET }).unless({
-      path: unprotectedRoutes.concat(new RegExp('/api/blob/.*'))
+      path: unprotectedRoutes
     })
   )
 
