@@ -147,7 +147,6 @@ import discardDraft from '@/apollo/mutations/discardDraft'
 import PropertyForm from '@/components/proposal/PropertyForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
-
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
 const {
@@ -364,6 +363,7 @@ export default {
     const h = {
       title: 'Proposal'
     }
+
     if (this.obj && this.obj.label) {
       h.title += this.$headTitle(` '${this.obj.label}'`)
     }
@@ -372,6 +372,16 @@ export default {
         { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
       ]
     }
+    if (!this.disabled) {
+      h.link = [{
+        rel: 'stylesheet',
+        href: '/yate.min.css'
+      }]
+      h.script = [{
+        src: '/yate.bundled.min.js'
+      }]
+    }
+
     return h
   }
 }
