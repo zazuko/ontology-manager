@@ -1,14 +1,53 @@
 # ontology-editor
 
-## Dev Setup
+## Local Dev Setup
 
-### A. GitHub Setup
+### 1. Get OAuth creds
 
-1. Create an OAuth app: https://github.com/settings/applications/new
+1. Create an OAuth app: <https://github.com/settings/applications/new>
 1. Homepage / Callback : `http://localhost:3000/`
-1. Fill the env vars in `.env`
 
-### B. Local Setup
+(Keep these values, you can always reuse them locally. Stash the env file if need be.)
+
+### 2. Get a Personal Access Token
+
+1. Generate a token: <https://github.com/settings/tokens/new>
+
+(Keep this value, you can always reuse them locally. Stash the env file if need be.)
+
+### 3. Fill in Env Vars
+
+1. Replace the values in [`./docker-app-dev/.env`](./docker-app-dev/.env)
+
+```
+# customer namespace
+## this should be a slug, so no space, no special characters etc
+CUSTOMER_NAME=zazuko
+
+# postgres config
+## root password, used to run migrations, create customer DB, etc
+## this var is also used by the postgres container
+POSTGRESQL_PASSWORD=make-this-secret
+## database host
+POSTGRESQL_HOST=localhost
+## the editor API doesn't access postgres as root, it uses a role that
+## gets created with the following password
+POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD=password-used-by-postgraphile-to-access-pg
+
+# secret seed for JWT - https://www.graphile.org/postgraphile/security/
+POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
+
+OAUTH_HOST=https://github.com/login/oauth
+OAUTH_CLIENT_ID=
+OAUTH_CLIENT_SECRET=
+GITHUB_PERSONAL_ACCESS_TOKEN=
+
+# optional variables
+DEBUG=editor:*
+# SENTRY_DSN=
+```
+
+### 4. Run the Dev Server
 
 1. `npm install`
 1. Run the project:
@@ -21,13 +60,23 @@ Whenever you feel like it:
 * Deleting the DB to start over:
     * `make reset`
 
+## Deployment
+
+Run an editor container with the above env variables.
+
+## E2E tests
+
+1. `npm run e2e`
+1. `npm run e2e:open`
+
 ## Architecture
 
 ### 2 Services
 
 1. A Postgres Database
 1. A web backend made of:
-    * A Nuxt app, using Apollo as GraphQL client.
+    * A Nuxt app, using Apollo as GraphQL client
+    * A Nuxt Server Middleware that is trifid-core
     * A Nuxt Server Middleware implemented as an Express API
         * This is where the forge-specific functionality (GitHub, GitLab, …) is implemented
         * Configurable via `nuxt.config.js`
@@ -65,7 +114,7 @@ Whenever you feel like it:
 
 ## FAQ
 
-### How to wip a customer DB?
+### How to wipe a customer DB?
 
 For customer `example_com`:
 ```sql
