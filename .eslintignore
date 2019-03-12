@@ -1,3 +1,4 @@
 postgraphile/*/
 .gitignore
 snapshots.js
+static/yate*
