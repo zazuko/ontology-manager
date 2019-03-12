@@ -1,6 +1,10 @@
 /* global cy */
 
 describe('Proposal', () => {
+  before(() => {
+    cy.readLogAndClear()
+  })
+
   describe('on fallback', () => {
     beforeEach(() => {
       cy.visit('/pouch/CargoHandlersPouch')
@@ -73,17 +77,23 @@ describe('Proposal', () => {
 
       cy.countProposalsOn('http://example.com/pouch/CargoHandlersPouch')
         .then((count) => {
-          submitProposal()
-          cy.get('.notification-counter').should('not.be.visible')
-          cy.goto('/pouch/CargoHandlersPouch').wait(500)
-          assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })
+          cy.url().should('eq', 'http://localhost:3000/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+          submitProposal().then(() => {
+            cy.readLogAndClear().then((response) => {
+              cy.wrap(response.body).snapshot()
+            })
+            cy.url().should('not.eq', 'http://localhost:3000/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+            cy.get('.notification-counter').should('not.be.visible')
+            cy.goto('/pouch/CargoHandlersPouch')
+            assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })
+          })
         })
     })
   })
 })
 
 function submitProposal () {
-  cy.get('button.submit-proposal').click()
+  return cy.get('button.submit-proposal').click().wait(2000)
 }
 
 function cancelDraft () {

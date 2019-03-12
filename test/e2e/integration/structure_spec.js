@@ -28,7 +28,8 @@ describe('Structure', () => {
   })
 
   it('Loads a pouch', () => {
-    cy.goto('/pouch/TrackUpdatePouch').wait(200)
+    cy.goto('/pouch/TrackUpdatePouch').wait(600)
+    cy.get('.modal-loader').should('not.be.visible')
     cy.get('.main-title').should('be', 'Track Update Pouch')
     cy.get('.class-box-title').then(snapshotBoxes)
   })
