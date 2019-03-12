@@ -102,11 +102,11 @@
               <label class="label">Example</label>
               <div class="control">
                 <textarea
+                  ref="exampleTextarea"
+                  class="textarea"
                   :disabled="disabled"
                   v-debounce
-                  v-model.lazy="prop['example']"
-                  class="textarea"
-                  placeholder="" />
+                  v-model.lazy="prop['example']" />
               </div>
             </div>
           </div>
@@ -444,6 +444,26 @@ export default {
   },
   mounted () {
     this.init()
+    if (process.browser) {
+      let maxRetry = 20
+      setTimeout(() => {
+        const waitForYate = setInterval(() => {
+          if (window.YATE) {
+            clearInterval(waitForYate)
+            this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
+              readOnly: this.disabled,
+              value: this.prop['example']
+            })
+            this.yate.on('change', cm => {
+              this.prop['example'] = cm.getValue()
+            })
+          }
+          else if (--maxRetry <= 0) {
+            clearInterval(waitForYate)
+          }
+        }, 500)
+      }, 800)
+    }
   },
   data () {
     return {
@@ -451,7 +471,7 @@ export default {
       propertiesSearch: () => ([]),
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
-      debugNT: ''
+      yate: { setValue () {}, getValue () {} }
     }
   },
   computed: {
@@ -635,21 +655,6 @@ export default {
         }
       }
       this.onParentIRIChange()
-    },
-    debugGenerateNT () {
-      try {
-        const datasets = this.prop.generateProposal({
-          ontology: this.ontology,
-          structure: this.structure
-        })
-        this.debugNT = datasets.ontologyContent
-        this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-        this.debugNT += datasets.structureContent
-      }
-      catch (err) {
-        this.debugNT = err.message
-        console.error(err)
-      }
     }
   }
 }

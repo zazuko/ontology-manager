@@ -113,11 +113,11 @@
               <label class="label">Example</label>
               <div class="control">
                 <textarea
+                  ref="exampleTextarea"
                   :disabled="disabled"
                   v-debounce
                   v-model.lazy="clss['example']"
-                  class="textarea"
-                  placeholder="" />
+                  class="textarea" />
               </div>
             </div>
           </div>
@@ -233,10 +233,10 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import Typeahead from './Typeahead'
-import ProposalPropertiesTable from './ProposalPropertiesTable'
-import Editor from '@/components/editor/Editor'
 import { normalizeLabel, term } from '@/libs/utils'
+import Typeahead from './Typeahead'
+import Editor from '@/components/editor/Editor'
+import ProposalPropertiesTable from './ProposalPropertiesTable'
 
 export default {
   name: 'ClassForm',
@@ -279,13 +279,33 @@ export default {
   },
   mounted () {
     this.init()
+    if (process.browser) {
+      let maxRetry = 20
+      setTimeout(() => {
+        const waitForYate = setInterval(() => {
+          if (window.YATE) {
+            clearInterval(waitForYate)
+            this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
+              readOnly: this.disabled,
+              value: this.clss['example']
+            })
+            this.yate.on('change', cm => {
+              this.clss['example'] = cm.getValue()
+            })
+          }
+          else if (--maxRetry <= 0) {
+            clearInterval(waitForYate)
+          }
+        }, 500)
+      }, 800)
+    }
   },
   data () {
     return {
       searchFunction: () => ([]),
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
-      debugNT: ''
+      yate: { setValue () {}, getValue () {} }
     }
   },
   computed: {
@@ -379,21 +399,6 @@ export default {
       }
       this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Property', false)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-    },
-    debugGenerateNT () {
-      try {
-        const datasets = this.clss.generateProposal({
-          ontology: this.ontology,
-          structure: this.structure
-        })
-        this.debugNT = datasets.ontologyContent
-        this.debugNT += `\n\n${'-'.repeat(20)}\n\n`
-        this.debugNT += datasets.structureContent
-      }
-      catch (err) {
-        this.debugNT = err.message
-        console.error(err)
-      }
     }
   }
 }

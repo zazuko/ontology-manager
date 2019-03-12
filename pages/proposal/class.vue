@@ -361,16 +361,25 @@ export default {
     const h = {
       title: 'Proposal'
     }
-    if (this.obj) {
-      if (this.obj.label) {
-        h.title += this.$headTitle(` '${this.obj.label}'`)
-      }
-      if (this.comment) {
-        h.meta = [
-          { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
-        ]
-      }
+
+    if (this.obj && this.obj.label) {
+      h.title += this.$headTitle(` '${this.obj.label}'`)
     }
+    if (this.obj) {
+      h.meta = [
+        { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
+      ]
+    }
+    if (!this.disabled) {
+      h.link = [{
+        rel: 'stylesheet',
+        href: '/yate.min.css'
+      }]
+      h.script = [{
+        src: '/yate.bundled.min.js'
+      }]
+    }
+
     return h
   }
 }
