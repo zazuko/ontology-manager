@@ -110,7 +110,7 @@
         <div class="columns">
           <div class="column">
             <div class="field example">
-              <label class="label">Example</label>
+              <label class="label">Example (valid Turtle)</label>
               <div class="control">
                 <textarea
                   ref="exampleTextarea"
