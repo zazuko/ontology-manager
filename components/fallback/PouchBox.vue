@@ -30,7 +30,12 @@
         title="Class icon"
         class="class-box-icon">
       <p class="class-box-title">
-        {{ label }}
+        <template v-if="type === 'container'">
+          {{ label }}
+        </template>
+        <template v-else>
+          {{ $getTerm(iri) || label }}
+        </template>
       </p>
       <div class="class-box-level">
         <div

@@ -30,6 +30,7 @@ describe('basic dev', () => {
   beforeAll(async () => {
     const config = await require(resolve(__dirname, '../nuxt.config.js'))()
     nuxt = new Nuxt(config)
+    await nuxt.ready()
     await new Builder(nuxt).build()
     return nuxt.listen(3000, 'localhost')
   })

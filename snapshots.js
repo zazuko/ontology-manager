@@ -1,5 +1,5 @@
 module.exports = {
-  "__version": "3.1.5",
+  "__version": "3.2.0",
   "Search": {
     "should be available on homepage": {
       "1": [

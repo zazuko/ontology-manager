@@ -26,6 +26,7 @@ Cypress.Commands.add('login', (path) => {
       resp = resp || _resp
       const jwtToken = resp.body.jwtToken
       $nuxt.$auth.$storage.setState('isAdmin', resp.body.isAdmin)
+      $nuxt.$auth.$storage.setState('isSuperadmin', resp.body.isSuperadmin)
       $nuxt.$auth.$storage.setState('personId', resp.body.personId)
       $nuxt.$auth.$storage.setState('hats', resp.body.personHats)
       $nuxt.$apolloHelpers.onLogin(jwtToken)

@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      children: _get(this, '$store.state.graph.structureTree[0].children', [])
+      children: _get(this, '$store.state.graph.structureTree', [])
     }
   },
   methods: {
