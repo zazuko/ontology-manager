@@ -49,9 +49,13 @@
           <span v-else />
         </template>
       </h1>
+      <h2 class="subtitle is-6">
+        Canonical URL: <span class="title-url">{{ iri.value }}</span>
+      </h2>
 
       <div class="content">
         <ul class="goto-nav">
+          <li>Quick links:</li>
           <li><a href="#proposals">Proposals</a></li>
           <li><a href="#conversations">Conversation</a></li>
         </ul>
@@ -73,17 +77,14 @@
 
       <template v-if="isClass">
         <properties-table
-          v-if="properties.length"
           :properties="properties"
           :ontology="ontology"
           :structure="structure" />
-        <template
-          v-else
+        <p
+          v-show="!properties.length"
           class="content">
-          <p>
-            This class does not have any properties.
-          </p>
-        </template>
+          This class does not have any properties.
+        </p>
       </template>
 
       <template v-else>

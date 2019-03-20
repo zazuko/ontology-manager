@@ -4,13 +4,13 @@
       v-if="path"
       :to="{ path: path + (anchor ? `#${anchor}` : ''), params: {} }"
       :class="classes">
-      {{ getTerm(term.value) }}
+      {{ $getTerm(term) }}
     </nuxt-link>
     <a
       v-else
       :href="url"
       :class="classes">
-      {{ getTerm(term.value) }}
+      {{ $getTerm(term) }}
       <span
         class="icon is-small"
         title="Outgoing link will open in new tab">
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { term } from '@/libs/utils'
-
 export default {
   name: 'LinkToIri',
   props: {
@@ -55,9 +53,6 @@ export default {
       path,
       url
     }
-  },
-  methods: {
-    getTerm: term
   },
   computed: {
     classes () {
