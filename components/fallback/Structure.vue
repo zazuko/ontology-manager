@@ -3,7 +3,7 @@
     <div class="tile is-parent">
       <article class="tile is-child container-box">
         <h1 class="title">
-          {{ $store.state.config.editor.text.groupName || 'Group' }}: {{ _get(obj, 'label') }}
+          <!--{{ $store.state.config.editor.text.groupName || 'Group' }}: -->{{ _get(obj, 'label') }}
         </h1>
 
         <div class="tile is-child container-box class-boxes">
@@ -43,10 +43,10 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import { arrayToGroups, childClassesCount } from '@/libs/utils'
 import PouchBox from './PouchBox'
-import _get from 'lodash/get'
 
 export default {
   name: 'Structure',
