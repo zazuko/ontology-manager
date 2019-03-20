@@ -18,26 +18,35 @@
       v-for="(tree, index) in children"
       :key="index"
       class="container layout-objects-list-item">
-      <structure-home
+      <structure
         :obj="tree"
-        :name="tree.label"
-        class="tile is-ancestor" />
+        :ontology="ontology"
+        :structure="structure"
+        :is-class="$termIRI.Class.equals(objectType)" />
     </section>
   </div>
 </template>
 
 <script>
 import _get from 'lodash/get'
+import rdf from 'rdf-ext'
 
-import StructureHome from '@/components/home/StructureHome'
+import Structure from '@/components/fallback/Structure'
 
 export default {
   layout: 'background',
   components: {
-    StructureHome
+    Structure
+  },
+  mounted () {
+    this.ontology = this.$store.getters['graph/ontology']
+    this.structure = this.$store.getters['graph/structure']
   },
   data () {
     return {
+      objectType: 'container',
+      ontology: rdf.dataset(),
+      structure: rdf.dataset(),
       children: _get(this, '$store.state.graph.structureTree', [])
     }
   }

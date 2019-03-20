@@ -42,7 +42,7 @@
           v-show="type === 'container'"
           class="class-box-level-item">
           <span class="class-box-label">
-            Logistics Object{{ classesCount === 1 ? '' : 's' }}
+            Object{{ classesCount === 1 ? '' : 's' }}
           </span>
           <span class="class-box-value">
             {{ classesCount }}
