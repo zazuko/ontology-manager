@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <form
-      class="container"
+      class="container settings-form"
       @submit.prevent="saveConfig">
       <template v-if="disabled">
         <h1 class="title">Showing version {{ config.id }}</h1>
@@ -12,7 +12,6 @@
       </template>
       <h1 class="title">1. Editor Settings</h1>
       <h2 class="subtitle">1.1. General</h2>
-      <p></p>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Protocol &amp; Base URL</label>
@@ -23,7 +22,7 @@
               <p class="control">
                 <span class="select">
                   <select
-                    :disabled="disabled"
+                    :readonly="disabled"
                     v-model="editor.protocol"
                     class="code">
                     <option>http</option>
@@ -38,7 +37,7 @@
               </p>
               <p class="control is-expanded">
                 <input
-                  :disabled="disabled"
+                  :readonly="disabled"
                   class="input code"
                   type="text"
                   v-model="editor.host"
@@ -60,7 +59,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="editor.meta.customerName"
                 type="text"
@@ -78,7 +77,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="editor.meta.title"
                 type="text"
@@ -96,7 +95,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="editor.meta.description"
                 type="text"
@@ -114,7 +113,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="editor.logoUrl"
                 type="text"
@@ -132,7 +131,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="editor.text.groupName"
                 type="text"
@@ -145,16 +144,17 @@
           </div>
         </div>
       </div>
+      <h2 class="subtitle">1.2. Textual Contents</h2>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Homepage columns</label>
+          <label class="label">Homepage Columns</label>
         </div>
         <div class="field-body">
           <div class="field is-narrow">
             <div class="control">
               <div class="select is-fullwidth">
                 <select
-                  :disabled="disabled"
+                  :readonly="disabled"
                   name="columns"
                   v-model="numberOfColumns">
                   <option>1</option>
@@ -179,7 +179,7 @@
                 v-for="(key, index) in editor.text.home"
                 :key="index">
                 <textarea
-                  :disabled="disabled"
+                  :readonly="disabled"
                   class="textarea"
                   v-model="editor.text.home[index]"></textarea>
               </p>
@@ -196,7 +196,7 @@
           <div class="field">
             <p class="control">
               <textarea
-                :disabled="disabled"
+                :readonly="disabled"
                 v-model="editor.text.login"
                 class="textarea"></textarea>
             </p>
@@ -208,7 +208,6 @@
 
       <h1 class="title">2. Ontology Settings</h1>
       <h2 class="subtitle">2.1. Bases</h2>
-      <p></p>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Dataset Base URL</label>
@@ -217,7 +216,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.datasetBaseUrl"
                 type="text"
@@ -237,7 +236,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.classBaseUrl"
                 type="text"
@@ -257,7 +256,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.propertyBaseUrl"
                 type="text"
@@ -277,7 +276,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.containersNestingPredicate"
                 type="text"
@@ -292,8 +291,77 @@
           </div>
         </div>
       </div>
-      <h2 class="subtitle">2.2. Ontology Location</h2>
-      <p></p>
+      <h2 class="subtitle">2.2. Ontology Location &amp; Access</h2>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Owner Name</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input
+                :readonly="disabled"
+                class="input"
+                v-model="editor.github.owner"
+                type="text"
+                required>
+            </p>
+            <p class="help">
+              The GitHub user or GitHub organization to which the repo belongs:
+              <code>http://github.com/<u>owner</u>/repo-name</code>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Repository Name</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input
+                :readonly="disabled"
+                class="input"
+                v-model="editor.github.repo"
+                type="text"
+                required>
+            </p>
+            <p class="help">
+              The GitHub repository name:
+              <code>http://github.com/owner/<u>repo-name</u></code>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Branch Name</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <p class="control is-expanded">
+              <input
+                :readonly="disabled"
+                class="input"
+                v-model="editor.github.branch"
+                type="text"
+                required>
+            </p>
+            <p class="text">Name of the default branch the editor will use, usually
+              <code>master</code>. <span v-show="branchesHint">Visible here: <a
+                :href="branchesHint"
+                target="_blank">{{ branchesHint }}</a></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <p class="text">
+        The <em>Raw URLs</em> should point to the location of the source of truth, served as plain text.<br>
+        <span v-show="rawFilesHint">
+          On GitHub these URLs look like this: <code>{{ rawFilesHint }}</code>
+        </span>
+      </p>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Ontology Raw URL</label>
@@ -302,7 +370,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.ontologyRawUrl"
                 type="text"
@@ -319,7 +387,7 @@
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.structureRawUrl"
                 type="text"
@@ -330,16 +398,15 @@
       </div>
 
       <h2 class="subtitle">2.3. Resources Location</h2>
-      <p></p>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Ontology Resource Location</label>
+          <label class="label">Ontology Resource Path</label>
         </div>
         <div class="field-body">
           <div class="field">
             <p class="control is-expanded">
               <input
-                :disabled="disabled"
+                :readonly="disabled"
                 class="input"
                 v-model="ontology.ontologyResourceUrl"
                 type="text"
@@ -503,14 +570,14 @@
             <div class="control">
               <button
                 v-if="disabled"
-                :disabled="reason.length <= 2"
+                :readonly="reason.length <= 2"
                 class="button is-danger"
                 type="submit">
                 Revert to Version {{ config.id }}
               </button>
               <button
                 v-else
-                :disabled="reason.length <= 2"
+                :readonly="reason.length <= 2"
                 class="button is-danger"
                 type="submit">
                 Save &amp; Apply
@@ -554,6 +621,24 @@ export default {
   computed: {
     ontologyResourceUrl () {
       return `${this.ontology.datasetBaseUrl}${(this.ontology.ontologyResourceUrl || '').replace(new RegExp('^/', 'g'), '')}`
+    },
+    repoHint () {
+      if (!this.editor.github.owner || !this.editor.github.repo) {
+        return ''
+      }
+      return `https://github.com/${this.editor.github.owner}/${this.editor.github.repo}`
+    },
+    branchesHint () {
+      if (!this.repoHint) {
+        return ''
+      }
+      return `${this.repoHint}/branches`
+    },
+    rawFilesHint () {
+      if (!this.editor.github.owner || !this.editor.github.repo || !this.editor.github.branch) {
+        return ''
+      }
+      return `https://raw.githubusercontent.com/${this.editor.github.owner}/${this.editor.github.repo}/${this.editor.github.branch}/your-ontology-file.nt`
     }
   },
   watch: {
