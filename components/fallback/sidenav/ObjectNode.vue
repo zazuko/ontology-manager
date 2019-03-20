@@ -35,7 +35,7 @@
           v-show="showPlusSymbol"
           class="mdi mdi-plus" />
       </span>
-      {{ tree.label }}
+      {{ $getTerm(tree.iri) || tree.label }}
     </nuxt-link>
 
     <ul

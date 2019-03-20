@@ -75,6 +75,7 @@ export default ({ app, store }, inject) => {
     }, {})
 
   inject('termIRI', termIRI)
+  inject('getTerm', getTerm)
   inject('domainsSearchFactory', domainsSearchFactory)
   inject('usedOnClasses', usedOnClasses)
   inject('rangeOf', rangeOf)
@@ -459,4 +460,10 @@ export default ({ app, store }, inject) => {
   //
   //   return datasetToCanonicalN3(dataset)
   // }
+  function getTerm (t) {
+    if (typeof t === 'object') {
+      return term(t.value)
+    }
+    return term(t)
+  }
 }

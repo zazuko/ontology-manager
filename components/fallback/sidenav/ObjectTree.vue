@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="menu-label">
-      {{ tree.label }}
+      {{ $getTerm(tree.iri) || tree.label }}
     </p>
     <ul
       class="menu-list">
