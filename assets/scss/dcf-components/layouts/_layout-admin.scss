@@ -45,4 +45,20 @@
     font-family: $family-monospace;
     color: $theme-dark-primary;
   }
+
+  .settings-form {
+    h2.subtitle {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+    h1.title {
+      margin-bottom: 0.5em;
+      &+h2.subtitle {
+        margin-top: 0;
+      }
+    }
+    p.text {
+      margin-bottom: 2em;
+    }
+  }
 }
