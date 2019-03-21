@@ -84,7 +84,7 @@ describe('Proposal', () => {
             })
             cy.url().should('not.eq', 'http://localhost:3000/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
             cy.get('.notification-counter').should('not.be.visible')
-            cy.goto('/pouch/CargoHandlersPouch')
+            cy.goto('/pouch/CargoHandlersPouch').wait(500)
             assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })
           })
         })
