@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="prop['label']"
+    :id="proposalObject['label']"
     :class="{
       'is-prop-form': !subform,
       'is-prop-subform': subform,
@@ -8,25 +8,25 @@
       'proposal-draft': !disabled
     }">
 
-    <template v-if="disabled || !prop['isSubFormCollapsed']">
+    <template v-if="disabled || !proposalObject['isSubFormCollapsed']">
 
       <div class="box">
         <div class="columns">
           <div class="column is-8">
             <h2
-              v-if="prop['isEdit']"
+              v-if="proposalObject['isEdit']"
               class="title is-2">
-              <span v-show="!prop['isEdit']">Changed</span> Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
+              <span v-show="!proposalObject['isEdit']">Changed</span> Property <span v-show="proposalObject['label']">"<em>{{ proposalObject['label'] }}</em>"</span>
             </h2>
             <h2
               v-else
               class="title is-2">
-              <span v-show="!prop['isEdit']">New</span> Property <span v-show="prop['label']">"<em>{{ prop['label'] }}</em>"</span>
+              <span v-show="!proposalObject['isEdit']">New</span> Property <span v-show="proposalObject['label']">"<em>{{ proposalObject['label'] }}</em>"</span>
             </h2>
             <p
-              v-show="prop['iri']"
+              v-show="proposalObject['iri']"
               class="subtitle is-1">
-              <span class="title-url">{{ prop['iri'] }}</span>
+              <span class="title-url">{{ proposalObject['iri'] }}</span>
             </p>
           </div>
           <div class="column">
@@ -41,15 +41,15 @@
               <div class="control">
                 <input
                   :disabled="disabled"
-                  :class="{'is-danger': !prop['label']}"
+                  :class="{'is-danger': !proposalObject['label']}"
                   class="input"
                   autocomplete="new-password"
                   type="text"
                   v-debounce
-                  v-model.lazy="prop['label']">
+                  v-model.lazy="proposalObject['label']">
               </div>
               <p
-                v-show="!prop['label']"
+                v-show="!proposalObject['label']"
                 class="help is-danger">
                 Please enter the property name.
               </p>
@@ -60,12 +60,12 @@
                 <textarea
                   class="textarea"
                   :disabled="disabled"
-                  :class="{'is-danger': !prop['comment']}"
+                  :class="{'is-danger': !proposalObject['comment']}"
                   v-debounce
-                  v-model.lazy="prop['comment']" />
+                  v-model.lazy="proposalObject['comment']" />
               </div>
               <p
-                v-show="!prop['comment']"
+                v-show="!proposalObject['comment']"
                 class="help is-danger">
                 Please write a short description.
               </p>
@@ -76,7 +76,7 @@
                   <input
                     type="checkbox"
                     :disabled="disabled"
-                    v-model.lazy="prop['isDeprecated']">
+                    v-model.lazy="proposalObject['isDeprecated']">
                   Deprecate Property
                 </label>
               </div>
@@ -90,7 +90,7 @@
                 <editor
                   :disabled="disabled"
                   v-debounce
-                  v-model.lazy="prop['description']" />
+                  v-model.lazy="proposalObject['description']" />
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
                   class="textarea"
                   :disabled="disabled"
                   v-debounce
-                  v-model.lazy="prop['example']" />
+                  v-model.lazy="proposalObject['example']" />
               </div>
             </div>
           </div>
@@ -141,11 +141,11 @@
                   slot="selected-list"
                   class="panel">
                   <a
-                    v-for="(sameAs, index) in prop['sameAs']"
+                    v-for="(sameAs, index) in proposalObject['sameAs']"
                     :key="index"
                     class="panel-block is-active">
                     <p
-                      v-show="prop['isEdit'] && prop['sameAsRemoved'].length"
+                      v-show="proposalObject['isEdit'] && proposalObject['sameAsRemoved'].length"
                       class="is-size-7">
                       Added:
                     </p>
@@ -162,14 +162,14 @@
                       {{ (sameAs.object && sameAs.object.value || term(sameAs.object)) || sameAs.label }}
                     </span>
                   </a>
-                  <template v-if="prop['isEdit'] && disabled">
+                  <template v-if="proposalObject['isEdit'] && disabled">
                     <p
-                      v-show="prop['sameAsRemoved'].length"
+                      v-show="proposalObject['sameAsRemoved'].length"
                       class="is-size-7">
                       Removed:
                     </p>
                     <a
-                      v-for="(sameAsIRI, index) in prop['sameAsRemoved']"
+                      v-for="(sameAsIRI, index) in proposalObject['sameAsRemoved']"
                       :key="index"
                       class="panel-block is-active">
                       <span v-if="_get($labelQuadForIRI(ontology, sameAsIRI), 'object.value')">
@@ -211,12 +211,12 @@
                     slot="selected-list"
                     class="panel">
                     <p
-                      v-show="prop['isEdit'] && prop['domainsRemoved'].length"
+                      v-show="proposalObject['isEdit'] && proposalObject['domainsRemoved'].length"
                       class="is-size-7">
                       Added:
                     </p>
                     <a
-                      v-for="(domain, index) in prop['domains']"
+                      v-for="(domain, index) in proposalObject['domains']"
                       :key="index"
                       :class="{ 'is-active': (disabled || edit || index > 0) }"
                       class="panel-block">
@@ -228,14 +228,14 @@
                       </span>
                       {{ (domain.object && term(domain.object)) || domain.label }}
                     </a>
-                    <template v-if="prop['isEdit'] && disabled">
+                    <template v-if="proposalObject['isEdit'] && disabled">
                       <p
-                        v-show="prop['domainsRemoved'].length"
+                        v-show="proposalObject['domainsRemoved'].length"
                         class="is-size-7">
                         Removed:
                       </p>
                       <a
-                        v-for="(domainIRI, index) in prop['domainsRemoved']"
+                        v-for="(domainIRI, index) in proposalObject['domainsRemoved']"
                         :key="index"
                         class="panel-block is-active">
                         <span v-if="_get($labelQuadForIRI(ontology, domainIRI), 'object.value')">
@@ -282,12 +282,12 @@
                     slot="selected-list"
                     class="panel">
                     <p
-                      v-show="prop['isEdit'] && prop['rangesRemoved'].length"
+                      v-show="proposalObject['isEdit'] && proposalObject['rangesRemoved'].length"
                       class="is-size-7">
                       Added:
                     </p>
                     <a
-                      v-for="(range, index) in prop['ranges']"
+                      v-for="(range, index) in proposalObject['ranges']"
                       :key="index + 10000"
                       class="panel-block is-active">
                       <span
@@ -303,14 +303,14 @@
                         {{ (range.object && range.object.value || term(range.object)) || range.label }}
                       </span>
                     </a>
-                    <template v-if="prop['isEdit'] && disabled">
+                    <template v-if="proposalObject['isEdit'] && disabled">
                       <p
-                        v-show="prop['rangesRemoved'].length"
+                        v-show="proposalObject['rangesRemoved'].length"
                         class="is-size-7">
                         Removed:
                       </p>
                       <a
-                        v-for="(rangeIRI, index) in prop['rangesRemoved']"
+                        v-for="(rangeIRI, index) in proposalObject['rangesRemoved']"
                         :key="index"
                         class="panel-block is-active">
                         <span v-if="_get($labelQuadForIRI(ontology, rangeIRI), 'object.value')">
@@ -339,7 +339,7 @@
               class="button is-info subform-submit"
               :disabled="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
-              Add "<em>{{ prop['label'] }}</em>" to the proposal
+              Add "<em>{{ proposalObject['label'] }}</em>" to the proposal
             </button>
           </div>
 
@@ -353,9 +353,9 @@
 
       </div>
 
-      <template v-if="prop['classChildren'] && prop['classChildren'].length">
+      <template v-if="proposalObject['classChildren'] && proposalObject['classChildren'].length">
         <class-form
-          v-for="(newClass, index) in prop['classChildren']"
+          v-for="(newClass, index) in proposalObject['classChildren']"
           :key="index"
           :subform="true"
           :iri="iri"
@@ -373,14 +373,14 @@
         <div class="columns">
           <div class="column is-8">
             <h2
-              v-if="prop['isEdit']"
+              v-if="proposalObject['isEdit']"
               class="subtitle collapsed-title">
-              Changed Property "<em>{{ prop['label'] }}</em>"
+              Changed Property "<em>{{ proposalObject['label'] }}</em>"
             </h2>
             <h2
               v-else
               class="subtitle collapsed-title">
-              New Property "<em>{{ prop['label'] }}</em>"
+              New Property "<em>{{ proposalObject['label'] }}</em>"
             </h2>
           </div>
           <div class="column">
@@ -419,6 +419,7 @@ export default {
     storePath: {
       type: String,
       required: false,
+      // TODO: a single place in the store for this instead of one per proposal type ?
       default: 'prop.prop'
     },
     disabled: {
@@ -452,10 +453,10 @@ export default {
             clearInterval(waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.disabled,
-              value: this.prop['example']
+              value: this.proposalObject['example']
             })
             this.yate.on('change', cm => {
-              this.prop['example'] = cm.getValue()
+              this.proposalObject['example'] = cm.getValue()
             })
           }
           else if (--maxRetry <= 0) {
@@ -476,9 +477,9 @@ export default {
   },
   computed: {
     datasets () {
-      return this.prop.proposalDataset(false)
+      return this.proposalObject.proposalDataset(false)
     },
-    prop () {
+    proposalObject () {
       if (process.server) {
         return _get(this.$store.state, this.storePath, this.$store.state.prop.prop)
       }
@@ -500,7 +501,7 @@ export default {
       }
       try {
         // this triggers validation
-        this.prop.validate()
+        this.proposalObject.validate()
         return true
       }
       catch (err) {
@@ -509,10 +510,10 @@ export default {
     }
   },
   watch: {
-    'prop.label' () {
-      this.$vuexSet(`${this.storePath}.iri`, this.prop['baseIRI'] + normalizeLabel(this.prop['label'], 'camel'))
+    'proposalObject.label' () {
+      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject['baseIRI'] + normalizeLabel(this.proposalObject['label'], 'camel'))
     },
-    '$parent.clss.label' () {
+    '$parent.proposalObject.label' () {
       this.onParentIRIChange()
     }
   },
@@ -520,83 +521,83 @@ export default {
     term,
     _get,
     $vuexPush (path, ...values) {
-      const currentValues = this.prop[path]
+      const currentValues = this.proposalObject[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
     },
     $vuexDeleteAtIndex (path, index) {
-      const currentValues = this.prop[path]
+      const currentValues = this.proposalObject[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.filter((nothing, i) => i !== index))
     },
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => term(subject) === term(domain.subject)
-      if (this.prop['domains'].find(isSelected) || this.iri === term(domain.subject)) {
+      if (this.proposalObject['domains'].find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
       this.$vuexPush('domains', this.$labelQuadForIRI(this.ontology, searchResult.iri))
     },
     onParentIRIChange: debounce(function () {
       if (this.subform) {
-        const parentLabelQuad = this.$labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.clss.iri)
+        const parentLabelQuad = this.$labelQuadForIRI(this.$parent.datasets.ontology, this.$parent.proposalObject.iri)
         this.$vuexSet(`${this.storePath}.domains[0]`, parentLabelQuad)
       }
     }, 400),
     unselectDomain (index) {
-      const domain = this.prop[`domains[${index}]`]
-      const childIndex = this.prop['classChildren'].indexOf(domain)
+      const domain = this.proposalObject[`domains[${index}]`]
+      const childIndex = this.proposalObject['classChildren'].indexOf(domain)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
 
-      if (this.prop['isEdit']) {
+      if (this.proposalObject['isEdit']) {
         this.$vuexPush('domainsRemoved', domain.subject.value)
       }
     },
     selectRange (searchResult) {
       const range = searchResult.domain
 
-      const unRemove = this.prop['rangesRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject['rangesRemoved'].indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
         return
       }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(range.subject)
-      if (this.prop['ranges'].find(isSelected)) {
+      if (this.proposalObject['ranges'].find(isSelected)) {
         return
       }
       this.$vuexPush('ranges', range)
     },
     unselectRange (index) {
-      const range = this.prop[`ranges[${index}]`]
-      const childIndex = this.prop['classChildren'].indexOf(range)
+      const range = this.proposalObject[`ranges[${index}]`]
+      const childIndex = this.proposalObject['classChildren'].indexOf(range)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('ranges', index)
 
-      if (this.prop['isEdit']) {
+      if (this.proposalObject['isEdit']) {
         this.$vuexPush('rangesRemoved', range.subject.value)
       }
     },
     selectSameAs (searchResult) {
       const sameAs = searchResult.domain
 
-      const unRemove = this.prop['sameAsRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject['sameAsRemoved'].indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
         return
       }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(sameAs.subject)
-      if (this.prop['sameAs'].find(isSelected)) {
+      if (this.proposalObject['sameAs'].find(isSelected)) {
         return
       }
       this.$vuexPush('sameAs', sameAs)
     },
     unselectSameAs (index) {
-      const sameAs = this.prop[`sameAs[${index}]`]
+      const sameAs = this.proposalObject[`sameAs[${index}]`]
       this.$vuexDeleteAtIndex('sameAs', index)
 
-      if (this.prop['isEdit']) {
+      if (this.proposalObject['isEdit']) {
         this.$vuexPush('sameAsRemoved', sameAs.subject.value)
       }
     },
@@ -616,7 +617,7 @@ export default {
     },
     addExternalRange (iri) {
       this.$vuexPush('ranges', this.$externalIRIToQuad(iri))
-      const unRemove = this.prop['rangesRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject['rangesRemoved'].indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
         return true
@@ -625,7 +626,7 @@ export default {
     },
     addExternalSameAs (iri) {
       this.$vuexPush('sameAs', this.$externalIRIToQuad(iri))
-      const unRemove = this.prop['sameAsRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject['sameAsRemoved'].indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
         return true
@@ -646,10 +647,10 @@ export default {
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
       if (!this.subform) {
         if (this.edit) {
-          const originalIRI = this.prop['originalIRI'] || this.prop['iri']
+          const originalIRI = this.proposalObject['originalIRI'] || this.proposalObject['iri']
           this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
         }
-        if (this.prop['domains.length'] === 0) {
+        if (this.proposalObject['domains.length'] === 0) {
           const currentLabelQuad = this.$labelQuadForIRI(this.ontology, this.iri)
           this.$vuexPush('domains', currentLabelQuad)
         }
