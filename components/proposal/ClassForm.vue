@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="clss['label']"
+    :id="proposalObject['label']"
     :class="{
       'is-class-form': !subform,
       'is-class-subform': subform,
@@ -8,31 +8,31 @@
       'proposal-draft': !disabled
     }">
 
-    <template v-if="disabled || !clss['isSubFormCollapsed']">
+    <template v-if="disabled || !proposalObject['isSubFormCollapsed']">
 
       <div
         :class="{
-          'is-marginless': clss['propChildren.length'],
-          'has-prop-subform': clss['propChildren.length'],
+          'is-marginless': proposalObject['propChildren.length'],
+          'has-prop-subform': proposalObject['propChildren.length'],
         }"
         class="box">
 
         <div class="columns">
           <div class="column is-8">
             <h2
-              v-if="clss['isEdit']"
+              v-if="proposalObject['isEdit']"
               class="title is-2">
-              <span v-show="!edit">Changed</span> Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span>
+              <span v-show="!edit">Changed</span> Class <span v-show="proposalObject['label']">"<em>{{ proposalObject['label'] }}</em>"</span>
             </h2>
             <h2
               v-else
               class="title is-2">
-              <span v-show="!edit">New</span> Class <span v-show="clss['label']">"<em>{{ clss['label'] }}</em>"</span>
+              <span v-show="!edit">New</span> Class <span v-show="proposalObject['label']">"<em>{{ proposalObject['label'] }}</em>"</span>
             </h2>
             <p
-              v-show="clss['iri']"
+              v-show="proposalObject['iri']"
               class="subtitle is-1">
-              <span class="title-url">{{ clss['iri'] }}</span>
+              <span class="title-url">{{ proposalObject['iri'] }}</span>
             </p>
           </div>
           <div class="column">
@@ -47,20 +47,20 @@
               <div class="control">
                 <input
                   :disabled="disabled"
-                  :class="{'is-danger': !clss['label']}"
+                  :class="{'is-danger': !proposalObject['label']}"
                   class="input"
                   autocomplete="new-password"
                   type="text"
                   v-debounce
-                  v-model.lazy="clss['label']">
+                  v-model.lazy="proposalObject['label']">
               </div>
               <p
-                v-show="clss['label'] && invalidClassname(clss['label'])"
+                v-show="proposalObject['label'] && invalidClassname(proposalObject['label'])"
                 class="help is-danger">
                 Class name must start with an <strong>Uppercase</strong> letter!
               </p>
               <p
-                v-show="!clss['label']"
+                v-show="!proposalObject['label']"
                 class="help is-danger">
                 Please enter the class name.
               </p>
@@ -71,12 +71,12 @@
                 <textarea
                   class="textarea"
                   :disabled="disabled"
-                  :class="{'is-danger': !clss['comment']}"
+                  :class="{'is-danger': !proposalObject['comment']}"
                   v-debounce
-                  v-model.lazy="clss['comment']" />
+                  v-model.lazy="proposalObject['comment']" />
               </div>
               <p
-                v-show="!clss['comment']"
+                v-show="!proposalObject['comment']"
                 class="help is-danger">
                 Please write a short description.
               </p>
@@ -87,7 +87,7 @@
                   <input
                     type="checkbox"
                     :disabled="disabled"
-                    v-model.lazy="clss['isDeprecated']">
+                    v-model.lazy="proposalObject['isDeprecated']">
                   Deprecate Class
                 </label>
               </div>
@@ -101,7 +101,7 @@
                 <editor
                   :disabled="disabled"
                   v-debounce
-                  v-model.lazy="clss['description']" />
+                  v-model.lazy="proposalObject['description']" />
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@
                   ref="exampleTextarea"
                   :disabled="disabled"
                   v-debounce
-                  v-model.lazy="clss['example']"
+                  v-model.lazy="proposalObject['example']"
                   class="textarea" />
               </div>
             </div>
@@ -154,11 +154,11 @@
         </div>
 
         <proposal-properties-table
-          v-if="clss['domains.length']"
-          :iri="clss['iri']"
+          v-if="proposalObject['domains.length']"
+          :iri="proposalObject['iri']"
           :disabled="disabled"
-          :properties="clss['domains']"
-          :removed-properties="clss['domainsRemoved']"
+          :properties="proposalObject['domains']"
+          :removed-properties="proposalObject['domainsRemoved']"
           :store-path="storePath"
           :dataset="mergedDatasets.ontology"
           @reselectDomain="reselectDomain"
@@ -172,7 +172,7 @@
               class="button is-info subform-submit"
               :disabled="!validBase"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
-              Add "<em>{{ clss['label'] }}</em>" to the proposal
+              Add "<em>{{ proposalObject['label'] }}</em>" to the proposal
             </button>
           </div>
 
@@ -186,9 +186,9 @@
 
       </div>
 
-      <template v-if="clss['propChildren'] && clss['propChildren'].length">
+      <template v-if="proposalObject['propChildren'] && proposalObject['propChildren'].length">
         <property-form
-          v-for="(newProp, index) in clss['propChildren']"
+          v-for="(newProp, index) in proposalObject['propChildren']"
           :key="index"
           :subform="true"
           :iri="iri"
@@ -206,14 +206,14 @@
         <div class="columns">
           <div class="column is-8">
             <h2
-              v-if="clss['isEdit']"
+              v-if="proposalObject['isEdit']"
               class="subtitle collapsed-title">
-              Changed Class "<em>{{ clss['label'] }}</em>"
+              Changed Class "<em>{{ proposalObject['label'] }}</em>"
             </h2>
             <h2
               v-else
               class="subtitle collapsed-title">
-              New Class "<em>{{ clss['label'] }}</em>"
+              New Class "<em>{{ proposalObject['label'] }}</em>"
             </h2>
           </div>
           <div class="column">
@@ -287,10 +287,10 @@ export default {
             clearInterval(waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.disabled,
-              value: this.clss['example']
+              value: this.proposalObject['example']
             })
             this.yate.on('change', cm => {
-              this.clss['example'] = cm.getValue()
+              this.proposalObject['example'] = cm.getValue()
             })
           }
           else if (--maxRetry <= 0) {
@@ -310,9 +310,9 @@ export default {
   },
   computed: {
     datasets () {
-      return this.clss.proposalDataset(false)
+      return this.proposalObject.proposalDataset(false)
     },
-    clss () {
+    proposalObject () {
       if (process.server) {
         return _get(this.$store.state, this.storePath, this.$store.state.class.clss)
       }
@@ -328,7 +328,7 @@ export default {
     validBase () {
       try {
         // this triggers validation
-        this.clss.validate()
+        this.proposalObject.validate()
         return true
       }
       catch (err) {
@@ -337,41 +337,41 @@ export default {
     }
   },
   watch: {
-    'clss.label' () {
-      this.$vuexSet(`${this.storePath}.iri`, this.clss['baseIRI'] + normalizeLabel(this.clss['label'], 'pascal'))
+    'proposalObject.label' () {
+      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject['baseIRI'] + normalizeLabel(this.proposalObject['label'], 'pascal'))
     }
   },
   methods: {
     $vuexPush (path, ...values) {
-      const currentValues = this.clss[path]
+      const currentValues = this.proposalObject[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
     },
     $vuexDeleteAtIndex (path, index) {
-      const currentValues = this.clss[path]
+      const currentValues = this.proposalObject[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.filter((nothing, i) => i !== index))
     },
     selectDomain (searchResult) {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => term(subject) === term(domain.subject)
-      if (this.clss['domains'].find(isSelected) || this.iri === term(domain.subject)) {
+      if (this.proposalObject['domains'].find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
 
       this.$vuexPush('domains', searchResult)
     },
     unselectDomain (index) {
-      const domain = this.clss.domains[index]
-      const childIndex = this.clss['propChildren'].indexOf(domain)
+      const domain = this.proposalObject.domains[index]
+      const childIndex = this.proposalObject['propChildren'].indexOf(domain)
       this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
 
-      if (this.clss['isEdit']) {
+      if (this.proposalObject['isEdit']) {
         this.$vuexPush('domainsRemoved', domain)
       }
     },
     reselectDomain (index) {
-      const domain = this.clss.domainsRemoved[index]
+      const domain = this.proposalObject.domainsRemoved[index]
       this.$vuexPush('domains', domain)
       this.$vuexDeleteAtIndex('domainsRemoved', index)
     },
@@ -394,7 +394,7 @@ export default {
         this.structure = this.$store.getters['graph/structure']
       }
       if (!this.subform && this.edit) {
-        const originalIRI = this.clss['originalIRI'] || this.clss['iri']
+        const originalIRI = this.proposalObject['originalIRI'] || this.proposalObject['iri']
         this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
       }
       this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Property', false)

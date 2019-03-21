@@ -270,7 +270,6 @@ export default ({ app, store }, inject) => {
     }
   }
 
-  // TODO: labelQuadForIRI and commentQuadForIRI should be auto generated from termIRI
   function labelQuadForIRI (dataset, iri) {
     const matches = dataset.match(iri ? rdf.namedNode(iri) : null, termIRI.label, null).toArray()
     if (matches.length) {
