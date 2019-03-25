@@ -73,6 +73,18 @@ async function trifidMiddleware (config) {
     }
   }
 
+  if (!process.env.NODE_TEST) {
+    // outside of tests, avoid the security flaw of letting admins read
+    // local files using `file:` URLs
+    if (!config.ontology.structureRawUrl.startsWith('http')) {
+      delete trifidConfig.handler.structure
+    }
+    if (!config.ontology.ontologyRawUrl.startsWith('http')) {
+      delete trifidConfig.handler.ontology
+      delete trifidConfig.handler.ontologyResource
+    }
+  }
+
   await trifid.init(trifidConfig)
 
   return trifid.middleware()
