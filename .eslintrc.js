@@ -36,6 +36,10 @@ module.exports = {
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/singleline-html-element-content-newline': 0,
     'vue/multiline-html-element-content-newline': 0,
+    'vue/html-closing-bracket-newline': ['error', {
+      singleline: 'never',
+      multiline: 'never'
+    }],
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
@@ -44,10 +48,6 @@ module.exports = {
     quotes: ['error', 'single', { 'avoidEscape': true }],
     'callback-return': ['error', ['done', 'callback', 'cb', 'send']],
     'object-shorthand': 'error',
-    'vue/html-closing-bracket-newline': ['error', {
-      singleline: 'never',
-      multiline: 'never'
-    }],
     'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
     'brace-style': ['error', 'stroustrup', { 'allowSingleLine': false }],
     'curly': ['error', 'all']
