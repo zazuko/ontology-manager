@@ -30,7 +30,8 @@ function getConfigFromEnvVars () {
     github: {
       repo: _.get(editorConfig, 'github.repo', 'o'),
       owner: _.get(editorConfig, 'github.owner', 'vhf'),
-      branch: _.get(editorConfig, 'github.branch', 'example-com')
+      branch: _.get(editorConfig, 'github.branch', 'example-com'),
+      oauthClientId: process.env.OAUTH_CLIENT_ID || ''
     },
     committer: {
       name: _.get(editorConfig, 'committer.name', 'Ontology Editor'),
@@ -50,7 +51,6 @@ function getConfigFromEnvVars () {
 
   const forge = {
     oauthHost: process.env.OAUTH_HOST || 'https://github.com/login/oauth',
-    oauthClientId: process.env.OAUTH_CLIENT_ID || '',
     oauthClientSecret: process.env.OAUTH_CLIENT_SECRET || '',
     committerPersonalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN || ''
   }

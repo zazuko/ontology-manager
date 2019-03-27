@@ -41,6 +41,10 @@ export default {
   mounted () {
     this.ontology = this.$store.getters['graph/ontology']
     this.structure = this.$store.getters['graph/structure']
+
+    if (this.$store.state.config.setup) {
+      this.$router.push('/install')
+    }
   },
   data () {
     return {

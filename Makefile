@@ -13,3 +13,7 @@ down:
 # deletes the database files
 reset: down
 	rm -rf .pgdata
+
+localup: reset
+	docker-compose up -d
+	docker-compose logs -f

@@ -1,6 +1,6 @@
 const knex = require('knex')
 const debug = require('debug')('editor:config')
-const getConfigFromEnvVars = require('./migration-helpers').getConfigFromEnvVars
+// const getConfigFromEnvVars = require('./migration-helpers').getConfigFromEnvVars
 const envInit = require('./env-init')
 
 let config
@@ -10,17 +10,17 @@ const shouldRefetch = () => (Date.now() - lastFetch) > 3 * 1000
 
 module.exports = async function fetchConfig () {
   if (process.env.BUILDING_WITHOUT_PG_ACCESS) {
-    envInit('test')
-    envInit('dev') // override
-    const config = getConfigFromEnvVars()
-    config.id = 1 // fake the config version
-    return config
+    envInit('prod')
+    return require('../fixtures/dummy-config')()
+  }
+  else {
+    envInit()
   }
   if (config && !shouldRefetch()) {
     debug('config served from cache')
     return config
   }
-  debug('config fetched from db')
+
   const client = knex({
     client: 'pg',
     connection: {
@@ -30,6 +30,7 @@ module.exports = async function fetchConfig () {
       database: process.env.POSTGRESQL_DATABASE
     }
   })
+
   const results = await client
     .withSchema('editor_schema')
     .select('id', 'forge', 'editor', 'ontology')
@@ -38,8 +39,12 @@ module.exports = async function fetchConfig () {
     .limit(1)
   client.destroy()
 
-  if (!results.length) {
-    throw new Error('Config missing from database')
+  if (results.length) {
+    debug('config fetched from db')
+  }
+  else {
+    debug('dummy config')
+    return require('../fixtures/dummy-config')()
   }
   config = results[0]
   lastFetch = Date.now()

@@ -7,6 +7,7 @@ envInit()
 
 module.exports = async () => {
   const editorConfig = await fetchConfig()
+  const { protocol } = editorConfig.editor
 
   return {
     rootDir: __dirname,
@@ -73,6 +74,13 @@ module.exports = async () => {
     ],
 
     /*
+    ** Module config: axios
+    */
+    axios: {
+      https: protocol === 'https'
+    },
+
+    /*
     ** Module config: apollo
     */
     apollo: {
@@ -101,8 +109,8 @@ module.exports = async () => {
       } : {
         local: false,
         github: {
-          client_id: process.env.OAUTH_CLIENT_ID,
-          client_secret: process.env.OAUTH_CLIENT_SECRET,
+          client_id: '%%OAUTH_CLIENT_ID%%',
+          client_secret: '%%OAUTH_CLIENT_SECRET%%',
           scope: ['user:email']
         }
       }
@@ -159,7 +167,6 @@ module.exports = async () => {
     ** Middleware configuration https://nuxtjs.org/guide/routing#middleware
     */
     router: {
-      middleware: 'iri',
       extendRoutes (routes, resolve) {
         routes.push({
           path: '/:p1',

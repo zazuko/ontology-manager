@@ -7,4 +7,27 @@ services:
       - ./.pgdata:/bitnami
     ports:
       - "5432:5432"
-    env_file: docker-app-dev/.env
+    env_file: docker-app-dev/local.env
+
+  nginx:
+    image: nginx:1
+    ports:
+      - "8000:8000"
+    links:
+      - app:app
+    volumes:
+      - ./docker-app-dev/editor.conf:/etc/nginx/conf.d/default.conf
+      - ./docker-app-prod/nginx.conf:/etc/nginx/nginx.conf
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker-app-prod/Dockerfile.web
+    env_file: docker-app-prod/.env
+    links:
+      - db:db
+    ports:
+      - "8001:3000"
+    # volumes:
+    #   - ./docker-app-prod/entrypoint.web.sh:/usr/src/app/entrypoint.web.sh
+
