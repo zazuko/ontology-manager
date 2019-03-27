@@ -46,7 +46,9 @@
           <div class="navbar-item">
             <activity-log class="navbar-item has-dropdown is-active" />
           </div>
-          <div class="navbar-item">
+          <div
+            v-show="!$store.state.config.setup"
+            class="navbar-item">
             <div class="field is-grouped">
               <sign-in @loggedOut="loggedOut" />
             </div>

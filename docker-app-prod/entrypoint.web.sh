@@ -2,14 +2,8 @@
 set -euo pipefail
 
 node setup/migrate.js
+node setup/replace-vars.js
 
-if [ ! -f .built ]; then
-  npm run build -- --modern=server
-
-  touch .built
-fi
-
-#!/bin/bash
 wait_for_pids()
 {
     for (( i = 1; i <= $#; i++ )) do

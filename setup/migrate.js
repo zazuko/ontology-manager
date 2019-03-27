@@ -243,13 +243,37 @@ function setupClient () {
       password: process.env.POSTGRESQL_PASSWORD
     }
   })
-
-  return client
 }
 
 // temp
 async function migrateSettings () {
   const spinner = ora('Migrating settings from env vars to DB').start()
+
+  const importableEnvVars = [
+    'EDITOR_CONFIG',
+    'AUTH_STRATEGY',
+    'EDITOR_HOST',
+    'EDITOR_PROTOCOL',
+    'OAUTH_CLIENT_ID',
+    'DATASET_BASE_URL',
+    'CLASS_BASE_URL',
+    'PROPERTY_BASE_URL',
+    'CONTAINERS_NESTING_PREDICATE',
+    'ONTOLOGY_RAW_URL',
+    'STRUCTURE_RAW_URL',
+    'OAUTH_HOST',
+    'OAUTH_CLIENT_SECRET',
+    'GITHUB_PERSONAL_ACCESS_TOKEN'
+  ]
+  const varsToImport = importableEnvVars.filter(name => !!process.env[name])
+  if (!varsToImport.length) {
+    spinner.succeed('No environment variable to import')
+    return
+  }
+  else {
+    spinner.info(`Will import the following env vars: \n  - ${varsToImport.map(x => `${x}=${process.env[x]}`).join('\n  - ')}\n`)
+  }
+
   try {
     const client = knex({
       client: 'pg',

@@ -2,7 +2,7 @@ import _get from 'lodash/get'
 import gql from 'graphql-tag'
 import authenticated from './authenticated'
 
-export default async function ({ app, error }) {
+export default async function ({ app, error, store }) {
   if (authenticated({ app, error }) === false) {
     return
   }

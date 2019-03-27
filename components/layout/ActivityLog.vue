@@ -142,6 +142,9 @@ export default {
     }
   },
   mounted () {
+    if (this.$store.state.config.setup) {
+      return
+    }
     let interval = 300
     if (this.$auth && this.$auth.$state.loggedIn) {
       interval = 45
@@ -165,7 +168,7 @@ export default {
         }
       },
       skip () {
-        return !this.$store.state.authProcessDone
+        return this.$store.state.config.setup || !this.$store.state.authProcessDone
       }
     }
   }

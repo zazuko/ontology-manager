@@ -18,9 +18,15 @@ process.on('SIGHUP', async () => {
 
 app.use(async function (req, res, next) {
   if (!middleware) {
-    debug('new middleware')
     const config = await fetchConfig()
-    middleware = await trifidMiddleware(config)
+    if (config.editor.setup) {
+      debug('dummy middleware')
+      middleware = (req, res, next) => next()
+    }
+    else {
+      debug('new middleware')
+      middleware = await trifidMiddleware(config)
+    }
   }
   else {
     debug('cached middleware')
