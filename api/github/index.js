@@ -345,14 +345,14 @@ module.exports = async function (editorConfig) {
       return false
     }
 
-    const endpoint = `https://api.github.com/applications/${editorConfig.forge.oauthClientId}/tokens/${bearerToken}`
+    const endpoint = `https://api.github.com/applications/${editorConfig.editor.github.oauthClientId}/tokens/${bearerToken}`
     const auth = {
-      username: editorConfig.forge.oauthClientId,
+      username: editorConfig.editor.github.oauthClientId,
       password: editorConfig.forge.oauthClientSecret
     }
 
     if (!auth.username || !auth.password) {
-      res.status(500).send({ message: 'Missing env vars!' })
+      res.status(500).send({ message: 'Missing github config vars!' })
       return false
     }
 

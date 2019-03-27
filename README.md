@@ -2,7 +2,7 @@
 
 ## Local Dev Setup
 
-### 1. Get OAuth creds
+### 1. Get OAuth Credentials
 
 1. Create an OAuth app: <https://github.com/settings/applications/new>
 1. Homepage / Callback : `http://localhost:3000/`
@@ -63,6 +63,44 @@ Whenever you feel like it:
 ## Deployment
 
 Run an editor container with the above env variables.
+
+### Local Deployment
+
+Do this when you want to test the app locally under production settings, especially useful to test the initial setup / editor installation process.
+
+1. Create an OAuth app: <https://github.com/settings/applications/new> using Homepage / Callback : `http://localhost:8000/`
+    * only do this once and keep the `Client ID` and `Client Secret`, reusing these values works well.
+1. Shut down the database and delete its content:
+    * `make reset`
+1. Build the local image:
+    * `docker-compose build`
+1. Start the local containers: (alternative: `make localup`)
+    * `docker-compose up -d`
+    * `docker-compose logs -f app nginx`
+1. Go to <http://localhost:8000> (simple) or better yet: set `testdomain.com` to `127.0.0.1` in your hosts file and go to <http://testdomain.com:8000>
+
+### Prod Deployment
+
+TODO: explain how to build a prod image (basically `.gitlab-ci.yml`)
+
+Two containers: Postgres (probably already running to host other customers' editors) and the editor container.
+
+The editor container needs the following env vars:
+
+```
+# customer name is a slug, schema-alod-ch, zazuko, dcf-org, …
+CUSTOMER_NAME=zazuko
+# This password needs to match the one set on the postgres container
+POSTGRESQL_PASSWORD=make-this-secret
+# `containername` if postgres is linked with the name `containername`
+POSTGRESQL_HOST=db
+# a secret password used by the editor's postgres roles
+POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD=password-used-by-postgraphile-to-access-pg
+# a token used as hash/salt, keep it secret for JWT security
+POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
+```
+
+That's it. The remaining configuration is done using the installer (navigate to the container once it's up).
 
 ## E2E tests
 

@@ -1,6 +1,6 @@
 <template>
   <div class="layout-admin-header">
-    <h1>Admin Worklist</h1>
+    <h1>Admin Panel</h1>
 
     <nav class="layout-admin-nav">
       <ul>

@@ -5,6 +5,11 @@ import { toastClose } from '@/libs/utils'
 export default {
   name: 'Auth',
   async beforeMount () {
+    if (this.$store.state.config.setup) {
+      // no auth during initial setup
+      this.localUserRegistrationDone = true
+    }
+
     if (!process.browser) {
       this.localUserRegistrationDone = true
     }

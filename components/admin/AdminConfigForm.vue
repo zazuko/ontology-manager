@@ -6,6 +6,10 @@
       <template v-if="disabled">
         <h1 class="title">Showing version {{ config.id }}</h1>
       </template>
+      <template v-else-if="initialSetup">
+        <h1 class="title">It's time to configure the editor!</h1>
+        <p v-show="error">{{ error }}</p>
+      </template>
       <template v-else>
         <h1 class="title">Pre-filled with version {{ config.id }} values</h1>
         <p v-show="error">{{ error }}</p>
@@ -46,7 +50,7 @@
               </p>
             </div>
             <p class="help">
-              The editor should be available at this address.
+              The above settings have already been validated, only change them if you know what you are doing.
             </p>
           </div>
         </div>
@@ -421,7 +425,7 @@
         </div>
       </div>
 
-      <div style="display: none">
+      <div>
         <hr>
 
         <h1 class="title">3. Forge Settings</h1>
@@ -451,11 +455,20 @@
         </div>
 
         <h2 class="subtitle">3.2. OAuth Settings</h2>
-        <p>
-          Changing these will affect through which GitHub app users
-          are signing in.
+        <p class="text">
+          Create a <a
+            href="https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/"
+            target="_blank">GitHub OAuth App</a> and copy the <code>Client ID</code> and
+          <code>Client Secret</code>.
+          <br>
+          Enter the same value for both <strong><code>Homepage URL</code></strong>
+          <strong><code>Authorization callback URL</code></strong>, this value must match
+          the address at which the editor is available. Based on what you set in
+          <code>1.1. General</code> above, it should be: <code>{{ editor.protocol }}://{{ editor.host }}</code>
         </p>
-        <div class="field is-horizontal">
+        <div
+          style="display: none"
+          class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">URL</label>
           </div>
@@ -463,7 +476,7 @@
             <div class="field">
               <p class="control is-expanded">
                 <input
-                  disabled="disabled"
+                  readonly="disabled"
                   class="input"
                   type="text"
                   placeholder="https://github.com/login/oauth"
@@ -481,10 +494,9 @@
             <div class="field">
               <p class="control is-expanded">
                 <input
-                  disabled="disabled"
                   class="input"
                   type="text"
-                  v-model="forge.oauthClientId"
+                  v-model="editor.github.oauthClientId"
                   required>
               </p>
             </div>
@@ -498,7 +510,6 @@
             <div class="field">
               <p class="control is-expanded">
                 <input
-                  disabled="disabled"
                   class="input"
                   type="text"
                   v-model="forge.oauthClientSecret"
@@ -509,6 +520,13 @@
         </div>
 
         <h2 class="subtitle">3.3. GitHub Personal Access Token</h2>
+        <p class="text">
+          The editor requires a <a
+            href="https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line#creating-a-token"
+            target="_blank">Personal Access Token</a> to push changes to GitHub.<br>
+          It is best to create a separate GitHub account for this and grant it read and write
+          access to <code v-show="repoHint">{{ repoHint }}</code><span v-show="!repoHint">your repository.</span>
+        </p>
         <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">Token</label>
@@ -517,7 +535,6 @@
             <div class="field">
               <p class="control is-expanded">
                 <input
-                  disabled="disabled"
                   class="input"
                   type="text"
                   v-model="forge.committerPersonalAccessToken"
@@ -535,8 +552,10 @@
 
       <hr>
 
-      <h1 class="title">3. Save</h1>
-      <div class="field is-horizontal">
+      <h1 class="title">4. Save</h1>
+      <div
+        v-show="!editor.setup"
+        class="field is-horizontal">
         <div class="field-label is-normal">
           <!-- Left empty for spacing -->
           <label class="label">Reason</label>
@@ -558,12 +577,12 @@
         </div>
       </div>
       <div class="field is-horizontal">
-        <div
-          class="field-label is-normal">
-          <!-- Left empty for spacing -->
+        <div class="field-label is-normal">
           <label
-            v-show="!disabled"
-            class="label">Save as version {{ config.id + 1 }}</label>
+            v-show="!disabled && !initialSetup"
+            class="label">
+            Save as version {{ config.id + 1 }}
+          </label>
         </div>
         <div class="field-body">
           <div class="field">
@@ -583,6 +602,11 @@
                 Save &amp; Apply
               </button>
             </div>
+            <p
+              class="help"
+              v-show="initialSetup">
+              (The editor will restart, it will take around 30 seconds.)
+            </p>
           </div>
         </div>
       </div>
@@ -609,12 +633,14 @@ export default {
     }
   },
   data () {
+    const initialSetup = this.$store.state.config.setup
     return {
+      initialSetup,
       editor: clone(this.config.editor),
       forge: clone(this.config.forge || {}),
       ontology: clone(this.config.ontology || {}),
       numberOfColumns: this.config.editor.text.home.length,
-      reason: '',
+      reason: initialSetup ? 'Initial Config' : '',
       error: ''
     }
   },
@@ -662,6 +688,8 @@ export default {
   methods: {
     async saveConfig () {
       this.error = ''
+      delete this.editor.setup
+
       const variables = {
         editor: this.editor,
         forge: this.forge,
@@ -676,6 +704,7 @@ export default {
       }
       catch (err) {
         console.error(err)
+        this.editor.setup = true
         this.error = err.message
         this.$sentry.captureException(err)
       }
