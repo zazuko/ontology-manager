@@ -29,7 +29,7 @@
             :obj="subtree"
             :ontology="ontology"
             :structure="structure"
-            :is-class="$termIRI.Class.equals(objectType)" />
+            :is-class="$termIRI.ClassLikes.includes(objectType.value)" />
         </section>
 
         <template
@@ -57,8 +57,7 @@
             v-if="object"
             :object="object"
             :ontology="ontology"
-            :structure="structure"
-            :is-class="$termIRI.Class.equals(objectType)" />
+            :structure="structure" />
 
           <property-proposals
             id="proposals"
@@ -153,7 +152,7 @@ export default {
       return tree
     },
     object () {
-      if (!(this.$termIRI.Class.equals(this.objectType) || this.$termIRI.Property.equals(this.objectType))) {
+      if (!(this.$termIRI.ClassLikes.includes(this.objectType.value) || this.$termIRI.PropertyLikes.includes(this.objectType.value))) {
         return null
       }
       return this.ontology.match(rdf.namedNode(this.iri))

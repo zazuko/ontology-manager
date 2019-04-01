@@ -83,7 +83,7 @@
         <p
           v-show="!properties.length"
           class="content">
-          This class does not have any properties.
+          This resource does not have any properties.
         </p>
       </template>
 
@@ -244,7 +244,10 @@ export default {
         .map((quad) => term(quad.object))
     },
     isClass () {
-      return Boolean(this.ontology.match(this.iri, this.$termIRI.a, this.$termIRI.Class).toArray().length)
+      return this.$termIRI.ClassLikes
+        .filter(iri =>
+          Boolean(this.ontology.match(this.iri, this.$termIRI.a, rdf.namedNode(iri)).toArray().length
+          )).length
     },
     isProperty () {
       return Boolean(this.ontology.match(this.iri, this.$termIRI.a, this.$termIRI.Property).toArray().length)
