@@ -15,6 +15,9 @@ export default ({ app, store }, inject) => {
     get Class () {
       return 'http://www.w3.org/2000/01/rdf-schema#Class'
     },
+    get Datatype () {
+      return 'http://www.w3.org/2000/01/rdf-schema#Datatype'
+    },
 
     get label () {
       return 'http://www.w3.org/2000/01/rdf-schema#label'
@@ -73,6 +76,8 @@ export default ({ app, store }, inject) => {
       acc[key] = rdf.namedNode(val)
       return acc
     }, {})
+  termIRI.ClassLikes = [stringIRI.Class, stringIRI.Datatype]
+  termIRI.PropertyLikes = [stringIRI.Property]
 
   inject('termIRI', termIRI)
   inject('getTerm', getTerm)

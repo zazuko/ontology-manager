@@ -209,8 +209,12 @@ export default {
     return h
   },
   validate ({ store, redirect }) {
-    if (store.state.config.setup !== 'step1') {
+    if (store.state.config.setup === 'step2') {
       redirect('/install/form')
+      return true
+    }
+    else if (store.state.config.setup === false) {
+      redirect('/')
       return true
     }
     return !!store.state.config.setup
