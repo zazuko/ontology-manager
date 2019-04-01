@@ -22,7 +22,7 @@
         :obj="tree"
         :ontology="ontology"
         :structure="structure"
-        :is-class="$termIRI.Class.equals(objectType)" />
+        :is-class="$termIRI.ClassLikes.includes(objectType.value)" />
     </section>
   </div>
 </template>

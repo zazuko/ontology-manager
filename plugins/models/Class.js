@@ -16,6 +16,7 @@ export default ({ app, store }, inject) => {
       } = args
 
       this.proposalType = 'Class'
+      this.rdfType = app.$termIRI.Class
 
       this.baseIRI = baseIRI
       this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
@@ -41,7 +42,7 @@ export default ({ app, store }, inject) => {
 
       const classIRI = rdf.namedNode(this.iri)
       const quads = [
-        rdf.quad(classIRI, app.$termIRI.a, app.$termIRI.Class),
+        rdf.quad(classIRI, app.$termIRI.a, this.rdfType),
         rdf.quad(classIRI, app.$termIRI.label, rdf.literal(this.label)),
         rdf.quad(classIRI, app.$termIRI.comment, rdf.literal(this.comment))
       ]

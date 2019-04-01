@@ -22,6 +22,7 @@ export default ({ app, store }, inject) => {
       } = args
 
       this.proposalType = 'Property'
+      this.rdfType = app.$termIRI.Property
 
       this.baseIRI = baseIRI
       this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
@@ -49,7 +50,7 @@ export default ({ app, store }, inject) => {
 
       const propertyIRI = rdf.namedNode(this.iri)
       const quads = [
-        rdf.quad(propertyIRI, app.$termIRI.a, app.$termIRI.Property),
+        rdf.quad(propertyIRI, app.$termIRI.a, this.rdfType),
         rdf.quad(propertyIRI, app.$termIRI.label, rdf.literal(this.label)),
         rdf.quad(propertyIRI, app.$termIRI.comment, rdf.literal(this.comment))
       ]
