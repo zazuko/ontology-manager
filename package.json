@@ -23,6 +23,7 @@
   },
   "precommit": "npm run lint",
   "dependencies": {
+    "@babel/core": "^7.4.3",
     "@mdi/font": "^3.5.95",
     "@nuxtjs/apollo": "git://github.com/nuxt-community/apollo-module.git#3ad51bf70574d8240398b0a0d9dcb02e6897bf6c",
     "@nuxtjs/auth": "^4.5.2",
