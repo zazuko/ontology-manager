@@ -279,7 +279,7 @@ export default {
   },
   mounted () {
     this.init()
-    if (process.browser) {
+    if (process.browser && this.disabled !== true) {
       let maxRetry = 20
       setTimeout(() => {
         const waitForYate = setInterval(() => {
