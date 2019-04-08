@@ -42,11 +42,11 @@ export default {
     this.ontology = this.$store.getters['graph/ontology']
     this.structure = this.$store.getters['graph/structure']
 
-    setTimeout(() => {
-      if (this.$store.state.config.setup) {
-        this.$router.push('/install')
-      }
-    }, 2000)
+    // setTimeout(() => {
+    //   if (this.$store.state.config.setup) {
+    //     this.$router.push('/install')
+    //   }
+    // }, 2000)
   },
   data () {
     return {
