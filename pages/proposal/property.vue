@@ -263,10 +263,6 @@ export default {
         this.$store.dispatch('drafts/LOAD')
         this.$router.push({ name: 'proposal-id', params: { id: this.success } })
       }
-      else {
-        console.error(this.error)
-        console.log(this.success)
-      }
     }
   },
   methods: {

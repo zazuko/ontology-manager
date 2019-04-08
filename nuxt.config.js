@@ -106,14 +106,21 @@ module.exports = async () => {
             user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
           }
         }
-      } : {
+      } : (process.env.NODE_ENV === 'production' ? {
         local: false,
         github: {
           client_id: '%%OAUTH_CLIENT_ID%%',
           client_secret: '%%OAUTH_CLIENT_SECRET%%',
           scope: ['user:email']
         }
-      }
+      } : {
+        local: false,
+        github: {
+          client_id: process.env.OAUTH_CLIENT_ID,
+          client_secret: process.env.OAUTH_CLIENT_SECRET,
+          scope: ['user:email']
+        }
+      })
     },
 
     /*
