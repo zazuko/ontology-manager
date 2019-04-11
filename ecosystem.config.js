@@ -5,6 +5,7 @@ module.exports = {
     name: 'editor',
     cwd: __dirname,
     script: 'node_modules/nuxt/bin/nuxt.js',
+    exp_backoff_restart_delay: 100,
     args: `-c ${join(__dirname, 'nuxt.config.js')} start`,
     instances: 1,
     autorestart: true,
