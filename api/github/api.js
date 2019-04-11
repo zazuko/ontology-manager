@@ -19,7 +19,7 @@ module.exports = class GitHubAPIv3 {
     // private helpers
     this.__octokit = octokitFactory({
       debug: process.env.NODE_ENV !== 'production',
-      auth: `token ${forge.committerPersonalAccessToken}`
+      auth: forge.committerPersonalAccessToken
     })
 
     const { getRefSHA, getFileSHA } = helpersFactory(this.__octokit)
