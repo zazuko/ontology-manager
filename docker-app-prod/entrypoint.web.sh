@@ -2,13 +2,8 @@
 set -euo pipefail
 
 node setup/migrate.js
-
-if [ ! -f .replaced ]; then
-  node setup/replace-vars.js
-  sleep 2
-
-  touch .replaced
-fi
+node setup/replace-vars.js
+sleep 10
 
 wait_for_pids()
 {

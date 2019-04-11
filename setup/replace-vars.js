@@ -20,7 +20,7 @@ async function replace () {
 
     const manifest = require(path.resolve(__dirname, '../.nuxt/dist/server/client.manifest.json'))
 
-    const pathToOriginal = path.resolve(__dirname, '../.nuxt_original')
+    const pathToOriginal = path.resolve(__dirname, '../nuxt_original')
     const pathToReplace = path.resolve(__dirname, '../.nuxt')
 
     const host = editor.host.replace(new RegExp('/$'), '')
@@ -31,18 +31,6 @@ async function replace () {
     await setManifest(manifest)
 
     shell(`find ${pathToReplace}/ \\
-      -type f \\
-      -name '*.js' \\
-      -exec sed -i "s+http://localhost:3000+${escape(editorUrl)}+g" '{}' \\; \\
-      -exec sed -i "s+localhost:3000+${escape(host)}+g" '{}' \\; \\
-      -exec sed -i "s+EDITOR_OAUTH_CLIENT_ID+${escape(editor.github.oauthClientId)}+g" '{}' \\; \\
-      -exec sed -i "s+EDITOR_OAUTH_CLIENT_SECRET+${escape(forge.oauthClientSecret)}+g" '{}' \\; \\
-      -exec sed -i "s+EDITOR_COMMITTER_PERSONAL_ACCESS_TOKEN+${escape(forge.committerPersonalAccessToken)}+g" '{}' \\; \\
-      -exec sed -i "s+${escape(dummy.editor.meta.title)}+${escape(editor.meta.title)}+g" '{}' \\; \\
-      -exec sed -i "s+${escape(dummy.editor.meta.customerName)}+${escape(editor.meta.customerName)}+g" '{}' \\; \\
-      -exec sed -i "s+${escape(dummy.editor.meta.description)}+${escape(editor.meta.description)}+g" '{}' \\;
-    `)
-    debug(`find ${pathToReplace}/ \\
       -type f \\
       -name '*.js' \\
       -exec sed -i "s+http://localhost:3000+${escape(editorUrl)}+g" '{}' \\; \\
