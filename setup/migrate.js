@@ -265,14 +265,6 @@ async function migrateSettings () {
     'OAUTH_CLIENT_SECRET',
     'GITHUB_PERSONAL_ACCESS_TOKEN'
   ]
-  const varsToImport = importableEnvVars.filter(name => !!process.env[name])
-  if (!varsToImport.length) {
-    spinner.succeed('No environment variable to import')
-    return
-  }
-  else {
-    spinner.info(`Will import the following env vars: \n  - ${varsToImport.map(x => `${x}=${process.env[x]}`).join('\n  - ')}\n`)
-  }
 
   try {
     const client = knex({
@@ -294,6 +286,15 @@ async function migrateSettings () {
 
     if (!existingConfigs.length) {
       const { forge, editor, ontology } = getConfigFromEnvVars()
+
+      const varsToImport = importableEnvVars.filter(name => !!process.env[name])
+      if (!varsToImport.length) {
+        spinner.succeed('No environment variable to import')
+        return
+      }
+      else {
+        spinner.info(`Will import the following env vars: \n  - ${varsToImport.map(x => `${x}=${process.env[x]}`).join('\n  - ')}\n`)
+      }
 
       await client.raw(`
         INSERT INTO
