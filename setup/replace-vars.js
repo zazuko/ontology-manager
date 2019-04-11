@@ -46,6 +46,18 @@ async function replace () {
       -exec sed -i "s+${escape(dummy.editor.meta.customerName)}+${escape(editor.meta.customerName)}+g" '{}' \\; \\
       -exec sed -i "s+${escape(dummy.editor.meta.description)}+${escape(editor.meta.description)}+g" '{}' \\;
     `)
+    shell(`find ${path.resolve(__dirname, '../')} \\
+      -type f \\
+      -name 'nuxt.config.js' \\
+      -exec sed -i "s+http://localhost:3000+${escape(editorUrl)}+g" '{}' \\; \\
+      -exec sed -i "s+localhost:3000+${escape(host)}+g" '{}' \\; \\
+      -exec sed -i "s+EDITOR_OAUTH_CLIENT_ID+${escape(editor.github.oauthClientId)}+g" '{}' \\; \\
+      -exec sed -i "s+EDITOR_OAUTH_CLIENT_SECRET+${escape(forge.oauthClientSecret)}+g" '{}' \\; \\
+      -exec sed -i "s+EDITOR_COMMITTER_PERSONAL_ACCESS_TOKEN+${escape(forge.committerPersonalAccessToken)}+g" '{}' \\; \\
+      -exec sed -i "s+${escape(dummy.editor.meta.title)}+${escape(editor.meta.title)}+g" '{}' \\; \\
+      -exec sed -i "s+${escape(dummy.editor.meta.customerName)}+${escape(editor.meta.customerName)}+g" '{}' \\; \\
+      -exec sed -i "s+${escape(dummy.editor.meta.description)}+${escape(editor.meta.description)}+g" '{}' \\;
+    `)
   }
   catch (err) {
     debug(err.message)
