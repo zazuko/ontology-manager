@@ -12,14 +12,10 @@ build:
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-    # all the build-arg variables should be set in the env where the build gets executed
-    - docker build --pull -t "$CI_REGISTRY_IMAGE/web" -f docker-app-prod/Dockerfile.web .
-    - docker push "$CI_REGISTRY_IMAGE/web"
-    # spare registry disk space
-    # - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    # - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker tag "$CI_REGISTRY_IMAGE/web" "$CI_REGISTRY_IMAGE/web:latest"
-    - docker push "$CI_REGISTRY_IMAGE/web:latest"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest" -f docker-app-prod/Dockerfile.web .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+    - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
   only:
     - tags
 
@@ -27,15 +23,6 @@ deploy1:
   stage: deploy
   image: cdrx/rancher-gitlab-deploy
   script:
-    # - upgrade --environment default --stack ontology-editor-dev --service web --new-image $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME
-    - upgrade --environment default --stack ontology-editor --service editor-zazuko-com --new-image $CI_REGISTRY_IMAGE/web:latest --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
+    - upgrade --environment default --stack ontology-editor --service editor-zazuko-com --new-image $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
   only:
     - tags
-
-# deploy2:
-#   stage: deploy
-#   image: cdrx/rancher-gitlab-deploy
-#   script:
-#     - upgrade --environment default --stack ontology-editor --service tcfplayground-org --new-image $CI_REGISTRY_IMAGE/web:latest --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
-#   only:
-#     - tags
