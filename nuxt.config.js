@@ -66,7 +66,7 @@ module.exports = async () => {
     modules: [
       '@/modules/vue-deepset',
       '@nuxtjs/axios',
-      '@nuxtjs/auth',
+      '@/modules/auth',
       '@nuxtjs/apollo',
       '@nuxtjs/toast',
       '@nuxtjs/sentry',
@@ -109,8 +109,8 @@ module.exports = async () => {
       } : (process.env.NODE_ENV === 'production' ? {
         local: false,
         github: {
-          client_id: '%%OAUTH_CLIENT_ID%%',
-          client_secret: '%%OAUTH_CLIENT_SECRET%%',
+          client_id: 'EDITOR_OAUTH_CLIENT_ID',
+          client_secret: 'EDITOR_OAUTH_CLIENT_SECRET',
           scope: ['user:email']
         }
       } : {
