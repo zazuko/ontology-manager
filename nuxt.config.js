@@ -66,7 +66,7 @@ module.exports = async () => {
     modules: [
       '@/modules/vue-deepset',
       '@nuxtjs/axios',
-      '@nuxtjs/auth',
+      '@/modules/auth',
       '@nuxtjs/apollo',
       '@nuxtjs/toast',
       '@nuxtjs/sentry',
