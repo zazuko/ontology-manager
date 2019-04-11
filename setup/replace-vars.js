@@ -18,7 +18,11 @@ async function replace () {
     const { editor, forge } = await fetchConfig()
     const dummy = dummyConfig()
 
-    const manifest = require(path.resolve(__dirname, '../.nuxt/dist/server/client.manifest.json'))
+    let manifest = require(path.resolve(__dirname, '../nuxt_original/dist/server/client.manifest.json'))
+    try {
+      manifest = require(path.resolve(__dirname, '../.nuxt/dist/server/client.manifest.json'))
+    }
+    catch (err) {}
 
     const pathToOriginal = path.resolve(__dirname, '../nuxt_original')
     const pathToReplace = path.resolve(__dirname, '../.nuxt')
