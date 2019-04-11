@@ -5,6 +5,7 @@ const path = require('path')
 const shell = require('child_process').execSync
 const dummyConfig = require('../fixtures/dummy-config')
 const fetchConfig = require('./fetch-config')
+const debug = require('debug')('editor:entrypoint')
 
 module.exports = replace
 
@@ -43,7 +44,7 @@ async function replace () {
     `)
   }
   catch (err) {
-    console.log(err.message)
+    debug(err.message)
   }
 }
 
@@ -61,6 +62,7 @@ async function setManifest (manifest) {
     else {
       v = 0
     }
+    debug(`new version: ?v=${v + 1}`)
     return `${filename}?v=${v + 1}`
   })
   await fs.writeFile(
