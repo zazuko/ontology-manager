@@ -20,7 +20,7 @@ ENV BUILDING_WITHOUT_PG_ACCESS=
 FROM nginx:1.15
 
 COPY --from=build-stage /usr/src/app /usr/src/app
-RUN cp -r /usr/src/app/.nuxt /usr/src/app/.nuxt_original
+RUN mv /usr/src/app/.nuxt /usr/src/app/nuxt_original
 
 ENV NODE_PATH=/usr/local/include/node:/usr/local/lib/node_modules:/usr/share/javascript
 

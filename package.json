@@ -1,6 +1,6 @@
 {
   "name": "ontology-editor",
-  "version": "0.9.2",
+  "version": "0.9.8",
   "description": "Semantic Web, RDF ontology editor",
   "author": "Zazuko GmbH",
   "private": true,
@@ -25,7 +25,7 @@
     "@babel/core": "^7.4.3",
     "@mdi/font": "^3.5.95",
     "@nuxtjs/apollo": "git://github.com/nuxt-community/apollo-module.git#3ad51bf70574d8240398b0a0d9dcb02e6897bf6c",
-    "@nuxtjs/auth": "^4.5.2",
+    "@nuxtjs/auth": "file:./modules/auth/",
     "@nuxtjs/axios": "^5.4.1",
     "@nuxtjs/feed": "^1.1.0",
     "@nuxtjs/sentry": "^2.3.2",
