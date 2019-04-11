@@ -20,7 +20,7 @@ module.exports = () => ({
       repo: '',
       owner: '',
       branch: '',
-      oauthClientId: '%%OAUTH_CLIENT_ID%%'
+      oauthClientId: 'EDITOR_OAUTH_CLIENT_ID'
     },
     committer: {
       name: '',
@@ -38,7 +38,7 @@ module.exports = () => ({
   },
   forge: {
     oauthHost: 'https://github.com/login/oauth',
-    oauthClientSecret: '%%OAUTH_CLIENT_SECRET%%',
-    committerPersonalAccessToken: '%%COMMITTER_PERSONAL_ACCESS_TOKEN%%'
+    oauthClientSecret: 'EDITOR_OAUTH_CLIENT_SECRET',
+    committerPersonalAccessToken: 'EDITOR_COMMITTER_PERSONAL_ACCESS_TOKEN'
   }
 })
