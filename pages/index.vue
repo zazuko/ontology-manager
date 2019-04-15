@@ -42,11 +42,19 @@ export default {
     this.ontology = this.$store.getters['graph/ontology']
     this.structure = this.$store.getters['graph/structure']
 
-    // setTimeout(() => {
-    //   if (this.$store.state.config.setup) {
-    //     this.$router.push('/install')
-    //   }
-    // }, 2000)
+    setTimeout(() => {
+      const cookies = document.cookie.split(';')
+      if (cookies.length > 1 && this.$store.state.config.setup && process.browser) {
+
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i]
+          const eqPos = cookie.indexOf('=')
+          const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
+        }
+        location.reload()
+      }
+    }, 1000)
   },
   data () {
     return {
