@@ -7,7 +7,23 @@
             class="footer-icon"
             :src="$store.state.config.editor.logoUrl">
         </nuxt-link>
-        <span>© {{ (new Date()).getFullYear() }} {{ $store.state.config.editor.meta.customerName }}. All rights reserved</span>
+        <p>
+          <span>© {{ (new Date()).getFullYear() }} {{ $store.state.config.editor.meta.customerName }}. All rights reserved</span>
+          <br>
+          Feeds:
+          <nuxt-link :to="{ path: '/atom.xml', params: {} }">
+            atom
+            <span class="icon">
+              <i class="mdi mdi-rss-box" />
+            </span>
+          </nuxt-link>
+          <nuxt-link :to="{ path: '/rss.xml', params: {} }">
+            rss
+            <span class="icon">
+              <i class="mdi mdi-rss-box" />
+            </span>
+          </nuxt-link>
+        </p>
       </div>
 
       <div class="level-right">
