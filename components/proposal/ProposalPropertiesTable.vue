@@ -188,7 +188,7 @@ export default {
       if (!label) {
         return this.$unPrefix(aTerm.value)
       }
-      return term(label)
+      return term(label.object)
     },
     reselectDomain (index) {
       this.$emit('reselectDomain', index)
