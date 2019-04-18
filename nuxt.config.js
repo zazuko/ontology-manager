@@ -136,8 +136,7 @@ module.exports = async () => {
     ** Module config: sentry
     */
     sentry: {
-      disabled: !process.env.SENTRY_DSN,
-      disableClientSide: !process.env.SENTRY_DSN,
+      dsn: process.env.SENTRY_DSN,
       config: {
         release: version
       }
