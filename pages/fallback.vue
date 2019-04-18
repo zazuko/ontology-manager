@@ -3,8 +3,8 @@
     <div
       v-if="iri"
       :class="{
-        'layout-objects-list': $termIRI.creativeWork.equals(objectType),
-        'layout-object-details': !$termIRI.creativeWork.equals(objectType)
+        'layout-objects-list': IRIs.creativeWork.equals(objectType),
+        'layout-object-details': !IRIs.creativeWork.equals(objectType)
       }"
       class="container">
 
@@ -12,7 +12,7 @@
 
       <!-- layout-objects-list -->
       <div
-        v-if="$termIRI.creativeWork.equals(objectType)"
+        v-if="IRIs.creativeWork.equals(objectType)"
         v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
@@ -29,7 +29,7 @@
             :obj="subtree"
             :ontology="ontology"
             :structure="structure"
-            :is-class="$termIRI.ClassLikes.includes(objectType.value)" />
+            :is-class="IRIs.ClassLikes.includes(objectType.value)" />
         </section>
 
         <template
@@ -182,6 +182,9 @@ export default {
         return comment.object.value
       }
       return ''
+    },
+    IRIs () {
+      return this.$termIRI
     }
   },
   data () {
