@@ -225,7 +225,7 @@ export default {
         AUTHOR_ID: false,
         HAT_ID: false,
         THREAD_TYPE: false,
-        UPDATED_AT: false,
+        UPDATED_AT: 'DESC',
         STATUS: false
       }
     }
