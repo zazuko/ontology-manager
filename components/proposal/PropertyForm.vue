@@ -449,7 +449,7 @@ export default {
       let maxRetry = 20
       setTimeout(() => {
         const waitForYate = setInterval(() => {
-          if (window.YATE) {
+          if (window.YATE && this.$refs.exampleTextarea) {
             clearInterval(waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.disabled,
