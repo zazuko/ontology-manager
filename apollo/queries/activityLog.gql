@@ -1,5 +1,5 @@
 query ActivityLog {
-  logs: allLogs (last: 15, orderBy: EVENT_DATE_DESC) {
+  logs: allLogs (first: 15, orderBy: EVENT_DATE_DESC) {
     lines: nodes {
       id,
       author: personByAuthorId {
