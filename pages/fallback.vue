@@ -1,18 +1,19 @@
 <template>
   <div>
+    <loader
+      v-if="!dataReady"
+      :show-if="!dataReady" />
     <div
-      v-if="iri"
+      v-else-if="iri"
       :class="{
-        'layout-objects-list': IRIs.creativeWork.equals(objectType),
-        'layout-object-details': !IRIs.creativeWork.equals(objectType)
+        'layout-objects-list': isObjectList,
+        'layout-object-details': isObjectDetails
       }"
       class="container">
 
-      <loader :show-if="!dataReady" />
-
       <!-- layout-objects-list -->
       <div
-        v-if="IRIs.creativeWork.equals(objectType)"
+        v-if="$termIRI.creativeWork.equals(objectType)"
         v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
@@ -29,7 +30,7 @@
             :obj="subtree"
             :ontology="ontology"
             :structure="structure"
-            :is-class="IRIs.ClassLikes.includes(objectType.value)" />
+            :is-class="$termIRI.ClassLikes.includes(objectType.value)" />
         </section>
 
         <template
@@ -146,6 +147,12 @@ export default {
     Loader
   },
   computed: {
+    isObjectList () {
+      return this.$termIRI && this.$termIRI.creativeWork.equals(this.objectType)
+    },
+    isObjectDetails () {
+      return !this.isObjectList
+    },
     subtree () {
       const structureTree = this.$store.state.graph.structureTree
       const tree = findSubtreeInForest(structureTree, this.iri)
@@ -182,9 +189,6 @@ export default {
         return comment.object.value
       }
       return ''
-    },
-    IRIs () {
-      return this.$termIRI
     }
   },
   data () {
