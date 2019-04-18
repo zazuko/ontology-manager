@@ -2,10 +2,26 @@
   padding-top: 3em;
   padding-bottom: 4em;
 
-  .is-subform .box {
-    border-top: solid 1px $theme-shadow;
-    border-radius: 0 0 8px 8px;
-    margin-bottom: 2em;
+  .is-subform {
+    &.box {
+      border-top: solid 1px $theme-shadow;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 2em;
+    }
+
+    // subforms have a darker background, we want disabled fields to stand out otherwise the default
+    // disabled field background blends into the subform background
+    .input[disabled], fieldset[disabled] .input, .textarea[disabled], fieldset[disabled] .textarea {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      box-shadow: none;
+      color: #565656;
+    }
+    .editor .editor__content .ProseMirror[contenteditable=false] {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      color: #565656;
+    }
   }
 
   .is-prop-subform > .box {
