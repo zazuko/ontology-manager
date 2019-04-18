@@ -45,7 +45,6 @@ export default {
     setTimeout(() => {
       const cookies = document.cookie.split(';')
       if (cookies.length > 1 && this.$store.state.config.setup && process.browser) {
-
         for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i]
           const eqPos = cookie.indexOf('=')
