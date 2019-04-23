@@ -32,7 +32,6 @@ export const actions = {
     }
     if (!datasetPolling && process.server) {
       datasetPolling = setInterval(() => {
-        console.log(new Date())
         dispatch('graph/RELOAD_DATASET')
       }, 5000)
     }
