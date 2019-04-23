@@ -2,6 +2,8 @@ const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
 const debug = require('debug')('editor:api')
 
+const __cache = new Map()
+
 module.exports = class GitHubAPIv3 {
   constructor ({ forge, editor, ontology }) {
     debug('new GitHubAPIv3')
@@ -27,26 +29,29 @@ module.exports = class GitHubAPIv3 {
     const { getRefSHA, getFileSHA } = helpersFactory(this.__octokit)
     this.__getRefSHA = getRefSHA
     this.__getFileSHA = getFileSHA
-
-    this.__cache = new Map()
   }
 
   async createBranch () {
     const owner = this.owner
     const repo = this.repo
-    const sha = await this.__getRefSHA({
+    const getRefSHAParams = {
       ref: `heads/${this.branch}`,
       owner,
       repo
-    })
+    }
+    debug('createBranch: getting SHA for ref', getRefSHAParams)
+    const sha = await this.__getRefSHA(getRefSHAParams)
 
     const branchName = (new Date()).toISOString().replace(/:/g, '')
-    await this.__octokit.git.createRef({
+
+    const createRefParams = {
       ref: `refs/heads/${branchName}`,
       sha,
       owner,
       repo
-    })
+    }
+    debug('createBranch: creating ref', createRefParams)
+    await this.__octokit.git.createRef(createRefParams)
 
     return {
       name: branchName
@@ -59,7 +64,7 @@ module.exports = class GitHubAPIv3 {
     const ref = `heads/${branch}`
     const query = { owner, repo, path, ref }
 
-    const cached = this.__cache.get(`${ref}/${path}`)
+    const cached = __cache.get(`${ref}/${path}`)
     const headers = cached ? { 'If-Modified-Since': cached.lastModified } : {}
 
     let content
@@ -67,7 +72,7 @@ module.exports = class GitHubAPIv3 {
       const response = await this.__octokit.repos.getContents({ ...query, headers })
       content = Buffer.from(response.data.content, 'base64').toString()
       const lastModified = response.headers['last-modified']
-      this.__cache.set(`${ref}/${path}`, { lastModified, content })
+      __cache.set(`${ref}/${path}`, { lastModified, content })
     }
     catch (error) {
       // '304 not modified', let's serve cached version
