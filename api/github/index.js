@@ -255,8 +255,8 @@ module.exports = async function (editorConfig) {
       try {
         await api.closePR({ number })
       }
-      catch (errorOctokit) {
-        res.status(errorOctokit.code).json(errorOctokit)
+      catch (octokitError) {
+        res.status(octokitError.status).json(octokitError)
         return
       }
     }
