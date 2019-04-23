@@ -6,7 +6,6 @@ const __cache = new Map()
 
 module.exports = class GitHubAPIv3 {
   constructor ({ forge, editor, ontology }) {
-    debug('new GitHubAPIv3')
     this.branch = editor.github.branch
     this.owner = editor.github.owner
     this.repo = editor.github.repo
@@ -22,8 +21,12 @@ module.exports = class GitHubAPIv3 {
 
     // private helpers
     this.__octokit = octokitFactory({
-      debug: process.env.NODE_ENV !== 'production',
-      auth: forge.committerPersonalAccessToken
+      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:api'),
+      auth: `token ${forge.committerPersonalAccessToken}`
+    })
+    debug('new GitHubAPIv3', {
+      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:api'),
+      auth: `token ${forge.committerPersonalAccessToken}`
     })
 
     const { getRefSHA, getFileSHA } = helpersFactory(this.__octokit)
