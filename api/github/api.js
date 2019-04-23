@@ -53,14 +53,6 @@ module.exports = class GitHubAPIv3 {
     }
   }
 
-  async getHeadSHA ({ branch = this.branch } = {}) {
-    const owner = this.owner
-    const repo = this.repo
-    const ref = `heads/${branch}`
-    const response = await this.__octokit.repos.getCommitRefSha({ owner, repo, ref })
-    return response.data.sha
-  }
-
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
     const owner = this.owner
     const repo = this.repo
@@ -104,6 +96,7 @@ module.exports = class GitHubAPIv3 {
       owner,
       repo
     })
+    debug(`updateFile: for 'refs/heads/${branch}' SHA is '${sha}'`)
 
     const response = await this.__octokit.repos.updateFile({
       content: Buffer.from(content).toString('base64'),
@@ -116,6 +109,7 @@ module.exports = class GitHubAPIv3 {
       committer,
       author
     })
+    debug(`updateFile: '${path}' committed`)
 
     return response
   }
@@ -133,6 +127,7 @@ module.exports = class GitHubAPIv3 {
       title,
       body
     })
+    debug(`createPR: ${branch} based on ${this.branch} created with number: ${response.data.number}`)
 
     return {
       number: response.data.number
