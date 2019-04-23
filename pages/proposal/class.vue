@@ -275,19 +275,27 @@ export default {
       load: LOAD
     }),
     async sendProposal () {
-      // Send splash screen
-      this.isLoading = true
-      // remove draft status from the json proposalObject
-      this.$vuexSet('class.clss.isDraft', false)
-      // save the changes
-      await this.autosaveDraft()
-      this.stopAutosave()
+      try {
+        // Send splash screen
+        this.isLoading = true
+        // remove draft status from the json proposalObject
+        this.$vuexSet('class.clss.isDraft', false)
+        // save the changes
+        await this.autosaveDraft()
+        this.stopAutosave()
 
-      const token = this.$apolloHelpers.getToken()
-      // create the PR etc
-      await this.submit(token)
-      // submit will commit success or error to the store,
-      // see this page's `watch`ers
+        const token = this.$apolloHelpers.getToken()
+        // create the PR etc
+        await this.submit(token)
+        // submit will commit success or error to the store,
+        // see this page's `watch`ers
+      }
+      catch (err) {
+        this.$vuexSet('class.clss.isDraft', true)
+        // save the changes
+        await this.autosaveDraft()
+        this.isLoading = false
+      }
     },
     stopAutosave () {
       clearInterval(this.saveInterval)
