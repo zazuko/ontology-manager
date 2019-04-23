@@ -1,8 +1,10 @@
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
+const debug = require('debug')('editor:api')
 
 module.exports = class GitHubAPIv3 {
   constructor ({ forge, editor, ontology }) {
+    debug('new GitHubAPIv3')
     this.branch = editor.github.branch
     this.owner = editor.github.owner
     this.repo = editor.github.repo
@@ -25,6 +27,8 @@ module.exports = class GitHubAPIv3 {
     const { getRefSHA, getFileSHA } = helpersFactory(this.__octokit)
     this.__getRefSHA = getRefSHA
     this.__getFileSHA = getFileSHA
+
+    this.__cache = new Map()
   }
 
   async createBranch () {
@@ -49,12 +53,42 @@ module.exports = class GitHubAPIv3 {
     }
   }
 
+  async getHeadSHA ({ branch = this.branch } = {}) {
+    const owner = this.owner
+    const repo = this.repo
+    const ref = `heads/${branch}`
+    const response = await this.__octokit.repos.getCommitRefSha({ owner, repo, ref })
+    return response.data.sha
+  }
+
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
     const owner = this.owner
     const repo = this.repo
-    const ref = `heads/${this.branch}`
-    const result = await this.__octokit.repos.getContents({ owner, repo, path, ref })
-    const content = Buffer.from(result.data.content, 'base64').toString()
+    const ref = `heads/${branch}`
+    const query = { owner, repo, path, ref }
+
+    const cached = this.__cache.get(`${ref}/${path}`)
+    const headers = cached ? { 'If-Modified-Since': cached.lastModified } : {}
+
+    let content
+    try {
+      const response = await this.__octokit.repos.getContents({ ...query, headers })
+      content = Buffer.from(response.data.content, 'base64').toString()
+      const lastModified = response.headers['last-modified']
+      this.__cache.set(`${ref}/${path}`, { lastModified, content })
+    }
+    catch (error) {
+      // '304 not modified', let's serve cached version
+      if (error.status === 304) {
+        debug(`github sent 304 for file ${ref}/${path}`)
+        content = cached.content
+      }
+      else {
+        debug(`rate limit: ${error.headers['x-ratelimit-remaining']}`)
+        throw error
+      }
+    }
+
     return content
   }
 
@@ -71,7 +105,7 @@ module.exports = class GitHubAPIv3 {
       repo
     })
 
-    const result = await this.__octokit.repos.updateFile({
+    const response = await this.__octokit.repos.updateFile({
       content: Buffer.from(content).toString('base64'),
       path,
       owner,
@@ -83,14 +117,14 @@ module.exports = class GitHubAPIv3 {
       author
     })
 
-    return result
+    return response
   }
 
   async createPR ({ title, body, branch } = {}) {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await this.__octokit.pullRequests.create({
+    const response = await this.__octokit.pullRequests.create({
       head: branch,
       base: this.branch,
       maintainer_can_modify: true,
@@ -101,7 +135,7 @@ module.exports = class GitHubAPIv3 {
     })
 
     return {
-      number: result.data.number
+      number: response.data.number
     }
   }
 
@@ -109,7 +143,7 @@ module.exports = class GitHubAPIv3 {
     const owner = this.owner
     const repo = this.repo
 
-    const result = await this.__octokit.pullRequests.merge({
+    const response = await this.__octokit.pullRequests.merge({
       owner,
       repo,
       number,
@@ -117,8 +151,8 @@ module.exports = class GitHubAPIv3 {
     })
 
     return {
-      success: !!result.data.merged, // true | undefined => bool
-      message: result.data.message // shown to user if !success
+      success: !!response.data.merged, // true | undefined => bool
+      message: response.data.message // shown to user if !success
     }
   }
 

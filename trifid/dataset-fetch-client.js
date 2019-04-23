@@ -5,8 +5,8 @@ import axios from 'axios'
 
 const debug = require('debug')('editor:trifid')
 
-// * used by the store to refresh client-side dataset after a merge
-// only used client-side, the other one cannot be used client-side because of
+// * used by the store to refresh client-side dataset after a merge.
+// Only used client-side, the other one cannot be used client-side because of
 // knex
 export default async function fetchDataset (editorConfig) {
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
