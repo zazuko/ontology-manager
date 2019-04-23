@@ -5,12 +5,12 @@ module.exports = {
     name: 'editor',
     cwd: __dirname,
     script: 'node_modules/nuxt/bin/nuxt.js',
-    exp_backoff_restart_delay: 100,
+    exp_backoff_restart_delay: 500,
     args: `-c ${join(__dirname, 'nuxt.config.js')} start`,
     instances: 1,
     autorestart: true,
     watch: false,
-    max_memory_restart: '420M',
+    max_memory_restart: '500M',
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'production'

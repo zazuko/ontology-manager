@@ -2,6 +2,7 @@ const _ = require('lodash')
 const Router = require('express').Router
 const axios = require('axios')
 const gql = require('graphql-tag')
+const debug = require('debug')('editor:api')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
@@ -149,13 +150,14 @@ module.exports = async function (editorConfig) {
 
     try {
       const { name: branch } = await api.createBranch()
-
+      debug(`/proposal/submit/: created branch: ${branch}`)
       await api.updateFile({
         branch,
         author,
         message: `ontology: ${message}`,
         content: ontologyContent
       })
+      debug(`/proposal/submit/: ontology committed on branch ${branch}`)
       if (structureContent) {
         await api.updateFile({
           branch,
@@ -164,9 +166,11 @@ module.exports = async function (editorConfig) {
           content: structureContent,
           structure: true
         })
+        debug(`/proposal/submit/: structure committed on branch ${branch}`)
       }
 
       const { number } = await api.createPR({ title, body, branch })
+      debug(`/proposal/submit/: PR is #${number}`)
 
       const userApolloClient = await getApolloClientForUser(req)
 
@@ -189,6 +193,7 @@ module.exports = async function (editorConfig) {
           newBranchName: branch
         }
       })
+      debug('/proposal/submit/: proposal finalized')
 
       res.json(result.data)
     }
