@@ -147,6 +147,7 @@ import discardDraft from '@/apollo/mutations/discardDraft'
 import ClassForm from '@/components/proposal/ClassForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
+import { toastClose } from '@/libs/utils'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
@@ -265,6 +266,15 @@ export default {
         this.$store.dispatch('drafts/LOAD')
         this.$router.push({ name: 'proposal-id', params: { id: this.success } })
       }
+    },
+    error () {
+      if (this.error && !this.success) {
+        this.$vuexSet('class.clss.isDraft', true)
+        this.autosaveDraft().then(() => {
+          this.isLoading = false
+          this.$toast.error(`Error: ${this.error}`, toastClose)
+        })
+      }
     }
   },
   methods: {
@@ -275,27 +285,19 @@ export default {
       load: LOAD
     }),
     async sendProposal () {
-      try {
-        // Send splash screen
-        this.isLoading = true
-        // remove draft status from the json proposalObject
-        this.$vuexSet('class.clss.isDraft', false)
-        // save the changes
-        await this.autosaveDraft()
-        this.stopAutosave()
+      // Send splash screen
+      this.isLoading = true
+      // remove draft status from the json proposalObject
+      this.$vuexSet('class.clss.isDraft', false)
+      // save the changes
+      await this.autosaveDraft()
+      this.stopAutosave()
 
-        const token = this.$apolloHelpers.getToken()
-        // create the PR etc
-        await this.submit(token)
-        // submit will commit success or error to the store,
-        // see this page's `watch`ers
-      }
-      catch (err) {
-        this.$vuexSet('class.clss.isDraft', true)
-        // save the changes
-        await this.autosaveDraft()
-        this.isLoading = false
-      }
+      const token = this.$apolloHelpers.getToken()
+      // create the PR etc
+      await this.submit(token)
+      // submit will commit success or error to the store,
+      // see this page's `watch`ers
     },
     stopAutosave () {
       clearInterval(this.saveInterval)
