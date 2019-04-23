@@ -49,6 +49,7 @@ module.exports = async () => {
     * Order matters!
     */
     plugins: [
+      '@/plugins/sentry',
       '@/plugins/libs/rdf',
       '@/plugins/models/Class',
       '@/plugins/models/Property',
@@ -136,7 +137,6 @@ module.exports = async () => {
     ** Module config: sentry
     */
     sentry: {
-      dsn: process.env.SENTRY_DSN,
       config: {
         release: version
       }
