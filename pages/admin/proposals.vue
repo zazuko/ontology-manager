@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       proposals: [],
-      orderBy: [],
+      orderBy: ['UPDATED_AT_DESC'],
       filterStatus: false,
       pageSize: 10
     }
