@@ -248,8 +248,8 @@ export default {
       catch (err) {
         this.working = false
         console.error(err)
-        this.$sentry.captureException(err)
         this.$toast.error(`Error: ${err.response.data.message || err.message}`, toastClose).goAway(1600)
+        this.$sentry.captureException(err)
       }
     },
     async reject (proposal, status = 'REJECTED') {

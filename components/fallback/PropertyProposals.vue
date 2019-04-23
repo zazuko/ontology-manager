@@ -97,6 +97,7 @@ export default {
         }
       },
       fetchPolicy: 'no-cache',
+      pollInterval: 1000 * 15,
       result ({ data, loading }) {
         if (!loading) {
           const proposals = _get(data, 'proposals.proposals', [])

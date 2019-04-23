@@ -1,22 +1,13 @@
 const _ = require('lodash')
 const Router = require('express').Router
 const axios = require('axios')
-const apicache = require('apicache')
 const gql = require('graphql-tag')
-const debug = require('debug')('editor:api')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
 module.exports = async function (editorConfig) {
   const router = Router()
   const api = new GitHubAPIv3(editorConfig)
-  const onlyStatus200 = (req, res) => res.statusCode === 200
-  const cache = (duration) => apicache.middleware(duration, onlyStatus200)
-
-  process.on('SIGHUP', () => {
-    apicache.clear()
-    debug('GitHub API: apicache cleared')
-  })
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
@@ -25,29 +16,13 @@ module.exports = async function (editorConfig) {
     getAuth: () => req.get('Authorization'),
     ssr: true
   })
-  const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
-  const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
 
   router.get('/', (req, res, next) => {
     res.send('Ontology Editor currently using GitHub')
   })
 
-  router.get('/cache', (req, res) => {
-    res.json(apicache.getIndex())
-  })
-
-  router.get('/blob/:branch/:file', cache('5 minutes'), async (req, res, next) => {
+  router.get('/blob/:file', async (req, res, next) => {
     const path = req.params.file
-    const branch = req.params.branch
-    const content = await api.getFile({ path, branch })
-    res.type('application/n-triples')
-
-    res.send(content)
-  })
-
-  router.get('/blob/:file', cache('5 minutes'), async (req, res, next) => {
-    const path = req.params.file
-    req.apicacheGroup = `file:${path}`
     const content = await api.getFile({ path })
     res.type('application/n-triples')
 
@@ -227,10 +202,6 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/merge', async (req, res, next) => {
-    [ontologyFilename, structureFilename].forEach((file) => {
-      apicache.clear(`file:${file}`)
-    })
-
     const { threadId, number } = req.body
 
     try {
@@ -272,9 +243,6 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/close', async (req, res, next) => {
-    [ontologyFilename, structureFilename].forEach((file) => {
-      apicache.clear(`file:${file}`)
-    })
 
     const { threadId, number, status } = req.body
 
