@@ -5,6 +5,9 @@
     border-radius: 8px;
     overflow: hidden;
     min-height: 400px;
+    @include tablet {
+      width: 770px;
+    }
   }
 
   .modal-card-head {
