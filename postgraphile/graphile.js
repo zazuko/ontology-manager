@@ -9,7 +9,8 @@ const pgConfig = {
   password: process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD,
   port: 5432,
   // number of milliseconds before a query will time out default is no timeout
-  statement_timeout: 5000
+  // bigger timeout for dev env to account for longer app startup time
+  statement_timeout: process.env.NODE_ENV === 'production' ? 5000 : 15000
 }
 
 const schemaName = 'editor_schema'
