@@ -27,12 +27,21 @@
       </div>
 
       <div class="level-right">
-        <a href="#page-top">
-          Back to the top
-          <span class="footer-back-icon icon is-medium">
-            <i class="mdi mdi-chevron-up" />
-          </span>
-        </a>
+        <p>
+          <a href="#page-top">
+            Back to the top
+            <span class="footer-back-icon icon is-medium">
+              <i class="mdi mdi-chevron-up" />
+            </span>
+          </a>
+          <br>
+          <nuxt-link :to="{ name: 'support' }">
+            Support
+            <span class="footer-back-icon icon is-medium">
+              <i class="mdi mdi-lifebuoy" />
+            </span>
+          </nuxt-link>
+        </p>
       </div>
     </div>
   </footer>
