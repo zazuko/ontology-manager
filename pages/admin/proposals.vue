@@ -88,7 +88,7 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
       skip () {
-        return !this.$store.state.authProcessDone
+        return (process.client && !this.$store.state.authProcessDone)
       }
     }
   },

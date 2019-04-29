@@ -83,7 +83,7 @@ export default {
         this.userVote = data.userVote
       },
       skip () {
-        return !this.$store.state.authProcessDone
+        return (process.client && !this.$store.state.authProcessDone)
       }
     },
     tally: {
@@ -104,7 +104,7 @@ export default {
       },
       pollInterval: 1000 * 30,
       skip () {
-        return !this.$store.state.authProcessDone
+        return (process.client && !this.$store.state.authProcessDone)
       }
     }
   }
