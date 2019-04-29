@@ -48,6 +48,16 @@
             {{ classesCount }}
           </span>
         </div>
+        <div
+          v-show="!isProposal"
+          class="class-box-level-item">
+          <span class="class-box-label">
+            Proposal{{ proposalCount === 1 ? '' : 's' }}
+          </span>
+          <span class="class-box-value">
+            {{ proposalCount }}
+          </span>
+        </div>
         <!--<div class="class-box-level-item">
           <span class="class-box-label">
             Propert{{ propertiesCount === 1 ? 'y' : 'ies' }}
@@ -62,7 +72,9 @@
 </template>
 
 <script>
+import _get from 'lodash/get'
 import { iriToId } from '@/libs/utils'
+import countProposalsByIri from '@/apollo/queries/countProposalsByIri'
 
 export default {
   name: 'PouchBox',
@@ -105,8 +117,36 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      proposalCount: 0
+    }
+  },
   methods: {
     iriToId
+  },
+  apollo: {
+    proposals: {
+      query: countProposalsByIri,
+      variables () {
+        return {
+          iri: this.iri
+        }
+      },
+      fetchPolicy: 'no-cache',
+      pollInterval: 1000 * Math.round(30 + Math.random() * 20),
+      result ({ data, loading }) {
+        if (!loading) {
+          const proposals = _get(data, 'proposals.proposals', [])
+          this.proposalCount = proposals.length
+        }
+      },
+      skip () {
+        return (process.client && !this.$store.state.authProcessDone) ||
+          this.type !== 'container' ||
+          this.isProposal
+      }
+    }
   }
 }
 </script>

@@ -111,7 +111,7 @@ export default {
         return []
       },
       skip () {
-        return !this.$store.state.authProcessDone
+        return (process.client && !this.$store.state.authProcessDone)
       }
     }
   }
