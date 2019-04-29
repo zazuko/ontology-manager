@@ -27,6 +27,15 @@
               v-show="proposalObject['iri']"
               class="subtitle is-1">
               <span class="title-url">{{ proposalObject['iri'] }}</span>
+              <span
+                v-for="(sameAs, index) in proposalObject['sameAs']"
+                :key="index">
+                <br>
+                sameAs:
+                <span class="title-url">
+                  {{ displayNewSameAs(sameAs) }}
+                </span>
+              </span>
             </p>
           </div>
           <div class="column">
@@ -155,12 +164,7 @@
                       @click.prevent="unselectSameAs(index)">
                       <i class="mdi mdi-close-circle" />
                     </span>
-                    <span v-if="!sameAs.label && sameAs.predicate.value === $termIRI.a.value">
-                      {{ term(sameAs.subject) }}
-                    </span>
-                    <span v-else>
-                      {{ (sameAs.object && sameAs.object.value || term(sameAs.object)) || sameAs.label }}
-                    </span>
+                    {{ displayNewSameAs(sameAs) }}
                   </a>
                   <template v-if="proposalObject['isEdit'] && disabled">
                     <p
@@ -656,6 +660,13 @@ export default {
         }
       }
       this.onParentIRIChange()
+    },
+    displayNewSameAs (sameAs) {
+      if (!sameAs.label && sameAs.predicate.value === this.$termIRI.a.value) {
+        return term(sameAs.subject)
+      }
+
+      return ((sameAs.object && sameAs.object.value) || term(sameAs.object)) || sameAs.label
     }
   }
 }
