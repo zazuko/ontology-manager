@@ -16,7 +16,12 @@
               New {{ type }} Request: "{{ obj.label }}"
             </h1>
             <h2 class="subtitle is-1">
-              On <span class="title-url">{{ obj.parentStructureIRI }}</span>
+              On
+              <nuxt-link
+                :to="$rebaseIRI(obj.parentStructureIRI, 'relative')"
+                class="title-url">
+                {{ obj.parentStructureIRI }}
+              </nuxt-link>
             </h2>
           </div>
         </div>
