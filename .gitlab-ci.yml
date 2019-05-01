@@ -12,6 +12,8 @@ build:
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
+    - mv docker-app-dev/.env.example docker-app-dev/.env
+
     - docker build --pull -t "$CI_REGISTRY_IMAGE:latest" -f docker-app-prod/Dockerfile.web .
     - docker push "$CI_REGISTRY_IMAGE:latest"
     - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
