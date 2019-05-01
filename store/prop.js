@@ -136,7 +136,32 @@ export const actions = {
       const id = await this.$submitProposal({
         threadId: state.prop.threadId,
         object: state.prop,
-        title: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,
+        message: `${isEdit ? 'update' : 'add'} property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
+        ontologyContent: propertyProposalData.ontologyContent,
+        structureContent: propertyProposalData.structureContent,
+        token
+      })
+
+      commit(SUCCESS, id)
+    }
+    catch (error) {
+      console.error(error)
+      commit(ERROR, error.message)
+    }
+  },
+
+  async APPROVE ({ dispatch, commit, state, rootState }, { threadId, token }) {
+    await dispatch(LOAD, threadId)
+    try {
+      const propertyProposalData = state.prop.generateProposal({
+        ontology: rootState.graph.ontology,
+        structure: rootState.graph.structure
+      })
+      const isEdit = state.prop.isEdit
+
+      const id = await this.$approveProposal({
+        threadId: state.prop.threadId,
+        object: state.prop,
         message: `${isEdit ? 'update' : 'add'} property '${state.prop.label}' to '${state.prop.parentStructureIRI}'`,
         ontologyContent: propertyProposalData.ontologyContent,
         structureContent: propertyProposalData.structureContent,

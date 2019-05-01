@@ -11,6 +11,7 @@ const termsTypes = {
 }
 export default ({ app }, inject) => {
   inject('submitProposal', submitProposal)
+  inject('approveProposal', approveProposal)
   inject('proposalSerializer', proposalSerializer)
   inject('proposalDeserializer', proposalDeserializer)
   inject('proposalType', proposalType)
@@ -24,17 +25,8 @@ export default ({ app }, inject) => {
     if (!data.object) {
       throw new Error('missing data.object')
     }
-    if (!data.title) {
-      throw new Error('missing data.title')
-    }
     if (!data.message) {
       throw new Error('missing data.message')
-    }
-    if (!data.ontologyContent) {
-      throw new Error('missing data.ontologyContent')
-    }
-    if (!data.structureContent) {
-      throw new Error('missing data.structureContent')
     }
     if (!data.token) {
       throw new Error('missing data.token')
@@ -44,17 +36,55 @@ export default ({ app }, inject) => {
 
     const body = {
       threadId: data.threadId,
-      title: data.title,
       message: data.message,
-      body: data.object.motivation,
-      iri: data.object.parentStructureIRI,
-      ontologyContent: data.ontologyContent,
-      structureContent: data.structureContent
+      iri: data.object.parentStructureIRI
     }
 
     const headers = { headers: { authorization: `Bearer ${token}` } }
 
     const result = await axios.post('/api/proposal/submit', body, headers)
+    const id = _get(result, 'data.finalizeProposal.thread.id')
+    return id
+  }
+
+  async function approveProposal ({
+    threadId,
+    object,
+    message,
+    ontologyContent,
+    structureContent,
+    token
+  } = {}) {
+    if (!threadId) {
+      throw new Error('missing threadId')
+    }
+    if (!object) {
+      throw new Error('missing object')
+    }
+    if (!message) {
+      throw new Error('missing message')
+    }
+    if (!token) {
+      throw new Error('missing token')
+    }
+    if (!ontologyContent) {
+      throw new Error('missing ontologyContent')
+    }
+    if (!structureContent) {
+      throw new Error('missing structureContent')
+    }
+
+    const body = {
+      threadId,
+      message,
+      ontologyContent,
+      structureContent,
+      iri: object.parentStructureIRI
+    }
+
+    const headers = { headers: { authorization: `Bearer ${token}` } }
+
+    const result = await axios.post('/api/proposal/approve', body, headers)
     const id = _get(result, 'data.finalizeProposal.thread.id')
     return id
   }

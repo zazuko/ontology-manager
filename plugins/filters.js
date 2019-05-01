@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import _get from 'lodash/get'
 
 Vue.filter('formatDate', (date) => {
   const dateObj = new Date(date)
@@ -19,11 +18,10 @@ Vue.filter('formatTime', (date) => {
   return `${datePart} ${timePart}`
 })
 
-export default async ({ store }) => {
-  const owner = _get(store, 'state.config.editor.github.owner', '')
-  const repo = _get(store, 'state.config.editor.github.repo', '')
-  Vue.filter('forgeLink', (id) => {
-    // TODO: make this forge-agnostic
-    return `https://github.com/${owner}/${repo}/pull/${id}`
-  })
-}
+// export default async ({ store }) => {
+//   const owner = _get(store, 'state.config.editor.github.owner', '')
+//   const repo = _get(store, 'state.config.editor.github.repo', '')
+//   Vue.filter('forgeLink', (id) => {
+//     return `https://github.com/${owner}/${repo}/pull/${id}`
+//   })
+// }
