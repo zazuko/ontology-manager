@@ -22,3 +22,5 @@ dist
 /test/e2e/screenshots/
 /test/e2e/videos/
 /test/repo/tmp/
+
+.env
