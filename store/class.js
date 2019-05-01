@@ -141,8 +141,33 @@ export const actions = {
       const id = await this.$submitProposal({
         threadId: state.clss.threadId,
         object: state.clss,
-        title: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,
         message: `${isEdit ? 'update' : 'add'} class '${state.clss.label}'`,
+        ontologyContent: classProposalData.ontologyContent,
+        structureContent: classProposalData.structureContent,
+        token
+      })
+
+      commit(SUCCESS, id)
+    }
+    catch (error) {
+      console.error(error)
+      commit(ERROR, error.message)
+    }
+  },
+
+  async APPROVE ({ dispatch, commit, state, rootState }, { threadId, token }) {
+    await dispatch(LOAD, threadId)
+    try {
+      const classProposalData = state.clss.generateProposal({
+        ontology: rootState.graph.ontology,
+        structure: rootState.graph.structure
+      })
+      const isEdit = state.clss.isEdit
+
+      const id = await this.$approveProposal({
+        threadId: state.clss.threadId,
+        object: state.clss,
+        message: `${isEdit ? 'update' : 'add'} class '${state.clss.label}' to '${state.clss.parentStructureIRI}'`,
         ontologyContent: classProposalData.ontologyContent,
         structureContent: classProposalData.structureContent,
         token

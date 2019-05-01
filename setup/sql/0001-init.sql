@@ -110,29 +110,6 @@ comment on column editor_schema.message.created_at is 'The time this message was
 
 alter default privileges revoke execute on functions from public;
 
--- create function editor_schema.message_summary(
---   message editor_schema.message,
---   length int default 50,
---   omission text default '…'
--- ) returns text as $$
---   select case
---     when message.body is null then null
---     else substr(message.body, 0, length) || omission
---   end
--- $$ language sql stable;
---
--- comment on function editor_schema.message_summary(editor_schema.message, int, text) is 'A truncated version of the body for summaries.';
---
--- create function editor_schema.person_latest_message(person editor_schema.person) returns editor_schema.message as $$
---   select message.*
---   from editor_schema.message as message
---   where message.author_id = person.id
---   order by created_at desc
---   limit 1
--- $$ language sql stable;
---
--- comment on function editor_schema.person_latest_message(editor_schema.person) is 'Gets the latest message written by the person.';
-
 create function editor_schema.search_messages(search text) returns setof editor_schema.thread as $$
   select thread.*
   from editor_schema.thread as thread
@@ -195,27 +172,6 @@ comment on column editor_private_schema.person_account.person_id is 'The id of t
 comment on column editor_private_schema.person_account.email is 'The email address of the person.';
 comment on column editor_private_schema.person_account.oauth_token is 'The token issued by the oauth process.';
 comment on column editor_private_schema.person_account.oauth_provided_id is 'The account ID provided by the oauth external service.';
-
--- create function editor_schema.register_person(
---   name text,
---   email text,
---   oauth_token text,
---   oauth_provided_id integer
--- ) returns editor_schema.person as $$
--- declare
---   person editor_schema.person;
--- begin
---   insert into editor_schema.person (name) values
---     (name)
---     returning * into person;
---
---   insert into editor_private_schema.person_account (person_id, email, oauth_token, oauth_provided_id) values
---     (person.id, email, oauth_token, oauth_provided_id);
---
---   return person;
--- end;
--- $$ language plpgsql strict security definer;
--- comment on function editor_schema.register_person(text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
 create function editor_schema.register_person(
   name text,
@@ -313,8 +269,6 @@ grant usage on sequence editor_schema.message_id_seq to $POSTGRESQL_ROLE_PERSON;
 grant usage on sequence editor_schema.thread_id_seq to $POSTGRESQL_ROLE_PERSON;
 grant usage on sequence editor_schema.hat_id_seq to $POSTGRESQL_ROLE_PERSON;
 
--- grant execute on function editor_schema.message_summary(editor_schema.message, integer, text) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
--- grant execute on function editor_schema.person_latest_message(editor_schema.person) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 grant execute on function editor_schema.search_messages(text) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 grant execute on function editor_schema.authenticate(text, integer) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 grant execute on function editor_schema.current_person() to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;

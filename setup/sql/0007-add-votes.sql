@@ -39,7 +39,6 @@ create function editor_schema.users_vote_on_thread(
   select vote from editor_schema.vote where person_id = editor_schema.current_person_id();
 $$ language sql stable set search_path from current;
 comment on function editor_schema.users_vote_on_thread(integer) is 'Gets the current users vote on a thread.';
-
 grant execute on function editor_schema.users_vote_on_thread(integer) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 
 -- gets vote tally for a thread

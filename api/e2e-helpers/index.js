@@ -208,6 +208,7 @@ module.exports = async function (editorConfig) {
       }
 
       const { number } = await api.createPR({ title, body, branch })
+      console.log({ number })
 
       const userApolloClient = await getApolloClientForUser(req)
 
@@ -215,9 +216,7 @@ module.exports = async function (editorConfig) {
         mutation: gql`
           mutation ($threadId: Int!, $newExternalId: Int!, $newBranchName: String!) {
             finalizeProposal (input: {
-              threadId: $threadId,
-              newExternalId: $newExternalId,
-              newBranchName: $newBranchName
+              threadId: $threadId
             }) {
               thread {
                 id
@@ -225,9 +224,7 @@ module.exports = async function (editorConfig) {
             }
           }`,
         variables: {
-          threadId,
-          newExternalId: number,
-          newBranchName: branch
+          threadId
         }
       })
 
@@ -239,7 +236,7 @@ module.exports = async function (editorConfig) {
     }
   })
 
-  router.post('/proposal/merge', async (req, res, next) => {
+  router.post('/proposal/approve', async (req, res, next) => {
     [ontologyFilename, structureFilename].forEach((file) => {
       apicache.clear(`file:${file}`)
     })
