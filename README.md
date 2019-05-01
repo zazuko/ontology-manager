@@ -17,7 +17,8 @@
 
 ### 3. Fill in Env Vars
 
-1. Replace the values in [`./docker-app-dev/.env`](./docker-app-dev/.env)
+1. Create a file [`./docker-app-dev/.env`](./docker-app-dev/.env)
+1. Fill it with contents from `./docker-app-dev/.env.example`](./docker-app-dev/.env.example)
 
 ```
 # customer namespace
