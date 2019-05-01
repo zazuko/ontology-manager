@@ -89,9 +89,15 @@
               <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
                 {{ proposal.headline }}
               </nuxt-link>
-              <forge-link
-                :id="proposal.externalId"
-                class="is-link" />
+              <a
+                v-for="externalLink in proposal.externalId.split(' ')"
+                :key="externalLink"
+                :href="externalLink"
+                class="is-link"
+                target="_blank"
+                title="Show commit">
+                <i class="mdi mdi-open-in-new"></i>
+              </a>
             </p>
             <p>
               <span class="info">on {{ proposal.iri }}</span>
@@ -187,7 +193,6 @@
 <script>
 import axios from 'axios'
 import { toastClose } from '@/libs/utils'
-import ForgeLink from './ForgeLink'
 import Loader from '@/components/layout/Loader'
 
 export default {
@@ -202,7 +207,6 @@ export default {
     }
   },
   components: {
-    ForgeLink,
     Loader
   },
   computed: {
@@ -231,17 +235,16 @@ export default {
     }
   },
   methods: {
-    async approve (proposal) {
+    async approve ({ id, proposalType }) {
       this.working = true
-      const body = {
-        threadId: proposal.id,
-        number: proposal.externalId
-      }
-      const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
       try {
-        await axios.post('/api/proposal/merge', body, headers)
+        const store = proposalType === 'Property' ? 'prop' : 'class'
+        await this.$store.dispatch(`${store}/APPROVE`, {
+          token: this.$apolloHelpers.getToken(),
+          threadId: id
+        })
         this.working = false
-        this.$emit('updated', proposal.id)
+        this.$emit('updated', id)
         this.$store.dispatch('graph/RELOAD_DATASET')
         this.$toast.success('Proposal approved!', toastClose).goAway(1600)
       }
@@ -256,7 +259,6 @@ export default {
       this.working = true
       const body = {
         threadId: proposal.id,
-        number: proposal.externalId,
         status
       }
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }
@@ -277,7 +279,6 @@ export default {
       this.working = true
       const body = {
         threadId: proposal.id,
-        number: proposal.externalId,
         status
       }
       const headers = { headers: { authorization: `Bearer ${this.$apolloHelpers.getToken()}` } }

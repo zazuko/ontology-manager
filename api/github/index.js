@@ -3,6 +3,7 @@ const Router = require('express').Router
 const axios = require('axios')
 const gql = require('graphql-tag')
 const debug = require('debug')('editor:api')
+
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
@@ -144,43 +145,16 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/submit', async (req, res, next) => {
-    const { threadId, title, body, message, ontologyContent, structureContent } = req.body
-
-    const author = { name: req.user.name, email: req.user.email }
+    const { threadId } = req.body
 
     try {
-      const { name: branch } = await api.createBranch()
-      debug(`/proposal/submit/: created branch: ${branch}`)
-      await api.updateFile({
-        branch,
-        author,
-        message: `ontology: ${message}`,
-        content: ontologyContent
-      })
-      debug(`/proposal/submit/: ontology committed on branch ${branch}`)
-      if (structureContent) {
-        await api.updateFile({
-          branch,
-          author,
-          message: `structure: ${message}`,
-          content: structureContent,
-          structure: true
-        })
-        debug(`/proposal/submit/: structure committed on branch ${branch}`)
-      }
-
-      const { number } = await api.createPR({ title, body, branch })
-      debug(`/proposal/submit/: PR is #${number}`)
-
       const userApolloClient = await getApolloClientForUser(req)
 
       const result = await userApolloClient.mutate({
         mutation: gql`
-          mutation ($threadId: Int!, $newExternalId: Int!, $newBranchName: String!) {
+          mutation ($threadId: Int!) {
             finalizeProposal (input: {
-              threadId: $threadId,
-              newExternalId: $newExternalId,
-              newBranchName: $newBranchName
+              threadId: $threadId
             }) {
               thread {
                 id
@@ -188,9 +162,7 @@ module.exports = async function (editorConfig) {
             }
           }`,
         variables: {
-          threadId,
-          newExternalId: number,
-          newBranchName: branch
+          threadId
         }
       })
       debug('/proposal/submit/: proposal finalized')
@@ -206,17 +178,58 @@ module.exports = async function (editorConfig) {
     }
   })
 
-  router.post('/proposal/merge', async (req, res, next) => {
-    const { threadId, number } = req.body
+  router.post('/proposal/approve', async (req, res, next) => {
+    const {
+      threadId,
+      message,
+      ontologyContent,
+      structureContent
+    } = req.body
 
     try {
-      const { success, message } = await api.mergePR({ number })
-
-      if (!success) {
-        throw new Error(`Merge failed: ${message}`)
+      const author = { name: req.user.name, email: req.user.email }
+      const branch = editorConfig.editor.github.branch
+      const commitLinks = []
+      const ontologyCommit = await api.updateFile({
+        branch,
+        author,
+        message: `ontology: ${message}`,
+        content: ontologyContent
+      })
+      const commitLink = ontologyCommit.data.commit.html_url
+      commitLinks.push(commitLink)
+      debug(`/proposal/approve/: ontology committed ${commitLink}`)
+      if (structureContent) {
+        const structureCommit = await api.updateFile({
+          branch,
+          author,
+          message: `structure: ${message}`,
+          content: structureContent,
+          structure: true
+        })
+        const commitLink = structureCommit.data.commit.html_url
+        commitLinks.push(commitLink)
+        debug(`/proposal/approve/: structure committed ${commitLink}`)
       }
 
       const userApolloClient = await getApolloClientForUser(req)
+      await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($threadId: Int!, $reference: String!) {
+            updateExternalId (input: {
+              threadId: $threadId,
+              reference: $reference
+            }) {
+              thread {
+                id
+              }
+            }
+          }`,
+        variables: {
+          threadId: parseInt(threadId, 10),
+          reference: commitLinks.join(' ')
+        }
+      })
 
       const result = await userApolloClient.mutate({
         mutation: gql`
@@ -239,6 +252,7 @@ module.exports = async function (editorConfig) {
       res.json(result.data)
     }
     catch (err) {
+      debug(err)
       if (_.get(err, 'request.headers.authorization')) {
         err.request.headers.authorization = '[...]'
       }
@@ -248,22 +262,11 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/close', async (req, res, next) => {
-
-    const { threadId, number, status } = req.body
+    const { threadId, status } = req.body
 
     if (!['resolved', 'hidden', 'rejected'].includes(status.toLowerCase())) {
       res.status(400).json(`Cannot set unknown status '${status}'`)
       return
-    }
-
-    if (number) {
-      try {
-        await api.closePR({ number })
-      }
-      catch (octokitError) {
-        res.status(octokitError.status).json(octokitError)
-        return
-      }
     }
 
     try {
@@ -298,7 +301,6 @@ module.exports = async function (editorConfig) {
     }
   })
 
-  // TODO: factor these out
   function getToken (req) {
     if (!req.get('Authorization')) {
       return
