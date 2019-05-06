@@ -7,7 +7,7 @@ services:
       - ./.pgdata:/bitnami
     ports:
       - "5432:5432"
-    env_file: docker-app-prod/.env
+    env_file: docker-app-dev/.env
 
   nginx:
     image: nginx:1
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./docker-app-prod/Dockerfile.web
-    env_file: docker-app-prod/.env
+    env_file: docker-app-dev/.env
     links:
       - db:db
     ports:
