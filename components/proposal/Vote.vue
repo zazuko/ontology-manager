@@ -102,7 +102,7 @@ export default {
           this.downvotes = data.tally.downvotes
         }
       },
-      pollInterval: 1000 * 30,
+      pollInterval: process.server ? null : 1000 * 30,
       skip () {
         return (process.client && !this.$store.state.authProcessDone)
       }

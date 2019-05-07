@@ -134,7 +134,7 @@ export default {
         }
       },
       fetchPolicy: 'no-cache',
-      pollInterval: 1000 * Math.round(30 + Math.random() * 20),
+      pollInterval: process.server ? null : 1000 * Math.round(30 + Math.random() * 20),
       result ({ data, loading }) {
         if (!loading) {
           const proposals = _get(data, 'proposals.proposals', [])
