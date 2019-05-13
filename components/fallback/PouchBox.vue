@@ -142,9 +142,7 @@ export default {
         }
       },
       skip () {
-        return (process.client && !this.$store.state.authProcessDone) ||
-          this.type !== 'container' ||
-          this.isProposal
+        return (process.client && !this.$store.state.authProcessDone) || this.isProposal
       }
     }
   }
