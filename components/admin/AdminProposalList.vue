@@ -90,7 +90,7 @@
                 {{ proposal.headline }}
               </nuxt-link>
               <a
-                v-for="externalLink in proposal.externalId.split(' ')"
+                v-for="externalLink in externalLinksFor(proposal)"
                 :key="externalLink"
                 :href="externalLink"
                 class="is-link"
@@ -328,6 +328,13 @@ export default {
       this.statusFilter = status
       this.statusDropdown = false
       this.$emit('status-filter', status)
+    },
+    externalLinksFor (proposal) {
+      // externalId can be `null`
+      if (proposal.externalId) {
+        return proposal.externalId.split(' ')
+      }
+      return []
     }
   }
 }
