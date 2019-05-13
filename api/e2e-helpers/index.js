@@ -214,7 +214,7 @@ module.exports = async function (editorConfig) {
 
       const result = await userApolloClient.mutate({
         mutation: gql`
-          mutation ($threadId: Int!, $newExternalId: Int!, $newBranchName: String!) {
+          mutation ($threadId: Int!) {
             finalizeProposal (input: {
               threadId: $threadId
             }) {
