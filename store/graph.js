@@ -64,10 +64,12 @@ export const actions = {
     commit('clientReady')
     return Promise.resolve('deserialized')
   },
-  async [RELOAD_DATASET] ({ commit, dispatch, rootState }) {
+  async [RELOAD_DATASET] ({ commit, dispatch, state, rootState }) {
     const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
-    commit('ontologyInit', ontologyDataset)
-    commit('structureInit', structureDataset)
+    if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
+      commit('ontologyInit', ontologyDataset)
+      commit('structureInit', structureDataset)
+    }
     return dispatch(DESERIALIZE)
   }
 }
