@@ -375,7 +375,7 @@ export default ({ app, store }, inject) => {
     return Object.values(indexObject)
   }
 
-  function buildTree (structureDataset, ontologyDataset) {
+  function buildTree (structureDataset, ontologyDataset, proposalCountByIRI) {
     if (!structureDataset) {
       return {}
     }
@@ -419,6 +419,23 @@ export default ({ app, store }, inject) => {
             node.label = label[0].object.value
             node.properties = findClassProperties(iri, ontologyDataset)
           }
+        }
+
+        if (typeof node.proposalCount !== 'number') {
+          node.proposalCount = 0
+        }
+        const count = proposalCountByIRI[iri]
+        node.proposalCount = count || 0
+
+        let countNode = node.parent
+        while (countNode) {
+          if (typeof countNode.proposalCount !== 'number') {
+            countNode.proposalCount = 0
+          }
+          if (node.proposalCount) {
+            countNode.proposalCount += node.proposalCount
+          }
+          countNode = countNode.parent
         }
 
         if (!node.parent) {
