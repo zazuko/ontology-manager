@@ -1,10 +1,12 @@
+import _get from 'lodash/get'
 import rdf from 'rdf-ext'
 import DatasetExt from 'rdf-ext/lib/Dataset'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
 import { serialize } from '@/libs/utils'
-import { DESERIALIZE, RELOAD_DATASET } from '@/store/action-types'
+import { DESERIALIZE, RELOAD_DATASET, COUNT_PROPOSALS } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch-client'
+import countProposals from '@/apollo/queries/countProposals'
 
 export const state = () => ({
   ontology: {},
@@ -12,6 +14,7 @@ export const state = () => ({
   ontologySerialized: '',
   structureSerialized: '',
   structureTree: {},
+  proposalCountByIRI: {},
   searchIndex: [],
   clientReady: false
 })
@@ -41,16 +44,23 @@ export const mutations = {
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
     state.structure = structureDataset
-    state.structureTree = this.$buildTree(structureDataset, state.ontology)
+    state.structureTree = this.$buildTree(structureDataset, state.ontology, state.proposalCountByIRI)
   },
   clientReady (state) {
     state.searchIndex = this.$buildSearchIndex(state.ontology.merge(state.structure))
     state.clientReady = true
+  },
+  proposalCountByIRI (state, count) {
+    state.proposalCountByIRI = count
+  },
+  rebuildStructureTree (state) {
+    state.structureTree = this.$buildTree(state.structure, state.ontology, state.proposalCountByIRI)
   }
 }
 
 export const actions = {
-  async [DESERIALIZE] ({ commit, state }) {
+  async [DESERIALIZE] ({ commit, dispatch, state }) {
+    await dispatch(COUNT_PROPOSALS)
     const toDeserialize = ['ontology', 'structure']
       .filter((prop) => !(state[prop] instanceof DatasetExt))
 
@@ -64,13 +74,41 @@ export const actions = {
     commit('clientReady')
     return Promise.resolve('deserialized')
   },
+
   async [RELOAD_DATASET] ({ commit, dispatch, state, rootState }) {
+    const cache = JSON.stringify(state.proposalCountByIRI)
+    await dispatch(COUNT_PROPOSALS)
+    const compare = JSON.stringify(state.proposalCountByIRI)
+    if (compare !== cache) {
+      commit('rebuildStructureTree')
+    }
+
     const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
     if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
       commit('ontologyInit', ontologyDataset)
       commit('structureInit', structureDataset)
     }
     return dispatch(DESERIALIZE)
+  },
+
+  async [COUNT_PROPOSALS] ({ commit }) {
+    try {
+      const result = await this.app.apolloProvider.defaultClient.query({
+        query: countProposals
+      })
+      const proposals = _get(result, 'data.proposals.proposals', [])
+      const count = proposals.reduce((acc, { iri }) => {
+        if (!acc[iri]) {
+          acc[iri] = 0
+        }
+        acc[iri]++
+        return acc
+      }, {})
+      commit('proposalCountByIRI', count)
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
 }
 

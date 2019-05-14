@@ -3,7 +3,7 @@
     <div class="tile is-parent">
       <article class="tile is-child container-box">
         <h1 class="title">
-          <!--{{ $store.state.config.editor.text.groupName || 'Group' }}: -->{{ _get(obj, 'label') }}
+          {{ _get(obj, 'label') }}
         </h1>
 
         <div class="tile is-child container-box class-boxes">
@@ -22,7 +22,7 @@
                   :label="child.label"
                   :to="{ path: child.path, params: {} }"
                   :iri="child.iri"
-                  :properties-count="_get(child, 'properties.length', 0)"
+                  :proposal-count="child.proposalCount"
                   :classes-count="childClassesCount(child)"
                   :modified="child.modified"
                   :type="child.type" />
