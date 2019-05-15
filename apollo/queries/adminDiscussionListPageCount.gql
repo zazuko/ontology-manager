@@ -1,0 +1,11 @@
+query AdminDiscussionList {
+  count: allThreads (
+    condition: {
+      threadType: DISCUSSION
+    }
+  ) {
+    nodes {
+      id
+    }
+  }
+}

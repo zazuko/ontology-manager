@@ -1,0 +1,13 @@
+query AdminProposalListPageCount ($status: Status) {
+  count: allThreads (
+    condition: {
+      threadType: PROPOSAL,
+      isDraft: false,
+      status: $status
+    }
+  ) {
+    nodes {
+      id
+    }
+  }
+}

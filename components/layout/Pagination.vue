@@ -4,17 +4,17 @@
     role="navigation"
     aria-label="pagination">
     <nuxt-link
-      :to="{ name: 'admin-proposals', query: { page: page - 1 } }"
+      :to="{ name: route, query: { page: page - 1 } }"
       class="pagination-previous"
-      v-show="page && page !== 1"
-      aria-label="Goto previous page">
+      :disabled="page && page === 1"
+      aria-label="Go to previous page">
       Previous
     </nuxt-link>
     <nuxt-link
-      :to="{ name: 'admin-proposals', query: { page: page + 1 } }"
+      :to="{ name: route, query: { page: page + 1 } }"
       class="pagination-next"
-      v-show="!isLastPage"
-      aria-label="Goto next page">
+      :disabled="page && page === pagesCount"
+      aria-label="Go to next page">
       Next page
     </nuxt-link>
     <ul class="pagination-list">
@@ -22,14 +22,14 @@
         v-for="p in range1"
         :key="p">
         <nuxt-link
-          :to="{ name: 'admin-proposals', query: { page: p } }"
+          :to="{ name: route, query: { page: p } }"
           :class="{ 'is-current': page === p }"
           class="pagination-link"
           :aria-label="label(p)">
           {{ p }}
         </nuxt-link>
       </li>
-      <li
+      <!-- <li
         v-show="range2.length">
         <span class="pagination-ellipsis">&hellip;</span>
       </li>
@@ -37,13 +37,28 @@
         v-for="p in range2"
         :key="p + 1000">
         <nuxt-link
-          :to="{ name: 'admin-proposals', query: { page: p } }"
+          :to="{ name: route, query: { page: p } }"
           :class="{ 'is-current': page === p }"
           class="pagination-link"
           :aria-label="label(p)">
           {{ p }}
         </nuxt-link>
       </li>
+      <li
+        v-show="range3.length">
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+      <li
+        v-for="p in range3"
+        :key="p + 10000">
+        <nuxt-link
+          :to="{ name: route, query: { page: p } }"
+          :class="{ 'is-current': page === p }"
+          class="pagination-link"
+          :aria-label="label(p)">
+          {{ p }}
+        </nuxt-link>
+      </li> -->
     </ul>
   </nav>
 </template>
@@ -58,36 +73,30 @@ export default {
       type: Number,
       required: true
     },
-    isLastPage: {
-      type: Boolean,
-      required: false,
-      default: false
+    resultsPerPage: {
+      type: Number,
+      required: true
+    },
+    resultsCount: {
+      type: Number,
+      required: true
+    },
+    route: {
+      type: String,
+      required: true
     }
   },
   computed: {
-    range1 () {
-      const range = [1]
-      for (let i = 2; i <= this.page && range.length < 4; i++) {
-        range.push(i)
-      }
-      if (this.page >= 5) {
-        return range.slice(0, 2)
-      }
-      return range
+    pagesCount () {
+      return Math.ceil(this.resultsCount / this.resultsPerPage)
     },
-    range2 () {
-      const n = this.page
-      let firstPage = n > 4 ? Math.max(n - 4, 4) : n
-      const range = _range(firstPage, n + 1)
-      if (range.length < 2) {
-        return []
-      }
-      return range
+    range1 () {
+      return _range(1, this.pagesCount + 1)
     }
   },
   methods: {
     label (p) {
-      return `Goto page ${p}`
+      return `Go to page ${p}`
     }
   }
 }
