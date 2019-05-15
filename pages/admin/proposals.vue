@@ -5,7 +5,8 @@
     <no-ssr>
       <pagination
         :page="page"
-        :is-last-page="lastPage"
+        :results-count="proposalsCount"
+        :results-per-page="pageSize"
         route="admin-proposals" />
       <div class="responsive-table">
         <admin-proposal-list
@@ -21,6 +22,7 @@
 <script>
 import _get from 'lodash/get'
 import adminProposalList from '@/apollo/queries/adminProposalList'
+import adminProposalListPageCount from '@/apollo/queries/adminProposalListPageCount'
 import AdminProposalList from '@/components/admin/AdminProposalList'
 import AdminMenu from '@/components/admin/AdminMenu'
 import Pagination from '@/components/layout/Pagination'
@@ -37,13 +39,11 @@ export default {
       proposals: [],
       orderBy: ['UPDATED_AT_DESC'],
       filterStatus: false,
-      pageSize: 10
+      pageSize: 10,
+      proposalsCount: 0
     }
   },
   computed: {
-    lastPage () {
-      return this.proposals.length < this.pageSize
-    },
     page () {
       const page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 1
       return page
@@ -84,6 +84,25 @@ export default {
       result ({ data, loading }) {
         if (!loading) {
           this.proposals = _get(data, 'discussions.nodes', [])
+        }
+      },
+      fetchPolicy: 'cache-and-network',
+      skip () {
+        return (process.client && !this.$store.state.authProcessDone)
+      }
+    },
+    count: {
+      query: adminProposalListPageCount,
+      variables () {
+        const vars = {}
+        if (this.filterStatus) {
+          vars.status = this.filterStatus.toUpperCase()
+        }
+        return vars
+      },
+      result ({ data, loading }) {
+        if (!loading) {
+          this.proposalsCount = _get(data, 'count.nodes.length', 0)
         }
       },
       fetchPolicy: 'cache-and-network',
