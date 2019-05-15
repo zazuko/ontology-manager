@@ -1,5 +1,12 @@
-query AdminDiscussionList ($orderBy: [ThreadsOrderBy!]) {
-  discussions: allThreads (condition: {threadType: DISCUSSION}, orderBy: $orderBy) {
+query AdminDiscussionList ($first: Int!, $offset: Int!, $orderBy: [ThreadsOrderBy!]) {
+  discussions: allThreads (
+    condition: {
+      threadType: DISCUSSION
+    },
+    orderBy: $orderBy,
+    first: $first,
+    offset: $offset
+  ) {
     nodes {
       id,
       headline,
