@@ -1,5 +1,5 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node:10-stretch as build-stage
+FROM node:12-stretch as build-stage
 RUN npm install --global npm@6.9.0
 
 # Create app directory
