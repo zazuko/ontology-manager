@@ -50,10 +50,10 @@ module.exports = async function (editorConfig) {
       ({ token, avatarUrl, serverId } = await checkToken(req, res))
     }
     catch (err) {
-      console.error(err)
+      debug(err)
     }
     if (!clientId || clientId !== serverId) {
-      console.error({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
+      debug({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
       res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
       return
     }
@@ -134,10 +134,10 @@ module.exports = async function (editorConfig) {
     }
     catch (err) {
       if (_.get(err, 'graphQLErrors.length', 0)) {
-        console.error(err.graphQLErrors)
+        debug(err.graphQLErrors)
       }
       else {
-        console.error(err)
+        debug(err)
       }
     }
 
@@ -173,7 +173,7 @@ module.exports = async function (editorConfig) {
       if (_.get(err, 'request.headers.authorization')) {
         err.request.headers.authorization = '[...]'
       }
-      console.error(err.message, err.request)
+      debug(err.message, err.request)
       res.status(500).json({ message: err.message })
     }
   })
@@ -256,7 +256,7 @@ module.exports = async function (editorConfig) {
       if (_.get(err, 'request.headers.authorization')) {
         err.request.headers.authorization = '[...]'
       }
-      console.error(err.message, err.request)
+      debug(err.message, err.request)
       res.status(500).json({ message: err.message })
     }
   })
@@ -296,7 +296,7 @@ module.exports = async function (editorConfig) {
       if (_.get(err, 'request.headers.authorization')) {
         err.request.headers.authorization = '[...]'
       }
-      console.error(err.message, err.request)
+      debug(err.message, err.request)
       res.status(500).json({ message: err.message })
     }
   })
@@ -344,7 +344,7 @@ module.exports = async function (editorConfig) {
       // check that the client gave us the correct token
       if (!bearerToken || bearerToken !== serverToken) {
         const err = new Error(`Bearer token ${bearerToken} differs from the token GitHub gave us`)
-        console.error(err)
+        debug(err)
         res.status(500).send({ message: err.message })
         return false
       }
