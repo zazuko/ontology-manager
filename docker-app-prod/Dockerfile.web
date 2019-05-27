@@ -11,7 +11,7 @@ COPY . /usr/src/app/
 RUN node -v && npm -v && npm ci --production
 
 # pm2 log management
-pm2 install pm2-logrotate
+RUN pm2 install pm2-logrotate
 
 # Build app
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
