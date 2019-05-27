@@ -23,4 +23,7 @@ pid1=$!
 nginx -g 'daemon off;' &
 pid2=$!
 
+/usr/src/app/node_modules/.bin/pm2 set pm2-logrotate:compress true
+/usr/src/app/node_modules/.bin/pm2 set pm2-logrotate:rotateInterval '0 */5 * * *'
+
 wait_for_pids $pid2 $pid1
