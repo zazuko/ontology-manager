@@ -1,9 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-/usr/src/app/node_modules/.bin/pm2 set pm2-logrotate:compress true
-/usr/src/app/node_modules/.bin/pm2 set pm2-logrotate:rotateInterval '0 */5 * * *'
-
 node setup/migrate.js
 node setup/replace-vars.js
 sleep 3
