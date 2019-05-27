@@ -1,5 +1,5 @@
 # Stage 0, "build-stage", based on Node.js, to build and compile the frontend
-FROM node:10-stretch as build-stage
+FROM node:12-stretch as build-stage
 RUN npm install --global npm@6.9.0
 
 # Create app directory
@@ -8,8 +8,10 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
 COPY . /usr/src/app/
-RUN node -v && npm -v && npm ci --production
+RUN node -v && npm -v && npm ci
 
+# pm2 log management
+RUN /usr/src/app/node_modules/.bin/pm2 install pm2-logrotate
 
 # Build app
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
