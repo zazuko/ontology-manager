@@ -7,7 +7,6 @@ import { serialize } from '@/libs/utils'
 import { DESERIALIZE, RELOAD_DATASET, COUNT_PROPOSALS } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch-client'
 import countProposals from '@/apollo/queries/countProposals'
-const debug = require('debug')('editor:store')
 
 export const state = () => ({
   ontology: {},
@@ -111,7 +110,7 @@ export const actions = {
       commit('proposalCountByIRI', count)
     }
     catch (err) {
-      debug(`graph/COUNT_PROPOSALS: ${err.message}`)
+      console.error(`graph/COUNT_PROPOSALS: ${err.message}`)
     }
   }
 }
