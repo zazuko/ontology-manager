@@ -92,6 +92,9 @@ export const actions = {
   },
 
   async [COUNT_PROPOSALS] ({ commit }) {
+    if (process.server) {
+      return
+    }
     try {
       const result = await this.app.apolloProvider.defaultClient.query({
         query: countProposals
@@ -107,7 +110,7 @@ export const actions = {
       commit('proposalCountByIRI', count)
     }
     catch (err) {
-      console.error(err)
+      console.error(`graph/COUNT_PROPOSALS: ${err.message}`)
     }
   }
 }
