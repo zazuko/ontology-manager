@@ -18,7 +18,7 @@
 
           <div class="field is-horizontal">
             <div class="field-label is-normal">
-              <label class="label">Protocol &amp; Base URL</label>
+              <label class="label">Protocol &amp; Domain</label>
             </div>
             <div class="field-body">
               <div class="field is-expanded">
