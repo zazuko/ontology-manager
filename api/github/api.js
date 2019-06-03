@@ -71,7 +71,7 @@ module.exports = class GitHubAPIv3 {
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
     const owner = this.owner
     const repo = this.repo
-    const ref = `heads/${branch}`
+    const ref = branch
     const query = { owner, repo, path, ref }
 
     const cached = __cache.get(`${ref}/${path}`)
