@@ -27,7 +27,7 @@
     "@mdi/font": "^3.6.95",
     "@nuxtjs/apollo": "^4.0.0-rc6",
     "@nuxtjs/auth": "^4.6.5",
-    "@nuxtjs/axios": "^5.5.3",
+    "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/feed": "^1.1.0",
     "@nuxtjs/sentry": "^3.0.0",
     "@nuxtjs/toast": "^3.2.1",
