@@ -1,4 +1,4 @@
-FROM node:10-stretch as build-stage
+FROM node:12-stretch as build-stage
 RUN npm install --global npm@6.9.0
 
 ENV NODE_ENV=production
