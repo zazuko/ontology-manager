@@ -103,6 +103,10 @@ POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
 
 That's it. The remaining configuration is done using the installer (navigate to the container's `/install` once it's up).
 
+#### healthcheck endpoint
+
+`GET /api/health` should return HTTP200 with content `ok` as plain text.
+
 ## E2E tests
 
 1. `npm run e2e`
