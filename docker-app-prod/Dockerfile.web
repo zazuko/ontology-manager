@@ -23,6 +23,11 @@ FROM nginx:1.15
 COPY --from=build-stage /usr/src/app /usr/src/app
 RUN mv /usr/src/app/.nuxt /usr/src/app/nuxt_original
 
+# Install `ps`, needed for pm2 health checks
+RUN apt-get update && apt-get install -y \
+    procps \
+ && rm -rf /var/lib/apt/lists/*
+
 ENV NODE_PATH=/usr/local/include/node:/usr/local/lib/node_modules:/usr/share/javascript
 
 COPY --from=build-stage /usr/share/javascript /usr/share/javascript
