@@ -26,6 +26,9 @@ import AdminMenu from '@/components/admin/AdminMenu'
 import Pagination from '@/components/layout/Pagination'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   middleware: 'authenticatedAdmin',
   components: {
     AdminDiscussionList,

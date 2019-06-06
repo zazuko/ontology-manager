@@ -1,0 +1,114 @@
+.discussion-message-content {
+  color: black;
+
+  p, code {
+    font-size: .9em;
+  }
+
+  blockquote {
+    background-color: #F3F6F9;
+    border-left: solid 6px #d8d8d8;
+    padding: 10px;
+    margin: 1em 0;
+
+    p {
+      color: #666666;
+    }
+
+    span {
+      display: inline-block;
+      font-weight: normal;
+    }
+  }
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+
+    &:after {
+      display: none;
+    }
+  }
+
+  h1, h2 {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: .5em;
+  }
+
+  code {
+    background-color: #F3F6F9;
+  }
+
+  pre {
+    margin: 1em 0;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ul, ol {
+    padding-left: 25px;
+    margin: 1em 0;
+
+    li p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.has-hat .discussion-message-content {
+  blockquote,
+  blockquote span,
+  blockquote p,
+  code {
+    color: black;
+  }
+
+  h1, h2, p {
+    color: white;
+  }
+}
+
+.editor {
+  .menubar {
+    background-color: white;
+    width: 100%;
+    background-color: #F6F8FA;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    padding: 6px;
+
+    button.menubar__button {
+      border: none;
+      background-color: inherit;
+      padding: 3px;
+    }
+  }
+
+  .editor__content {
+    .ProseMirror {
+      padding: 10px;
+      min-height: 100px;
+      background-color: white;
+      border: 1px solid #c9c9c9;
+      @extend .discussion-message-content;
+    }
+  }
+}
