@@ -20,6 +20,9 @@ import AdminHatList from '@/components/admin/AdminHatList'
 import AdminMenu from '@/components/admin/AdminMenu'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   middleware: 'authenticatedAdmin',
   components: {
     AdminHatList,

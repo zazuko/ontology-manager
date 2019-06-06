@@ -35,6 +35,9 @@ import _get from 'lodash/get'
 import DiscussionCreate from '@/components/discussion/DiscussionCreate'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   async asyncData (context) {
     const iri = _get(context, 'query.iri')
     if (!iri) {

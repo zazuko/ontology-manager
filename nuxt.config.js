@@ -36,7 +36,7 @@ module.exports = async () => {
     ** Global CSS
     */
     css: [
-      { lang: 'scss', src: '@/assets/scss/app.scss' }
+      // { lang: 'scss', src: '@/assets/scss/app.scss' }
     ],
 
     /*
@@ -72,7 +72,12 @@ module.exports = async () => {
       '@nuxtjs/apollo',
       '@nuxtjs/toast',
       '@nuxtjs/sentry',
-      '@nuxtjs/feed'
+      '@nuxtjs/feed',
+      ['nuxt-env', {
+        keys: [
+          { key: 'EDITOR_STYLE', default: 'dcf' }
+        ]
+      }]
     ],
 
     /*

@@ -1,5 +1,5 @@
 <template>
-  <div class="has-primary-background">
+  <div class="has-secondary-background">
     <top-nav />
     <nuxt />
     <page-footer />
@@ -16,6 +16,9 @@ export default {
     PageFooter
   },
   methods: {},
+  beforeCreate () {
+    import('@/assets/scss/alod-style.scss')
+  },
   mounted () {
     if (window.Cypress) {
       window.appReady = true

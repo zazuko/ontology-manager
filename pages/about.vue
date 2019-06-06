@@ -21,7 +21,9 @@
 import { version } from '@/package.json'
 
 export default {
-  layout: 'background',
+  layout (context) {
+    return `background-${context.app.$env.EDITOR_STYLE}`
+  },
   components: {},
   data () {
     return {
