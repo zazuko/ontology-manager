@@ -93,7 +93,9 @@ import Loader from '@/components/layout/Loader'
 import { findSubtreeInForest, term } from '@/libs/utils'
 
 export default {
-  layout: 'background',
+  layout (context) {
+    return `background-${context.app.$env.EDITOR_STYLE}`
+  },
   async asyncData ({ route, store }) {
     const params = route.params
     let iri = store.state.config.ontology.datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')

@@ -97,6 +97,9 @@ import { toastClose } from '@/libs/utils'
 import Loader from '@/components/layout/Loader'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   components: {
     Loader
   },

@@ -5,7 +5,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  }
+}
 </script>
 
 <style>

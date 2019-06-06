@@ -56,6 +56,9 @@ import DiscussionReply from '@/components/discussion/DiscussionReply'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   components: {
     DiscussionCard,
     DiscussionReply
