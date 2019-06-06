@@ -157,6 +157,9 @@ const {
 } = createNamespacedHelpers('prop')
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   async asyncData ({ query }) {
     let id = parseInt(query.id, 10)
     id = Number.isNaN(id) ? null : id

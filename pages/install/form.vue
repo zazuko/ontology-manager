@@ -27,6 +27,9 @@ import AdminConfigForm from '@/components/admin/AdminConfigForm'
 import Loader from '@/components/layout/Loader'
 
 export default {
+  layout (context) {
+    return `default-${context.app.$env.EDITOR_STYLE}`
+  },
   components: {
     AdminConfigForm,
     Loader
