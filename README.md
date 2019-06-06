@@ -194,6 +194,20 @@ drop role example_com_role_anonymous;
 drop role example_com_role_person;
 ```
 
+### How to create a new design?
+
+Designs are loaded by [page layouts](./layouts/) using a design name defined by the environment variable `EDITOR_STYLE`.
+If `EDITOR_STYLE=foobar-baz`, the editor will use `./layouts/default-foobar-baz.vue` and  `./layouts/background-foobar-baz.vue`.
+
+The simplest way of creating a new design is: 
+1. choose a name `somename` for your design,
+1. create a copy of the `default` and `background` layouts and name them `default-somename.vue` and `background-somename.vue`,
+1. these layouts should `import` your stylesheets in the `beforeCreate` step.
+
+Our file naming convention can be seen in [./assets/scss/](./assets/scss/):
+* `./assets/scss/somename-style.scss` is the stylesheet entrypoint for
+* `./assets/scss/somename-components/`
+
 ## References
 
 * GraphQL: https://graphql.org/learn/
