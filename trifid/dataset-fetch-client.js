@@ -34,8 +34,7 @@ export default async function fetchDataset (editorConfig) {
     return { ontologyDataset, structureDataset }
   }
   catch (err) {
-    debug('Failed to fetch dataset from local API')
-    console.error(err)
+    debug('dataset-fetch-client failed to fetch dataset from local API', err)
     throw err
   }
 }

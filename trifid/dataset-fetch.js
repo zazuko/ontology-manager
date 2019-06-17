@@ -4,6 +4,8 @@ import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
 import fetchConfig from '../setup/fetch-config'
 
+const debug = require('debug')('editor:trifid')
+
 // * used by a trifid plugin on first server requests
 export default async function fetchDataset () {
   const editorConfig = await fetchConfig()
@@ -32,8 +34,7 @@ export default async function fetchDataset () {
     return { ontologyDataset, structureDataset }
   }
   catch (err) {
-    console.warn('Failed to fetch dataset from local API')
-    console.error(err)
+    debug('dataset-fetch failed to fetch dataset from local API', err)
     throw err
   }
 }
