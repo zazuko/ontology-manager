@@ -1,5 +1,35 @@
+// Tmp
+
+$venetian-red:                               #DC0018;
+$red:                                        #F7001D;
+$mocassin:                                   #fffab2;
+$cerulean:                                   #006699;
+$pattens-blue:                               #D8E8EF;
+$malibu:                                     #66afe9;
+$solitude:                                   #e7edef;
+$clear-day:                                  #f2f7f9;
+
+$black:                                      #000000;
+$night-rider:                                #333333; // gray 80%;
+$coal:                                       #454545; // gray 73%;
+$empress:                                    #757575; // gray 54%;
+$silver:                                     #CCCCCC; // gray 20%;
+$light-grey:                                 #D5D5D5; // gray 16%;
+$gainsboro:                                  #E5E5E5; // gray 10%;
+$smoke:                                      #F5F5F5; // gray 4%;
+$white:                                      #FFFFFF;
+
+$sherpa-blue:                                #03344D;
+$fire-engine-red:                            #bb1122;
+$cadillac:                                   #884488;
+
+$menu-gradient:                              linear-gradient(top, #e8e8e8 0%, #f7f7f7 61%, #f7f7f7 89%, #f5f5f5 91%, #ececec 95%, #d7d7d7 100%);
+$menu-border-dark:                           #b8b8b8;
+$menu-border-light:                          $white;
+
 // Colors
 
+/*
 $black:        hsl(0, 0%, 4%);
 $black-bis:    hsl(0, 0%, 7%);
 $black-ter:    hsl(0, 0%, 14%);
@@ -22,18 +52,19 @@ $cyan:         hsl(204, 86%,  53%);
 $blue:         hsl(217, 71%,  53%);
 $purple:       hsl(271, 100%, 71%);
 $red:          hsl(348, 100%, 61%);
+*/
 
 // Typography
 
-$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-sans-serif: 'Frutiger Neue', Helvetica, Arial, sans-serif;
 $family-monospace: monospace;
 $render-mode: optimizeLegibility;
 
-$size-1: 3rem;
-$size-2: 2.5rem;
-$size-3: 2rem;
-$size-4: 1.5rem;
-$size-5: 1.25rem;
+$size-1: 2.5rem;
+$size-2: 1.7rem;
+$size-3: 1.2rem;
+$size-4: 1.05rem;
+$size-5: 1.05rem;
 $size-6: 1rem;
 $size-7: 0.75rem;
 

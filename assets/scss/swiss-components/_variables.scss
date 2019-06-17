@@ -1,26 +1,21 @@
 // theme colors
-$theme-light-primary: #3FA2F7;
-$theme-light-primary-hover: lighten($theme-light-primary, 10%);
+$theme-light-primary: $black;
+$theme-light-primary-hover: $night-rider;
 $theme-dark-primary: #2C3E50;
 $theme-light-secondary: #E67E22;
 $theme-light-grey: #BFC5CA;
 $theme-dark-grey: #959FA6;
 $theme-shadow: lighten($theme-light-grey, 5%);
-$theme-main-background: #F2F3F7;
+$theme-main-background: $smoke;
 
 // defining bulma variables
 $link: $theme-light-primary;
 $link-visited: $theme-light-primary;
-$family-primary: "Roboto", sans-serif;
+$family-primary: $family-sans-serif;
 $footer-background-color: $theme-dark-primary;
 
 // navbar
-$navbar-background-color: $theme-dark-primary;
 $navbar-height: 5rem;
-$navbar-item-color: $theme-light-primary;
-$navbar-item-hover-color: $theme-light-primary-hover;
-$navbar-item-hover-background-color: transparent;
-$navbar-item-active-color: $theme-light-primary-hover;
 
 // discussion
 $theme-discussion-background: #F3F6F9;
