@@ -1,3 +1,13 @@
+<a name="0.9.54"></a>
+## [0.9.54](https://github.com/zazuko/ontology-editor/compare/v0.9.53...v0.9.54) (2019-06-17)
+
+
+### Bug Fixes
+
+* better trifid fetch dataset logging ([807a942](https://github.com/zazuko/ontology-editor/commit/807a942))
+
+
+
 <a name="0.9.53"></a>
 ## [0.9.53](https://github.com/zazuko/ontology-editor/compare/v0.9.52...v0.9.53) (2019-06-12)
 
