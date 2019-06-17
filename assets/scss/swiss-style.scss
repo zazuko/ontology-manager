@@ -3,6 +3,7 @@
 @import "../../node_modules/@mdi/font/scss/materialdesignicons.scss";
 
 // base variables, needs to be imported before any bulma import
+@import "./swiss-components/_fonts";
 @import "./swiss-components/_initial-variables";
 
 @import "../../node_modules/bulma/sass/utilities/_all";
