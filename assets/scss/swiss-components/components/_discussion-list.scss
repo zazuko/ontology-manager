@@ -1,0 +1,67 @@
+.discussion-list {
+  background: $theme-discussion-list-background;
+  border-radius: 6px;
+
+  .discussion-list-header {
+    @extend .is-clearfix;
+    height: 70px;
+    padding: 1em;
+    border-bottom: solid 1px $theme-discussion-border;
+  }
+
+  .discussion-list-body {
+    padding: 0 1em;
+
+    .discussion-list-item {
+      margin-top: 0;
+      border-bottom: solid 1px $theme-discussion-border;
+      padding: 1em 0;
+
+      .discussion-list-avatar {
+        width: 40px; height: 40px;
+        border-radius: 100%;
+      }
+
+      .discussion-list-title {
+        font-weight: bold;
+        font-size: 1em;
+        line-height: 22px;
+
+        a {
+          color: black;
+
+          &:hover, &:focus {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .discussion-list-content {
+        color: $theme-dark-grey;
+        font-size: 0.9em;
+      }
+
+      .media-right {
+        text-align: right;
+        font-size: 0.9em;
+      }
+
+      .discussion-list-author-info {
+        color: black;
+      }
+
+      .discussion-list-creation-info {
+        color: $theme-dark-grey;
+      }
+
+      .discussion-list-answers-count {
+        display: block;
+        color: black;
+      }
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}

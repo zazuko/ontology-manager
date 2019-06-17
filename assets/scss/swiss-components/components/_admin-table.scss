@@ -1,0 +1,99 @@
+.admin-table {
+  @extend .is-fullwidth;
+  overflow: hidden;
+  font-size: .9em;
+
+  background: white;
+  border-radius: 10px;
+  box-shadow: -2px 2px 8px 0 $theme-light-grey;
+
+  thead th {
+    padding: 1em;
+    border-bottom: none;
+
+    color: white;
+    background: $theme-dark-primary;
+    font-weight: normal;
+
+    a {
+      color: white;
+    }
+
+    .dropdown {
+      .dropdown-trigger {
+        cursor: pointer;
+        button, button:hover {
+          border: none;
+          color: white;
+          background: $theme-dark-primary;
+          padding: 0;
+          margin: 0;
+          font-size: 1em;
+        }
+      }
+      .dropdown-divider {
+        background: $theme-dark-primary;
+      }
+      a {
+        color: $theme-dark-primary;
+        background: white;
+      }
+      .dropdown-item {
+        &.is-active, &:hover {
+          color: white;
+          background: $theme-dark-primary;
+        }
+      }
+    }
+  }
+
+  tbody td {
+    padding: 1em;
+    .avatar {
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  .info {
+    font-size: .8em;
+    color: $theme-dark-grey;
+  }
+
+  code {
+    color: $theme-dark-primary;
+  }
+}
+
+.sort-icon {
+  @extend .icon;
+  height: 1rem;
+  vertical-align: middle;
+  font-size: 1.4em;
+
+  i {
+    @extend .mdi;
+    @extend .mdi-menu-swap;
+    &.asc {
+      @extend .mdi-menu-down;
+    }
+    &.desc {
+      @extend .mdi-menu-up;
+    }
+  }
+}
+
+.draft-actions {
+  @extend .has-text-right;
+
+  .edit-draft {
+    @extend .button;
+    @extend .is-small;
+    @extend .is-info;
+  }
+  .discard-draft {
+    @extend .button;
+    @extend .is-small;
+    @extend .is-dark-info;
+  }
+}

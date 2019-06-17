@@ -1,0 +1,36 @@
+/*
+To implement DCF design, replace each of these with a new scss file in this `dcf-components`
+folder, add new files, etc.
+
+- Don't change anything in `white-label-components`
+- It shouldn't be necessary to change anything in `scss/app.scss`
+
+*/
+// general stylesheets
+@import "generic.scss";
+@import "navbar.scss";
+@import "footer.scss";
+
+// generic stylesheets
+@import "generics/table.scss";
+@import "generics/modal.scss";
+
+// component stylesheets
+@import "components/class-box.scss";
+@import "components/discussion-list.scss";
+@import "components/discussion.scss";
+@import "components/activity-log.scss";
+@import "components/progression-box.scss";
+@import "components/signin-modal.scss";
+@import "components/editor.scss";
+@import "components/spinning-loader.scss";
+@import "components/vote-box.scss";
+@import "components/admin-table.scss";
+@import "components/properties-table.scss";
+
+// layout stylesheets
+@import "layouts/layout-objects-list.scss";
+@import "layouts/layout-object-details.scss";
+@import "layouts/layout-conversation.scss";
+@import "layouts/layout-proposal.scss";
+@import "layouts/layout-admin.scss";

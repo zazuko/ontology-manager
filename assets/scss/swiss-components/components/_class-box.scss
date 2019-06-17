@@ -1,0 +1,64 @@
+.class-box {
+  position: relative;
+  overflow: hidden;
+  @extend .box;
+
+  padding: 0;
+  background: $theme-dark-primary;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+
+  a {
+    padding: 0.8rem 1.6rem;
+    display: block;
+    color: white;
+    text-decoration: none;
+  }
+
+  .class-box-update {
+    font-size: 0.6rem;
+    font-style: italic;
+  }
+
+  .class-box-icon {
+    padding: 0.8rem 0 0 0;
+  }
+
+  .class-box-title {
+    font-weight: 400;
+  }
+
+  .class-box-level {
+    color: $theme-light-primary;
+    display: block;
+    font-size: 0;
+  }
+
+  .class-box-level-item {
+    display: inline-block;
+    font-size: 0.8rem;
+    width: 50%;
+    padding-right: 5px;
+  }
+
+  .class-box-label {
+    font-size: 0.7rem;
+    display: block;
+    font-style: italic;
+  }
+
+  .class-box-label {
+    display: block;
+    font-weight: bold;
+  }
+
+  .class-box-toast {
+    position: absolute;
+    top: 0; right: 0;
+    padding: 0.8rem 1.5rem;
+
+    font-weight: bold;
+    font-size: 0.6rem;
+    background: $theme-light-secondary;
+    border-radius: 0 0 0 5px;
+  }
+}
