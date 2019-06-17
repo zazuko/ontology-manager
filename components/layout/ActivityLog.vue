@@ -4,7 +4,7 @@
       <p class="control">
         <img
           class="hoverable-icon"
-          src="~/assets/images/ic-activity.svg"
+          src="~/assets/images/swiss/ic-activity.svg"
           @click="toggle()">
       </p>
     </div>
