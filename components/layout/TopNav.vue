@@ -7,7 +7,7 @@
         <nuxt-link
           :to="{ name: 'index', params: {} }"
           class="navbar-item">
-          <img :src="$store.state.config.editor.logoUrl">
+          <img src="~/assets/images/swiss/logo-CH.svg">
         </nuxt-link>
         <div
           :class="{'is-active': isActive}"
