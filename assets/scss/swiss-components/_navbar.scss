@@ -1,10 +1,36 @@
+// dirty fixes
+.navbar > .container .navbar-brand, .container > .navbar .navbar-brand { margin-left: 0; }
 .top-nav {
+  .control.has-icons-left .icon, .control.has-icons-left .sort-icon, .control.has-icons-right .icon, .control.has-icons-right .sort-icon {
+    color: $night-rider;
+    width: 27px;
+    height: 27px;
+  }
+}
+
+.top-nav {
+  position: relative;
+  padding: 10px 15px;
+  margin-bottom: 75px;
+  background: $white;
+
+  .container {
+    max-width: none;
+  }
+
   .navbar-brand {
-    img {
-      height: 70px;
-      max-height: none;
-      padding: 15px 50px 15px 0;
+    .navbar-item {
+      padding: 0;
+
+      img {
+        height: 55px;
+        max-height: none;
+      }
     }
+  }
+
+  .navbar-menu {
+    margin-right: 0;
   }
 
   .navbar-item, .navbar-item a {
@@ -15,27 +41,68 @@
     }
   }
 
+  .navbar-start {
+    display: flex;
+    position: absolute;
+    top: 90px; left: -15px; right: -15px;
+    min-height: 65px;
+    padding: 0 1.6em;
+    margin-bottom: 10px;
+    border-top: 5px solid $venetian-red;
+    background: linear-gradient(to bottom,#e4e4e4 0,#e2e2e2 39%,#ddd 79%,#d5d5d5 91%,#cfcfcf 95%,#bebebe 99%);
+
+    .navbar-item {
+      display: inline-block;
+      height: 70px;
+      width: 110px;
+      padding: 10px 9px;
+      font-size: .8em;
+      line-height: 1.2;
+      color: $coal;
+      background: linear-gradient(to bottom,#e8e8e8 0,#f7f7f7 61%,#f7f7f7 89%,#f5f5f5 91%,#ececec 95%,#d7d7d7 100%);
+
+      border-right: 1px solid $menu-border-dark;
+      border-left: 1px solid $menu-border-light;
+
+      &:after {
+        content: "";
+        font-family: "Admin Icons";
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: #454545;
+        font-size: .9em;
+      }
+
+      &:first-child {
+        border-left: 1px solid $menu-border-dark;
+      }
+
+      &:hover, &:focus, &.nuxt-link-exact-active {
+        background: $white;
+        color: $venetian-red;
+      }
+    }
+  }
+
   .field {
     margin-bottom: 0;
 
     input {
-      background: rgba(255, 255, 255, .1);
-      border: none;
-      color: white;
+      height: 27px;
 
-      i {
-        color: white;
-      }
+      background: $white;
+      border: solid 1px $coal;
+      color: $night-rider;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 
       &::placeholder {
-        color: white;
+        color: $silver;
       }
 
       &:active, &:focus {
-        background: rgba(255, 255, 255, .2);
-        border: none;
-        box-shadow: 0 0 2px 0 $theme-light-primary;
-
         i {
           color: white !important;
         }
@@ -45,18 +112,18 @@
 
   .navbar-dropdown.search-results {
     padding: 0;
-    width: 150%;
+    width: 100%;
     margin-top: 0.5em;
 
-    border-radius: 2px;
-    background: #f3f6f9;
+    border-radius: 0;
+    background: $white;
     box-shadow: 0 0 5px $theme-dark-grey;
-    font-size: 0.9em;
+    font-size: 0.8rem;
     overflow: hidden;
 
     .navbar-item {
       display: block;
-      border-bottom: solid 1px $theme-light-grey;
+      border-bottom: solid 1px $light-grey;
       padding-right: 1em;
 
       .result-title {
