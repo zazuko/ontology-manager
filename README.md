@@ -11,7 +11,7 @@
 
 ### 2. Get a Personal Access Token
 
-1. Generate a token: <https://github.com/settings/tokens/new>
+1. Generate a token (Scopes `repo, user:email`): <https://github.com/settings/tokens/new>
 
 (Keep this value, you can always reuse them locally. Stash the env file if need be.)
 
