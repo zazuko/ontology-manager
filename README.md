@@ -48,6 +48,10 @@ DEBUG=editor:*
 # SENTRY_DSN=
 ```
 
+**Note:** some of these env vars will be used to create a postgres database for your project and set it up with the correct
+roles etc. Some others will be inserted into this database as initial config in `editor_schema.config`.  
+For this reason, if during development you need to change one of these values: `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `GITHUB_PERSONAL_ACCESS_TOKEN` without having access to the admin panel, deleting the database is the easiest option: `make reset up`.
+
 ### 4. Run the Dev Server
 
 1. `npm install`
