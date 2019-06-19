@@ -1,21 +1,45 @@
 .footer {
-  color: $theme-light-primary;
-  padding: 1em 0;
+  margin-top: 20px;
+  padding: 0;
+  border-top: 1px solid $light-grey;
+  background: $smoke;
+  color: $coal;
+
+  .container {
+    border-top: 1px solid $white;
+    margin: 0;
+    padding: 10px 15px;
+  }
 
   a {
+    color: $cerulean;
+
     &:hover, &:focus {
-      color: $theme-light-primary-hover;
+      color: $malibu;
     }
   }
 
   .footer-icon {
-    height: 70px;
-    padding: 15px 50px 15px 0;
+    display: none;
   }
 
   .footer-back-icon {
     i {
       font-weight: bold;
+    }
+  }
+
+  @include touch {
+    .level-left {
+      display: flex;
+      a {
+        // for the logo
+        padding-left: 15px;
+      }
+    }
+    .level-right {
+      // hide link "go to top"
+      display: none;
     }
   }
 }
