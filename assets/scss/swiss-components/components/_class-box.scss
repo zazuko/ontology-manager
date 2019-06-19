@@ -4,19 +4,24 @@
   @extend .box;
 
   padding: 0;
-  background: $theme-dark-primary;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
+  background: $smoke;
+  border: 1px solid $light-grey;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
+  border-radius: 0;
+
+  &:hover, &:focus {
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, .18);
+  }
 
   a {
-    padding: 0.8rem 1.6rem;
+    padding: 1rem;
     display: block;
-    color: white;
     text-decoration: none;
+    color: $night-rider;
   }
 
   .class-box-update {
     font-size: 0.6rem;
-    font-style: italic;
   }
 
   .class-box-icon {
@@ -24,11 +29,11 @@
   }
 
   .class-box-title {
+    font-size: 1.2rem;
     font-weight: 400;
   }
 
   .class-box-level {
-    color: $theme-light-primary;
     display: block;
     font-size: 0;
   }
@@ -43,7 +48,6 @@
   .class-box-label {
     font-size: 0.7rem;
     display: block;
-    font-style: italic;
   }
 
   .class-box-label {
@@ -54,11 +58,12 @@
   .class-box-toast {
     position: absolute;
     top: 0; right: 0;
-    padding: 0.8rem 1.5rem;
+    padding: 0.6rem 1.2rem;
 
     font-weight: bold;
-    font-size: 0.6rem;
-    background: $theme-light-secondary;
-    border-radius: 0 0 0 5px;
+    font-size: 0.8rem;
+    border: 1px solid $venetian-red;
+    background: $red;
+    color: $white;
   }
 }

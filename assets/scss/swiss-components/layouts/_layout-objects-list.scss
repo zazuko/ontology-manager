@@ -1,35 +1,31 @@
 .layout-objects-list {
-  padding-bottom: 4em;
+  padding: 0 1.25rem;
 }
 
 .layout-objects-list-head {
-  padding: 2.5rem 0;
-
-  .main-title {
-    text-align: center;
-  }
-
-  .subtitle {
-    text-align: center;
-  }
+  padding: 1rem 0;
 }
 
 .layout-objects-list-item {
-  padding: 2rem 0;
+  padding: 1rem 0;
 
   .title {
-    @extend .is-size-3;
+    @extend .is-size-2;
     @extend .subtitle;
-    color: $theme-light-primary;
+  }
+
+  .tile.is-parent {
+    padding: 0.5rem;
   }
 }
 
 .layout-objects-list-tools {
-  padding-top: 2.5rem;
+  padding-top: 2rem;
+  margin-left: -0.25rem;
 
   .button {
-    @extend .is-info;
-    background: $theme-light-primary;
+    @extend .is-danger;
+    @extend .is-outlined;
   }
 }
 
