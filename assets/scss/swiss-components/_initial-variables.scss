@@ -1,5 +1,4 @@
-// Tmp
-
+// Swiss guidelines variables
 $venetian-red:                               #DC0018;
 $red:                                        #F7001D;
 $mocassin:                                   #fffab2;
@@ -27,41 +26,30 @@ $menu-gradient:                              linear-gradient(top, #e8e8e8 0%, #f
 $menu-border-dark:                           #b8b8b8;
 $menu-border-light:                          $white;
 
-// Colors
+// Bulma default variables
 
-/*
-$black:        hsl(0, 0%, 4%);
-$black-bis:    hsl(0, 0%, 7%);
-$black-ter:    hsl(0, 0%, 14%);
+// Main colors
+$orange:        $venetian-red;
+$yellow:        $red;
+$green:         $red;
+$turquoise:     $malibu;
+$cyan:          $silver;
+$blue:          $cerulean;
+$purple:        $venetian-red;
+$red:           $red;
 
-$grey-darker:  hsl(0, 0%, 21%);
-$grey-dark:    hsl(0, 0%, 29%);
-$grey:         hsl(0, 0%, 48%);
-$grey-light:   hsl(0, 0%, 71%);
-$grey-lighter: hsl(0, 0%, 86%);
-
-$white-ter:    hsl(0, 0%, 96%);
-$white-bis:    hsl(0, 0%, 98%);
-$white:        hsl(0, 0%, 100%);
-
-$orange:       hsl(14,  100%, 53%);
-$yellow:       hsl(48,  100%, 67%);
-$green:        hsl(141, 71%,  48%);
-$turquoise:    hsl(171, 100%, 41%);
-$cyan:         hsl(204, 86%,  53%);
-$blue:         hsl(217, 71%,  53%);
-$purple:       hsl(271, 100%, 71%);
-$red:          hsl(348, 100%, 61%);
-*/
+// Button radius
+$radius-small: 0px;
+$radius: 0px;
+$radius-large: 0px;
 
 // Typography
-
-$family-sans-serif: 'Frutiger Neue', Helvetica, Arial, sans-serif;
+$family-sans-serif: BlinkMacSystemFont, -apple-system, 'Frutiger Neue', Helvetica, Arial, sans-serif;
 $family-monospace: monospace;
 $render-mode: optimizeLegibility;
 
-$size-1: 2.5rem;
-$size-2: 1.7rem;
+$size-1: 2.1rem;
+$size-2: 1.6rem;
 $size-3: 1.2rem;
 $size-4: 1.05rem;
 $size-5: 1.05rem;
@@ -90,7 +78,6 @@ $fullhd: 1344px + (2 * $gap);
 $fullhd-enabled: true;
 
 // Miscellaneous
-
 $easing: ease-out;
 $radius-small: 2px;
 $radius: 4px;
@@ -99,5 +86,4 @@ $radius-rounded: 290486px;
 $speed: 86ms;
 
 // Flags
-
 $variable-columns: true;
