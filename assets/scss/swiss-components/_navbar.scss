@@ -1,11 +1,9 @@
 // dirty fixes
 .navbar > .container .navbar-brand, .container > .navbar .navbar-brand { margin-left: 0; }
-.top-nav {
-  .control.has-icons-left .icon, .control.has-icons-left .sort-icon, .control.has-icons-right .icon, .control.has-icons-right .sort-icon {
-    color: $night-rider;
-    width: 27px;
-    height: 27px;
-  }
+.top-nav .control .icon {
+  color: $night-rider;
+  width: 27px;
+  height: 27px;
 }
 
 .top-nav {
@@ -33,14 +31,6 @@
     margin-right: 0;
   }
 
-  .navbar-item, .navbar-item a {
-    color: $theme-light-primary;
-
-    &:hover, &:focus {
-      color: $theme-light-primary-hover;
-    }
-  }
-
   .navbar-start {
     display: flex;
     position: absolute;
@@ -57,7 +47,7 @@
       width: 110px;
       padding: 10px 9px;
       font-size: .8em;
-      line-height: 1.2;
+      line-height: 24px;
       color: $coal;
       background: linear-gradient(to bottom,#e8e8e8 0,#f7f7f7 61%,#f7f7f7 89%,#f5f5f5 91%,#ececec 95%,#d7d7d7 100%);
 
@@ -117,13 +107,16 @@
 
     border-radius: 0;
     background: $white;
-    box-shadow: 0 0 5px $theme-dark-grey;
+    box-shadow: 0 0 5px $light-grey;
+    color: $night-rider;
     font-size: 0.8rem;
     overflow: hidden;
 
     .navbar-item {
       display: block;
       border-bottom: solid 1px $light-grey;
+      border-left: solid 1px $light-grey;
+      border-right: solid 1px $light-grey;
       padding-right: 1em;
 
       .result-title {
@@ -137,7 +130,6 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: $theme-dark-grey;
       }
     }
   }
