@@ -4,40 +4,41 @@
 
     width: 500px;
     margin-top: 3.5em;
-    border-radius: 10px;
-    box-shadow: -2px 2px 8px 0 $theme-light-grey;
+    border-radius: 0;
+    padding: 0 2em;
+    right: -90px;
+    box-shadow: 0 0 5px $light-grey;
+    color: $night-rider;
 
     .activity-log-header {
-      margin: 0 2em;
-      border-bottom: solid 1px $theme-light-grey;
+      padding: 1em 0;
+      margin: 0;
+      border-bottom: solid 1px $light-grey  ;
 
       h2 {
         font-weight: normal;
-        font-size: 2em;
-        padding: 0.5em 0;
+        padding: 0.5rem 0;
+        font-size: 1.25rem;
       }
 
       .icon {
         font-size: 2em;
-        color: $theme-dark-grey;
+        color: $night-rider;
         cursor: pointer;
       }
     }
 
     .activity-log-empty-state {
-      padding: 4em 2em;
+      padding: 4em 0;
       text-align: center;
-      color: $theme-dark-grey;
     }
 
     .activity-log-content {
       max-height: calc(100vh - 225px);
-      padding: 1em 2em;
+      padding: 1em 0;
       overflow: auto;
 
       .media {
-        color: $theme-dark-grey;
-
         &:last-child {
           margin-bottom: 2em;
         }
