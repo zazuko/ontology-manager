@@ -1,14 +1,10 @@
 .discussion {
-  padding: 2em;
-  margin: 1em 0 2em 0;
-
-  background: $theme-discussion-background;
-  border-radius: 10px;
-  box-shadow: -2px 2px 8px 0 $theme-light-grey;
+  padding: 0;
+  margin: 2em 0;
 
   .discussion-avatar {
     width: 40px; height: 40px;
-    border-radius: 100%;
+    background: $smoke;
   }
 
   .discussion-form {
@@ -32,8 +28,11 @@
         position: absolute;
         bottom: 0; right: 0;
 
-        .button {
+        .button.is-info {
           width: 150px;
+
+          @extend .is-outlined;
+          @extend .is-danger;
         }
       }
     }

@@ -1,35 +1,32 @@
 .layout-conversation {
-  max-width: 950px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 2em;
+  padding: 0 1.25rem;
 
   .section {
-    padding: 1.5rem;
+    padding: 1.5rem 0;
   }
 
   .breadcrumb {
-    color: $theme-light-primary;
+    color: $coal;
 
     a {
       text-decoration: underline;
 
       &:hover, &:focus {
         text-decoration: none;
-        color: $theme-light-primary;
+        color: $coal;
       }
     }
 
     li + li::before {
       content: '>';
-      color: $theme-light-primary;
+      color: $coal;
     }
   }
 
   .title {
     &.is-1 {
       font-weight: 300;
-      color: $theme-light-primary;
+      color: $coal;
       font-size: 2rem;
     }
 
