@@ -1,31 +1,22 @@
 table.generic-table {
-  thead th {
-    border-bottom: solid 1px $theme-light-primary;
-  }
-
-  tbody {
-    font-size: .9em;
-  }
-
   th {
-    color: $theme-light-primary;
-    font-weight: normal;
+    font-weight: bold;
+    background: $smoke;
   }
 
   th, td {
-    padding: 1em 1em 1em 0;
+    padding: .5rem 1rem;
+    border: solid 1px $light-grey;
+    border-bottom-width: 1px !important;
   }
 
   td {
-    font-size: .9em;
-
     a {
       font-weight: bold;
       text-decoration: underline;
 
       &:hover, &:focus {
         text-decoration: none;
-        color: $theme-light-primary;
       }
     }
   }
@@ -40,7 +31,6 @@ table.generic-table {
     font-weight: normal;
     text-decoration: underline;
     cursor: pointer;
-    color: $theme-light-primary;
     opacity: .6;
 
     &:hover, &:focus {

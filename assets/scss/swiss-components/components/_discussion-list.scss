@@ -5,21 +5,26 @@
   .discussion-list-header {
     @extend .is-clearfix;
     height: 70px;
-    padding: 1em;
+    padding: 1em 0;
     border-bottom: solid 1px $theme-discussion-border;
+
+    .button.is-info {
+      @extend .is-outlined;
+      @extend .is-danger;
+    }
   }
 
   .discussion-list-body {
-    padding: 0 1em;
+    padding: 0;
 
     .discussion-list-item {
       margin-top: 0;
       border-bottom: solid 1px $theme-discussion-border;
-      padding: 1em 0;
+      padding: .6rem 0 .2rem 0;
 
       .discussion-list-avatar {
         width: 40px; height: 40px;
-        border-radius: 100%;
+        background: $smoke;
       }
 
       .discussion-list-title {
@@ -36,27 +41,16 @@
         }
       }
 
-      .discussion-list-content {
-        color: $theme-dark-grey;
-        font-size: 0.9em;
-      }
-
       .media-right {
         text-align: right;
-        font-size: 0.9em;
-      }
 
-      .discussion-list-author-info {
-        color: black;
-      }
-
-      .discussion-list-creation-info {
-        color: $theme-dark-grey;
+        a {
+          color: $coal;
+        }
       }
 
       .discussion-list-answers-count {
         display: block;
-        color: black;
       }
 
       &:last-child {

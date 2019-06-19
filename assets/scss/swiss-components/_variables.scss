@@ -1,3 +1,78 @@
+// defining bulma variables
+$link: $cerulean;
+$link-visited: $malibu;
+$family-primary: $family-sans-serif;
+
+// navbar
+$navbar-height: 5rem;
+
+// discussion
+$theme-discussion-border: $light-grey;
+$theme-discussion-list-background: transparent;
+
+// ---------------------------
+// -- PROD
+// theme colors
+$theme-light-primary: $black;
+$theme-light-primary-hover: $night-rider;
+$theme-dark-primary: #2C3E50;
+$theme-light-secondary: #E67E22;
+$theme-light-grey: #BFC5CA;
+$theme-dark-grey: #959FA6;
+$theme-shadow: lighten($theme-light-grey, 5%);
+$theme-main-background: $smoke;
+
+// discussion
+$theme-discussion-background: #F3F6F9;
+$theme-discussion-background-2: #DEECF7;
+$theme-discussion-background-3: #2D4150;
+
+// modal
+$modal-card-head-background-color: #F2F6F9;
+$modal-card-head-border-bottom: #F2F6F9;
+$modal-card-body-background-color: #F2F6F9;
+$modal-card-foot-border-top: #F2F6F9;
+$modal-card-title-color: black;
+
+// (?) legacy
+$panel-block-active-border-left-color: $orange;
+$panel-block-active-icon-color: $orange;
+$table-background-color: opacity(0);
+
+
+// ---------------------------
+// -- DEV
+// theme colors
+$theme-light-primary: green;
+$theme-light-primary-hover: green;
+$theme-dark-primary: green;
+$theme-light-secondary: green;
+$theme-light-grey: green;
+$theme-dark-grey: green;
+$theme-shadow: green;
+$theme-main-background: green;
+
+// discussion
+$theme-discussion-background: green;
+$theme-discussion-background-2: green;
+$theme-discussion-background-3: green;
+$theme-discussion-border: $light-grey;
+$theme-discussion-list-background: transparent;
+
+// modal
+$modal-card-head-background-color: green;
+$modal-card-head-border-bottom: green;
+$modal-card-body-background-color: green;
+$modal-card-foot-border-top: green;
+$modal-card-title-color: green;
+
+// (?) legacy
+$panel-block-active-border-left-color: green;
+$panel-block-active-icon-color: green;
+$table-background-color: green;
+
+/*
+// -- ORIGINAL
 // theme colors
 $theme-light-primary: $black;
 $theme-light-primary-hover: $night-rider;
@@ -35,3 +110,4 @@ $modal-card-title-color: black;
 $panel-block-active-border-left-color: $orange;
 $panel-block-active-icon-color: $orange;
 $table-background-color: opacity(0);
+*/

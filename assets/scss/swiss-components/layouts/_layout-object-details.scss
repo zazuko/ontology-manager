@@ -8,29 +8,21 @@
 
 .layout-object-details-sidenav {
   position: relative;
-  background: $theme-dark-grey;
-  padding: 2rem 2rem 6rem 0;
-
-  min-height: calc(100vh - 186px);
-
-  color: white;
-
-  &:before {
-    content: '';
-    position: absolute;
-    background: $theme-dark-grey;
-    top: 0; right: 100%; bottom: 0;
-    width: 2000px;
-  }
+  padding: 2rem;
 
   .menu-label {
-    padding: 4rem 0 2rem 0;
-    border-bottom: solid 1px white;
+    padding: 2rem 0 .5rem 0;
+    border-bottom: solid 1px $light-grey;
 
-    color: white;
     font-variant: normal;
     text-transform: none;
     font-size: 1rem;
+    color: $night-rider;
+    letter-spacing: 0;
+  }
+
+  div div:first-child .menu-label {
+    padding-top: 0;
   }
 
   .menu-list {
@@ -38,16 +30,14 @@
 
     ul {
       margin: 0;
-      margin-left: 24px;
+      margin-left: 10px;
       border-left: none;
     }
 
     a {
-      color: $theme-light-grey;
-
       .icon {
-        width: 24px;
-        color: white;
+        width: 20px;
+        color: $night-rider;
         justify-content: left;
 
         i {
@@ -55,15 +45,13 @@
         }
       }
 
-      &:hover, &:focus {
-        background: none;
-        color: white;
-      }
-
       &.is-active {
-        background: none;
-        font-weight: bold;
-        color: white;
+        background: $cerulean;
+        box-shadow: inset 0 0 0 1px $white;
+        border-radius: 0;
+        .icon {
+          color: white;
+        }
       }
     }
   }
@@ -71,44 +59,39 @@
 
 .layout-object-details-content {
   .section {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .breadcrumb {
-    color: $theme-light-primary;
+    color: $night-rider;
 
     a {
       text-decoration: underline;
 
       &:hover, &:focus {
         text-decoration: none;
-        color: $theme-light-primary;
       }
     }
 
     li + li::before {
-      content: '>';
-      color: $theme-light-primary;
+      content: '›';
+      color: $silver;
     }
   }
 
   .title {
     &.is-1 {
       font-weight: 300;
-      color: $theme-light-primary;
     }
 
     &.is-2 {
       font-weight: 300;
-      color: $theme-light-primary;
-      font-size: 2rem;
       margin-top: 1em;
       margin-bottom: 0.5em;
     }
 
     &.is-3 {
-      font-weight: bold;
-      font-size: 1rem;
+      font-weight: 300;
       margin-top: 1em;
       margin-bottom: 0;
     }
@@ -118,13 +101,12 @@
     display: inline-block;
     line-height: 30px; height: 30px;
     width: 30px;
+    margin-left: 10px;
     text-align: center;
     vertical-align: middle;
 
-    border-radius: 6px;
     background: #efefef;
     font-size: 0.8em;
-    color: $theme-dark-grey;
 
     img {
       widows: 18px; height: 18px;
@@ -132,7 +114,6 @@
     }
 
     &:hover, &:focus {
-      background: $theme-light-primary;
       color: white;
 
       img {
@@ -153,7 +134,7 @@
         display: inline-block;
         color: black;
         text-decoration: underline;
-        padding-right: 2rem;
+        padding: 0 .25rem;
 
         &:hover, &:focus {
           text-decoration: none;
