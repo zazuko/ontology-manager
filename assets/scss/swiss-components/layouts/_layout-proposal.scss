@@ -1,11 +1,10 @@
 .layout-proposal {
-  padding-top: 3em;
-  padding-bottom: 4em;
+  padding: 1rem 1.25rem 0 1.25rem;
+  margin: 0;
 
   .is-subform {
     &.box {
-      border-top: solid 1px $theme-shadow;
-      border-radius: 0 0 8px 8px;
+      border-top: solid 1px $coal;
       margin-bottom: 2em;
     }
 
@@ -15,79 +14,67 @@
       background-color: darken(whitesmoke, 10%);
       border-color: darken(whitesmoke, 10%);
       box-shadow: none;
-      color: #565656;
+      color: $empress;
     }
     .editor .editor__content .ProseMirror[contenteditable=false] {
       background-color: darken(whitesmoke, 10%);
       border-color: darken(whitesmoke, 10%);
-      color: #565656;
+      color: $empress;
     }
   }
 
   .is-prop-subform > .box {
-    background: $theme-main-background;
+    background: $white;
   }
 
   .is-class-subform > .box {
-    background: white;
+    background: $white;
   }
 
   .title {
     &.is-1 {
       @extend .is-size-1;
-
       font-weight: 300;
-      color: $theme-light-primary;
     }
 
     &.is-2 {
-      @extend .is-size-4;
-
+      @extend .is-size-2;
       font-weight: 300;
-      color: $theme-light-primary;
     }
   }
 
   .title.is-3, .label {
-    @extend .is-size-7;
-
-    font-weight: bold;
-    color: black;
+    @extend .is-size-3;
+    font-weight: 300;
   }
 
   .subtitle {
     &.is-1 {
-      @extend .is-size-6;
+      @extend .is-size-4;
+      font-weight: 300;
     }
   }
 
   .box {
-    border: none;
-    border-radius: 8px;
-    box-shadow: -2px 2px 8px 0 $theme-shadow;
-    padding: 1.5em 2em;
-
-    &.is-marginless {
-      border-radius: 8px 8px 0 0;
-    }
+    border-radius: 0;
+    padding: 1rem;
 
     .desc {
-      color: $theme-light-grey;
-      font-size: .9em;
+      color: $night-rider;
     }
 
     .configurable-list {
       .field {
-        margin-bottom: -1em;
+        margin-bottom: -1rem;
       }
 
       .panel-block {
         border: none;
         padding: 0;
-        color: $theme-light-grey;
+        color: $night-rider;
 
         .panel-icon {
-          font-size: 1.2em;
+          font-size: 1.2rem;
         }
 
         &.is-active {
@@ -106,10 +93,10 @@
   }
 
   .proposal-submit {
+    padding-top: 1rem;
     @mixin proposal-submit-button {
       height: 3em;
       width: 100%;
-      border-radius: 8px;
       font-size: 1em;
     }
     .submit-proposal {
@@ -138,8 +125,7 @@
   }
 
   .proposal-author-info {
-    font-size: .9em;
-    color: $theme-dark-grey;
+    color: $night-rider;
   }
 
   .proposal-author-name {

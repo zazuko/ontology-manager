@@ -11,20 +11,20 @@
 
     li {
       margin: .25em 0;
-      color: $theme-light-grey;
+      color: $night-rider;
 
       a {
-        color: $theme-light-grey;
+        color: $night-rider;
       }
 
       &.done {
-        color: $theme-light-primary;
+        color: $cerulean;
 
         a {
-          color: $theme-light-primary;
+          color: $cerulean;
 
           &:hover, &:focus {
-            color: $theme-light-primary-hover;
+            color: $black;
           }
         }
       }
