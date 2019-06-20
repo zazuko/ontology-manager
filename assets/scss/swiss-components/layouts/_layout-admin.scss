@@ -1,49 +1,61 @@
 .layout-admin {
-  //max-width: 950px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 3em;
+  padding: 0 1.25rem;
 
   .layout-admin-header {
-    padding: 3em 0 1em 0;
+    padding: 1rem 0;
 
     h1 {
-      font-size: 3em;
-      font-weight: 300;
-      color: $theme-light-primary;
+      font-size: $size-1;
+      font-weight: $weight-light;
     }
   }
 
   .layout-admin-nav {
-    padding: 1em;
-    font-size: .9em;
+    font-size: 0px;
 
     li {
+      margin-top: 1rem;
       display: inline-block;
-      margin-right: 10px;
 
       a {
-        padding: 5px;
-        color: $theme-dark-grey;
-        border-bottom: solid 4px transparent;
+        display: block;
+        font-size: 1rem;
+        line-height: 2.6rem;
+        color: $coal;
+        background: $smoke;
+        padding: 0 1rem;
+        border: solid 1px $silver;
+        border-right: none;
 
-        &:hover, &:focus, &.is-active {
-          color: $theme-light-primary;
-          border-bottom-color: $theme-light-primary;
+        &:hover, &:focus {
+          color: $venetian-red;
+          border-top-color: $venetian-red;
+          box-shadow: inset 0 2px 0 0 $venetian-red;
+        }
+
+        &.is-active {
+          color: $venetian-red;
+          border-top-color: $venetian-red;
+          background: $white;
+          box-shadow: inset 0 2px 0 0 $venetian-red;
         }
       }
+    }
+
+    li:last-child a {
+      border: solid 1px $silver;
     }
   }
 
   .layout-admin-panel {
     p {
-      padding-bottom: 1em;
+      padding: 1em 0;
     }
   }
 
   .code {
     font-family: $family-monospace;
-    color: $theme-dark-primary;
+    color: $empress;
   }
 
   .settings-form {

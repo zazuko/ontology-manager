@@ -1,22 +1,21 @@
 .admin-table {
   @extend .is-fullwidth;
   overflow: hidden;
-  font-size: .9em;
-
   background: white;
-  border-radius: 10px;
-  box-shadow: -2px 2px 8px 0 $theme-light-grey;
+  color: $night-rider;
 
-  thead th {
-    padding: 1em;
-    border-bottom: none;
+  th, td {
+    padding: .5rem 1rem;
+    border: solid 1px $light-grey !important;
+    border-bottom-width: 1px !important;
+  }
 
-    color: white;
-    background: $theme-dark-primary;
-    font-weight: normal;
+  th {
+    font-weight: bold;
+    background: $smoke;
 
     a {
-      color: white;
+      color: $night-rider;
     }
 
     .dropdown {
@@ -24,31 +23,49 @@
         cursor: pointer;
         button, button:hover {
           border: none;
-          color: white;
-          background: $theme-dark-primary;
           padding: 0;
           margin: 0;
           font-size: 1em;
+          font-weight: bold;
+          &:hover, &:focus {
+            background: transparent;
+          }
         }
       }
+      .dropdown-content {
+        border-radius: 0;
+        border-color: $smoke
+      }
       .dropdown-divider {
-        background: $theme-dark-primary;
+        background: $smoke;
+        border-color: $smoke
       }
       a {
-        color: $theme-dark-primary;
         background: white;
+        font-weight: normal;
       }
       .dropdown-item {
-        &.is-active, &:hover {
-          color: white;
-          background: $theme-dark-primary;
+        &.is-active, &:hover, &:focus {
+          background: $smoke;
+          color: $night-rider;
+        }
+        &.is-active {
+          font-weight: bold;
         }
       }
     }
   }
 
-  tbody td {
-    padding: 1em;
+  td {
+    a {
+      font-weight: bold;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
     .avatar {
       height: 40px;
       width: 40px;
@@ -57,11 +74,16 @@
 
   .info {
     font-size: .8em;
-    color: $theme-dark-grey;
   }
 
   code {
-    color: $theme-dark-primary;
+    color: $empress;
+  }
+
+  .draft-action {
+    a, button {
+      // @extend .button;
+    }
   }
 }
 

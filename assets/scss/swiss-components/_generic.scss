@@ -53,15 +53,12 @@ section hr {
   }
 }
 
-/*
-.button.is-dark-info {
-  background: $theme-dark-primary;
-  border: none;
-  color: white;
-}
-*/
 .pagination {
   margin-bottom: 1em;
+
+  .pagination-previous, .pagination-next, .pagination-link {
+    border-radius: 0px;
+  }
 }
 
 .aligned-with-button {
@@ -78,4 +75,4 @@ a.title-url {
   text-decoration: underline;
 }
 
-.button { border-radius: 0; }
+.button { border-radius: 0 !important; }
