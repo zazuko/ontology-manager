@@ -1,6 +1,6 @@
 .discussion {
   padding: 0;
-  margin: 2em 0;
+  margin: 0;
 
   .discussion-avatar {
     width: 40px; height: 40px;
@@ -9,9 +9,9 @@
 
   .discussion-form {
     position: relative;
+    margin-top: 2rem;
 
     .media-left {
-      min-width: 58px;
       text-align: right;
     }
 
@@ -51,12 +51,11 @@
   }
 
   .discussion-infos {
-    margin-top: 1em;
-    font-size: .9em;
+    margin: 1.5rem 0 0 0;
+    padding: 0;
 
     .creation-info {
-      font-style: italic;
-      color: $theme-dark-grey;
+      color: $coal;
     }
 
     .author-info {
@@ -75,31 +74,16 @@
 
   .discussion-message {
     position: relative;
-    padding: 1em;
-    border-radius: 10px;
+    padding: .5rem;
     overflow: hidden;
-
-    background: white;
+    border-bottom: solid 1px $light-grey;
 
     &.is-from-thread-author {
-      background: $theme-discussion-background-2;
+      background: $smoke;
     }
 
     &.has-hat {
-      background: $theme-discussion-background-3;
-      color: white;
-
-      .discussion-actions img {
-        filter: invert(1);
-      }
-    }
-
-    &:not(:last-child) {
-      margin-bottom: 1em;
-    }
-
-    .media-content > *:first-child {
-      margin-top: .5em;
+      background: $gainsboro;
     }
 
     .discussion-message-info {
@@ -112,7 +96,7 @@
 
       .creation-info {
         font-size: .9em;
-        color: $theme-dark-grey;
+        color: $coal;
       }
     }
 
@@ -126,9 +110,6 @@
       line-height: 30px;
       padding: 0 1em;
 
-      color: white;
-      background: $theme-light-primary;
-      font-size: .9;
       border-radius: 10px 0 0 0;
     }
   }
