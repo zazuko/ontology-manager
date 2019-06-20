@@ -1,10 +1,11 @@
 .signin-modal {
-  color: black;
+  color: $night-rider;
 
   .modal-card {
-    border-radius: 8px;
     overflow: hidden;
     min-height: 400px;
+    border-radius: 0;
+    background: $white;
     @include tablet {
       width: 770px;
     }
@@ -12,10 +13,12 @@
 
   .modal-card-head {
     padding: 3em 3em 1em 3em;
+    background: $white
   }
 
   .modal-card-body {
     padding: 1em 3em 3em 3em;
+    background: $white
   }
 
   .signin-modal-close {
@@ -30,7 +33,7 @@
 
   .modal-card-title {
     font-size: 2em;
-    color: $theme-light-primary;
+    color: $night-rider;
   }
 
   .github-logo {
@@ -42,6 +45,6 @@
   .info {
     font-size: .75em;
     padding-bottom: 1em;
-    color: $theme-dark-grey;
+    color: $empress;
   }
 }
