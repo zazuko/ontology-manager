@@ -99,7 +99,7 @@
                   class="column">
                   <button
                     id="submit"
-                    class="submit-proposal"
+                    class="button submit-proposal"
                     @click.prevent="sendProposal">
                     Submit Proposal
                   </button>
@@ -107,12 +107,12 @@
                 <p class="column">
                   <a
                     v-show="savingIndicator === 'spinning'"
-                    class="save-proposal is-loading">
+                    class="button save-proposal is-loading">
                     Loading
                   </a>
                   <button
                     v-show="savingIndicator !== 'spinning'"
-                    class="save-proposal"
+                    class="button save-proposal"
                     @click.prevent="saveDraft">
                     <span v-show="savingIndicator === 'done'">
                       Draft Saved <i class="mdi mdi-check"></i>
@@ -124,7 +124,7 @@
                 </p>
                 <p class="column">
                   <button
-                    class="discard-proposal"
+                    class="button discard-proposal"
                     @click.prevent="discard">
                     Discard Draft
                   </button>

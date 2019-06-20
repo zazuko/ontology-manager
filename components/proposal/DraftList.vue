@@ -24,18 +24,18 @@
             <nuxt-link
               v-if="$proposalType(draft.proposalObject) === 'Class'"
               :to="{ name: 'proposal-class', query: { id: draft.id } }"
-              class="edit-draft">
+              class="button edit-draft">
               Edit Proposal
             </nuxt-link>
             <nuxt-link
               v-else
               :to="{ name: 'proposal-property', query: { id: draft.id } }"
-              class="edit-draft">
+              class="button edit-draft">
               Edit Proposal
             </nuxt-link>
             <button
               @click.prevent="discard(draft.id)"
-              class="discard-draft">
+              class="button discard-draft">
               Discard
             </button>
           </td>
