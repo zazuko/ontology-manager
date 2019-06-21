@@ -27,6 +27,24 @@
         height: 55px;
         max-height: none;
       }
+
+      .product-name {
+        border-left: solid 1px $gainsboro;
+        margin-left: 30px;
+        padding-left: 30px;
+        height: 55px;
+
+        font-size: 1rem;
+        color: $black;
+        font-weight: 700;
+
+        @media screen and (max-width: $tablet) {
+          margin-left: 20px;
+          padding-left: 20px;
+          max-width: 100px;
+          line-height: 1.2rem;
+        }
+      }
     }
   }
 
