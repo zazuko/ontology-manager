@@ -2,6 +2,9 @@ body {
   background: url('../images/swiss/bg-striped.png');
   padding-bottom: 100px;
   min-height: 100vh;
+  @media screen and (max-width: $tablet) {
+    padding-bottom: 0;
+  }
 }
 
 .has-primary-background,

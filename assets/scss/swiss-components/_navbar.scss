@@ -11,6 +11,9 @@
   padding: 10px 15px;
   margin-bottom: 75px;
   background: $white;
+  @media screen and (max-width: $tablet) {
+    margin-bottom: 0;
+  }
 
   .container {
     max-width: none;
@@ -29,6 +32,11 @@
 
   .navbar-menu {
     margin-right: 0;
+    @media screen and (max-width: $tablet) {
+      position: relative;
+      left: -15px;
+      width: calc(100% + 30px);
+    }
   }
 
   .navbar-start {
@@ -40,6 +48,12 @@
     margin-bottom: 10px;
     border-top: 5px solid $venetian-red;
     background: linear-gradient(to bottom,#e4e4e4 0,#e2e2e2 39%,#ddd 79%,#d5d5d5 91%,#cfcfcf 95%,#bebebe 99%);
+    @media screen and (max-width: $tablet) {
+      position: static;
+      top: auto;
+      left: auto;
+      right: auto;
+    }
 
     .navbar-item {
       display: inline-block;
