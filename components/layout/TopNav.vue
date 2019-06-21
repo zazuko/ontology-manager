@@ -8,6 +8,7 @@
           :to="{ name: 'index', params: {} }"
           class="navbar-item">
           <img src="~/assets/images/swiss/logo-CH.svg">
+          <h1 class="product-name">Linked Data Schema</h1>
         </nuxt-link>
         <div
           :class="{'is-active': isActive}"
