@@ -1,3 +1,14 @@
+<a name="0.9.56"></a>
+## [0.9.56](https://github.com/zazuko/ontology-editor/compare/v0.9.55...v0.9.56) (2019-06-24)
+
+
+### Bug Fixes
+
+* **api:** add debugging for getFile ([87c8e42](https://github.com/zazuko/ontology-editor/commit/87c8e42))
+* **proposal:** add visual cues to motivation fields ([805bb91](https://github.com/zazuko/ontology-editor/commit/805bb91))
+
+
+
 <a name="0.9.55"></a>
 ## [0.9.55](https://github.com/zazuko/ontology-editor/compare/v0.9.54...v0.9.55) (2019-06-19)
 
