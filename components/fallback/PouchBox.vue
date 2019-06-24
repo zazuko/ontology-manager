@@ -17,6 +17,7 @@
         </span>
         <span v-else>&mdash;</span>
       </p>
+      <!-- TODO: icons should be configurable -->
       <img
         v-show="type === 'container'"
         src="~/assets/images/swiss/ic-pouch.svg"
