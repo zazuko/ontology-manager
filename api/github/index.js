@@ -25,7 +25,14 @@ module.exports = async function (editorConfig) {
 
   router.get('/blob/:file', async (req, res, next) => {
     const path = req.params.file
-    const content = await api.getFile({ path })
+    let content
+    try {
+      content = await api.getFile({ path })
+    }
+    catch (err) {
+      debug(`/blob/${path}`, err)
+      res.status(500).send('error')
+    }
     res.type('application/n-triples')
 
     res.send(content)
