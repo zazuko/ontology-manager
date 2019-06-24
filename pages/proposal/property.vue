@@ -49,12 +49,18 @@
                   <div class="column">
                     <div class="control">
                       <textarea
+                        class="textarea"
                         :disabled="disabled"
+                        :class="{'is-danger': !prop.motivation}"
                         v-debounce
                         v-model.lazy="prop.motivation"
-                        class="textarea"
                         placeholder="" />
                     </div>
+                    <p
+                      v-show="!prop.motivation"
+                      class="help is-danger">
+                      Please explain the need for this proposal.
+                    </p>
                   </div>
                   <div class="column">
                     <p class="desc">
