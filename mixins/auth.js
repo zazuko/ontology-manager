@@ -59,7 +59,6 @@ export default {
           result = await axios.post('/api/link', { email, name, id, username }, headers)
         }
         catch (err) {
-          // TODO: clear cookies here
           if (process.browser) {
             const cookies = document.cookie.split(';')
 
