@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const dotenv = require('dotenv')
-const debug = require('debug')('editor')
+const debug = require('debug')('editor:config')
 
 const mandatoryEnvVars = [
   'CUSTOMER_NAME',
