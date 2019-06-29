@@ -1,3 +1,15 @@
+<a name="0.9.57"></a>
+## [0.9.57](https://github.com/zazuko/ontology-editor/compare/v0.9.56...v0.9.57) (2019-06-29)
+
+
+### Bug Fixes
+
+* do not poll datasets server-side ([d6b2552](https://github.com/zazuko/ontology-editor/commit/d6b2552))
+* **dataset-fetch:** do not raise unhandled exceptions ([cfaf79e](https://github.com/zazuko/ontology-editor/commit/cfaf79e))
+* **logging:** better scope for env-init ([a1382b2](https://github.com/zazuko/ontology-editor/commit/a1382b2))
+
+
+
 <a name="0.9.56"></a>
 ## [0.9.56](https://github.com/zazuko/ontology-editor/compare/v0.9.55...v0.9.56) (2019-06-24)
 
