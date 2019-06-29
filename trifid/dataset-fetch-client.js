@@ -35,6 +35,6 @@ export default async function fetchDataset (editorConfig) {
   }
   catch (err) {
     debug('dataset-fetch-client failed to fetch dataset from local API', err)
-    throw err
+    debug(err)
   }
 }
