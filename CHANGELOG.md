@@ -1,3 +1,13 @@
+<a name="0.9.58"></a>
+## [0.9.58](https://github.com/zazuko/ontology-editor/compare/v0.9.57...v0.9.58) (2019-06-29)
+
+
+### Bug Fixes
+
+* downgrade nuxt auth ([22d394f](https://github.com/zazuko/ontology-editor/commit/22d394f))
+
+
+
 <a name="0.9.57"></a>
 ## [0.9.57](https://github.com/zazuko/ontology-editor/compare/v0.9.56...v0.9.57) (2019-06-29)
 
