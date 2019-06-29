@@ -83,12 +83,17 @@ export const actions = {
       commit('rebuildStructureTree')
     }
 
-    const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
-    if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
-      commit('ontologyInit', ontologyDataset)
-      commit('structureInit', structureDataset)
+    try {
+      const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
+      if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
+        commit('ontologyInit', ontologyDataset)
+        commit('structureInit', structureDataset)
+      }
+      return dispatch(DESERIALIZE)
     }
-    return dispatch(DESERIALIZE)
+    catch (err) {
+      //
+    }
   },
 
   async [COUNT_PROPOSALS] ({ commit }) {
