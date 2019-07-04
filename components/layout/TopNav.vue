@@ -8,6 +8,7 @@
           :to="{ name: 'index', params: {} }"
           class="navbar-item">
           <img :src="$store.state.config.editor.logoUrl">
+          <h1 class="product-name">{{ $store.state.config.editor.meta.title }}</h1>
         </nuxt-link>
         <div
           :class="{'is-active': isActive}"
