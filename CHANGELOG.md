@@ -1,3 +1,44 @@
+<a name="0.9.59"></a>
+## [0.9.59](https://github.com/zazuko/ontology-editor/compare/v0.9.58...v0.9.59) (2019-07-04)
+
+
+### Bug Fixes
+
+* make icons configurable by design ([dd418ad](https://github.com/zazuko/ontology-editor/commit/dd418ad))
+* **assets:** losslessly optimize assets ([9f352cb](https://github.com/zazuko/ontology-editor/commit/9f352cb))
+* **design:** add product name in header ([18eccdb](https://github.com/zazuko/ontology-editor/commit/18eccdb))
+* **design:** avoid extending .button ([de0645e](https://github.com/zazuko/ontology-editor/commit/de0645e))
+* **design:** fix responsiveness for header and footer ([882bdd2](https://github.com/zazuko/ontology-editor/commit/882bdd2))
+* **design:** fix some gliches in activity component ([45f6127](https://github.com/zazuko/ontology-editor/commit/45f6127))
+* **design:** fix some gliches in navbar component ([74c436e](https://github.com/zazuko/ontology-editor/commit/74c436e))
+* **design:** hide editor title from navbar ([346afa5](https://github.com/zazuko/ontology-editor/commit/346afa5))
+* **design:** pouch and class images are red ([3f8664f](https://github.com/zazuko/ontology-editor/commit/3f8664f))
+* **design:** update admin pages styles ([8e51c96](https://github.com/zazuko/ontology-editor/commit/8e51c96))
+* **design:** update discussion component style ([445c349](https://github.com/zazuko/ontology-editor/commit/445c349))
+* **design:** update layout-objects-details style ([b559ddf](https://github.com/zazuko/ontology-editor/commit/b559ddf))
+* **design:** update layout-objects-list ([75282e1](https://github.com/zazuko/ontology-editor/commit/75282e1))
+* **design:** update markup for button elements ([a96070e](https://github.com/zazuko/ontology-editor/commit/a96070e))
+* **design:** update modal components style ([028b9f9](https://github.com/zazuko/ontology-editor/commit/028b9f9))
+* **design:** update new thread style ([8bd4690](https://github.com/zazuko/ontology-editor/commit/8bd4690))
+* **design:** update proposal layout and components style ([86d7249](https://github.com/zazuko/ontology-editor/commit/86d7249))
+* **design:** use existing configurable values ([6d0d686](https://github.com/zazuko/ontology-editor/commit/6d0d686))
+* **scss:** extending .button takes too long ([a512297](https://github.com/zazuko/ontology-editor/commit/a512297))
+
+
+### Features
+
+* **design:** add correct fonts ([d420475](https://github.com/zazuko/ontology-editor/commit/d420475))
+* **design:** add resource from swiss guidelines ([eb06835](https://github.com/zazuko/ontology-editor/commit/eb06835))
+* **design:** create new swiss layout ([351edb7](https://github.com/zazuko/ontology-editor/commit/351edb7))
+* **design:** update footer style ([a9fa31e](https://github.com/zazuko/ontology-editor/commit/a9fa31e))
+* **design:** update generic CSS variables ([7a2e181](https://github.com/zazuko/ontology-editor/commit/7a2e181))
+* **design:** update global layout ([a4ee939](https://github.com/zazuko/ontology-editor/commit/a4ee939))
+* **design:** update images link ([c5b1c39](https://github.com/zazuko/ontology-editor/commit/c5b1c39))
+* **design:** update pouches icons ([d117703](https://github.com/zazuko/ontology-editor/commit/d117703))
+* **design:** update topbar design ([f8fe55f](https://github.com/zazuko/ontology-editor/commit/f8fe55f))
+
+
+
 <a name="0.9.58"></a>
 ## [0.9.58](https://github.com/zazuko/ontology-editor/compare/v0.9.57...v0.9.58) (2019-06-29)
 
