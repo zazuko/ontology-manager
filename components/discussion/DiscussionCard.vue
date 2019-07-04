@@ -9,18 +9,14 @@
       <div
         v-show="canEdit(discussion.author.id)"
         class="discussion-actions level-right is-hidden-mobile">
-        <img
-          class="hoverable-icon"
-          src="~/assets/images/ic-edit.svg"
-          alt="Edit thread"
+        <span
+          class="hoverable-icon edit"
           title="Edit thread"
-          @click="editThread = !editThread">
-        <img
-          class="hoverable-icon"
-          src="~/assets/images/ic-trashcan.svg"
-          alt="Delete thread"
+          @click="editThread = !editThread" />
+        <span
+          class="hoverable-icon trash"
           title="Delete thread"
-          @click="deleteConfirm = 'thread'">
+          @click="deleteConfirm = 'thread'" />
       </div>
     </div>
 
@@ -215,18 +211,14 @@
           <div
             v-show="canEdit(message.author.id)"
             class="media-right discussion-actions is-hidden-mobile">
-            <img
-              class="hoverable-icon"
-              src="~/assets/images/ic-edit.svg"
-              alt="Edit message"
+            <span
+              class="hoverable-icon edit"
               title="Edit message"
-              @click="editMessageSetup(message)">
-            <img
-              class="hoverable-icon"
-              src="~/assets/images/ic-trashcan.svg"
-              alt="Delete message"
+              @click="editMessageSetup(message)" />
+            <span
+              class="hoverable-icon trash"
               title="Delete message"
-              @click="deleteConfirm = message.id">
+              @click="deleteConfirm = message.id" />
           </div>
         </div>
       </div>

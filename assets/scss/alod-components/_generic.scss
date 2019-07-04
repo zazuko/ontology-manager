@@ -71,11 +71,25 @@ section hr {
 }
 
 .hoverable-icon {
-  opacity: 0.3;
+  display: inline-block;
+  width: 28px;
+  height: 26px;
   cursor: pointer;
+  background-repeat: no-repeat;
 
+  opacity: 0.3;
   &:hover {
     opacity: 1;
+  }
+
+  &.activity {
+    background-image: url('../images/ic-activity.svg');
+  }
+  &.edit {
+    background-image: url('../images/ic-edit.svg');
+  }
+  &.trash {
+    background-image: url('../images/ic-trashcan.svg');
   }
 }
 

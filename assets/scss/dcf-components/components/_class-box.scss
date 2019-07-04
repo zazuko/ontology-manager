@@ -20,7 +20,16 @@
   }
 
   .class-box-icon {
-    padding: 0.8rem 0 0 0;
+    width: 32px;
+    height: 34px;
+    margin: 0.8rem 0 0 0;
+    background-repeat: no-repeat;
+    &.pouch {
+      background-image: url('../images/ic-pouch.svg');
+    }
+    &.class {
+      background-image: url('../images/ic-class.svg');
+    }
   }
 
   .class-box-title {
