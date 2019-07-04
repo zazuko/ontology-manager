@@ -17,19 +17,12 @@
         </span>
         <span v-else>&mdash;</span>
       </p>
-      <!-- TODO: icons should be configurable -->
-      <img
+      <div
         v-show="type === 'container'"
-        src="~/assets/images/swiss/ic-pouch.svg"
-        alt="Pouch icon"
-        title="Pouch icon"
-        class="class-box-icon">
-      <img
+        class="class-box-icon pouch" />
+      <div
         v-show="type === 'class'"
-        src="~/assets/images/swiss/ic-class.svg"
-        alt="Class icon"
-        title="Class icon"
-        class="class-box-icon">
+        class="class-box-icon class" />
       <p class="class-box-title">
         <template v-if="type === 'container'">
           {{ label }}
