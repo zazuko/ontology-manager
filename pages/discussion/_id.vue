@@ -92,6 +92,9 @@ export default {
             })
           }
         }
+      },
+      skip () {
+        return (process.client && !this.$store.state.authProcessDone)
       }
     }
   },

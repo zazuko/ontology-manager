@@ -2,11 +2,9 @@
   <div class="activity-log">
     <div class="field">
       <p class="control">
-        <!-- TODO: icons should be configurable -->
-        <img
-          class="hoverable-icon"
-          src="~/assets/images/swiss/ic-activity.svg"
-          @click="toggle()">
+        <span
+          class="hoverable-icon activity"
+          @click="toggle()" />
       </p>
     </div>
 
