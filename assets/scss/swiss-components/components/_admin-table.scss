@@ -1,0 +1,113 @@
+.admin-table {
+  @extend .is-fullwidth;
+  overflow: hidden;
+  background: white;
+  color: $night-rider;
+
+  th, td {
+    padding: .5rem 1rem;
+    border: solid 1px $light-grey !important;
+    border-bottom-width: 1px !important;
+  }
+
+  th {
+    font-weight: bold;
+    background: $smoke;
+
+    a {
+      color: $night-rider;
+    }
+
+    .dropdown {
+      .dropdown-trigger {
+        cursor: pointer;
+        button, button:hover {
+          border: none;
+          padding: 0;
+          margin: 0;
+          font-size: 1em;
+          font-weight: bold;
+          &:hover, &:focus {
+            background: transparent;
+          }
+        }
+      }
+      .dropdown-content {
+        border-radius: 0;
+        border-color: $smoke
+      }
+      .dropdown-divider {
+        background: $smoke;
+        border-color: $smoke
+      }
+      a {
+        background: white;
+        font-weight: normal;
+      }
+      .dropdown-item {
+        &.is-active, &:hover, &:focus {
+          background: $smoke;
+          color: $night-rider;
+        }
+        &.is-active {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  td {
+    a {
+      font-weight: bold;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
+    .avatar {
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  .info {
+    font-size: .8em;
+  }
+
+  code {
+    color: $empress;
+  }
+}
+
+.sort-icon {
+  @extend .icon;
+  height: 1rem;
+  vertical-align: middle;
+  font-size: 1.4em;
+
+  i {
+    @extend .mdi;
+    @extend .mdi-menu-swap;
+    &.asc {
+      @extend .mdi-menu-down;
+    }
+    &.desc {
+      @extend .mdi-menu-up;
+    }
+  }
+}
+
+.draft-actions {
+  @extend .has-text-right;
+
+  .edit-draft {
+    @extend .is-small;
+    @extend .is-info;
+  }
+  .discard-draft {
+    @extend .is-small;
+    @extend .is-dark-info;
+  }
+}

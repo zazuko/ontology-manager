@@ -1,0 +1,149 @@
+.discussion {
+  padding: 0;
+  margin: 0;
+
+  .discussion-avatar {
+    width: 40px; height: 40px;
+    background: $smoke;
+  }
+
+  .discussion-form {
+    position: relative;
+    margin-top: 2rem;
+
+    .media-left {
+      text-align: right;
+    }
+
+    .media-right {
+      width: 150px;
+      text-align: right;
+
+      .icon i {
+        font-size: 2em;
+        cursor: pointer;
+      }
+
+      .discussion-post-button {
+        position: absolute;
+        bottom: 0; right: 0;
+
+        .button.is-info {
+          width: 150px;
+
+          @extend .is-outlined;
+          @extend .is-danger;
+        }
+      }
+    }
+
+    &.discussion-message {
+      .media-left {
+        min-width: 40px;
+      }
+
+      .media-right {
+        .discussion-post-button {
+          bottom: 1em; right: 1em;
+        }
+      }
+    }
+  }
+
+  .discussion-infos {
+    margin: 1.5rem 0 0 0;
+    padding: 0;
+
+    .creation-info {
+      color: $coal;
+    }
+
+    .author-info {
+      font-style: normal;
+      font-weight: bold;
+    }
+  }
+
+  .discussion-actions {
+    img {
+      margin: 0 0 0 5px;
+      width: 20px; height: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .discussion-message {
+    position: relative;
+    padding: .5rem;
+    overflow: hidden;
+    border-bottom: solid 1px $light-grey;
+
+    &.is-from-thread-author {
+      background: $smoke;
+    }
+
+    &.has-hat {
+      background: $gainsboro;
+    }
+
+    .discussion-message-info {
+      margin-bottom: .5em;
+
+      .author-info {
+        font-size: 1.1em;
+        font-weight: bold;
+      }
+
+      .creation-info {
+        font-size: .9em;
+        color: $coal;
+      }
+    }
+
+    .discussion-message-content {
+      // content of the message
+    }
+
+    .discussion-message-hat {
+      position: absolute;
+      bottom: 0; right: 0;
+      line-height: 30px;
+      padding: 0 1em;
+
+      border-radius: 10px 0 0 0;
+    }
+  }
+}
+
+.conversation-title {
+  margin-top: 1em;
+}
+
+@include touch {
+  .discussion {
+    .discussion-form {
+      padding-bottom: 50px;
+
+      .media-right {
+        position: absolute;
+        bottom: 0; right: 0;
+        width: 100%;
+        text-align: right;
+        display: block;
+
+        .field {
+          display: inline-block;
+          margin: 0;
+        }
+
+        .select {
+          width: 150px;
+        }
+
+        .discussion-post-button {
+          position: static;
+        }
+      }
+    }
+  }
+}

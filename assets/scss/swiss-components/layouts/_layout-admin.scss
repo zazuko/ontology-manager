@@ -1,0 +1,76 @@
+.layout-admin {
+  padding: 0 1.25rem;
+
+  .layout-admin-header {
+    padding: 1rem 0;
+
+    h1 {
+      font-size: $size-1;
+      font-weight: $weight-light;
+    }
+  }
+
+  .layout-admin-nav {
+    font-size: 0px;
+
+    li {
+      margin-top: 1rem;
+      display: inline-block;
+
+      a {
+        display: block;
+        font-size: 1rem;
+        line-height: 2.6rem;
+        color: $coal;
+        background: $smoke;
+        padding: 0 1rem;
+        border: solid 1px $silver;
+        border-right: none;
+
+        &:hover, &:focus {
+          color: $venetian-red;
+          border-top-color: $venetian-red;
+          box-shadow: inset 0 2px 0 0 $venetian-red;
+        }
+
+        &.is-active {
+          color: $venetian-red;
+          border-top-color: $venetian-red;
+          background: $white;
+          box-shadow: inset 0 2px 0 0 $venetian-red;
+        }
+      }
+    }
+
+    li:last-child a {
+      border: solid 1px $silver;
+    }
+  }
+
+  .layout-admin-panel {
+    p {
+      padding: 1em 0;
+    }
+  }
+
+  .code {
+    font-family: $family-monospace;
+    color: $empress;
+  }
+
+  .settings-form {
+    h2.subtitle {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+    h1.title {
+      margin-bottom: 0.5em;
+      &+h2.subtitle {
+        margin-top: 0;
+      }
+    }
+    p.text {
+      margin-bottom: 2em;
+    }
+  }
+}

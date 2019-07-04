@@ -1,0 +1,141 @@
+.layout-proposal {
+  padding: 1rem 1.25rem 0 1.25rem;
+  margin: 0;
+
+  .is-subform {
+    &.box {
+      border-top: solid 1px $coal;
+      margin-bottom: 2em;
+    }
+
+    // subforms have a darker background, we want disabled fields to stand out otherwise the default
+    // disabled field background blends into the subform background
+    .input[disabled], fieldset[disabled] .input, .textarea[disabled], fieldset[disabled] .textarea {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      box-shadow: none;
+      color: $empress;
+    }
+    .editor .editor__content .ProseMirror[contenteditable=false] {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      color: $empress;
+    }
+  }
+
+  .is-prop-subform > .box {
+    background: $white;
+  }
+
+  .is-class-subform > .box {
+    background: $white;
+  }
+
+  .title {
+    &.is-1 {
+      @extend .is-size-1;
+      font-weight: 300;
+    }
+
+    &.is-2 {
+      @extend .is-size-2;
+      font-weight: 300;
+    }
+  }
+
+  .title.is-3, .label {
+    @extend .is-size-3;
+    font-weight: 300;
+  }
+
+  .subtitle {
+    &.is-1 {
+      @extend .is-size-4;
+      font-weight: 300;
+    }
+  }
+
+  .box {
+    border-radius: 0;
+    padding: 1rem;
+
+    .desc {
+      color: $night-rider;
+    }
+
+    .configurable-list {
+      .field {
+        margin-bottom: -1rem;
+      }
+
+      .panel-block {
+        border: none;
+        padding: 0;
+        color: $night-rider;
+
+        .panel-icon {
+          font-size: 1.2rem;
+        }
+
+        &.is-active {
+          color: black;
+
+          .panel-icon {
+            color: black;
+          }
+        }
+      }
+    }
+
+    .dropdown {
+      width: 100%;
+    }
+  }
+
+  .proposal-submit {
+    padding-top: 1rem;
+    @mixin proposal-submit-button {
+      height: 3em;
+      width: 100%;
+      font-size: 1em;
+    }
+    .submit-proposal {
+      // @extend .button;
+      @extend .is-medium;
+      @extend .is-info;
+      @include proposal-submit-button;
+    }
+    .save-proposal {
+      // @extend .button;
+      @extend .is-medium;
+      @extend .is-primary;
+      @include proposal-submit-button;
+    }
+    .discard-proposal,
+    .cancel-proposal {
+      // @extend .button;
+      @extend .is-medium;
+      @extend .is-dark-info;
+      @include proposal-submit-button;
+    }
+  }
+
+  .proposal-author-img {
+    width: 40px; height: 40px;
+  }
+
+  .proposal-author-info {
+    color: $night-rider;
+  }
+
+  .proposal-author-name {
+    font-size: 1.2em;
+    color: black;
+  }
+}
+
+@include mobile {
+  .proposal-author-info {
+    text-align: center;
+  }
+}

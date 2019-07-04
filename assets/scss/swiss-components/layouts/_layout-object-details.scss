@@ -1,0 +1,145 @@
+.layout-object-details {
+  .columns {
+    margin-top: 0;
+    margin-right: 0em;
+    margin-left: 0em;
+  }
+}
+
+.layout-object-details-sidenav {
+  position: relative;
+  padding: 2rem;
+
+  .menu-label {
+    padding: 2rem 0 .5rem 0;
+    border-bottom: solid 1px $light-grey;
+
+    font-variant: normal;
+    text-transform: none;
+    font-size: 1rem;
+    color: $night-rider;
+    letter-spacing: 0;
+  }
+
+  div div:first-child .menu-label {
+    padding-top: 0;
+  }
+
+  .menu-list {
+    overflow: hidden;
+
+    ul {
+      margin: 0;
+      margin-left: 10px;
+      border-left: none;
+    }
+
+    a {
+      .icon {
+        width: 20px;
+        color: $night-rider;
+        justify-content: left;
+
+        i {
+          font-weight: bold;
+        }
+      }
+
+      &.is-active {
+        background: $cerulean;
+        box-shadow: inset 0 0 0 1px $white;
+        border-radius: 0;
+        .icon {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.layout-object-details-content {
+  .section {
+    padding: 1rem;
+  }
+
+  .breadcrumb {
+    color: $night-rider;
+
+    a {
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
+    li + li::before {
+      content: '›';
+      color: $silver;
+    }
+  }
+
+  .title {
+    &.is-1 {
+      font-weight: 300;
+    }
+
+    &.is-2 {
+      font-weight: 300;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    &.is-3 {
+      font-weight: 300;
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
+  }
+
+  .title-edit-button {
+    display: inline-block;
+    line-height: 30px; height: 30px;
+    width: 30px;
+    margin-left: 10px;
+    text-align: center;
+    vertical-align: middle;
+
+    background: #efefef;
+    font-size: 0.8em;
+
+    img {
+      widows: 18px; height: 18px;
+      margin: 6px;
+    }
+
+    &:hover, &:focus {
+      color: white;
+
+      img {
+        color: white;
+      }
+    }
+  }
+
+  .goto-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+
+      a {
+        display: inline-block;
+        color: black;
+        text-decoration: underline;
+        padding: 0 .25rem;
+
+        &:hover, &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

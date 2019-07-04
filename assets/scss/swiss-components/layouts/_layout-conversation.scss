@@ -1,0 +1,38 @@
+.layout-conversation {
+  padding: 0 1.25rem;
+
+  .section {
+    padding: 1.5rem 0;
+  }
+
+  .breadcrumb {
+    color: $coal;
+
+    a {
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: $coal;
+      }
+    }
+
+    li + li::before {
+      content: '>';
+      color: $coal;
+    }
+  }
+
+  .title {
+    &.is-1 {
+      font-weight: 300;
+      color: $coal;
+      font-size: 2rem;
+    }
+
+    &.is-2 {
+      font-weight: bold;
+      font-size: 2rem;
+    }
+  }
+}

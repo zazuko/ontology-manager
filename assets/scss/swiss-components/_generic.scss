@@ -1,0 +1,81 @@
+body {
+  background: url('../images/swiss/bg-striped.png');
+  padding-bottom: 100px;
+  min-height: 100vh;
+  @media screen and (max-width: $tablet) {
+    padding-bottom: 0;
+  }
+}
+
+.has-primary-background,
+.has-secondary-background {
+  position: relative;
+  background: $white;
+  max-width: 1170px;
+  margin: auto;
+  box-shadow: 0 0 60px 0 rgba(0, 0, 0, .6)
+}
+
+.main-title {
+  @extend .is-size-1;
+  @extend .has-text-weight-light;
+}
+
+ul.dash-bullet {
+    list-style-type: none;
+    padding-left: 1em;
+
+  li:before {
+    content: "–";
+    position: absolute;
+    margin-left: -1em;
+  }
+}
+
+ul.types-list {
+  @extend .dash-bullet;
+}
+
+section hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.clickable-pointer {
+  cursor: pointer;
+}
+
+.hoverable-icon {
+  opacity: 0.3;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.pagination {
+  margin-bottom: 1em;
+
+  .pagination-previous, .pagination-next, .pagination-link {
+    border-radius: 0px;
+  }
+}
+
+.aligned-with-button {
+  margin-top: 3.5px;
+  display: inline-block;
+}
+
+.title-url {
+  display: inline-block;
+  font-family: $family-monospace;
+}
+
+a.title-url {
+  text-decoration: underline;
+}
+
+.button { border-radius: 0 !important; }

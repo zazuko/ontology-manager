@@ -1,0 +1,45 @@
+.footer {
+  margin-top: 20px;
+  padding: 0;
+  border-top: 1px solid $light-grey;
+  background: $smoke;
+  color: $coal;
+
+  .container {
+    border-top: 1px solid $white;
+    margin: 0;
+    padding: 10px 15px;
+  }
+
+  a {
+    color: $cerulean;
+
+    &:hover, &:focus {
+      color: $malibu;
+    }
+  }
+
+  .footer-icon {
+    display: none;
+  }
+
+  .footer-back-icon {
+    i {
+      font-weight: bold;
+    }
+  }
+
+  @include touch {
+    .level-left {
+      display: flex;
+      a {
+        // for the logo
+        padding-left: 15px;
+      }
+    }
+    .level-right {
+      // hide link "go to top"
+      display: none;
+    }
+  }
+}

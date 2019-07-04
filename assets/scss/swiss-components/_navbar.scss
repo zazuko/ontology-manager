@@ -1,0 +1,174 @@
+// dirty fixes
+.navbar > .container .navbar-brand, .container > .navbar .navbar-brand { margin-left: 0; }
+.top-nav .control .icon {
+  color: $night-rider;
+  width: 27px;
+  height: 27px;
+}
+
+.top-nav {
+  position: relative;
+  padding: 10px 15px;
+  margin-bottom: 75px;
+  background: $white;
+  @media screen and (max-width: $tablet) {
+    margin-bottom: 0;
+  }
+
+  .container {
+    max-width: none;
+  }
+
+  .navbar-brand {
+    .navbar-item {
+      padding: 0;
+
+      img {
+        height: 55px;
+        max-height: none;
+      }
+
+      .product-name {
+        border-left: solid 1px $gainsboro;
+        margin-left: 30px;
+        padding-left: 30px;
+        height: 55px;
+
+        font-size: 1rem;
+        color: $black;
+        font-weight: 700;
+
+        @media screen and (max-width: $tablet) {
+          margin-left: 20px;
+          padding-left: 20px;
+          max-width: 100px;
+          line-height: 1.2rem;
+        }
+      }
+    }
+  }
+
+  .navbar-menu {
+    margin-right: 0;
+    @media screen and (max-width: $tablet) {
+      position: relative;
+      left: -15px;
+      width: calc(100% + 30px);
+    }
+  }
+
+  .navbar-start {
+    display: flex;
+    position: absolute;
+    top: 90px; left: -15px; right: -15px;
+    min-height: 65px;
+    padding: 0 1.6em;
+    margin-bottom: 10px;
+    border-top: 5px solid $venetian-red;
+    background: linear-gradient(to bottom,#e4e4e4 0,#e2e2e2 39%,#ddd 79%,#d5d5d5 91%,#cfcfcf 95%,#bebebe 99%);
+    @media screen and (max-width: $tablet) {
+      position: static;
+      top: auto;
+      left: auto;
+      right: auto;
+    }
+
+    .navbar-item {
+      display: inline-block;
+      height: 70px;
+      width: 110px;
+      padding: 10px 9px;
+      font-size: .8em;
+      line-height: 24px;
+      color: $coal;
+      background: linear-gradient(to bottom,#e8e8e8 0,#f7f7f7 61%,#f7f7f7 89%,#f5f5f5 91%,#ececec 95%,#d7d7d7 100%);
+
+      border-right: 1px solid $menu-border-dark;
+      border-left: 1px solid $menu-border-light;
+
+      &:after {
+        content: "";
+        font-family: "Admin Icons";
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: #454545;
+        font-size: .9em;
+      }
+
+      &:first-child {
+        border-left: 1px solid $menu-border-dark;
+      }
+
+      &:hover, &:focus, &.nuxt-link-exact-active {
+        background: $white;
+        color: $venetian-red;
+      }
+    }
+  }
+
+  .field {
+    margin-bottom: 0;
+
+    input {
+      height: 27px;
+
+      background: $white;
+      border: solid 1px $coal;
+      color: $night-rider;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+
+      &::placeholder {
+        color: $silver;
+      }
+
+      &:active, &:focus {
+        i {
+          color: white !important;
+        }
+      }
+    }
+  }
+
+  .navbar-dropdown.search-results {
+    padding: 0;
+    width: 100%;
+    margin-top: 0.5em;
+
+    border-radius: 0;
+    background: $white;
+    box-shadow: 0 0 5px $light-grey;
+    color: $night-rider;
+    font-size: 0.8rem;
+    overflow: hidden;
+
+    .navbar-item {
+      display: block;
+      border-bottom: solid 1px $light-grey;
+      border-left: solid 1px $light-grey;
+      border-right: solid 1px $light-grey;
+      padding-right: 1em;
+
+      .result-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: bold;
+      }
+
+      .result-detail {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .notification-counter {
+    @extend .tag;
+    @extend .is-info;
+    margin-left: 4px;
+  }
+}

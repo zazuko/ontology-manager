@@ -1,0 +1,47 @@
+table.generic-table {
+  th {
+    font-weight: bold;
+    background: $smoke;
+  }
+
+  th, td {
+    padding: .5rem 1rem;
+    border: solid 1px $light-grey;
+    border-bottom-width: 1px !important;
+  }
+
+  td {
+    a {
+      font-weight: bold;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .table-action-button {
+    display: inline-block;
+    padding: 0;
+    margin: 0 0 0 1em;
+    background: transparent;
+    border: none;
+    font-size: .9em;
+    font-weight: normal;
+    text-decoration: underline;
+    cursor: pointer;
+    opacity: .6;
+
+    &:hover, &:focus {
+      opacity: 1;
+    }
+  }
+}
+
+@include touch {
+  .responsive-table {
+    max-width: 100%;
+    overflow-x: scroll;
+  }
+}

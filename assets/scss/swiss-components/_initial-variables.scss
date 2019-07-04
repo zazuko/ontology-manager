@@ -1,0 +1,84 @@
+// Swiss guidelines variables
+$venetian-red:        #DC0018;
+$red:                 #F7001D;
+$mocassin:            #fffab2;
+$cerulean:            #006699;
+$pattens-blue:        #D8E8EF;
+$malibu:              #66afe9;
+$solitude:            #e7edef;
+$clear-day:           #f2f7f9;
+
+$black:               #000000;
+$night-rider:         #333333; // gray 80%;
+$coal:                #454545; // gray 73%;
+$empress:             #757575; // gray 54%;
+$silver:              #CCCCCC; // gray 20%;
+$light-grey:          #D5D5D5; // gray 16%;
+$gainsboro:           #E5E5E5; // gray 10%;
+$smoke:               #F5F5F5; // gray 4%;
+$white:               #FFFFFF;
+
+$sherpa-blue:         #03344D;
+$fire-engine-red:     #bb1122;
+$cadillac:            #884488;
+
+$menu-gradient:       linear-gradient(top, #e8e8e8 0%, #f7f7f7 61%, #f7f7f7 89%, #f5f5f5 91%, #ececec 95%, #d7d7d7 100%);
+$menu-border-dark:    #b8b8b8;
+$menu-border-light:   $white;
+
+// Bulma default variables
+
+// Main colors
+$orange:              $venetian-red;
+$yellow:              $red;
+$green:               $red;
+$turquoise:           $malibu;
+$cyan:                $silver;
+$blue:                $cerulean;
+$purple:              $venetian-red;
+$red:                 $red;
+
+// Typography
+$family-sans-serif: BlinkMacSystemFont, -apple-system, 'Frutiger Neue', Helvetica, Arial, sans-serif;
+$family-monospace: monospace;
+$render-mode: optimizeLegibility;
+
+$size-1: 2.1rem;
+$size-2: 1.6rem;
+$size-3: 1.2rem;
+$size-4: 1.05rem;
+$size-5: 1.05rem;
+$size-6: 1rem;
+$size-7: 0.75rem;
+
+$weight-light: 300;
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+// Responsiveness
+
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 64px;
+// 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
+$tablet: 769px;
+// 960px container + 4rem
+$desktop: 960px + (2 * $gap);
+// 1152px container + 4rem
+$widescreen: 1152px + (2 * $gap);
+$widescreen-enabled: true;
+// 1344px container + 4rem
+$fullhd: 1344px + (2 * $gap);
+$fullhd-enabled: true;
+
+// Miscellaneous
+$easing: ease-out;
+$radius-small: 2px;
+$radius: 4px;
+$radius-large: 6px;
+$radius-rounded: 290486px;
+$speed: 86ms;
+
+// Flags
+$variable-columns: true;

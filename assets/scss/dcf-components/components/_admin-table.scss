@@ -87,12 +87,10 @@
   @extend .has-text-right;
 
   .edit-draft {
-    @extend .button;
     @extend .is-small;
     @extend .is-info;
   }
   .discard-draft {
-    @extend .button;
     @extend .is-small;
     @extend .is-dark-info;
   }

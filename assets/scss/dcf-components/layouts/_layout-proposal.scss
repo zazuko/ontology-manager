@@ -113,22 +113,16 @@
       font-size: 1em;
     }
     .submit-proposal {
-      @extend .button;
-      @extend .is-medium;
-      @extend .is-info;
+      @extend .button.is-info;
       @include proposal-submit-button;
     }
     .save-proposal {
-      @extend .button;
-      @extend .is-medium;
-      @extend .is-primary;
+      @extend .button.is-primary;
       @include proposal-submit-button;
     }
     .discard-proposal,
     .cancel-proposal {
-      @extend .button;
-      @extend .is-medium;
-      @extend .is-dark-info;
+      @extend .button.is-dark-info;
       @include proposal-submit-button;
     }
   }

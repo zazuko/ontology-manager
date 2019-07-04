@@ -1,0 +1,40 @@
+.layout-objects-list {
+  padding: 0 1.25rem;
+}
+
+.layout-objects-list-head {
+  padding: 1rem 0;
+}
+
+.layout-objects-list-item {
+  padding: 1rem 0;
+
+  .title {
+    @extend .is-size-2;
+    @extend .subtitle;
+  }
+
+  .tile.is-parent {
+    padding: 0.5rem;
+  }
+}
+
+.layout-objects-list-tools {
+  padding-top: 2rem;
+  margin-left: -0.25rem;
+
+  .button {
+    @extend .is-danger;
+    @extend .is-outlined;
+  }
+}
+
+.object-tiles {
+  flex-wrap: wrap;
+  .object-tile {
+    @extend .is-3;
+    @media screen and (min-width: 769px) and (max-width: 1023px) {
+      width: 50% !important;
+    }
+  }
+}

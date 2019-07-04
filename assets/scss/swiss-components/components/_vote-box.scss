@@ -1,0 +1,24 @@
+.vote-box {
+  &--admin {
+    display: flex;
+  }
+
+  .vote-cell {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
+    align-items: center;
+    justify-content: center;
+
+    button {
+      @extend .is-active;
+      height: 40px; width: 40px;
+      text-align: center;
+      padding-top: 3px;
+
+      &.is-dark-info {
+        color: black;
+      }
+    }
+  }
+}
