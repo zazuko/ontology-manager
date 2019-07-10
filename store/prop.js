@@ -71,14 +71,15 @@ export const actions = {
       return Promise.reject(error)
     }
   },
-  async [SAVE] ({ commit, state }) {
+  async [SAVE] ({ dispatch, commit, state }) {
     try {
       const threadId = state.prop.threadId
       const mutationParam = threadId ? '$id: Int!, ' : ''
       const threadInput = threadId ? 'id: $id,' : ''
+      const isEdit = state.prop.isEdit
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isEdit: Boolean!) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -86,7 +87,8 @@ export const actions = {
               body: $body,
               iri: $iri,
               proposalObject: $proposalObject,
-              threadType: $threadType
+              threadType: $threadType,
+              isEdit: $isEdit
             }
           }) {
             thread {
@@ -95,14 +97,14 @@ export const actions = {
           }
         }
       `
-      const isEdit = state.prop.isEdit
 
       const variables = {
         iri: state.prop.parentStructureIRI,
         body: state.prop.motivation,
         proposalObject: JSON.parse(this.$proposalSerializer(state.prop)),
         headline: `${isEdit ? 'Change' : 'New'} property '${state.prop.label}'`,
-        threadType: 'PROPOSAL'
+        threadType: 'PROPOSAL',
+        isEdit
       }
 
       if (threadId) {
@@ -112,6 +114,10 @@ export const actions = {
         mutation,
         variables
       })
+      if (!threadId) {
+        // this means that the UPSERT did an INSERT and not an UPDATE
+        dispatch('drafts/LOAD', null, { root: true })
+      }
 
       const threadIdFromResult = _get(result, 'data.upsertThread.thread.id')
 
