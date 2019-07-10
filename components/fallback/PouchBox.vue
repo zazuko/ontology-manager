@@ -43,16 +43,20 @@
           </span>
         </div>
         <no-ssr>
-          <div
-            v-show="!isProposal"
-            class="class-box-level-item">
-            <span class="class-box-label">
-              Proposal{{ proposalCount === 1 ? '' : 's' }}
-            </span>
-            <span class="class-box-value">
-              {{ proposalCount }}
-            </span>
-          </div>
+          <template v-if="!isProposal">
+            <div
+              v-for="key in Object.keys(proposalCount)"
+              :key="key"
+              v-show="proposalCount[key]"
+              class="class-box-level-item">
+              <span class="class-box-label">
+                {{ proposalType[key] }} Proposal{{ proposalCount[key] === 1 ? '' : 's' }}
+              </span>
+              <span class="class-box-value">
+                {{ proposalCount[key] }}
+              </span>
+            </div>
+          </template>
         </no-ssr>
       </div>
     </nuxt-link>
@@ -84,9 +88,9 @@ export default {
       default: 0
     },
     proposalCount: {
-      type: Number,
+      type: Object,
       required: false,
-      default: 0
+      default: () => {}
     },
     modified: {
       type: String,
@@ -106,6 +110,16 @@ export default {
   },
   methods: {
     iriToId
+  },
+  data () {
+    return {
+      proposalType: {
+        newClass: 'New Class',
+        newProperty: 'New Property',
+        changeClass: 'Change Class',
+        changeProperty: 'Change Property'
+      }
+    }
   }
 }
 </script>
