@@ -1,0 +1,25 @@
+query ProposalsByIri ($iri: String!) {
+  changedClassProposals: allThreads (condition: {originalIri: $iri, isEdit: true, threadType: PROPOSAL, status: OPEN, isDraft: false}) {
+    proposals: nodes {
+      id,
+      headline,
+      body,
+      hat: hatByHatId {
+        id,
+        title
+      },
+      author: personByAuthorId {
+        id,
+        avatar,
+        name
+      },
+      iri,
+      threadType,
+      authorId,
+      externalId,
+      proposalObject,
+      isEdit,
+      updatedAt
+    }
+  }
+}

@@ -2,10 +2,10 @@
   <div class="tile is-vertical is-12">
     <div class="tile is-parent">
       <article class="tile is-child container-box">
-        <h1 class="title">Proposals</h1>
+        <h1 class="title">New Class Proposals</h1>
 
         <div
-          v-show="_get(proposals, 'proposals.length')"
+          v-show="_get(newObjectProposals, 'proposals.length')"
           class="tile is-child container-box proposal-boxes">
           <div class="content">
             <div
@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <div v-show="!_get(proposals, 'proposals.length')">
+        <div v-show="!_get(newObjectProposals, 'proposals.length')">
           <p>No proposal on this object at the moment.</p>
         </div>
 
@@ -52,7 +52,7 @@
 <script>
 import _get from 'lodash/get'
 import { arrayToGroups } from '@/libs/utils'
-import proposals from '@/apollo/queries/proposalsByIri'
+import newObjectProposals from '@/apollo/queries/newObjectProposalsByIri'
 import PouchBox from './PouchBox'
 
 export default {
@@ -64,8 +64,8 @@ export default {
     }
   },
   mounted () {
-    if (!this.$apollo.queries.proposals.loading) {
-      this.$apollo.queries.proposals.refetch()
+    if (!this.$apollo.queries.newObjectProposals.loading) {
+      this.$apollo.queries.newObjectProposals.refetch()
     }
   },
   components: {
@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     groups () {
-      return arrayToGroups({ children: _get(this, 'proposals.proposals', []) })
+      return arrayToGroups({ children: _get(this, 'newObjectProposals.proposals', []) })
     }
   },
   methods: {
@@ -81,8 +81,8 @@ export default {
     arrayToGroups
   },
   apollo: {
-    proposals: {
-      query: proposals,
+    newObjectProposals: {
+      query: newObjectProposals,
       variables () {
         return {
           iri: this.iri
@@ -92,7 +92,7 @@ export default {
       pollInterval: process.server ? null : 1000 * 15,
       result ({ data, loading }) {
         if (!loading) {
-          const proposals = _get(data, 'proposals.proposals', [])
+          const proposals = _get(data, 'newObjectProposals.proposals', [])
           return proposals.map(proposal => {
             if (Array.isArray(proposal.proposalObject)) {
               proposal.proposalObject = this.$proposalDeserializer(proposal.proposalObject)

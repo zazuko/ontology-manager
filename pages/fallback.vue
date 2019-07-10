@@ -30,7 +30,7 @@
             :obj="subtree"
             :ontology="ontology"
             :structure="structure"
-            :is-class="$termIRI.ClassLikes.includes(objectType.value)" />
+            :is-class="isClass" />
         </section>
 
         <template
@@ -62,6 +62,7 @@
 
           <property-proposals
             id="proposals"
+            :is-class="isClass"
             :iri="iri" />
 
           <discussions
@@ -154,6 +155,9 @@ export default {
     },
     isObjectDetails () {
       return !this.isObjectList
+    },
+    isClass () {
+      return Boolean(this.$termIRI.ClassLikes.includes(this.objectType.value))
     },
     subtree () {
       const structureTree = this.$store.state.graph.structureTree
