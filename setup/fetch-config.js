@@ -10,7 +10,6 @@ const shouldRefetch = () => (Date.now() - lastFetch) > 3 * 1000
 
 module.exports = async function fetchConfig () {
   if (process.env.BUILDING_WITHOUT_PG_ACCESS) {
-    envInit('prod')
     return require('../fixtures/dummy-config')()
   }
   else {
@@ -23,12 +22,7 @@ module.exports = async function fetchConfig () {
 
   const client = knex({
     client: 'pg',
-    connection: {
-      user: 'postgres',
-      password: process.env.POSTGRESQL_PASSWORD,
-      host: process.env.POSTGRESQL_HOST,
-      database: process.env.POSTGRESQL_DATABASE
-    }
+    connection: {}
   })
 
   const results = await client

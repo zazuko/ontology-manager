@@ -103,12 +103,7 @@ async function createApiMiddleware () {
     try {
       const client = knex({
         client: 'pg',
-        connection: {
-          user: 'postgres',
-          host: process.env.POSTGRESQL_HOST || 'localhost',
-          database: process.env.POSTGRESQL_DATABASE,
-          password: process.env.POSTGRESQL_PASSWORD
-        }
+        connection: {}
       })
       await client('editor_schema.config').insert({ editor, ontology, forge, reason: 'Installation step 1' })
       const replace = require('../setup/replace-vars')

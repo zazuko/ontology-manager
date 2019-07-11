@@ -1,9 +1,6 @@
-import envInit from './setup/env-init'
 import fetchConfig from './setup/fetch-config'
 import feedCreate from './libs/feed'
 import { version } from './package.json'
-
-envInit()
 
 module.exports = async () => {
   const editorConfig = await fetchConfig()
