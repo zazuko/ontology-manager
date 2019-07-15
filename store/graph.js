@@ -105,11 +105,37 @@ export const actions = {
         query: countProposals
       })
       const proposals = _get(result, 'data.proposals.proposals', [])
-      const count = proposals.reduce((acc, { iri }) => {
-        if (!acc[iri]) {
-          acc[iri] = 0
+      const count = proposals.reduce((acc, { iri, originalIri, isEdit, proposalObject }) => {
+        const proposalType = proposalObject[proposalObject[0].proposalType]
+
+        if (proposalType === 'Class' && isEdit) {
+          iri = originalIri
         }
-        acc[iri]++
+        if (!acc[iri]) {
+          acc[iri] = {
+            newClass: 0,
+            newProperty: 0,
+            changeClass: 0,
+            changeProperty: 0
+          }
+        }
+
+        if (proposalType === 'Property') {
+          if (isEdit) {
+            acc[iri].changeProperty++
+          }
+          else {
+            acc[iri].newProperty++
+          }
+        }
+        else if (proposalType === 'Class') {
+          if (isEdit) {
+            acc[iri].changeClass++
+          }
+          else {
+            acc[iri].newClass++
+          }
+        }
         return acc
       }, {})
       commit('proposalCountByIRI', count)

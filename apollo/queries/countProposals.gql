@@ -2,7 +2,10 @@ query CountProposals {
   proposals: allThreads (condition: {threadType: PROPOSAL, status: OPEN, isDraft: false}) {
     proposals: nodes {
       id,
-      iri
+      iri,
+      isEdit,
+      originalIri,
+      proposalObject
     }
   }
 }

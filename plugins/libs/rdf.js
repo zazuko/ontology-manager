@@ -396,6 +396,18 @@ export default ({ app, store }, inject) => {
     })
 
     const modifiedDataset = structureDataset.merge(ontologyDataset).match(null, termIRI.modified)
+    const baseProposalCount = {
+      newClass: 0,
+      newProperty: 0,
+      changeClass: 0,
+      changeProperty: 0
+    }
+    const mergeProposalCounts = (a, b) => {
+      a.newClass += b.newClass
+      a.newProperty += b.newProperty
+      a.changeClass += b.changeClass
+      a.changeProperty += b.changeProperty
+    }
 
     const forest = Object.keys(nodes)
       .reduce((acc, iri) => {
@@ -421,19 +433,19 @@ export default ({ app, store }, inject) => {
           }
         }
 
-        if (typeof node.proposalCount !== 'number') {
-          node.proposalCount = 0
+        if (typeof node.proposalCount !== 'object') {
+          node.proposalCount = Object.assign({}, baseProposalCount)
         }
         const count = proposalCountByIRI[iri]
-        node.proposalCount = count || 0
+        node.proposalCount = count || Object.assign({}, baseProposalCount)
 
         let countNode = node.parent
         while (countNode) {
-          if (typeof countNode.proposalCount !== 'number') {
-            countNode.proposalCount = 0
+          if (typeof countNode.proposalCount !== 'object') {
+            countNode.proposalCount = Object.assign({}, baseProposalCount)
           }
           if (node.proposalCount) {
-            countNode.proposalCount += node.proposalCount
+            mergeProposalCounts(countNode.proposalCount, node.proposalCount)
           }
           countNode = countNode.parent
         }
