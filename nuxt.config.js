@@ -1,6 +1,6 @@
 import fetchConfig from './setup/fetch-config'
 import feedCreate from './libs/feed'
-import { version } from './package.json'
+import pkg from './package.json'
 
 module.exports = async () => {
   const editorConfig = await fetchConfig()
@@ -152,7 +152,8 @@ module.exports = async () => {
     */
     sentry: {
       config: {
-        release: version
+        release: `${pkg.name}@${pkg.version}`,
+        environment: process.env.CUSTOMER_NAME
       }
     },
 
