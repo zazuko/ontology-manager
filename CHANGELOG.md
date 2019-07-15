@@ -1,3 +1,14 @@
+<a name="0.9.60"></a>
+## [0.9.60](https://github.com/zazuko/ontology-editor/compare/v0.9.59...v0.9.60) (2019-07-15)
+
+
+### Bug Fixes
+
+* **ie11:** use readonly instead of disabled for form fields ([630956f](https://github.com/zazuko/ontology-editor/commit/630956f))
+* **proposals:** discriminate display on proposal type ([c681575](https://github.com/zazuko/ontology-editor/commit/c681575))
+
+
+
 <a name="0.9.59"></a>
 ## [0.9.59](https://github.com/zazuko/ontology-editor/compare/v0.9.58...v0.9.59) (2019-07-04)
 
