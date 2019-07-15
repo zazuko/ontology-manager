@@ -15,11 +15,8 @@ let client
   console.warn('Starting migrations!')
 
   const stringsToReplace = [
-    'POSTGRESQL_DATABASE',
     'POSTGRESQL_ROLE_PERSON',
-    'POSTGRESQL_ROLE_ANONYMOUS',
-    'POSTGRESQL_ROLE_POSTGRAPHILE',
-    'POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD'
+    'POSTGRESQL_ROLE_ANONYMOUS'
   ].reduce((obj, envVar) => {
     obj[envVar] = process.env[envVar] || envVar
     if (obj[envVar] !== envVar) {
@@ -58,8 +55,6 @@ let client
   }
 
   await waitForDB()
-  await dropTestDatabase()
-  await createDatabase()
   await run(stringsToReplace)
   await migrateSettings()
 
@@ -146,102 +141,17 @@ async function execute (file, stringsToReplace) {
 async function testConnection () {
   const client = knex({
     client: 'pg',
-    connection: {
-      user: 'postgres',
-      host: process.env.POSTGRESQL_HOST || 'localhost',
-      database: 'postgres',
-      password: process.env.POSTGRESQL_PASSWORD
-    }
+    connection: {}
   })
 
   // if this doesn't throw, we're connected!
   await client.select(client.raw('1'))
 }
 
-async function dropTestDatabase () {
-  if (!process.env.NODE_TEST) {
-    return
-  }
-  const spinner = ora('Dropping test database').start()
-  try {
-    const client = knex({
-      client: 'pg',
-      connection: {
-        user: 'postgres',
-        host: process.env.POSTGRESQL_HOST || 'localhost',
-        database: 'postgres',
-        password: process.env.POSTGRESQL_PASSWORD
-      }
-    })
-
-    // if this doesn't throw, we're connected!
-    await client.select(client.raw('1'))
-
-    await client.raw(`drop database ${process.env.POSTGRESQL_DATABASE}`) // drop database example_com_db;
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)  // drop role example_com_role_postgraphile;
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_ANONYMOUS}`) // drop role example_com_role_anonymous;
-    await client.raw(`drop role ${process.env.POSTGRESQL_ROLE_PERSON}`) // drop role example_com_role_person;
-
-    spinner.succeed(`Dropped test database '${process.env.POSTGRESQL_DATABASE}' and its roles`)
-    client.destroy()
-  }
-  catch (err) {
-    if (err.message.endsWith('does not exist')) {
-      spinner.info(err.message)
-      return
-    }
-    throw err
-  }
-  if (client) {
-    await client.destroy()
-  }
-}
-
-async function createDatabase () {
-  const spinner = ora('Setting up database and roles').start()
-  try {
-    const client = knex({
-      client: 'pg',
-      connection: {
-        user: 'postgres',
-        host: process.env.POSTGRESQL_HOST || 'localhost',
-        database: 'postgres',
-        password: process.env.POSTGRESQL_PASSWORD
-      }
-    })
-
-    // if this doesn't throw, we're connected!
-    await client.select(client.raw('1'))
-
-    await client.raw(`create database ${process.env.POSTGRESQL_DATABASE}`)
-    // await client.raw(`create user ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE} with encrypted password '${process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD}'`)
-    await client.raw(`create role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE} login password '${process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD}'`)
-    await client.raw(`grant all privileges on database ${process.env.POSTGRESQL_DATABASE} to ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
-
-    spinner.succeed(`Created database '${process.env.POSTGRESQL_DATABASE}' and role ${process.env.POSTGRESQL_ROLE_POSTGRAPHILE}`)
-    await client.destroy()
-  }
-  catch (err) {
-    if (/database "[\w_]+" already exists/.test(err.message)) {
-      spinner.info(err.message)
-      return
-    }
-    throw err
-  }
-  if (client) {
-    await client.destroy()
-  }
-}
-
 function setupClient () {
   client = knex({
     client: 'pg',
-    connection: {
-      user: 'postgres',
-      host: process.env.POSTGRESQL_HOST || 'localhost',
-      database: process.env.POSTGRESQL_DATABASE,
-      password: process.env.POSTGRESQL_PASSWORD
-    }
+    connection: {}
   })
 }
 
@@ -269,12 +179,7 @@ async function migrateSettings () {
   try {
     const client = knex({
       client: 'pg',
-      connection: {
-        host: process.env.POSTGRESQL_HOST || 'localhost',
-        database: process.env.POSTGRESQL_DATABASE,
-        user: 'postgres',
-        password: process.env.POSTGRESQL_PASSWORD
-      }
+      connection: {}
     })
 
     const existingConfigs = await client

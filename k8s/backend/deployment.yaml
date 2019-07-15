@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  template:
+    spec:
+      containers:
+      - name: backend
+        image: ontology-editor:latest
+        imagePullPolicy: Always
+
+        ports:
+        - name: http
+          containerPort: 3000
+
+        livenessProbe:
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          httpGet:
+            port: http
+            path: /api/health
+
+        envFrom:
+        - configMapRef:
+            name: ontology-editor
+            optional: true
+        - secretRef:
+            name: ontology-editor
+            optional: true

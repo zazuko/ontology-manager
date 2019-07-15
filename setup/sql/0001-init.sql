@@ -1,5 +1,3 @@
-lock table pg_catalog.pg_namespace;
-
 create schema editor_schema;
 create schema editor_private_schema;
 
@@ -208,11 +206,11 @@ end;
 $$ language plpgsql strict security definer;
 comment on function editor_schema.register_person(text, text, text, text, text, integer) is 'Registers a single user and creates an account in our ontology editor.';
 
-create role $POSTGRESQL_ROLE_ANONYMOUS;
-grant $POSTGRESQL_ROLE_ANONYMOUS to $POSTGRESQL_ROLE_POSTGRAPHILE;
+create role $POSTGRESQL_ROLE_ANONYMOUS inherit;
+grant $POSTGRESQL_ROLE_ANONYMOUS to current_user;
 
-create role $POSTGRESQL_ROLE_PERSON;
-grant $POSTGRESQL_ROLE_PERSON to $POSTGRESQL_ROLE_POSTGRAPHILE;
+create role $POSTGRESQL_ROLE_PERSON inherit;
+grant $POSTGRESQL_ROLE_PERSON to current_user;
 
 create type editor_schema.jwt_token as (
   role text,

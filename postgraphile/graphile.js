@@ -3,11 +3,6 @@ import PgMutationUpsertPlugin from 'graphile-upsert-plugin'
 
 // https://node-postgres.com/api/client
 const pgConfig = {
-  host: process.env.POSTGRESQL_HOST || 'localhost',
-  database: process.env.POSTGRESQL_DATABASE,
-  user: process.env.POSTGRESQL_ROLE_POSTGRAPHILE,
-  password: process.env.POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD,
-  port: 5432,
   // number of milliseconds before a query will time out default is no timeout
   // bigger timeout for dev env to account for longer app startup time
   statement_timeout: process.env.NODE_ENV === 'production' ? 5000 : 15000
@@ -47,8 +42,8 @@ const options = {
   appendPlugins: [PgMutationUpsertPlugin],
   dynamicJson: true,
   // all the following options can be helpful in dev or debug mode
-  graphiql: pgConfig.host === 'localhost',
-  enhanceGraphiql: pgConfig.host === 'localhost',
+  graphiql: process.env.NODE_ENV !== 'production',
+  enhanceGraphiql: process.env.NODE_ENV !== 'production',
   showErrorStack: true,
   extendedErrors: debugErrors
 }

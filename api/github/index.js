@@ -32,6 +32,7 @@ module.exports = async function (editorConfig) {
     catch (err) {
       debug(`/blob/${path}`, err)
       res.status(500).send('error')
+      return
     }
     res.type('application/n-triples')
 
