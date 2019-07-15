@@ -5,7 +5,6 @@ services:
 
 stages:
   - build
-  - deploy
 
 build:
   stage: build
@@ -15,13 +14,5 @@ build:
     - docker push "$CI_REGISTRY_IMAGE:latest"
     - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
-  only:
-    - tags
-
-deploy1:
-  stage: deploy
-  image: cdrx/rancher-gitlab-deploy
-  script:
-    - upgrade --environment default --stack ontology-editor --service editor-zazuko-com --new-image $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --upgrade-timeout 600 --wait-for-upgrade-to-finish --rollback-on-error --batch-size 1 --batch-interval 300
   only:
     - tags
