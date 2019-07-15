@@ -5,10 +5,10 @@
       'is-prop-form': !subform,
       'is-prop-subform': subform,
       'is-subform': subform,
-      'proposal-draft': !disabled
+      'proposal-draft': !readonly
     }">
 
-    <template v-if="disabled || !proposalObject['isSubFormCollapsed']">
+    <template v-if="readonly || !proposalObject['isSubFormCollapsed']">
 
       <div class="box">
         <div class="columns">
@@ -49,7 +49,7 @@
               <label class="label">Property Name</label>
               <div class="control">
                 <input
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :class="{'is-danger': !proposalObject['label']}"
                   class="input"
                   autocomplete="new-password"
@@ -68,7 +68,7 @@
               <div class="control">
                 <textarea
                   class="textarea"
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :class="{'is-danger': !proposalObject['comment']}"
                   v-debounce
                   v-model.lazy="proposalObject['comment']" />
@@ -84,7 +84,7 @@
                 <label class="checkbox">
                   <input
                     type="checkbox"
-                    :disabled="disabled"
+                    :readonly="readonly"
                     v-model.lazy="proposalObject['isDeprecated']">
                   Deprecate Property
                 </label>
@@ -97,7 +97,7 @@
               <label class="label">Long Description (optional)</label>
               <div class="control">
                 <editor
-                  :disabled="disabled"
+                  :readonly="readonly"
                   v-debounce
                   v-model.lazy="proposalObject['description']" />
               </div>
@@ -113,7 +113,7 @@
                 <textarea
                   ref="exampleTextarea"
                   class="textarea"
-                  :disabled="disabled"
+                  :readonly="readonly"
                   v-debounce
                   v-model.lazy="proposalObject['example']" />
               </div>
@@ -129,7 +129,7 @@
           <div class="columns">
             <div class="column is-6">
               <typeahead
-                :disabled="disabled"
+                :readonly="readonly"
                 :search-function="propertiesSearch"
                 label="Same As (owl:equivalentProperty)"
                 @selectionChanged="selectSameAs">
@@ -159,14 +159,14 @@
                       Added:
                     </p>
                     <span
-                      v-show="!disabled"
+                      v-show="!readonly"
                       class="panel-icon"
                       @click.prevent="unselectSameAs(index)">
                       <i class="mdi mdi-close-circle" />
                     </span>
                     {{ displayNewSameAs(sameAs) }}
                   </a>
-                  <template v-if="proposalObject['isEdit'] && disabled">
+                  <template v-if="proposalObject['isEdit'] && readonly">
                     <p
                       v-show="proposalObject['sameAsRemoved'].length"
                       class="is-size-7">
@@ -196,7 +196,7 @@
             <div class="columns">
               <div class="column">
                 <typeahead
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :search-function="classesSearch"
                   label="Applies to the Following Classes"
                   @selectionChanged="selectDomain">
@@ -222,17 +222,17 @@
                     <a
                       v-for="(domain, index) in proposalObject['domains']"
                       :key="index"
-                      :class="{ 'is-active': (disabled || edit || index > 0) }"
+                      :class="{ 'is-active': (readonly || edit || index > 0) }"
                       class="panel-block">
                       <span
-                        v-show="!disabled"
+                        v-show="!readonly"
                         class="panel-icon"
-                        @click.prevent="(disabled || edit || index > 0) && unselectDomain(index)">
+                        @click.prevent="(readonly || edit || index > 0) && unselectDomain(index)">
                         <i class="mdi mdi-close-circle" />
                       </span>
                       {{ (domain.object && term(domain.object)) || domain.label }}
                     </a>
-                    <template v-if="proposalObject['isEdit'] && disabled">
+                    <template v-if="proposalObject['isEdit'] && readonly">
                       <p
                         v-show="proposalObject['domainsRemoved'].length"
                         class="is-size-7">
@@ -258,7 +258,7 @@
               </div>
               <div class="column">
                 <typeahead
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :search-function="classesSearch"
                   label="Expected Type"
                   @selectionChanged="selectRange">
@@ -295,7 +295,7 @@
                       :key="index + 10000"
                       class="panel-block is-active">
                       <span
-                        v-show="!disabled"
+                        v-show="!readonly"
                         class="panel-icon"
                         @click.prevent="unselectRange(index)">
                         <i class="mdi mdi-close-circle" />
@@ -307,7 +307,7 @@
                         {{ (range.object && range.object.value || term(range.object)) || range.label }}
                       </span>
                     </a>
-                    <template v-if="proposalObject['isEdit'] && disabled">
+                    <template v-if="proposalObject['isEdit'] && readonly">
                       <p
                         v-show="proposalObject['rangesRemoved'].length"
                         class="is-size-7">
@@ -336,12 +336,12 @@
         </div>
 
         <div
-          v-show="subform && !disabled"
+          v-show="subform && !readonly"
           class="columns subform-actions">
           <div class="column is-6">
             <button
               class="button is-info subform-submit"
-              :disabled="!canContinue"
+              :readonly="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ proposalObject['label'] }}</em>" to the proposal
             </button>
@@ -363,7 +363,7 @@
           :key="index"
           :subform="true"
           :iri="iri"
-          :disabled="disabled"
+          :readonly="readonly"
           :store-path="`${storePath}.classChildren[${index}]`"
           :base-datasets="mergedDatasets" />
       </template>
@@ -426,7 +426,7 @@ export default {
       // TODO: a single place in the store for this instead of one per proposal type ?
       default: 'prop.prop'
     },
-    disabled: {
+    readonly: {
       type: Boolean,
       required: false,
       default: false
@@ -449,14 +449,14 @@ export default {
   },
   mounted () {
     this.init()
-    if (process.browser && this.disabled !== true) {
+    if (process.browser && this.readonly !== true) {
       let maxRetry = 20
       setTimeout(() => {
         const waitForYate = setInterval(() => {
           if (window.YATE && this.$refs.exampleTextarea) {
             clearInterval(waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
-              readOnly: this.disabled,
+              readOnly: this.readonly,
               value: this.proposalObject['example']
             })
             this.yate.on('change', cm => {
