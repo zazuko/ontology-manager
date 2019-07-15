@@ -77,9 +77,10 @@ export const actions = {
       const threadId = state.clss.threadId
       const mutationParam = threadId ? '$id: Int!, ' : ''
       const threadInput = threadId ? 'id: $id,' : ''
+      const isEdit = state.clss.isEdit
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isEdit: Boolean!) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -87,7 +88,8 @@ export const actions = {
               body: $body,
               iri: $iri,
               proposalObject: $proposalObject,
-              threadType: $threadType
+              threadType: $threadType,
+              isEdit: $isEdit
             }
           }) {
             thread {
@@ -96,14 +98,14 @@ export const actions = {
           }
         }
       `
-      const isEdit = state.clss.isEdit
 
       const variables = {
         iri: state.clss.parentStructureIRI,
         body: state.clss.motivation,
         proposalObject: JSON.parse(this.$proposalSerializer(state.clss)),
         headline: `${isEdit ? 'Change' : 'New'} class '${state.clss.label}'`,
-        threadType: 'PROPOSAL'
+        threadType: 'PROPOSAL',
+        isEdit
       }
 
       if (threadId) {
