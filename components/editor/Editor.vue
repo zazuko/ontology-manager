@@ -205,7 +205,7 @@ export default {
       type: String,
       required: true
     },
-    disabled: {
+    readonly: {
       type: Boolean,
       required: false,
       default: false
@@ -227,7 +227,7 @@ export default {
       linkUrl: null,
       linkMenuIsActive: false,
       editor: new Editor({
-        editable: !this.disabled,
+        editable: !this.readonly,
         extensions: [
           new Blockquote(),
           new BulletList(),

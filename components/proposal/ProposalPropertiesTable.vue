@@ -13,7 +13,7 @@
           <br>
           <small>these classes</small>
         </th>
-        <th v-show="!disabled" />
+        <th v-show="!readonly" />
       </tr>
     </thead>
     <tbody>
@@ -71,7 +71,7 @@
           </ul>
         </td>
         <td
-          v-show="!disabled"
+          v-show="!readonly"
           class="property-actions">
           <div class="is-pulled-right">
             <a
@@ -134,7 +134,7 @@
           </ul>
         </td>
         <td
-          v-show="!disabled"
+          v-show="!readonly"
           class="property-actions">
           <div class="is-pulled-right">
             <button
@@ -159,7 +159,7 @@ export default {
       type: String,
       required: true
     },
-    disabled: {
+    readonly: {
       type: Boolean,
       required: false,
       default: false

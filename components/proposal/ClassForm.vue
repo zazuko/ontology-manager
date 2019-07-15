@@ -5,10 +5,10 @@
       'is-class-form': !subform,
       'is-class-subform': subform,
       'is-subform': subform,
-      'proposal-draft': !disabled
+      'proposal-draft': !readonly
     }">
 
-    <template v-if="disabled || !proposalObject['isSubFormCollapsed']">
+    <template v-if="readonly || !proposalObject['isSubFormCollapsed']">
 
       <div
         :class="{
@@ -46,7 +46,7 @@
             <div class="field class-name">
               <div class="control">
                 <input
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :class="{'is-danger': !proposalObject['label']}"
                   class="input"
                   autocomplete="new-password"
@@ -70,7 +70,7 @@
               <div class="control">
                 <textarea
                   class="textarea"
-                  :disabled="disabled"
+                  :readonly="readonly"
                   :class="{'is-danger': !proposalObject['comment']}"
                   v-debounce
                   v-model.lazy="proposalObject['comment']" />
@@ -86,7 +86,7 @@
                 <label class="checkbox">
                   <input
                     type="checkbox"
-                    :disabled="disabled"
+                    :readonly="readonly"
                     v-model.lazy="proposalObject['isDeprecated']">
                   Deprecate Class
                 </label>
@@ -99,7 +99,7 @@
               <label class="label">Long Description (optional)</label>
               <div class="control">
                 <editor
-                  :disabled="disabled"
+                  :readonly="readonly"
                   v-debounce
                   v-model.lazy="proposalObject['description']" />
               </div>
@@ -114,7 +114,7 @@
               <div class="control">
                 <textarea
                   ref="exampleTextarea"
-                  :disabled="disabled"
+                  :readonly="readonly"
                   v-debounce
                   v-model.lazy="proposalObject['example']"
                   class="textarea" />
@@ -131,7 +131,7 @@
           <div class="column">
             <no-ssr>
               <typeahead
-                :disabled="disabled"
+                :readonly="readonly"
                 :search-function="searchFunction"
                 class="properties-typeahead"
                 label="Has the Following Properties"
@@ -156,7 +156,7 @@
         <proposal-properties-table
           v-if="proposalObject['domains.length']"
           :iri="proposalObject['iri']"
-          :disabled="disabled"
+          :readonly="readonly"
           :properties="proposalObject['domains']"
           :removed-properties="proposalObject['domainsRemoved']"
           :store-path="storePath"
@@ -165,12 +165,12 @@
           @delete="unselectDomain" />
 
         <div
-          v-show="subform && !disabled"
+          v-show="subform && !readonly"
           class="columns subform-actions">
           <div class="column is-6">
             <button
               class="button is-info subform-submit"
-              :disabled="!validBase"
+              :readonly="!validBase"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ proposalObject['label'] }}</em>" to the proposal
             </button>
@@ -192,7 +192,7 @@
           :key="index"
           :subform="true"
           :iri="iri"
-          :disabled="disabled"
+          :readonly="readonly"
           :store-path="`${storePath}.propChildren[${index}]`"
           :base-datasets="mergedDatasets" />
       </template>
@@ -255,7 +255,7 @@ export default {
       required: false,
       default: 'class.clss'
     },
-    disabled: {
+    readonly: {
       type: Boolean,
       required: false,
       default: false
@@ -279,14 +279,14 @@ export default {
   },
   mounted () {
     this.init()
-    if (process.browser && this.disabled !== true) {
+    if (process.browser && this.readonly !== true) {
       let maxRetry = 20
       setTimeout(() => {
         const waitForYate = setInterval(() => {
           if (window.YATE) {
             clearInterval(waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
-              readOnly: this.disabled,
+              readOnly: this.readonly,
               value: this.proposalObject['example']
             })
             this.yate.on('change', cm => {

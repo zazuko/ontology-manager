@@ -12,7 +12,7 @@ which seems much more robust
         {{ label }}
       </label>
       <p
-        v-show="!disabled"
+        v-show="!readonly"
         class="control has-icons-left">
         <input
           v-model="inputString"
@@ -74,7 +74,7 @@ export default {
       required: false,
       default: 5
     },
-    disabled: {
+    readonly: {
       type: Boolean,
       required: false,
       default: false

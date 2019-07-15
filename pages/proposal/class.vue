@@ -50,7 +50,7 @@
                     <div class="control">
                       <textarea
                         class="textarea"
-                        :disabled="disabled"
+                        :readonly="readonly"
                         :class="{'is-danger': !clss.motivation}"
                         v-debounce
                         v-model.lazy="clss.motivation"
@@ -74,7 +74,7 @@
             </div>
 
             <class-form
-              :disabled="disabled"
+              :readonly="readonly"
               :edit="edit"
               :iri="_iri">
 
@@ -92,7 +92,7 @@
               </div>
 
               <div
-                v-show="!disabled"
+                v-show="!readonly"
                 class="columns proposal-submit">
                 <p
                   v-show="proposalReady"
@@ -187,7 +187,7 @@ export default {
       saveTmp: '', // only save if this string changed
       saveInterval: null,
       savingIndicator: false,
-      disabled: false,
+      readonly: false,
       isLoading: false,
       proposalReady: true,
       storeReady: false
@@ -197,7 +197,7 @@ export default {
     if (process.browser) {
       // save draft at fixed time interval
       this.saveInterval = setInterval(() => {
-        if ((this.clss && this.clss['isDraft'] === false) || this.disabled) {
+        if ((this.clss && this.clss['isDraft'] === false) || this.readonly) {
           this.stopAutosave()
           return
         }
@@ -226,7 +226,7 @@ export default {
             this.storeReady = true
             this.edit = this.clss.isEdit
             if (isDraft !== true) {
-              this.disabled = true
+              this.readonly = true
               return
             }
 
@@ -385,7 +385,7 @@ export default {
         { hid: 'description', name: 'description', content: `Proposal '${this.obj.label}' on '${this.obj.parentStructureIRI}'` }
       ]
     }
-    if (!this.disabled) {
+    if (!this.readonly) {
       h.link = [{
         rel: 'stylesheet',
         href: '/yate.min.css'
