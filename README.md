@@ -17,8 +17,8 @@
 
 ### 3. Fill in Env Vars
 
-1. Create a file [`./docker-app-dev/.env`](./docker-app-dev/.env)
-1. Fill it with contents from `./docker-app-dev/.env.example`](./docker-app-dev/.env.example)
+1. Create a file [`./.env`](./.env)
+1. Fill it with contents from `./.env.example`](./.env.example)
 
 ```sh
 # customer namespace
@@ -26,14 +26,10 @@
 CUSTOMER_NAME=zazuko
 
 # postgres config
-## root password, used to run migrations, create customer DB, etc
-## this var is also used by the postgres container
+POSTGRESQL_USER=postgres
 POSTGRESQL_PASSWORD=make-this-secret
-## database host
+POSTGRESQL_DATABASE=postgres
 POSTGRESQL_HOST=localhost
-## the editor API doesn't access postgres as root, it uses a role that
-## gets created with the following password
-POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD=password-used-by-postgraphile-to-access-pg
 
 # secret seed for JWT - https://www.graphile.org/postgraphile/security/
 POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
