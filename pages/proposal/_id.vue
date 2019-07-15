@@ -69,7 +69,7 @@
                   <div class="column">
                     <div class="control">
                       <textarea
-                        :disabled="disabled"
+                        :readonly="readonly"
                         v-debounce
                         v-model.lazy="obj.motivation"
                         class="textarea"
@@ -83,15 +83,15 @@
 
             <class-form
               v-if="type === 'Class'"
-              :disabled="disabled"
+              :readonly="readonly"
               :iri="obj.parentStructureIRI" />
             <property-form
               v-else-if="type === 'Property'"
-              :disabled="disabled"
+              :readonly="readonly"
               :iri="obj.parentStructureIRI">
 
               <div
-                v-show="!disabled"
+                v-show="!readonly"
                 class="field is-grouped proposal-submit">
                 <p class="control">
                   <button
@@ -183,7 +183,7 @@ export default {
   },
   data () {
     return {
-      disabled: true,
+      readonly: true,
       type: '',
       path: '',
       discussion: emptyDiscussion
@@ -244,7 +244,7 @@ export default {
         loader(this.id)
           .then((isDraft) => {
             if (isDraft !== true) {
-              this.disabled = true
+              this.readonly = true
             }
           })
       }, 200)

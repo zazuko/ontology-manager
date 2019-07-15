@@ -2,6 +2,12 @@
   padding: 1rem 1.25rem 0 1.25rem;
   margin: 0;
 
+  .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
+    background-color: whitesmoke;
+    box-shadow: none;
+    color: #565656;
+  }
+
   .is-subform {
     &.box {
       border-top: solid 1px $coal;
@@ -10,7 +16,8 @@
 
     // subforms have a darker background, we want disabled fields to stand out otherwise the default
     // disabled field background blends into the subform background
-    .input[disabled], fieldset[disabled] .input, .textarea[disabled], fieldset[disabled] .textarea {
+    .input[disabled], fieldset[disabled] .input, .textarea[disabled], fieldset[disabled] .textarea
+    .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
       background-color: darken(whitesmoke, 10%);
       border-color: darken(whitesmoke, 10%);
       box-shadow: none;

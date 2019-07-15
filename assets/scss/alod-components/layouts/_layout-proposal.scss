@@ -1,6 +1,12 @@
 .layout-proposal {
   padding-top: 3em;
 
+  .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
+    background-color: whitesmoke;
+    box-shadow: none;
+    color: #565656;
+  }
+
   .is-prop-subform .box {
     border-top: solid 1px $theme-shadow;
     border-radius: 0 0 0 0;
