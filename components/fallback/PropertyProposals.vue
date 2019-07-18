@@ -56,7 +56,7 @@
     </table>
 
     <table
-      v-if="_get(changedClassProposals, 'proposals.length')"
+      v-if="isClass && _get(changedClassProposals, 'proposals.length')"
       class="table generic-table is-fullwidth">
       <thead>
         <tr>
