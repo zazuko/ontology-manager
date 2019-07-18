@@ -1,3 +1,13 @@
+<a name="0.9.61"></a>
+## [0.9.61](https://github.com/zazuko/ontology-editor/compare/v0.9.60...v0.9.61) (2019-07-18)
+
+
+### Bug Fixes
+
+* new class cannot show up on property proposals ([84a8cf3](https://github.com/zazuko/ontology-editor/commit/84a8cf3))
+
+
+
 <a name="0.9.60"></a>
 ## [0.9.60](https://github.com/zazuko/ontology-editor/compare/v0.9.59...v0.9.60) (2019-07-15)
 
