@@ -222,7 +222,7 @@ export default {
     return {
       working: false,
       statusDropdown: false,
-      statusFilter: 'all',
+      statusFilter: 'open',
       orderBy: {
         ID: false,
         HEADLINE: false,
@@ -233,6 +233,9 @@ export default {
         STATUS: false
       }
     }
+  },
+  mounted () {
+    this.filterStatus(this.statusFilter)
   },
   methods: {
     async approve ({ id, proposalType }) {
