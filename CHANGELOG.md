@@ -1,3 +1,15 @@
+<a name="0.9.62"></a>
+## [0.9.62](https://github.com/zazuko/ontology-editor/compare/v0.9.61...v0.9.62) (2019-07-23)
+
+
+### Bug Fixes
+
+* **admin:** fix [#65](https://github.com/zazuko/ontology-editor/issues/65) - default filter to open proposals ([aff7b2f](https://github.com/zazuko/ontology-editor/commit/aff7b2f))
+* **k8s:** run migration on start, not as job ([988abdb](https://github.com/zazuko/ontology-editor/commit/988abdb))
+* **migrations:** check and mark trx success in same trx as migration ([570c8b4](https://github.com/zazuko/ontology-editor/commit/570c8b4))
+
+
+
 <a name="0.9.61"></a>
 ## [0.9.61](https://github.com/zazuko/ontology-editor/compare/v0.9.60...v0.9.61) (2019-07-18)
 
