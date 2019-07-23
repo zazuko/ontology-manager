@@ -75,7 +75,7 @@ async function run (stringsToReplace) {
       table.string('filename').notNullable()
       table.unique('filename')
       table.boolean('succeeded').defaultTo(false)
-      table.timestamps()
+      table.timestamps(true, true)
     })
     ora('Created migrations table!').succeed()
   }
