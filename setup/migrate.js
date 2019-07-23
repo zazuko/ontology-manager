@@ -85,27 +85,22 @@ async function run (stringsToReplace) {
 
   for (const file of files) {
     const filename = path.basename(file)
-    const done = await client.select('succeeded').from('__migrations').where({ filename })
-
-    if (!done.length) {
-      await client('__migrations').insert({ filename })
-    }
     const spinner = ora(`Running: ${filename}`)
     try {
-      if (!done.length || !done[0].succeeded) {
-        spinner.start()
-        await execute(file, stringsToReplace)
-        spinner.succeed(`Applied: ${filename}`)
-      }
-      else {
-        spinner.info(`Already applied: ${filename}`)
-      }
+      spinner.start()
+      await execute(file, stringsToReplace)
+      spinner.succeed(`Applied: ${filename}`)
     }
     catch (err) {
-      spinner.fail()
-      await client.destroy()
-      console.error(err)
-      process.exit(1)
+      if (err.alreadyApplied) {
+        spinner.info(`Already applied: ${filename}`)
+      }
+      else {
+        spinner.fail()
+        await client.destroy()
+        console.error(err)
+        process.exit(1)
+      }
     }
   }
   ora('Migration is done!').succeed()
@@ -122,6 +117,15 @@ async function execute (file, stringsToReplace) {
   })
 
   if (filename.includes('.no-transaction')) {
+    const done = await client.select('succeeded').from('__migrations').where({ filename })
+    if (!done.length) {
+      await client('__migrations').insert({ filename })
+    }
+    else if (done[0].succeeded) {
+      const err = new Error(`Already applied ${filename}`)
+      err.alreadyApplied = true
+      throw err
+    }
     await client.raw(sql)
     await client('__migrations')
       .where({ filename })
@@ -130,6 +134,15 @@ async function execute (file, stringsToReplace) {
   }
 
   return client.transaction(async (trx) => {
+    const done = await trx.select('succeeded').from('__migrations').where({ filename })
+    if (!done.length) {
+      await trx('__migrations').insert({ filename })
+    }
+    else if (done[0].succeeded) {
+      const err = new Error(`Already applied ${filename}`)
+      err.alreadyApplied = true
+      throw err
+    }
     await trx.raw(sql)
     await trx('__migrations')
       .where({ filename })
