@@ -1,3 +1,13 @@
+<a name="0.9.64"></a>
+## [0.9.64](https://github.com/zazuko/ontology-editor/compare/v0.9.63...v0.9.64) (2019-07-26)
+
+
+### Bug Fixes
+
+* backend polls datasets ([ff722c4](https://github.com/zazuko/ontology-editor/commit/ff722c4))
+
+
+
 <a name="0.9.63"></a>
 ## [0.9.63](https://github.com/zazuko/ontology-editor/compare/v0.9.62...v0.9.63) (2019-07-26)
 
