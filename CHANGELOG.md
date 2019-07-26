@@ -1,3 +1,16 @@
+<a name="0.9.63"></a>
+## [0.9.63](https://github.com/zazuko/ontology-editor/compare/v0.9.62...v0.9.63) (2019-07-26)
+
+
+### Bug Fixes
+
+* align title icons ([d465165](https://github.com/zazuko/ontology-editor/commit/d465165))
+* better fallback handling ([16e5b0d](https://github.com/zazuko/ontology-editor/commit/16e5b0d))
+* feeds should load a new page ([264c5b1](https://github.com/zazuko/ontology-editor/commit/264c5b1))
+* **migrations:** migration table has default vals for timestamps ([9aa8386](https://github.com/zazuko/ontology-editor/commit/9aa8386))
+
+
+
 <a name="0.9.62"></a>
 ## [0.9.62](https://github.com/zazuko/ontology-editor/compare/v0.9.61...v0.9.62) (2019-07-23)
 
