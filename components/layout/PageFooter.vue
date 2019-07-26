@@ -11,18 +11,18 @@
           <span>© {{ (new Date()).getFullYear() }} {{ $store.state.config.editor.meta.customerName }}. All rights reserved</span>
           <br>
           Feeds:
-          <nuxt-link :to="{ path: '/atom.xml', params: {} }">
+          <a href="/atom.xml">
             atom
             <span class="icon">
               <i class="mdi mdi-rss-box" />
             </span>
-          </nuxt-link>
-          <nuxt-link :to="{ path: '/rss.xml', params: {} }">
+          </a>
+          <a href="/rss.xml">
             rss
             <span class="icon">
               <i class="mdi mdi-rss-box" />
             </span>
-          </nuxt-link>
+          </a>
         </p>
       </div>
 
