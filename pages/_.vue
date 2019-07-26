@@ -99,7 +99,7 @@ export default {
   },
   async asyncData ({ route, store }) {
     const params = route.params
-    let iri = store.state.config.ontology.datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    let iri = store.state.config.ontology.datasetBaseUrl + params.pathMatch
     if (route.path.endsWith('/')) {
       iri += '/'
     }
@@ -230,7 +230,7 @@ export default {
     this.structure = this.$store.getters['graph/structure']
     this.setObjectType()
   },
-  validate ({ params, store, route }) {
+  validate ({ params, query, store, route }) {
     // we arrived here by loading the page, it's an entry page
     const ontology = store.state.graph.ontology
     const structure = store.state.graph.structure
@@ -243,7 +243,7 @@ export default {
     }
 
     // check that either the ontology or the structure contains this IRI
-    let iri = store.state.config.ontology.datasetBaseUrl + [params.p1, params.p2, params.p3, params.p4].filter(Boolean).join('/')
+    let iri = store.state.config.ontology.datasetBaseUrl + params.pathMatch
 
     // we don't have access to asyncData in here
     if (route.path.endsWith('/')) {
