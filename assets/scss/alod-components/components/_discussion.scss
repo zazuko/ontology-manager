@@ -6,6 +6,12 @@
   border-radius: 0;
   box-shadow: -2px 2px 8px 0 $theme-light-grey;
 
+  .discussion-card {
+    .level-left {
+      max-width: 90%;
+    }
+  }
+
   .discussion-avatar {
     width: 40px; height: 40px;
     border-radius: 100%;

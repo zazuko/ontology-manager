@@ -2,46 +2,30 @@
   <section class="container">
     <div class="layout-conversation">
       <div class="section">
-        <!-- On <code>{{ discussion.iri }}</code> -->
-        <!-- TODO: breadcrumb -->
-        <!-- <nav
-          class="breadcrumb">
-          <ul>
-            <li>
-              <a href="#">
-                item 1
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                item 2
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                conversation
-              </a>
-            </li>
-          </ul>
-        </nav> -->
+        <template v-if="canReply && iriTerm">
+          <nav
+            class="breadcrumb">
+            <ul>
+              <li>
+                <link-to-iri :term="iriTerm" />
+              </li>
+            </ul>
+          </nav>
+        </template>
 
         <div class="discussion">
           <discussion-card
             v-if="discussion"
             :discussion="discussion"
             @refreshDiscussion="refreshDiscussion" />
-          <div v-else />
         </div>
-        <div
-          v-if="_get($auth, '$state.loggedIn', false)"
-          class="discussion">
-          <no-ssr>
-            <discussion-reply
-              :id="id"
-              @answerAdded="refreshDiscussion" />
-          </no-ssr>
-        </div>
-        <div v-else />
+        <no-ssr
+          v-if="canReply">
+          <discussion-reply
+            :id="id"
+            class="discussion"
+            @answerAdded="refreshDiscussion" />
+        </no-ssr>
       </div>
     </div>
   </section>
@@ -49,10 +33,12 @@
 
 <script>
 import _get from 'lodash/get'
+import rdf from 'rdf-ext'
 import discussionById from '@/apollo/queries/discussionById'
 import { toastClose } from '@/libs/utils'
 import DiscussionCard from '@/components/discussion/DiscussionCard'
 import DiscussionReply from '@/components/discussion/DiscussionReply'
+import LinkToIri from '@/components/fallback/LinkToIri'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {
@@ -61,7 +47,19 @@ export default {
   },
   components: {
     DiscussionCard,
-    DiscussionReply
+    DiscussionReply,
+    LinkToIri
+  },
+  computed: {
+    iriTerm () {
+      if (this.discussion && this.discussion.iri) {
+        return rdf.namedNode(this.discussion.iri)
+      }
+      return false
+    },
+    canReply () {
+      return process.browser && _get(this, '$auth.$state.loggedIn', false) && this.$store.state.authProcessDone
+    }
   },
   data () {
     return {
@@ -94,7 +92,7 @@ export default {
         }
       },
       skip () {
-        return (process.client && !this.$store.state.authProcessDone)
+        return process.browser && !this.$store.state.authProcessDone
       }
     }
   },

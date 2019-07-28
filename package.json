@@ -14,7 +14,7 @@
     "trifid:test": "NODE_TEST=1 jest",
     "e2e:migrate": "NODE_TEST=1 npm run migrate",
     "e2e:open": "cypress open",
-    "e2e:server": "NODE_TEST=1 npm run dev",
+    "e2e:server": "npm run e2e:migrate && NODE_TEST=1 npm run dev",
     "e2e:headless": "NODE_TEST=1 npm run migrate && NODE_TEST=1 npm run build && NODE_TEST=1 npm run start",
     "e2e:test": "cypress run",
     "e2e": "npm run e2e:migrate && npm run e2e:server",
