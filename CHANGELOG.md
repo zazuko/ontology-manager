@@ -1,3 +1,13 @@
+<a name="0.9.68"></a>
+## [0.9.68](https://github.com/zazuko/ontology-editor/compare/v0.9.67...v0.9.68) (2019-07-28)
+
+
+### Bug Fixes
+
+* **markdown:** marked is a dep, not devdep ([e175e4e](https://github.com/zazuko/ontology-editor/commit/e175e4e))
+
+
+
 <a name="0.9.67"></a>
 ## [0.9.67](https://github.com/zazuko/ontology-editor/compare/v0.9.66...v0.9.67) (2019-07-28)
 
