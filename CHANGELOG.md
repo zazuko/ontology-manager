@@ -1,3 +1,14 @@
+<a name="0.9.69"></a>
+## [0.9.69](https://github.com/zazuko/ontology-editor/compare/v0.9.68...v0.9.69) (2019-07-28)
+
+
+### Bug Fixes
+
+* **markdown:** tiptap is available at runtime ([d381feb](https://github.com/zazuko/ontology-editor/commit/d381feb))
+* **sentry:** add client sourcemaps ([d845745](https://github.com/zazuko/ontology-editor/commit/d845745))
+
+
+
 <a name="0.9.68"></a>
 ## [0.9.68](https://github.com/zazuko/ontology-editor/compare/v0.9.67...v0.9.68) (2019-07-28)
 
