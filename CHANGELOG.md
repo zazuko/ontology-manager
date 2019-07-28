@@ -1,3 +1,14 @@
+<a name="0.9.66"></a>
+## [0.9.66](https://github.com/zazuko/ontology-editor/compare/v0.9.65...v0.9.66) (2019-07-28)
+
+
+### Bug Fixes
+
+* **discussions:** answers should be shown once ([d57db0e](https://github.com/zazuko/ontology-editor/commit/d57db0e))
+* **swiss-ci:** revert discussion title margin ([c2b9a46](https://github.com/zazuko/ontology-editor/commit/c2b9a46))
+
+
+
 <a name="0.9.65"></a>
 ## [0.9.65](https://github.com/zazuko/ontology-editor/compare/v0.9.64...v0.9.65) (2019-07-28)
 
