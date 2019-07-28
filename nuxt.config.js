@@ -151,6 +151,7 @@ module.exports = async () => {
     ** Module config: sentry
     */
     sentry: {
+      publishRelease: true,
       config: {
         release: `${pkg.name}@${pkg.version}`,
         environment: process.env.CUSTOMER_NAME
