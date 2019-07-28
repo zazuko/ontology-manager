@@ -1,3 +1,13 @@
+<a name="0.9.65"></a>
+## [0.9.65](https://github.com/zazuko/ontology-editor/compare/v0.9.64...v0.9.65) (2019-07-28)
+
+
+### Bug Fixes
+
+* load discussion reply box when logged in ([5399343](https://github.com/zazuko/ontology-editor/commit/5399343))
+
+
+
 <a name="0.9.64"></a>
 ## [0.9.64](https://github.com/zazuko/ontology-editor/compare/v0.9.63...v0.9.64) (2019-07-26)
 
