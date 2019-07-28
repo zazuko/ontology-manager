@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="discussion-card">
     <div class="level">
       <div class="level-left">
         <h2 class="title is-2">
