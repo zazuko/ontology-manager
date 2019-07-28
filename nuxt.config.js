@@ -198,6 +198,9 @@ module.exports = async () => {
     */
     build: {
       extractCSS: true,
+      terser: {
+        sourceMap: true
+      },
       /*
       ** Custom PostCSS config
       */
