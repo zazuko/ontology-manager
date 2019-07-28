@@ -92,7 +92,7 @@ export default {
         }
       },
       skip () {
-        return process.browser && !this.$store.state.authProcessDone
+        return !this.$store.state.authProcessDone
       }
     }
   },
