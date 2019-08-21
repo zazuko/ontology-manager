@@ -115,7 +115,7 @@
                     class="button save-proposal"
                     @click.prevent="saveDraft">
                     <span v-show="savingIndicator === 'done'">
-                      Draft Saved <i class="mdi mdi-check"></i>
+                      Draft Saved <check />
                     </span>
                     <span v-show="savingIndicator !== 'done'">
                       Save Draft
@@ -154,6 +154,7 @@ import ClassForm from '@/components/proposal/ClassForm'
 import ProgressionBox from '@/components/proposal/ProgressionBox'
 import Loader from '@/components/layout/Loader'
 import { toastClose } from '@/libs/utils'
+import Check from 'vue-material-design-icons/Check.vue'
 
 import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
 
@@ -180,7 +181,8 @@ export default {
   components: {
     ClassForm,
     ProgressionBox,
-    Loader
+    Loader,
+    Check
   },
   data () {
     return {

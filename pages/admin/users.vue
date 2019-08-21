@@ -2,13 +2,13 @@
   <section class="container layout-admin">
     <admin-menu />
 
-    <no-ssr>
+    <client-only>
       <div class="responsive-table">
         <admin-user-list
           :users="users"
           @updated="refetch()" />
       </div>
-    </no-ssr>
+    </client-only>
   </section>
 </template>
 

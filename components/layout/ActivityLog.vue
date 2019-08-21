@@ -17,7 +17,7 @@
           class="level-right icon is-medium"
           title="Cancel"
           @click="toggle(false)">
-          <i class="mdi mdi-close" />
+          <close />
         </span>
       </div>
 
@@ -100,6 +100,7 @@
 <script>
 import activityLog from '@/apollo/queries/activityLog'
 import { term } from '@/libs/utils'
+import Close from 'vue-material-design-icons/Close.vue'
 
 const actionTypes = [
   'PROPOSAL_SUBMIT',
@@ -111,6 +112,9 @@ const actionTypes = [
 
 export default {
   name: 'ActivityLog',
+  components: {
+    Close
+  },
   data () {
     return {
       interval: null,

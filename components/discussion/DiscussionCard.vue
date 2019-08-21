@@ -70,7 +70,7 @@
               <span
                 class="icon is-medium"
                 @click="editThread = false">
-                <i class="mdi mdi-close" />
+                <close />
               </span>
             </div>
           </div>
@@ -100,7 +100,7 @@
         <span class="count-info">
           {{ discussion.answers.messages.length }}
           <span class="icon is-small">
-            <i class="mdi mdi-message-reply-text" />
+            <message-reply-text />
           </span>
         </span>
       </div>
@@ -143,7 +143,7 @@
                   class="icon is-medium"
                   title="Cancel"
                   @click="editMessage = 0">
-                  <i class="mdi mdi-close" />
+                  <close />
                 </span>
               </div>
             </div>
@@ -284,6 +284,8 @@ import changeDiscussionStatus from '@/apollo/mutations/changeDiscussionStatus'
 import updateDiscussion from '@/apollo/mutations/updateDiscussion'
 import updateMessage from '@/apollo/mutations/updateMessage'
 import deleteMessage from '@/apollo/mutations/deleteMessage'
+import Close from 'vue-material-design-icons/Close.vue'
+import MessageReplyText from 'vue-material-design-icons/MessageReplyText.vue'
 
 export default {
   name: 'DiscussionCard',
@@ -294,7 +296,9 @@ export default {
     }
   },
   components: {
-    Editor
+    Editor,
+    Close,
+    MessageReplyText
   },
   data () {
     return {

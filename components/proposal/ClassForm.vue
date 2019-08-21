@@ -129,7 +129,7 @@
           v-show="validBase"
           class="columns fold">
           <div class="column">
-            <no-ssr>
+            <client-only>
               <typeahead
                 :readonly="readonly"
                 :search-function="searchFunction"
@@ -148,7 +148,7 @@
                   </a>
                 </div>
               </typeahead>
-            </no-ssr>
+            </client-only>
           </div>
           <div class="column" />
         </div>

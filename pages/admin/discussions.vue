@@ -2,7 +2,7 @@
   <section class="container layout-admin">
     <admin-menu />
 
-    <no-ssr>
+    <client-only>
       <pagination
         :page="page"
         :results-count="discussionsCount"
@@ -13,7 +13,7 @@
           :discussions="rows"
           @updated="refetch()" />
       </div>
-    </no-ssr>
+    </client-only>
   </section>
 </template>
 
