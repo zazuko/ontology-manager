@@ -72,7 +72,7 @@ module.exports = async () => {
       '@nuxtjs/feed',
       ['nuxt-env', {
         keys: [
-          { key: 'EDITOR_STYLE', default: 'dcf' }
+          { key: 'EDITOR_STYLE', default: 'zazuko' }
         ]
       }]
     ],
