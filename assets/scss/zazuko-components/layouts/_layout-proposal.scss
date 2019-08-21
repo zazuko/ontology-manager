@@ -1,0 +1,156 @@
+.layout-proposal {
+  padding-top: 3em;
+  padding-bottom: 4em;
+
+  .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
+    background-color: whitesmoke;
+    box-shadow: none;
+    color: #565656;
+  }
+
+  .is-subform {
+    &.box {
+      border-top: solid 1px $theme-shadow;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 2em;
+    }
+
+    // subforms have a darker background, we want disabled fields to stand out otherwise the default
+    // disabled field background blends into the subform background
+    .input[disabled], fieldset[disabled] .input, .textarea[disabled], fieldset[disabled] .textarea,
+    .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      box-shadow: none;
+      color: #565656;
+    }
+    .editor .editor__content .ProseMirror[contenteditable=false] {
+      background-color: darken(whitesmoke, 10%);
+      border-color: darken(whitesmoke, 10%);
+      color: #565656;
+    }
+  }
+
+  .is-prop-subform > .box {
+    background: $theme-main-background;
+  }
+
+  .is-class-subform > .box {
+    background: white;
+  }
+
+  .title {
+    &.is-1 {
+      @extend .is-size-1;
+
+      font-weight: 300;
+      color: $theme-light-primary;
+    }
+
+    &.is-2 {
+      @extend .is-size-4;
+
+      font-weight: 300;
+      color: $theme-light-primary;
+    }
+  }
+
+  .title.is-3, .label {
+    @extend .is-size-7;
+
+    font-weight: bold;
+    color: black;
+  }
+
+  .subtitle {
+    &.is-1 {
+      @extend .is-size-6;
+    }
+  }
+
+  .box {
+    border: none;
+    border-radius: 8px;
+    box-shadow: -2px 2px 8px 0 $theme-shadow;
+    padding: 1.5em 2em;
+
+    &.is-marginless {
+      border-radius: 8px 8px 0 0;
+    }
+
+    .desc {
+      color: $theme-light-grey;
+      font-size: .9em;
+    }
+
+    .configurable-list {
+      .field {
+        margin-bottom: -1em;
+      }
+
+      .panel-block {
+        border: none;
+        padding: 0;
+        color: $theme-light-grey;
+
+        .panel-icon {
+          font-size: 1.2em;
+        }
+
+        &.is-active {
+          color: black;
+
+          .panel-icon {
+            color: black;
+          }
+        }
+      }
+    }
+
+    .dropdown {
+      width: 100%;
+    }
+  }
+
+  .proposal-submit {
+    @mixin proposal-submit-button {
+      height: 3em;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    .submit-proposal {
+      @extend .button.is-info;
+      @include proposal-submit-button;
+    }
+    .save-proposal {
+      @extend .button.is-primary;
+      @include proposal-submit-button;
+    }
+    .discard-proposal,
+    .cancel-proposal {
+      @extend .button.is-dark-info;
+      @include proposal-submit-button;
+    }
+  }
+
+  .proposal-author-img {
+    width: 40px; height: 40px;
+  }
+
+  .proposal-author-info {
+    font-size: .9em;
+    color: $theme-dark-grey;
+  }
+
+  .proposal-author-name {
+    font-size: 1.2em;
+    color: black;
+  }
+}
+
+@include mobile {
+  .proposal-author-info {
+    text-align: center;
+  }
+}

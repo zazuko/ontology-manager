@@ -1,0 +1,44 @@
+.layout-objects-list {
+  padding-bottom: 4em;
+}
+
+.layout-objects-list-head {
+  padding: 2.5rem 0;
+
+  .main-title {
+    text-align: center;
+  }
+
+  .subtitle {
+    text-align: center;
+  }
+}
+
+.layout-objects-list-item {
+  padding: 2rem 0;
+
+  .title {
+    @extend .is-size-3;
+    @extend .subtitle;
+    color: $theme-light-primary;
+  }
+}
+
+.layout-objects-list-tools {
+  padding-top: 2.5rem;
+
+  .button {
+    @extend .is-info;
+    background: $theme-light-primary;
+  }
+}
+
+.object-tiles {
+  flex-wrap: wrap;
+  .object-tile {
+    @extend .is-3;
+    @media screen and (min-width: 769px) and (max-width: 1023px) {
+      width: 50% !important;
+    }
+  }
+}
