@@ -142,7 +142,7 @@
                     class="icon has-text-danger clickable-pointer"
                     title="Remove hat from this person"
                     @click.prevent="removeHat(person.id, hat.id)">
-                    <i class="mdi mdi-account-off"></i>
+                    <account-off />
                   </span>
                   {{ person.name }}
                 </li>
@@ -173,9 +173,13 @@ import createHat from '@/apollo/mutations/adminCreateHat'
 import updateHat from '@/apollo/mutations/adminUpdateHat'
 import grantHat from '@/apollo/mutations/adminGrantHat'
 import removeHat from '@/apollo/mutations/adminRemoveHat'
+import AccountOff from 'vue-material-design-icons/AccountOff.vue'
 
 export default {
   name: 'AdminHatList',
+  components: {
+    AccountOff
+  },
   props: {
     hats: {
       type: Array,

@@ -81,21 +81,9 @@
 }
 
 .sort-icon {
-  @extend .icon;
   height: 1rem;
   vertical-align: middle;
   font-size: 1.4em;
-
-  i {
-    @extend .mdi;
-    @extend .mdi-menu-swap;
-    &.asc {
-      @extend .mdi-menu-down;
-    }
-    &.desc {
-      @extend .mdi-menu-up;
-    }
-  }
 }
 
 .draft-actions {

@@ -61,7 +61,7 @@
                 <span class="discussion-list-answers-count">
                   {{ answersCount(discussion) }}
                   <span class="icon is-small">
-                    <i class="mdi mdi-message-reply-text" />
+                    <message-reply-text />
                   </span>
                 </span>
               </nuxt-link>
@@ -76,9 +76,13 @@
 <script>
 import _get from 'lodash/get'
 import discussionsByIri from '@/apollo/queries/discussionsByIri'
+import MessageReplyText from 'vue-material-design-icons/MessageReplyText.vue'
 
 export default {
   name: 'Discussions',
+  components: {
+    MessageReplyText
+  },
   props: {
     iri: {
       type: String,

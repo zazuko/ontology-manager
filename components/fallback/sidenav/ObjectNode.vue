@@ -9,31 +9,21 @@
           v-if="tree.children && tree.children.length"
           class="icon is-small"
           @click.prevent="toggleCollapse">
-          <i
-            v-show="showMinusSymbol"
-            class="mdi mdi-minus" />
-          <i
-            v-show="showPlusSymbol"
-            class="mdi mdi-plus" />
+          <minus v-show="showMinusSymbol" />
+          <plus v-show="showPlusSymbol" />
         </span>
       </span>
       <span
         v-else-if="properties.length"
         class="icon is-small"
         @click.prevent="toggleCollapse">
-        <i
-          v-show="showMinusSymbol"
-          class="mdi mdi-minus" />
-        <i
-          v-show="showPlusSymbol"
-          class="mdi mdi-plus" />
+        <minus v-show="showMinusSymbol" />
+        <plus v-show="showPlusSymbol" />
       </span>
       <span
         v-else
         class="icon is-small has-text-grey-lighter">
-        <i
-          v-show="showPlusSymbol"
-          class="mdi mdi-plus" />
+        <plus v-show="showPlusSymbol" />
       </span>
       {{ $getTerm(tree.iri) || tree.label }}
     </nuxt-link>
@@ -67,6 +57,8 @@
 
 <script>
 import LinkToIri from '../LinkToIri'
+import Minus from 'vue-material-design-icons/Minus.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
 
 export default {
   name: 'ObjectNode',
@@ -88,7 +80,9 @@ export default {
     }
   },
   components: {
-    LinkToIri
+    LinkToIri,
+    Minus,
+    Plus
   },
   data () {
     return {

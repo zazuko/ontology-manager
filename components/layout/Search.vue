@@ -12,7 +12,7 @@
           @focus="showResult = true"
           @blur="hideResults">
         <span class="icon is-small is-left">
-          <i class="mdi mdi-magnify"></i>
+          <magnify />
         </span>
       </p>
     </div>
@@ -49,9 +49,13 @@
 
 <script>
 import Fuse from 'fuse.js'
+import Magnify from 'vue-material-design-icons/Magnify.vue'
 
 export default {
   name: 'Search',
+  components: {
+    Magnify
+  },
   data () {
     return {
       results: [],

@@ -2,7 +2,7 @@
   <section class="container layout-admin">
     <admin-menu />
 
-    <no-ssr>
+    <client-only>
       <admin-config-list
         :configs="configs"
         @showVersion="showVersion" />
@@ -16,7 +16,7 @@
         :disabled="versionToShow < currentPrivateConfig.id"
         :config="shownVersion"
         @configSaved="refetch" />
-    </no-ssr>
+    </client-only>
   </section>
 </template>
 

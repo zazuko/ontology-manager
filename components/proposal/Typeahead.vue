@@ -22,7 +22,7 @@ which seems much more robust
           @blur="unfocus"
           @focus="focus">
         <span class="icon is-small is-left">
-          <i class="mdi mdi-magnify" />
+          <magnify />
         </span>
       </p>
       <div
@@ -57,8 +57,13 @@ which seems much more robust
 </template>
 
 <script>
+import Magnify from 'vue-material-design-icons/Magnify.vue'
+
 export default {
   name: 'Typeahead',
+  components: {
+    Magnify
+  },
   props: {
     searchFunction: {
       type: Function,

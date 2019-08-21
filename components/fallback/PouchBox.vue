@@ -42,7 +42,7 @@
             {{ classesCount }}
           </span>
         </div>
-        <no-ssr>
+        <client-only>
           <template v-if="!isProposal">
             <div
               v-for="key in Object.keys(proposalCount)"
@@ -57,7 +57,7 @@
               </span>
             </div>
           </template>
-        </no-ssr>
+        </client-only>
       </div>
     </nuxt-link>
   </article>

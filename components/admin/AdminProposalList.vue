@@ -15,7 +15,9 @@
               @click.prevent="sort('UPDATED_AT')">
               Last updated
               <span class="sort-icon">
-                <i :class="{ [String(orderBy['UPDATED_AT']).toLowerCase()]: orderBy['UPDATED_AT'] }" />
+                <menu-down v-if="orderBy['UPDATED_AT'] === 'ASC'" />
+                <menu-up v-else-if="orderBy['UPDATED_AT'] === 'DESC'" />
+                <menu-swap v-else />
               </span>
             </a>
           </th>
@@ -30,7 +32,7 @@
                   @click.prevent="statusDropdown = true">
                   <span>Status</span>
                   <span class="sort-icon">
-                    <i class="asc"></i>
+                    <menu-down />
                   </span>
                 </button>
               </div>
@@ -96,7 +98,7 @@
                 class="is-link"
                 target="_blank"
                 title="Show commit">
-                <i class="mdi mdi-open-in-new"></i>
+                <open-in-new />
               </a>
             </p>
             <p>
@@ -129,15 +131,11 @@
           <td>
             <div class="votes">
               <div class="vote-cell">
-                <span class="icon">
-                  <i class="mdi mdi-thumb-up-outline" />
-                </span>
+                <thumb-up-outline />
                 {{ proposal.tally.upvotes }}
               </div>
               <div class="vote-cell">
-                <span class="icon">
-                  <i class="mdi mdi-thumb-down-outline" />
-                </span>
+                <thumb-down-outline />
                 {{ proposal.tally.downvotes }}
               </div>
             </div>
@@ -194,6 +192,12 @@
 import axios from 'axios'
 import { toastClose } from '@/libs/utils'
 import Loader from '@/components/layout/Loader'
+import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
+import ThumbUpOutline from 'vue-material-design-icons/ThumbUpOutline.vue'
+import ThumbDownOutline from 'vue-material-design-icons/ThumbDownOutline.vue'
+import MenuSwap from 'vue-material-design-icons/MenuSwap.vue'
+import MenuDown from 'vue-material-design-icons/MenuDown.vue'
+import MenuUp from 'vue-material-design-icons/MenuUp.vue'
 
 export default {
   name: 'AdminProposalList',
@@ -207,7 +211,13 @@ export default {
     }
   },
   components: {
-    Loader
+    Loader,
+    OpenInNew,
+    MenuSwap,
+    MenuDown,
+    MenuUp,
+    ThumbUpOutline,
+    ThumbDownOutline
   },
   computed: {
     rows () {

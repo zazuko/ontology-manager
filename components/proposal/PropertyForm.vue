@@ -162,7 +162,7 @@
                       v-show="!readonly"
                       class="panel-icon"
                       @click.prevent="unselectSameAs(index)">
-                      <i class="mdi mdi-close-circle" />
+                      <close-circle />
                     </span>
                     {{ displayNewSameAs(sameAs) }}
                   </a>
@@ -192,7 +192,7 @@
             </div>
           </div>
 
-          <no-ssr>
+          <client-only>
             <div class="columns">
               <div class="column">
                 <typeahead
@@ -228,7 +228,7 @@
                         v-show="!readonly"
                         class="panel-icon"
                         @click.prevent="(readonly || edit || index > 0) && unselectDomain(index)">
-                        <i class="mdi mdi-close-circle" />
+                        <close-circle />
                       </span>
                       {{ (domain.object && term(domain.object)) || domain.label }}
                     </a>
@@ -298,7 +298,7 @@
                         v-show="!readonly"
                         class="panel-icon"
                         @click.prevent="unselectRange(index)">
-                        <i class="mdi mdi-close-circle" />
+                        <close-circle />
                       </span>
                       <span v-if="!range.label && range.predicate.value === $termIRI.a.value">
                         {{ term(range.subject) }}
@@ -332,7 +332,7 @@
                 </typeahead>
               </div>
             </div>
-          </no-ssr>
+          </client-only>
         </div>
 
         <div
@@ -407,6 +407,7 @@ import rdf from 'rdf-ext'
 import { debounce, normalizeLabel, term } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
+import CloseCircle from 'vue-material-design-icons/CloseCircle.vue'
 
 export default {
   name: 'PropertyForm',
@@ -445,7 +446,8 @@ export default {
   components: {
     ClassForm: () => import('@/components/proposal/ClassForm'),
     Typeahead,
-    Editor
+    Editor,
+    CloseCircle
   },
   mounted () {
     this.init()

@@ -2,7 +2,7 @@
   <section class="container layout-admin">
     <admin-menu />
 
-    <no-ssr>
+    <client-only>
       <pagination
         :page="page"
         :results-count="proposalsCount"
@@ -15,7 +15,7 @@
           @status-filter="statusFilterUpdate"
           @updated="refetch()" />
       </div>
-    </no-ssr>
+    </client-only>
   </section>
 </template>
 
