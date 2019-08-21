@@ -1,0 +1,5 @@
+.properties-table {
+  @extend .table;
+  @extend .generic-table;
+  @extend .is-fullwidth;
+}
