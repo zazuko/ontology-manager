@@ -4,10 +4,9 @@
       <button
         @click.prevent="vote(threadId, 'UPVOTE')"
         :class="{ 'is-info': userVote === 'UPVOTE' }"
+        title="Upvote this proposal"
         class="button is-large">
-        <span class="icon is-large">
-          <i class="mdi mdi-24px mdi-thumb-up-outline" />
-        </span>
+        <thumb-up-outline />
       </button>
       {{ upvotes }}
     </div>
@@ -16,10 +15,9 @@
       <button
         @click.prevent="vote(threadId, 'DOWNVOTE')"
         :class="{ 'is-dark-info': userVote === 'DOWNVOTE' }"
+        title="Downvote this proposal"
         class="button is-large">
-        <span class="icon is-large">
-          <i class="mdi mdi-24px mdi-thumb-down-outline" />
-        </span>
+        <thumb-down-outline />
       </button>
       {{ downvotes }}
     </div>
@@ -30,9 +28,15 @@
 import voteMutation from '@/apollo/mutations/vote'
 import userVote from '@/apollo/queries/userVote'
 import votesOnThread from '@/apollo/queries/votesOnThread'
+import ThumbUpOutline from 'vue-material-design-icons/ThumbUpOutline.vue'
+import ThumbDownOutline from 'vue-material-design-icons/ThumbDownOutline.vue'
 
 export default {
   name: 'Vote',
+  components: {
+    ThumbUpOutline,
+    ThumbDownOutline
+  },
   props: {
     threadId: {
       type: Number,

@@ -14,15 +14,20 @@
       <span
         class="icon is-small"
         title="Outgoing link will open in new tab">
-        <i class="mdi mdi-open-in-new" />
+        <open-in-new />
       </span>
     </a>
   </span>
 </template>
 
 <script>
+import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
+
 export default {
   name: 'LinkToIri',
+  components: {
+    OpenInNew
+  },
   props: {
     term: {
       type: Object,

@@ -1,6 +1,6 @@
 <template>
   <section class="container layout-admin">
-    <no-ssr>
+    <client-only>
       <template v-if="error">
         <p>{{ error }}</p>
       </template>
@@ -86,7 +86,7 @@
           </loader>
         </form>
       </section>
-    </no-ssr>
+    </client-only>
   </section>
 </template>
 

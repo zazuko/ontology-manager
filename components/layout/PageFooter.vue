@@ -20,7 +20,7 @@
           <a href="/rss.xml">
             rss
             <span class="icon">
-              <i class="mdi mdi-rss-box" />
+              <rss-box />
             </span>
           </a>
         </p>
@@ -31,14 +31,14 @@
           <a href="#page-top">
             Back to the top
             <span class="footer-back-icon icon is-medium">
-              <i class="mdi mdi-chevron-up" />
+              <chevron-up />
             </span>
           </a>
           <br>
           <nuxt-link :to="{ name: 'support' }">
             Support
             <span class="footer-back-icon icon is-medium">
-              <i class="mdi mdi-lifebuoy" />
+              <lifebuoy />
             </span>
           </nuxt-link>
         </p>
@@ -48,7 +48,16 @@
 </template>
 
 <script>
+import RssBox from 'vue-material-design-icons/RssBox.vue'
+import ChevronUp from 'vue-material-design-icons/ChevronUp.vue'
+import Lifebuoy from 'vue-material-design-icons/Lifebuoy.vue'
+
 export default {
-  name: 'PageFooter'
+  name: 'PageFooter',
+  components: {
+    RssBox,
+    ChevronUp,
+    Lifebuoy
+  }
 }
 </script>

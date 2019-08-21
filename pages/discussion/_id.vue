@@ -19,13 +19,13 @@
             :discussion="discussion"
             @refreshDiscussion="refreshDiscussion" />
         </div>
-        <no-ssr
+        <client-only
           v-if="canReply">
           <discussion-reply
             :id="id"
             class="discussion"
             @answerAdded="refreshDiscussion" />
-        </no-ssr>
+        </client-only>
       </div>
     </div>
   </section>
