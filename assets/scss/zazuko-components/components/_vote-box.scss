@@ -1,13 +1,14 @@
-.votes {
+.vote-box {
   font-size: 0.9rem;
+
   &--admin {
     display: flex;
   }
 
   .vote-cell {
-    margin-left: 10px;
     display: flex;
     flex-direction: column;
+    margin-left: 2em;
     align-items: center;
     justify-content: center;
 
@@ -15,8 +16,9 @@
       @extend .is-active;
       height: 42px;
       padding-top: 3px;
-      &.user-vote {
-        @extend .is-info;
+
+      &.is-dark-info {
+        color: white;
       }
     }
   }
