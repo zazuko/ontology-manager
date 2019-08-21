@@ -1,3 +1,13 @@
+<a name="0.9.70"></a>
+## [0.9.70](https://github.com/zazuko/ontology-editor/compare/v0.9.69...v0.9.70) (2019-08-21)
+
+
+### Bug Fixes
+
+* **hats:** granting via upsert works ([5e4e6f2](https://github.com/zazuko/ontology-editor/commit/5e4e6f2))
+
+
+
 <a name="0.9.69"></a>
 ## [0.9.69](https://github.com/zazuko/ontology-editor/compare/v0.9.68...v0.9.69) (2019-07-28)
 
