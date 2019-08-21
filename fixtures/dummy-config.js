@@ -5,7 +5,7 @@ module.exports = () => ({
     loginStrategy: 'github',
     host: 'localhost:3000',
     protocol: 'http',
-    style: 'dcf',
+    style: 'zazuko',
     meta: {
       title: 'ACME Ontology Editor',
       customerName: 'ACME',
