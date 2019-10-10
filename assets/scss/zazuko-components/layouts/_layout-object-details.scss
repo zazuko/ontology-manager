@@ -8,29 +8,29 @@
 
 .layout-object-details-sidenav {
   position: relative;
-  background: $theme-dark-grey;
+  background: $bg-light;
   padding: 2rem 2rem 6rem 0;
-
   min-height: calc(100vh - 186px);
-
-  color: white;
+  border-right: 1px solid $border-superlight;
 
   &:before {
     content: '';
     position: absolute;
-    background: $theme-dark-grey;
-    top: 0; right: 100%; bottom: 0;
+    background: $bg-light;
+    top: 0;
+    right: 100%;
+    bottom: 0;
     width: 2000px;
   }
 
   .menu-label {
-    padding: 4rem 0 2rem 0;
-    border-bottom: solid 1px white;
-
-    color: white;
+    padding: 4rem 0 .5rem 0;
+    border-bottom: solid 1px $border-light;
     font-variant: normal;
     text-transform: none;
     font-size: 1rem;
+    color: inherit;
+    font-weight: $weight-normal;
   }
 
   .menu-list {
@@ -43,33 +43,34 @@
     }
 
     a {
-      color: $theme-light-grey;
-
       .icon {
-        width: 24px;
-        color: white;
-        justify-content: left;
-
-        i {
-          font-weight: bold;
-        }
-      }
-
-      &:hover, &:focus {
-        background: none;
-        color: white;
+        vertical-align: top;
+        margin-top: 3px;
       }
 
       &.is-active {
         background: none;
-        font-weight: bold;
-        color: white;
+        font-weight: $weight-bold;
+        color: inherit;
       }
     }
   }
 }
 
 .layout-object-details-content {
+  background: white;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    background: white;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: -1;
+  }
+  
   .section {
     padding: 1.5rem;
   }
@@ -151,13 +152,7 @@
 
       a {
         display: inline-block;
-        color: black;
-        text-decoration: underline;
-        padding-right: 2rem;
-
-        &:hover, &:focus {
-          text-decoration: none;
-        }
+        padding-right: 1rem;
       }
     }
   }

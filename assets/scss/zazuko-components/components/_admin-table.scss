@@ -1,15 +1,12 @@
 .admin-table {
   @extend .is-fullwidth;
+  border: 1px solid hsla(0,0%,0%,.1);
   font-size: .9em;
-
   background: white;
-  border-radius: 10px;
-  box-shadow: -2px 2px 8px 0 $theme-light-grey;
 
   thead th {
     padding: 1em;
     border-bottom: none;
-
     color: white;
     background: $theme-dark-primary;
     font-weight: normal;
@@ -18,16 +15,18 @@
       color: white;
     }
 
-    .dropdown {
+    .dropdown {      
       .dropdown-trigger {
         cursor: pointer;
+        
         button, button:hover {
           border: none;
-          color: white;
-          background: $theme-dark-primary;
+          color: inherit;
+          background: none;
           padding: 0;
           margin: 0;
           font-size: 1em;
+          display: flex;
         }
       }
       .dropdown-divider {
@@ -65,9 +64,11 @@
 }
 
 .sort-icon {
-  height: 1rem;
-  vertical-align: middle;
-  font-size: 1.4em;
+  margin-left: .2em;
+  
+  .material-design-icon {
+    font-size: 1.5em;
+  }
 }
 
 .draft-actions {

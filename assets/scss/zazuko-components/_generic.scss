@@ -1,3 +1,71 @@
+::selection {
+  background: hsl(11,96%,55%);
+  color: white;
+}
+
+h1,
+h2,
+h3 {
+  font-family: $family-secondary;
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.icon {
+  vertical-align: text-top;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+}
+
+.container {
+  position: static;
+}
+
+%highlighted-link {
+  display: inline-block;
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  font-family: monospace;
+  white-space: nowrap;
+  transition: color .1s ease;
+  z-index: 0;
+  color: black;
+  
+  &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    background-color: $red;
+    z-index: -1;
+    transition: .15s ease;
+  }
+
+  &:focus,
+  &:hover {
+    color: white;
+    outline: 0;
+
+    &:after {
+      left: -3px;
+      right: -3px;
+      bottom: -5px;
+      height: calc(1.5rem + 10px);
+    }
+  }
+}
+
 .has-primary-background,
 .has-secondary-background {
   min-height: 100vh;
@@ -5,15 +73,13 @@
   position: relative;
 }
 
-.has-primary-background {
-  background: $theme-main-background;
-}
-
+.has-primary-background,
 .has-secondary-background {
-  background: white;
+  background: $bg-light;
 }
 
 footer {
+  border-top: 1px solid $border-light;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -35,8 +101,9 @@ footer {
 }
 
 .main-title {
-  @extend .is-size-1;
-  @extend .has-text-weight-light;
+  font-size: 3.75em;
+  line-height: 1;
+  margin-bottom: .5em;
   color: $theme-light-primary;
 }
 
@@ -72,14 +139,10 @@ section hr {
   height: 26px;
   cursor: pointer;
   background-repeat: no-repeat;
-
-  opacity: 0.3;
-  &:hover {
-    opacity: 1;
-  }
+  vertical-align: middle;
 
   &.activity {
-    background-image: url('../images/ic-activity.svg');
+    background-image: url('../images/zazuko/ic-activity.svg');
   }
   &.edit {
     background-image: url('../images/ic-edit.svg');
@@ -105,10 +168,15 @@ section hr {
 }
 
 .title-url {
-  display: inline-block;
-  font-family: $family-monospace;
-  color: $theme-dark-primary;
+  @extend %highlighted-link;
 }
-a.title-url {
-  text-decoration: underline;
+
+.material-design-icon {
+  > .material-design-icon__svg {
+    bottom: 0;
+  }
+
+  .control & {
+    font-size: 1.4em;
+  }
 }

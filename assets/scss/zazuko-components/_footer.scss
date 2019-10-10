@@ -1,10 +1,27 @@
 .footer {
   color: $theme-light-primary;
   padding: 1em 0;
+  line-height: 1.4;
 
-  a {
-    &:hover, &:focus {
-      color: $theme-light-primary-hover;
+  p a {
+    @extend %highlighted-link;
+    color: inherit;
+    font-family: inherit;
+    
+    &:after {
+      background-color: $theme-light-primary;
+      height: 1px;
+      bottom: 0;
+    }
+
+    &:focus,
+    &:hover {
+      &:after {
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        height: calc(1.4rem + 6px);
+      }
     }
   }
 
@@ -13,9 +30,29 @@
     padding: 15px 50px 15px 0;
   }
 
-  .footer-back-icon {
-    i {
-      font-weight: bold;
+  .level-left {
+    p a {
+      margin-right: .4em;
+    }
+  }
+
+  .level-right {
+    br {
+      display: none;
+    }
+
+    .icon {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    a {
+      margin-left: 1rem;
+    }
+
+    p {
+      display: flex;
+      flex-direction: row-reverse;
     }
   }
 }
