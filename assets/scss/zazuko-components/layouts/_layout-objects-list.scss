@@ -3,7 +3,7 @@
 }
 
 .layout-objects-list-head {
-  padding: 2.5rem 0;
+  padding: 6rem 0 1rem;
 
   .main-title {
     text-align: center;
@@ -11,6 +11,11 @@
 
   .subtitle {
     text-align: center;
+    margin: 0 9rem;
+  }
+  
+  .columns {
+    margin: 0 9rem;
   }
 }
 
@@ -19,18 +24,12 @@
 
   .title {
     @extend .is-size-3;
-    @extend .subtitle;
     color: $theme-light-primary;
   }
 }
 
 .layout-objects-list-tools {
   padding-top: 2.5rem;
-
-  .button {
-    @extend .is-info;
-    background: $theme-light-primary;
-  }
 }
 
 .object-tiles {

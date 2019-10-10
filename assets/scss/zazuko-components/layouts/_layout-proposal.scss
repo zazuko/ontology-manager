@@ -69,15 +69,6 @@
   }
 
   .box {
-    border: none;
-    border-radius: 8px;
-    box-shadow: -2px 2px 8px 0 $theme-shadow;
-    padding: 1.5em 2em;
-
-    &.is-marginless {
-      border-radius: 8px 8px 0 0;
-    }
-
     .desc {
       color: $theme-light-grey;
       font-size: .9em;
@@ -113,24 +104,19 @@
   }
 
   .proposal-submit {
-    @mixin proposal-submit-button {
+    .button {
       height: 3em;
       width: 100%;
-      border-radius: 8px;
-      font-size: 1em;
     }
     .submit-proposal {
       @extend .button.is-info;
-      @include proposal-submit-button;
     }
     .save-proposal {
       @extend .button.is-primary;
-      @include proposal-submit-button;
     }
     .discard-proposal,
     .cancel-proposal {
-      @extend .button.is-dark-info;
-      @include proposal-submit-button;
+      @extend .button;
     }
   }
 

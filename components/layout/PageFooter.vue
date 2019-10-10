@@ -14,7 +14,7 @@
           <a href="/atom.xml">
             atom
             <span class="icon">
-              <i class="mdi mdi-rss-box" />
+              <rss-box />
             </span>
           </a>
           <a href="/rss.xml">
@@ -28,7 +28,9 @@
 
       <div class="level-right">
         <p>
-          <a href="#page-top">
+          <a
+            href="#"
+            @click="toPageTop">
             Back to the top
             <span class="footer-back-icon icon is-medium">
               <chevron-up />
@@ -58,6 +60,16 @@ export default {
     RssBox,
     ChevronUp,
     Lifebuoy
+  },
+  methods: {
+    toPageTop (event) {
+      event.preventDefault()
+
+      window.scroll({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
   }
 }
 </script>

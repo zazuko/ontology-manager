@@ -2,42 +2,53 @@
   position: relative;
   overflow: hidden;
   @extend .box;
-
   padding: 0;
-  background: $theme-dark-primary;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
 
   a {
-    padding: 0.8rem 1.6rem;
+    padding: .8rem 1.6rem .7rem;
     display: block;
-    color: white;
     text-decoration: none;
+    color: inherit;
+    font-weight: inherit;
+    
+    &:hover .class-box-title,
+    .class-box-title:hover {
+      color: white;
+      outline: 0;
+
+      &:after {
+        left: -3px;
+        right: -3px;
+        bottom: -4px;
+        height: calc(1.5rem + 8px);
+      }
+    }
   }
 
   .class-box-update {
     font-size: 0.6rem;
-    font-style: italic;
+    font-weight: $weight-normal;
   }
 
   .class-box-icon {
     width: 32px;
     height: 34px;
-    margin: 0.8rem 0 0 0;
+    margin: .8rem 0 .2rem;
     background-repeat: no-repeat;
     &.pouch {
-      background-image: url('../images/ic-pouch.svg');
+      background-image: url('../images/zazuko/ic-pouch.svg');
     }
     &.class {
-      background-image: url('../images/ic-class.svg');
+      background-image: url('../images/zazuko/ic-class.svg');
     }
   }
 
   .class-box-title {
-    font-weight: 400;
+    font-weight: $weight-bold;
+    @extend %highlighted-link;
   }
 
   .class-box-level {
-    color: $theme-light-primary;
     display: block;
     font-size: 0;
   }
@@ -50,21 +61,15 @@
   }
 
   .class-box-label {
+    display: block;
     font-size: 0.7rem;
-    display: block;
-    font-style: italic;
-  }
-
-  .class-box-label {
-    display: block;
-    font-weight: bold;
+    font-weight: $weight-normal;
   }
 
   .class-box-toast {
     position: absolute;
     top: 0; right: 0;
     padding: 0.8rem 1.5rem;
-
     font-weight: bold;
     font-size: 0.6rem;
     background: $theme-light-secondary;

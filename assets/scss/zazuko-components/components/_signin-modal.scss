@@ -29,6 +29,7 @@
   }
 
   .modal-card-title {
+    @extend h2;
     font-size: 2em;
     color: $theme-light-primary;
   }

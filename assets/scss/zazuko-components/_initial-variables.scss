@@ -1,3 +1,10 @@
+// zazuko colors
+$orange: hsl(31,100%,68%);
+$orange-faded: hsl(32,96%,68%);
+$orange-light: hsl(45,100%,78%);
+$red: hsl(11,100%,56%);
+$red-dark: hsl(360,100%,38%);
+
 // Colors
 
 $black:        hsl(0, 0%, 4%);
@@ -14,18 +21,19 @@ $white-ter:    hsl(0, 0%, 96%);
 $white-bis:    hsl(0, 0%, 98%);
 $white:        hsl(0, 0%, 100%);
 
-$orange:       hsl(14,  100%, 53%);
 $yellow:       hsl(48,  100%, 67%);
 $green:        hsl(141, 71%,  48%);
 $turquoise:    hsl(171, 100%, 41%);
 $cyan:         hsl(204, 86%,  53%);
 $blue:         hsl(217, 71%,  53%);
 $purple:       hsl(271, 100%, 71%);
-$red:          hsl(348, 100%, 61%);
+
+$bg-light: hsl(0,0%,99%);
 
 // Typography
 
-$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-primary: "Roboto", sans-serif;
+$family-secondary: "Playfair Display", serif;
 $family-monospace: monospace;
 $render-mode: optimizeLegibility;
 
@@ -36,12 +44,31 @@ $size-4: 1.5rem;
 $size-5: 1.25rem;
 $size-6: 1rem;
 $size-7: 0.75rem;
+$sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7;
 
 $weight-light: 300;
 $weight-normal: 400;
 $weight-medium: 500;
-$weight-semibold: 600;
+$weight-semibold: $weight-medium;
 $weight-bold: 700;
+
+$body-weight: $weight-light;
+$strong-weight: $weight-medium;
+
+$link: $red;
+
+// Subtitle
+$subtitle-family: $family-primary;
+$subtitle-size: inherit;
+$subtitle-weight: inherit;
+$subtitle-line-height: 1.4;
+
+// Menu
+$menu-label-letter-spacing: 0;
+
+// Icon
+$icon-dimensions: 1.5em;
+$icon-dimensions-small: 1em;
 
 // Responsiveness
 
@@ -66,7 +93,41 @@ $radius: 4px;
 $radius-large: 6px;
 $radius-rounded: 290486px;
 $speed: 86ms;
+$border: hsl(0,0%,59%);
+$border-light: hsla(0,0%,0%,.2);
+$border-superlight: hsl(0,0%,90%);
 
 // Flags
 
 $variable-columns: true;
+
+// Tags
+$info: $red;
+$info-invert: white;
+$tag-radius: 0;
+
+// Button
+$radius-small: 0;
+$button-color: inherit;
+$button-background-color: white;
+$button-border-width: 1px;
+$button-border-color: $border-light;
+$button-hover-border-color: $red;
+$button-active-border-color: $red;
+$button-hover-color: $button-color;
+$button-active-color: $button-color;
+$primary: $red;
+
+// Input
+$control-padding-vertical: .75em;
+$control-padding-horizontal: .75em;
+$control-height: 2.5em;
+$control-line-height: 1.375;
+$radius: 0;
+$input-border-color: hsla(0,0%,0%,.2);
+$input-icon-color: currentColor;
+$input-shadow: none;
+$input-focus-border-color: $red;
+$input-focus-box-shadow-size: inset 0 0 0 2px;
+$input-focus-box-shadow-color: $red;
+$input-placeholder-color: rgb(117,117,117);
