@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <loader
       v-if="!dataReady"
       :show-if="!dataReady" />
