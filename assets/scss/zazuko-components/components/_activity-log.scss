@@ -4,18 +4,23 @@
     width: 500px;
     margin-top: 3.5em;
     border: solid 1px $border-light;
+    
+    @include touch {
+      margin-top: 1em;
+    }
 
     .activity-log-header {
-      padding: 0 .75rem;
+      padding: .3rem .75rem;
+      margin-bottom: 1em;
       border-bottom: solid 1px $border-light;
 
       h2 {
-        font-size: 2em;
+        @extend %simple-headline;
+        font-size: 1.3em;
       }
 
       .icon {
-        font-size: 2em;
-        color: $theme-dark-grey;
+        font-size: 1.75em;
         cursor: pointer;
       }
     }
@@ -75,7 +80,7 @@
       left: 1em;
       width: auto;
       background: white;
-      z-index: 1;
+      z-index: 5;
 
       .media-content {
         overflow-x: initial;

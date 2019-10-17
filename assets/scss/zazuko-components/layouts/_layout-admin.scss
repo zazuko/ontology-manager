@@ -1,11 +1,29 @@
 .layout-admin {
-  //max-width: 950px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 3em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+  .title {
+    @include touch {
+      text-align: initial;
+    }
+  }
 
   .layout-admin-header {
-    padding: 3em 0 1em 0;
+    padding: 3em 0 1em;
+    
+    @include touch {
+      padding: 1rem 1.5rem;
+      
+      + .pagination {
+        margin-top: -1rem;
+      }
+    }
 
     h1 {
       font-size: 3em;
@@ -15,17 +33,19 @@
   }
 
   .layout-admin-nav {
-    padding: 1em;
+    padding: 4px 0;
     font-size: .9em;
+    position: relative; // move it in front of the descriptive text columns in the hats section
 
     li {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 20px;
 
       a {
-        padding: 5px;
+        padding: 5px 0;
         color: $theme-dark-grey;
         border-bottom: solid 4px transparent;
+        display: block;
 
         &:hover, &:focus, &.is-active {
           color: $theme-light-primary;
@@ -35,19 +55,32 @@
     }
   }
 
-  .layout-admin-panel {
+  .layout-admin-panel {    
     p {
       padding-bottom: 1em;
     }
   }
 
+  &-main {
+    flex-basis: 100%;
+    
+    > p {
+      @include touch {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+    }
+  }
+
   .code {
     font-family: $family-monospace;
-    color: $theme-dark-primary;
+    font-weight: $weight-medium;
   }
 
   .settings-form {
     h2.subtitle {
+      @extend %headline;
+      font-size: 1.4em;
       margin-top: 1em;
       margin-bottom: 1em;
     }

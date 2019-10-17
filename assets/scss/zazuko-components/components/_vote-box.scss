@@ -1,5 +1,11 @@
 .vote-box {
   font-size: 0.9rem;
+  margin-bottom: -0.7em;
+  
+  @include touch {
+    display: flex;
+    justify-content: center;
+  }
 
   &--admin {
     display: flex;
@@ -13,9 +19,8 @@
     justify-content: center;
 
     button {
-      @extend .is-active;
       height: 42px;
-      padding-top: 3px;
+      padding-top: 7px;
 
       &.is-dark-info {
         color: white;

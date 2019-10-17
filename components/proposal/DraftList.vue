@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-admin-main">
     <table
       v-if="drafts.length"
       class="table admin-table">

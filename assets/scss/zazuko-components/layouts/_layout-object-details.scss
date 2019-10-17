@@ -1,15 +1,13 @@
 .layout-object-details {
   .columns {
-    margin-top: 0;
-    margin-right: 0em;
-    margin-left: 0em;
+    margin: 0;
   }
 }
 
 .layout-object-details-sidenav {
   position: relative;
   background: $bg-light;
-  padding: 2rem 2rem 6rem 0;
+  padding: 0 2rem 6rem 0;
   min-height: calc(100vh - 186px);
   border-right: 1px solid $border-superlight;
 
@@ -43,9 +41,17 @@
     }
 
     a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
       .icon {
         vertical-align: top;
         margin-top: 3px;
+        background: hsl(0,0%,94%);
+        color: $theme-light-grey;
+        margin-right: 2px;
+        border-radius: 1px;
       }
 
       &.is-active {
@@ -73,6 +79,10 @@
   
   .section {
     padding: 1.5rem;
+    
+    @include touch {
+      padding: 0;
+    }
   }
 
   .breadcrumb {
@@ -110,35 +120,35 @@
     &.is-3 {
       font-weight: bold;
       font-size: 1rem;
-      margin-top: 1em;
-      margin-bottom: 0;
+      margin-top: 1.5em;
+      margin-bottom: .5em;
     }
   }
 
   .title-edit-button {
-    display: inline-block;
-    line-height: 30px; height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 29px; height: 30px;
     width: 30px;
     text-align: center;
     vertical-align: middle;
+    font-family: $family-primary;
+    font-weight: $weight-light;
 
-    border-radius: 6px;
-    background: #efefef;
+    border-radius: 5px;
+    background: hsl(0,0%,95%);
     font-size: 0.8em;
-    color: $theme-dark-grey;
+    color: $theme-light-grey;
 
     img {
       width: 18px; height: 18px;
       margin: 6px;
+      opacity: 0.5;
     }
 
     &:hover, &:focus {
-      background: $theme-light-primary;
-      color: white;
-
-      img {
-        color: white;
-      }
+      background: hsl(0,0%,90%);
     }
   }
 
@@ -152,7 +162,7 @@
 
       a {
         display: inline-block;
-        padding-right: 1rem;
+        margin-left: .5em;
       }
     }
   }

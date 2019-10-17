@@ -82,8 +82,6 @@ Do this when you want to test the app locally under production settings, especia
 
 ### Prod Deployment
 
-TODO: explain how to build a prod image (basically `.gitlab-ci.yml`)
-
 Two containers: Postgres (probably already running to host other customers' editors) and the editor container.
 
 The editor container needs the following env vars:

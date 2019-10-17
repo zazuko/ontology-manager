@@ -1,6 +1,6 @@
 .default-modal {
   width: 500px;
-  color: $theme-light-primary;
+  color: $black;
   text-align: center !important;
 
   .modal-card-head {
@@ -20,6 +20,27 @@
 
     .button {
       width: 120px;
+    }
+  }
+}
+
+// remove box style from loader
+.modal-loader {
+  .box {
+    background: none;
+    box-shadow: none;
+  }
+
+  .subtitle {
+    color: white;
+    font-weight: normal;
+  }
+
+  .lds-roller div {
+    animation-timing-function: ease;
+    
+    &:after {
+      background: white;
     }
   }
 }

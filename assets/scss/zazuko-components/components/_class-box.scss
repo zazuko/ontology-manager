@@ -33,7 +33,7 @@
   .class-box-icon {
     width: 32px;
     height: 34px;
-    margin: .8rem 0 .2rem;
+    margin: .6rem 0 .2rem;
     background-repeat: no-repeat;
     &.pouch {
       background-image: url('../images/zazuko/ic-pouch.svg');
@@ -45,7 +45,16 @@
 
   .class-box-title {
     font-weight: $weight-bold;
-    @extend %highlighted-link;
+    @extend .highlighted-link;
+    max-width: 100%;
+    
+    @include touch {
+      display: table;
+    }
+    
+    .ellipsis {
+      display: block;
+    }
   }
 
   .class-box-level {
@@ -69,10 +78,9 @@
   .class-box-toast {
     position: absolute;
     top: 0; right: 0;
-    padding: 0.8rem 1.5rem;
-    font-weight: bold;
-    font-size: 0.6rem;
-    background: $theme-light-secondary;
-    border-radius: 0 0 0 5px;
+    padding: .7em 1.25em;
+    font-weight: $weight-normal;
+    font-size: 0.75rem;
+    background: hsl(0,0%,95%);
   }
 }

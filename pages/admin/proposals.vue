@@ -8,7 +8,7 @@
         :results-count="proposalsCount"
         :results-per-page="pageSize"
         route="admin-proposals" />
-      <div class="responsive-table">
+      <div class="responsive-table layout-admin-main">
         <admin-proposal-list
           :proposals="proposals"
           @sort="sortUpdate"
