@@ -31,7 +31,7 @@
           </div>
         </div>
         <div v-show="!_get(newObjectProposals, 'proposals.length')">
-          <p>No proposal on this object at the moment.</p>
+          <p class="tile-placeholder">No proposal on this object at the moment.</p>
         </div>
 
         <div

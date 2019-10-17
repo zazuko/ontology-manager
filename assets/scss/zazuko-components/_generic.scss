@@ -3,11 +3,28 @@
   color: white;
 }
 
-h1,
-h2,
-h3 {
+%headline {
   font-family: $family-secondary;
   font-weight: bold;
+  color: $black;
+}
+
+%simple-headline {
+  font-family: inherit;
+  font-weight: $weight-semibold;
+}
+
+h1,
+h2 {
+  @extend %headline;
+}
+
+h3 {
+  color: hsl(0, 0%, 13%);
+  font-size: 16px;
+  font-weight: $weight-semibold;
+  line-height: 22px;
+  color: $black;
 }
 
 a {
@@ -15,8 +32,17 @@ a {
   font-weight: 400;
 }
 
+.tag {
+  font-weight: $weight-normal;
+}
+
 .icon {
-  vertical-align: text-top;
+  vertical-align: middle;
+  margin-top: -.15em;
+  
+  &.is-small {
+    margin-top: 0;
+  }
 }
 
 .main {
@@ -28,7 +54,13 @@ a {
   position: static;
 }
 
-%highlighted-link {
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.highlighted-link {
   display: inline-block;
   position: relative;
   color: inherit;
@@ -38,6 +70,12 @@ a {
   transition: color .1s ease;
   z-index: 0;
   color: black;
+  
+  @include touch {
+    display: inline;
+    white-space: initial;
+    box-shadow: 0 2px $red;
+  }
   
   &:after {
     content: "";
@@ -50,6 +88,10 @@ a {
     background-color: $red;
     z-index: -1;
     transition: .15s ease;
+  
+    @include touch {
+      display: none;
+    }
   }
 
   &:focus,
@@ -66,45 +108,51 @@ a {
   }
 }
 
-.has-primary-background,
-.has-secondary-background {
-  min-height: 100vh;
-  padding: 0 0 100px 0; margin: 0;
-  position: relative;
-}
+$mobile-column-gap: 1em;
 
-.has-primary-background,
-.has-secondary-background {
-  background: $bg-light;
-}
-
-footer {
-  border-top: 1px solid $border-light;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  overflow: hidden;
+.column {
   @include touch {
-    .level-left {
-      display: flex;
-      a {
-        // for the logo
-        padding-left: 15px;
-      }
+    padding: $mobile-column-gap;
+  }
+}
+
+.columns {
+  @include touch {
+    margin-left: (-$mobile-column-gap);
+    margin-right: (-$mobile-column-gap);
+    margin-top: (-$mobile-column-gap);
+    
+    &:last-child {
+      margin-bottom: (-$mobile-column-gap);
     }
-    .level-right {
-      // hide link "go to top"
-      display: none;
+
+    &:not(:last-child) {
+      margin-bottom: 0;
     }
+  }
+}
+
+.has-primary-background,
+.has-secondary-background {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  background: $bg-light;
+  
+  > .container {
+    flex-grow: 0;
   }
 }
 
 .main-title {
   font-size: 3.75em;
   line-height: 1;
-  margin-bottom: .5em;
   color: $theme-light-primary;
+  
+  + .subtitle {
+    margin-top: 1rem;
+  }
 }
 
 ul.dash-bullet {
@@ -125,8 +173,7 @@ ul.types-list {
 section hr {
   border: 0;
   height: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid $border-superlight;
 }
 
 .clickable-pointer {
@@ -140,6 +187,7 @@ section hr {
   cursor: pointer;
   background-repeat: no-repeat;
   vertical-align: middle;
+  background-position: center;
 
   &.activity {
     background-image: url('../images/zazuko/ic-activity.svg');
@@ -152,14 +200,45 @@ section hr {
   }
 }
 
-.button.is-dark-info {
-  background: $theme-dark-primary;
-  border: none;
-  color: white;
+.button {
+  font-weight: $weight-normal;
+  
+  &:hover,
+  &.is-hovered {
+    box-shadow: 0 0 0 2px $red inset;
+  }
+
+  &.is-dark-info {
+    background: $theme-dark-primary;
+    border: none;
+    color: white;
+  }
+}
+
+.toasted .primary,
+.toasted.toasted-primary {
+  box-shadow: none;
+  border-radius: 0;
+  
+  &.success {
+    background: hsl(122,39%,49%);
+  }
+}
+
+.toasted {
+  .action {
+    font-size: .9em;
+    margin: 4px -7px 2px 7px;
+  }
+
+  &.notification a:not(.button):not(.dropdown-item) {
+    text-decoration: none;
+  }
 }
 
 .pagination {
-  margin-bottom: 1em;
+  margin: 0 0 1.5em .75em;
+  background: white;
 }
 
 .aligned-with-button {
@@ -167,8 +246,17 @@ section hr {
   display: inline-block;
 }
 
+.title {
+  @include touch {
+    text-align: center;
+  }
+}
+
 .title-url {
-  @extend %highlighted-link;
+  font-family: monospace;
+  font-size: .9em;
+  margin: 0 0.4em;
+  vertical-align: bottom;
 }
 
 .material-design-icon {
@@ -179,4 +267,16 @@ section hr {
   .control & {
     font-size: 1.4em;
   }
+}
+
+.select select {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+code {
+  border-radius: $code-radius;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

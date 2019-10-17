@@ -3,9 +3,9 @@
     <div class="container layout-proposal">
       <section v-show="storeReady">
         <div class="columns">
-          <div class="column is-3" />
+          <div class="column is-3 layout-proposal-sidebar-gap" />
 
-          <div class="column">
+          <div class="column layout-proposal-header">
             <h1 class="title is-1">
               {{ edit ? 'Request Changes on Class' : 'Request New Class' }}<span
                 v-show="clss.label">:

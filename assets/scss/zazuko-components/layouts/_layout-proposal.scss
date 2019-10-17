@@ -1,6 +1,20 @@
 .layout-proposal {
   padding-top: 3em;
   padding-bottom: 4em;
+  
+  @include touch {
+    padding: 1em 0 3em;
+    
+    > section > .columns {
+      margin-left: 0;
+      margin-right: 0;
+      
+      > .column {
+        padding-left:0;
+        padding-right:0;
+      }
+    }
+  }
 
   .input[readonly], fieldset[readonly] .input, .textarea[readonly], fieldset[readonly] .textarea {
     background-color: whitesmoke;
@@ -39,25 +53,38 @@
     background: white;
   }
 
+  &-sidebar-gap { // gap next to title
+    @include touch {
+      display: none;
+    }
+  }
+
+  &-header {
+    p {
+      margin-bottom: 1em;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    @include touch {
+      padding: 1.5rem 1rem !important;
+    }
+  }
+
   .title {
     &.is-1 {
       @extend .is-size-1;
-
-      font-weight: 300;
-      color: $theme-light-primary;
     }
 
     &.is-2 {
       @extend .is-size-4;
-
-      font-weight: 300;
-      color: $theme-light-primary;
     }
   }
 
   .title.is-3, .label {
     @extend .is-size-7;
-
     font-weight: bold;
     color: black;
   }
@@ -65,6 +92,11 @@
   .subtitle {
     &.is-1 {
       @extend .is-size-6;
+
+      @include touch {
+        font-size: .8rem !important;
+        text-align: center;
+      }
     }
   }
 
@@ -104,6 +136,10 @@
   }
 
   .proposal-submit {
+    @include touch {
+      margin: 0;
+    }
+
     .button {
       height: 3em;
       width: 100%;
@@ -122,6 +158,10 @@
 
   .proposal-author-img {
     width: 40px; height: 40px;
+    
+    @include touch {
+      width: 60px; height: 60px;
+    }
   }
 
   .proposal-author-info {

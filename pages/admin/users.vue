@@ -3,7 +3,7 @@
     <admin-menu />
 
     <client-only>
-      <div class="responsive-table">
+      <div class="responsive-table layout-admin-main">
         <admin-user-list
           :users="users"
           @updated="refetch()" />

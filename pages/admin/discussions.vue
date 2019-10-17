@@ -8,7 +8,7 @@
         :results-count="discussionsCount"
         :results-per-page="pageSize"
         route="admin-discussions" />
-      <div class="responsive-table">
+      <div class="responsive-table layout-admin-main">
         <admin-discussion-list
           :discussions="rows"
           @updated="refetch()" />

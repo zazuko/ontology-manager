@@ -1,10 +1,51 @@
 .top-nav {
   border-bottom: 1px solid $border-light;
   
+  .navbar-burger {
+    height: auto;
+    
+    &:hover {
+      background: hsla(0,0%,100%,.2);
+    }
+    
+    span {
+      left: calc(50% - 12px);
+      width: 24px;
+      height: 2px;
+
+      &:nth-child(1) {
+        top: calc(50% - 8px);
+      }
+      &:nth-child(3) {
+        top: calc(50% + 6px);
+      }
+    }
+
+    &.is-active {
+      span {
+        &:nth-child(1) {
+          transform: translateY(7px) rotate(45deg);
+        }
+        &:nth-child(3) {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+      }
+    }
+  }
+  
   .navbar-brand {
     position: relative;
     margin-right: 40px;
     padding: 0 30px;
+    
+    @include touch {
+      margin-right: 0;
+      padding: 0;
+      
+      a {
+        margin-left: 1.5rem;
+      }
+    }
     
     &:before {
       position: absolute;
@@ -15,6 +56,11 @@
       bottom: -1px;
       background: $bg-light;
       z-index: -1;
+      
+      @include touch {
+        left: 1.5rem;
+        width: calc(126px + 1.5rem);
+      }
     }
     
     img {
@@ -22,8 +68,12 @@
       width: 140px;
       max-height: none;
       object-fit: contain;
-      top: -2px;
       position: relative;
+      
+      @include touch {
+        width: 126px;
+        height: 72;
+      }
     }
 
     .product-name {
@@ -40,6 +90,14 @@
       height: 100px;
       text-transform: uppercase;
       align-items: center;
+      font-weight: $weight-light;
+      z-index: 1;
+      
+      @include touch {
+        display: flex;
+        height: 46px;
+        padding: 0 .75rem;
+      }
         
       &:before {
         position: absolute;
@@ -47,20 +105,40 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 0;
         height: 101px;
         transform: scaleY(0);
         transform-origin: top;
         background: hsla(0,0%,100%,.2);
         transition: transform .15s ease-in-out;
         z-index: -1;
+        
+        @include touch {
+          height: 47px;
+        }
       }
 
       &:hover, &:focus,
-      &.nuxt-link-active {        
+      &.nuxt-link-exact-active {           
         &:before {
           transform: none;
         }
+      }
+
+      &.nuxt-link-exact-active {
+        font-weight: normal; // not on hover because it changes the width of the item
+      }
+    }
+  }
+
+  .navbar-end {
+    @include touch {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      
+      .navbar-item--search { // search
+        flex-basis: 100%;
       }
     }
   }
@@ -68,6 +146,15 @@
   .navbar-menu {
     flex-grow: 0;
     margin-left: auto;
+    
+    @include touch {
+      position: absolute;
+      margin: 5px;
+      right: 0;
+      width: 224px;
+      border: 1px solid $border-light;
+      box-shadow: $navbar-dropdown-shadow;
+    }
   }
 
   .field {
@@ -93,6 +180,7 @@
   
   a.navbar-item {
     border: 1px solid $border;
+    background: $navbar-dropdown-background-color;
     margin-top: -1px;
     padding: .19em 12px;
     max-width: 354px;
@@ -129,5 +217,23 @@
     min-width: 0;
     margin-left: .33em;
     color: gray;
+  }
+}
+
+#sign-in,
+#sign-out {
+  color: black;
+  border-color: black;
+  
+  &:hover,
+  &.is-hovered,
+  &:focus {
+    color: white;
+    background: black;
+    box-shadow: none;
+  }
+  
+  &:focus {
+    box-shadow: $button-focus-box-shadow-size rgba(black, 0.25);
   }
 }

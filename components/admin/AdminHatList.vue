@@ -128,7 +128,7 @@
             v-for="hat in hats"
             :key="hat.id">
             <td>
-              <p>{{ hat.title }}</p>
+              <p class="hat-title">{{ hat.title }}</p>
             </td>
             <td>
               {{ hat.description }}
@@ -148,7 +148,7 @@
                 </li>
               </ul>
             </td>
-            <td class="has-text-right is-hidden-mobile">
+            <td class="table-controls has-text-right is-hidden-mobile">
               <button
                 class="button is-small is-info"
                 @click.prevent="edit(hat)">

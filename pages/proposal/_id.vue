@@ -3,8 +3,8 @@
     <div class="container layout-proposal">
       <section v-if="obj">
         <div class="columns">
-          <div class="column is-3" />
-          <div class="column">
+          <div class="column is-3 layout-proposal-sidebar-gap" />
+          <div class="column layout-proposal-header">
             <h1
               v-if="obj.isEdit"
               class="title is-1">
