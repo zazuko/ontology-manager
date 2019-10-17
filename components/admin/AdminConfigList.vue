@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="layout-admin-main">
     <table class="table admin-table">
       <thead>
         <tr>
-          <th>Version<br>Date</th>
+          <th><span class="admin-table-version">Version</span><br>Date</th>
           <th>Author</th>
           <th>Reason</th>
           <th />
@@ -14,7 +14,7 @@
           v-for="config in configs"
           :key="config.id">
           <td>
-            {{ config.id }}
+            <span class="admin-table-version">{{ config.id }}</span>
             <br>
             {{ config.createdAt | formatTime }}
           </td>

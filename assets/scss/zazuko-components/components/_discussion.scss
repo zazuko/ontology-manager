@@ -1,20 +1,24 @@
 .discussion {
-  padding: 2em;
+  padding: $box-padding;
   margin: 1em 0 2em 0;
-
-  background: $theme-discussion-background;
-  border-radius: 10px;
-  box-shadow: -2px 2px 8px 0 $theme-light-grey;
+  background-color: $box-background-color;
+  box-shadow: $box-shadow;
+  color: $box-color;
 
   .discussion-card {
     .level-left {
       max-width: 90%;
+      
+      @include touch {
+        max-width: 100%;
+      }
     }
   }
 
   .discussion-avatar {
     width: 40px; height: 40px;
     border-radius: 100%;
+    vertical-align: middle;
   }
 
   .discussion-form {
@@ -23,6 +27,7 @@
     .media-left {
       min-width: 58px;
       text-align: right;
+      margin-top: .4em;
     }
 
     .media-right {
@@ -67,7 +72,7 @@
 
     .author-info {
       font-style: normal;
-      font-weight: bold;
+      font-weight: $weight-medium;
     }
   }
 
@@ -82,18 +87,24 @@
   .discussion-message {
     position: relative;
     padding: 1em;
-    border-radius: 10px;
     overflow: hidden;
-
     background: white;
 
     &.is-from-thread-author {
-      background: $theme-discussion-background-2;
+      background: hsl(0,0%,97%);
     }
 
     &.has-hat {
-      background: $theme-discussion-background-3;
-      color: white;
+      background: hsl(45,100%,78%);
+      color: $black;
+      
+      .creation-info {
+        color: hsl(45,60%,36%) !important;
+      }
+
+      pre {
+        background: hsla(0,0%,100%,.3);
+      }
 
       .discussion-actions img {
         filter: invert(1);
@@ -112,8 +123,7 @@
       margin-bottom: .5em;
 
       .author-info {
-        font-size: 1.1em;
-        font-weight: bold;
+        font-weight: $weight-medium;
       }
 
       .creation-info {
@@ -123,7 +133,7 @@
     }
 
     .discussion-message-content {
-      // content of the message
+      // in editor.scss
     }
 
     .discussion-message-hat {
@@ -134,8 +144,7 @@
 
       color: white;
       background: $theme-light-primary;
-      font-size: .9;
-      border-radius: 10px 0 0 0;
+      font-size: .9em;
     }
   }
 }

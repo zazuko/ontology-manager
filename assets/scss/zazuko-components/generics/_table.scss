@@ -1,10 +1,8 @@
 table.generic-table {
+  font-size: .9em;
+  
   thead th {
-    border-bottom: solid 1px $theme-light-primary;
-  }
-
-  tbody {
-    font-size: .9em;
+    border-bottom: solid 1px $border;
   }
 
   th {
@@ -16,27 +14,13 @@ table.generic-table {
     padding: 1em 1em 1em 0;
   }
 
-  td {
-    font-size: .9em;
-
-    a {
-      font-weight: bold;
-      text-decoration: underline;
-
-      &:hover, &:focus {
-        text-decoration: none;
-        color: $theme-light-primary;
-      }
-    }
-  }
-
   .table-action-button {
     display: inline-block;
     padding: 0;
     margin: 0 0 0 1em;
     background: transparent;
     border: none;
-    font-size: .9em;
+    font-size: inherit;
     font-weight: normal;
     text-decoration: underline;
     cursor: pointer;

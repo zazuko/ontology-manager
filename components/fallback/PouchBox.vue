@@ -24,12 +24,14 @@
         v-show="type === 'class'"
         class="class-box-icon class" />
       <p class="class-box-title">
-        <template v-if="type === 'container'">
-          {{ label }}
-        </template>
-        <template v-else>
-          {{ $getTerm(iri) || label }}
-        </template>
+        <span class="ellipsis">
+          <template v-if="type === 'container'">
+            {{ label }}
+          </template>
+          <template v-else>
+            {{ $getTerm(iri) || label }}
+          </template>
+        </span>
       </p>
       <div class="class-box-level">
         <div

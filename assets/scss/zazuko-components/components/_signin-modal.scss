@@ -5,6 +5,11 @@
     border-radius: 8px;
     overflow: hidden;
     min-height: 400px;
+    
+    @include touch {
+      overflow: auto;
+    }
+    
     @include tablet {
       width: 770px;
     }
@@ -16,6 +21,10 @@
 
   .modal-card-body {
     padding: 1em 3em 3em 3em;
+    
+    @include touch {
+      overflow: initial;
+    }
   }
 
   .signin-modal-close {
@@ -31,7 +40,12 @@
   .modal-card-title {
     @extend h2;
     font-size: 2em;
-    color: $theme-light-primary;
+    color: $black;
+    max-width: 100%;
+    
+    @include touch {
+      text-align: center;
+    }
   }
 
   .github-logo {
@@ -43,6 +57,6 @@
   .info {
     font-size: .75em;
     padding-bottom: 1em;
-    color: $theme-dark-grey;
+    color: $black;
   }
 }

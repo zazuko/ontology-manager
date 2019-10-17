@@ -4,6 +4,10 @@
 
 .layout-objects-list-head {
   padding: 6rem 0 1rem;
+  
+  @include touch {
+    padding: 1.5rem 1.5rem 1rem;
+  }
 
   .main-title {
     text-align: center;
@@ -11,11 +15,20 @@
 
   .subtitle {
     text-align: center;
-    margin: 0 9rem;
+    margin: 1rem 9rem 0;
+    
+    @include touch {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
   
   .columns {
     margin: 0 9rem;
+    
+    @include touch {
+      margin: .5rem -1rem 0;
+    }
   }
 }
 
@@ -30,6 +43,16 @@
 
 .layout-objects-list-tools {
   padding-top: 2.5rem;
+  
+  @include touch {
+    text-align: center;
+  }
+}
+
+.tile-placeholder {
+  @include touch {
+    text-align: center;
+  }
 }
 
 .object-tiles {

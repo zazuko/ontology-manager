@@ -41,7 +41,7 @@
           </nuxt-link>
         </div>
         <div class="navbar-end">
-          <div class="navbar-item">
+          <div class="navbar-item navbar-item--search">
             <search class="navbar-item has-dropdown is-active" />
           </div>
           <div class="navbar-item">
