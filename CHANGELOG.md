@@ -1,3 +1,23 @@
+<a name="0.9.72"></a>
+## [0.9.72](https://github.com/zazuko/ontology-editor/compare/v0.9.71...v0.9.72) (2019-10-21)
+
+
+### Bug Fixes
+
+* **api:** remove pm2 ([898a4cd](https://github.com/zazuko/ontology-editor/commit/898a4cd))
+* **design:** add zazuko ci layouts ([a16abfe](https://github.com/zazuko/ontology-editor/commit/a16abfe))
+* **design:** make zazuko CI design default ([1296e9a](https://github.com/zazuko/ontology-editor/commit/1296e9a))
+* **forms:** progression is sticky ([08460b8](https://github.com/zazuko/ontology-editor/commit/08460b8))
+
+
+### Features
+
+* **design:** first zazuko design steps ([465fede](https://github.com/zazuko/ontology-editor/commit/465fede))
+* **design:** zazuko ci design base ([083bbad](https://github.com/zazuko/ontology-editor/commit/083bbad))
+* **design:** zazuko design ([66f71ac](https://github.com/zazuko/ontology-editor/commit/66f71ac))
+
+
+
 <a name="0.9.71"></a>
 ## [0.9.71](https://github.com/zazuko/ontology-editor/compare/v0.9.70...v0.9.71) (2019-08-21)
 
