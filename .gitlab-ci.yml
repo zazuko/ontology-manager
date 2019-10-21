@@ -10,7 +10,7 @@ build:
   stage: build
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker build --build-arg SENTRY_DSN --build-arg CUSTOMER_NAME --pull -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker build --build-arg SENTRY_DSN --build-arg CUSTOMER_NAME --build-arg SENTRY_AUTH_TOKEN --build-arg SENTRY_URL --build-arg SENTRY_ORG --build-arg SENTRY_PROJECT --pull -t "$CI_REGISTRY_IMAGE:latest" .
     - docker push "$CI_REGISTRY_IMAGE:latest"
     - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
