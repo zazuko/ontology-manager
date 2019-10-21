@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="progression-box box"
-    v-sticky="true"
-    sticky-side="top">
+  <div class="progression-box box sticky">
     <p class="label">
       Proposal Progression
     </p>

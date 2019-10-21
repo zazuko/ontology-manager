@@ -30,9 +30,7 @@
         </div>
 
         <div class="columns">
-          <div
-            sticky-container
-            class="column is-3">
+          <div class="column is-3 sticky-container">
             <progression-box
               proposal-path="prop.prop"
               :edit="edit"
