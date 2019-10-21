@@ -2,6 +2,10 @@ FROM node:12-alpine as base
 
 ARG SENTRY_DSN
 ARG CUSTOMER_NAME
+ARG SENTRY_AUTH_TOKEN
+ARG SENTRY_URL
+ARG SENTRY_ORG
+ARG SENTRY_PROJECT
 
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -15,6 +19,8 @@ COPY . .
 
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
 RUN npm run build -- --modern=server
+# delete source maps for client
+RUN rm .nuxt/dist/client/*.map
 
 FROM node:12-alpine
 
