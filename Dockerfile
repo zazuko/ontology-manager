@@ -1,5 +1,8 @@
 FROM node:12-alpine as base
 
+ARG SENTRY_DSN
+ARG CUSTOMER_NAME
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 
