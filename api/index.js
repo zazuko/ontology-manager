@@ -5,7 +5,6 @@ const express = require('express')
 const gql = require('graphql-tag')
 const jwt = require('express-jwt')
 const knex = require('knex')
-const pm2 = require('pm2')
 
 const apolloClientFactory = require('./getApolloClient')
 const fetchConfig = require('../setup/fetch-config')
@@ -153,29 +152,8 @@ async function createApiMiddleware () {
     const replace = require('../setup/replace-vars')
     await replace()
 
-    const pids = await new Promise((resolve) => {
-      pm2.list((err, processDescriptionList) => {
-        if (err) {
-          debug(err)
-        }
-        const signaled = []
-        if (Array.isArray(processDescriptionList) && processDescriptionList.length) {
-          // Signal all pm2-run editor servers
-          processDescriptionList.forEach((pm2Process) => {
-            process.kill(pm2Process.pid, 'SIGHUP')
-            signaled.push(pm2Process.pid)
-          })
-        }
-        else {
-          // PM2 isn't running, only signal ourself
-          process.kill(process.pid, 'SIGHUP')
-          signaled.push(process.pid)
-        }
-        resolve(signaled)
-      })
-    })
-    debug(`Sent SIGHUP to ${pids}`)
-    res.json({ reloaded: pids })
+    // kill current server
+    process.kill(process.pid, 'SIGHUP')
   })
 
   app.use('/', async (req, res, next) => {
@@ -195,38 +173,7 @@ async function createApiMiddleware () {
 module.exports = { path: '/api', handler: app }
 
 async function reboot () {
-  const pids = await new Promise((resolve) => {
-    pm2.list((err, processDescriptionList) => {
-      if (err) {
-        debug(err)
-      }
-
-      if (Array.isArray(processDescriptionList) && processDescriptionList.length) {
-        // Shutdown and restart all pm2-run processes
-        pm2.connect((err) => {
-          if (err) {
-            debug(err)
-            processDescriptionList.forEach(({ pid }) => {
-              process.kill(pid, 'SIGKILL')
-            })
-            pm2.disconnect()
-          }
-          pm2.restart('all', (err) => {
-            if (err) {
-              debug(err)
-            }
-            pm2.disconnect()
-            resolve(processDescriptionList.map((pm2Process) => pm2Process.pid))
-          })
-        })
-      }
-      else {
-        // PM2 isn't running, only signal ourself
-        process.kill(process.pid, 'SIGKILL')
-      }
-      resolve([process.pid])
-    })
-  })
-  debug(`Sent SIGKILL to ${pids}`)
-  return pids
+  debug(`Sending SIGKILL to current process (${process.pid})`)
+  // kill current process
+  process.kill(process.pid, 'SIGKILL')
 }
