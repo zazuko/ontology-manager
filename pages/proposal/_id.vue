@@ -27,9 +27,7 @@
         </div>
 
         <div class="columns">
-          <div
-            sticky-container
-            class="column is-3 is-hidden-mobile">
+          <div class="column is-3 is-hidden-mobile sticky-container">
             <progression-box
               :proposal-path="path" />
           </div>

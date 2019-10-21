@@ -54,8 +54,7 @@ module.exports = async () => {
       '@/plugins/libs/utils',
       '@/plugins/filters',
       '@/plugins/directives',
-      '@/plugins/nuxt-init.client',
-      '@/plugins/sticky.client'
+      '@/plugins/nuxt-init.client'
     ],
 
     /*
