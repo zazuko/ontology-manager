@@ -1,3 +1,13 @@
+<a name="0.9.76"></a>
+## [0.9.76](https://github.com/zazuko/ontology-editor/compare/v0.9.75...v0.9.76) (2019-10-22)
+
+
+### Features
+
+* entrypoint choses from built designs ([c1e5283](https://github.com/zazuko/ontology-editor/commit/c1e5283))
+
+
+
 <a name="0.9.75"></a>
 ## [0.9.75](https://github.com/zazuko/ontology-editor/compare/v0.9.74...v0.9.75) (2019-10-22)
 
