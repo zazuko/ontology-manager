@@ -34,9 +34,7 @@ import rdf from 'rdf-ext'
 import Structure from '@/components/fallback/Structure'
 
 export default {
-  layout (context) {
-    return `background-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'background',
   components: {
     Structure
   },

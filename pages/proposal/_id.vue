@@ -162,9 +162,7 @@ const {
 } = createNamespacedHelpers('class')
 
 export default {
-  layout (context) {
-    return `default-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'default',
   async asyncData ({ route }) {
     return {
       id: parseInt(route.params.id, 10)

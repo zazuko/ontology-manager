@@ -48,7 +48,6 @@
     "knex": "^0.19.5",
     "marked": "^0.7.0",
     "morgan": "^1.9.1",
-    "nuxt-env": "^0.1.0",
     "nuxt-start": "^2.10.2",
     "ora": "^3.4.0",
     "patch-headers": "^1.1.0",

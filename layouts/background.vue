@@ -16,9 +16,6 @@ export default {
     PageFooter
   },
   methods: {},
-  beforeCreate () {
-    import('@/assets/scss/zazuko-style.scss')
-  },
   mounted () {
     if (window.Cypress) {
       window.appReady = true

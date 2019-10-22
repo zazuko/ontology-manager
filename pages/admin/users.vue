@@ -19,9 +19,7 @@ import AdminUserList from '@/components/admin/AdminUserList'
 import AdminMenu from '@/components/admin/AdminMenu'
 
 export default {
-  layout (context) {
-    return `default-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'default',
   middleware: 'authenticatedAdmin',
   components: {
     AdminUserList,

@@ -42,9 +42,7 @@ import LinkToIri from '@/components/fallback/LinkToIri'
 import { emptyDiscussion } from '@/libs/fixtures'
 
 export default {
-  layout (context) {
-    return `default-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'default',
   components: {
     DiscussionCard,
     DiscussionReply,
