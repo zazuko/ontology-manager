@@ -1,13 +1,13 @@
 .top-nav {
   border-bottom: 1px solid $border-light;
-  
+
   .navbar-burger {
     height: auto;
-    
+
     &:hover {
       background: hsla(0,0%,100%,.2);
     }
-    
+
     span {
       left: calc(50% - 12px);
       width: 24px;
@@ -32,21 +32,21 @@
       }
     }
   }
-  
+
   .navbar-brand {
     position: relative;
     margin-right: 40px;
     padding: 0 30px;
-    
+
     @include touch {
       margin-right: 0;
       padding: 0;
-      
+
       a {
         margin-left: 1.5rem;
       }
     }
-    
+
     &:before {
       position: absolute;
       content: "";
@@ -56,20 +56,20 @@
       bottom: -1px;
       background: $bg-light;
       z-index: -1;
-      
+
       @include touch {
         left: 1.5rem;
         width: calc(126px + 1.5rem);
       }
     }
-    
+
     img {
       height: 80px;
       width: 140px;
       max-height: none;
       object-fit: contain;
       position: relative;
-      
+
       @include touch {
         width: 126px;
         height: 72;
@@ -92,13 +92,13 @@
       align-items: center;
       font-weight: $weight-light;
       z-index: 1;
-      
+
       @include touch {
         display: flex;
         height: 46px;
         padding: 0 .75rem;
       }
-        
+
       &:before {
         position: absolute;
         content: "";
@@ -111,14 +111,14 @@
         background: hsla(0,0%,100%,.2);
         transition: transform .15s ease-in-out;
         z-index: -1;
-        
+
         @include touch {
           height: 47px;
         }
       }
 
       &:hover, &:focus,
-      &.nuxt-link-exact-active {           
+      &.nuxt-link-exact-active {
         &:before {
           transform: none;
         }
@@ -136,7 +136,7 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      
+
       .navbar-item--search { // search
         flex-basis: 100%;
       }
@@ -146,7 +146,7 @@
   .navbar-menu {
     flex-grow: 0;
     margin-left: auto;
-    
+
     @include touch {
       position: absolute;
       margin: 5px;
@@ -177,14 +177,14 @@
   padding: 0;
   font-size: 1em;
   margin-top: -1px;
-  
+
   a.navbar-item {
     border: 1px solid $border;
     background: $navbar-dropdown-background-color;
     margin-top: -1px;
     padding: .19em 12px;
     max-width: 354px;
-    
+
     &:hover {
       border-left: 5px solid $red;
       padding-left: 8px; // 12px + 1px (border) - 5px
@@ -195,7 +195,7 @@
       color: white;
       background-color: $red;
       z-index: 2;
-      
+
       .result-detail {
         color: lighten($red, 30%);
       }
@@ -206,7 +206,7 @@
     max-width: 100%;
     flex-shrink: 0;
   }
-  
+
   .result-title,
   .result-detail {
     overflow: hidden;
@@ -224,7 +224,7 @@
 #sign-out {
   color: black;
   border-color: black;
-  
+
   &:hover,
   &.is-hovered,
   &:focus {
@@ -232,7 +232,7 @@
     background: black;
     box-shadow: none;
   }
-  
+
   &:focus {
     box-shadow: $button-focus-box-shadow-size rgba(black, 0.25);
   }

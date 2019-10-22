@@ -8,7 +8,7 @@
   .discussion-card {
     .level-left {
       max-width: 90%;
-      
+
       @include touch {
         max-width: 100%;
       }
@@ -97,7 +97,7 @@
     &.has-hat {
       background: hsl(45,100%,78%);
       color: $black;
-      
+
       .creation-info {
         color: hsl(45,60%,36%) !important;
       }

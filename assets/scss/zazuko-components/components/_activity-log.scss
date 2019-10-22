@@ -4,7 +4,7 @@
     width: 500px;
     margin-top: 3.5em;
     border: solid 1px $border-light;
-    
+
     @include touch {
       margin-top: 1em;
     }
@@ -41,7 +41,7 @@
         padding-left: .75rem;
         padding-right: .75rem;
         line-height: 1.25;
-        
+
         + .media {
           border-top-color: $border-light;
         }

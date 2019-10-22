@@ -10,7 +10,7 @@
     text-decoration: none;
     color: inherit;
     font-weight: inherit;
-    
+
     &:hover .class-box-title,
     .class-box-title:hover {
       color: white;
@@ -47,11 +47,11 @@
     font-weight: $weight-bold;
     @extend .highlighted-link;
     max-width: 100%;
-    
+
     @include touch {
       display: table;
     }
-    
+
     .ellipsis {
       display: block;
     }

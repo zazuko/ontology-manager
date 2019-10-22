@@ -5,11 +5,11 @@
     border-radius: 8px;
     overflow: hidden;
     min-height: 400px;
-    
+
     @include touch {
       overflow: auto;
     }
-    
+
     @include tablet {
       width: 770px;
     }
@@ -21,7 +21,7 @@
 
   .modal-card-body {
     padding: 1em 3em 3em 3em;
-    
+
     @include touch {
       overflow: initial;
     }
@@ -42,7 +42,7 @@
     font-size: 2em;
     color: $black;
     max-width: 100%;
-    
+
     @include touch {
       text-align: center;
     }

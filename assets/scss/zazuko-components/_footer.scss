@@ -5,7 +5,7 @@
   color: $theme-light-primary;
   padding: 1em 0;
   line-height: 1.4;
-    
+
   @include touch {
     padding: 1.5rem;
   }
@@ -14,11 +14,11 @@
     @extend .highlighted-link;
     color: inherit;
     font-family: inherit;
-    
+
     @include touch {
       box-shadow: 0 1px currentColor;
     }
-    
+
     &:after {
       background-color: $theme-light-primary;
       height: 1px;
@@ -58,7 +58,7 @@
 
     a {
       margin-left: 1rem;
-      
+
       @include touch {
         margin: 0 1rem 0 0;
       }

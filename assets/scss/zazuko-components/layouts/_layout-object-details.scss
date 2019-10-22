@@ -44,7 +44,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      
+
       .icon {
         vertical-align: top;
         margin-top: 3px;
@@ -65,7 +65,7 @@
 
 .layout-object-details-content {
   background: white;
-  
+
   &:after {
     content: '';
     position: absolute;
@@ -76,10 +76,10 @@
     width: 50%;
     z-index: -1;
   }
-  
+
   .section {
     padding: 1.5rem;
-    
+
     @include touch {
       padding: 0;
     }

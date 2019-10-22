@@ -12,14 +12,14 @@
     box-shadow:
       0 -1px hsl(32,55%,54%) inset,
       0 1px hsl(32,55%,54%) inset;
-    
+
     &:first-child {
       box-shadow:
         0 -1px hsl(32,55%,54%) inset,
         0 1px hsl(32,55%,54%) inset,
         1px 0 hsl(32,55%,54%) inset;
     }
-    
+
     &:last-child {
       box-shadow:
         0 -1px hsl(32,55%,54%) inset,
@@ -32,10 +32,10 @@
       display: flex;
     }
 
-    .dropdown {      
+    .dropdown {
       .dropdown-trigger {
         cursor: pointer;
-        
+
         button, button:hover {
           border: none;
           color: inherit;
@@ -66,23 +66,23 @@
     padding: 1em;
     border: none;
     box-shadow: 0 -1px hsl(0,0%,80%) inset;
-    
+
     &:first-child {
       box-shadow:
         0 -1px hsl(0,0%,80%) inset,
         1px 0 hsl(0,0%,80%) inset;
     }
-    
+
     &:last-child {
       box-shadow:
         0 -1px hsl(0,0%,80%) inset,
         -1px 0 hsl(0,0%,80%) inset;
     }
-    
+
     @include touch {
       padding: .7em;
     }
-    
+
     .avatar {
       height: 40px;
       width: 40px;
@@ -105,7 +105,7 @@
   .media {
     @include touch {
       flex-wrap: wrap;
-      
+
       .media-content {
         flex-basis: 100%;
       }
@@ -120,7 +120,7 @@
 .sort-icon {
   margin-left: .2em;
   height: 1em;
-  
+
   .material-design-icon {
     font-size: 1.5em;
     vertical-align: middle;
