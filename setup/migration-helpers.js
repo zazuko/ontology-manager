@@ -18,7 +18,7 @@ function getConfigFromEnvVars () {
       customerName: process.env.CUSTOMER_NAME || 'Zazuko GmbH',
       description: _.get(editorConfig, 'head.description', 'Linked Data Ontology Editor for Domain Specialists')
     },
-    logoUrl: '/dcf-logo.svg',
+    logoUrl: '/zazuko-logo.svg',
     text: {
       groupName: 'Container',
       home: [

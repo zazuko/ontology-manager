@@ -18,9 +18,7 @@ ENV NODE_ENV=production
 COPY . .
 
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
-RUN npm run build -- --modern=server
-# delete source maps for client
-RUN rm .nuxt/dist/client/*.map
+RUN ./build.sh
 
 FROM node:12-alpine
 
@@ -31,7 +29,7 @@ RUN npm ci --production
 
 COPY . .
 
-COPY --from=base /app/.nuxt/ ./nuxt_original
+COPY --from=base /app/.nuxt_* .
 
 ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
