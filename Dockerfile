@@ -7,6 +7,8 @@ ARG SENTRY_URL
 ARG SENTRY_ORG
 ARG SENTRY_PROJECT
 
+RUN apk add --no-cache bash
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 
@@ -18,7 +20,7 @@ ENV NODE_ENV=production
 COPY . .
 
 ENV BUILDING_WITHOUT_PG_ACCESS=yes
-RUN ./build.sh
+RUN bash /app/build.sh
 
 FROM node:12-alpine
 
@@ -29,7 +31,7 @@ RUN npm ci --production
 
 COPY . .
 
-COPY --from=base /app/.nuxt_* .
+COPY --from=base /app/artifacts/ ./artifacts
 
 ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
