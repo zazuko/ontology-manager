@@ -1,3 +1,13 @@
+<a name="0.9.78"></a>
+## [0.9.78](https://github.com/zazuko/ontology-editor/compare/v0.9.77...v0.9.78) (2019-10-22)
+
+
+### Bug Fixes
+
+* **design:** zazuko: home tiles have max width in their container ([71b9ead](https://github.com/zazuko/ontology-editor/commit/71b9ead))
+
+
+
 <a name="0.9.77"></a>
 ## [0.9.77](https://github.com/zazuko/ontology-editor/compare/v0.9.76...v0.9.77) (2019-10-22)
 
