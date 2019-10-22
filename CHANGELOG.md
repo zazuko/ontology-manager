@@ -1,3 +1,13 @@
+<a name="0.9.77"></a>
+## [0.9.77](https://github.com/zazuko/ontology-editor/compare/v0.9.76...v0.9.77) (2019-10-22)
+
+
+### Bug Fixes
+
+* **docker:** fix build script path ([d0f3265](https://github.com/zazuko/ontology-editor/commit/d0f3265))
+
+
+
 <a name="0.9.76"></a>
 ## [0.9.76](https://github.com/zazuko/ontology-editor/compare/v0.9.75...v0.9.76) (2019-10-22)
 
