@@ -33,7 +33,7 @@ module.exports = async () => {
     ** Global CSS
     */
     css: [
-      // { lang: 'scss', src: '@/assets/scss/app.scss' }
+      { lang: 'scss', src: '@/assets/scss/zazuko-style.scss' }
     ],
 
     /*
@@ -68,12 +68,7 @@ module.exports = async () => {
       '@nuxtjs/apollo',
       '@nuxtjs/toast',
       '@nuxtjs/sentry',
-      '@nuxtjs/feed',
-      ['nuxt-env', {
-        keys: [
-          { key: 'EDITOR_STYLE', default: 'zazuko' }
-        ]
-      }]
+      '@nuxtjs/feed'
     ],
 
     /*

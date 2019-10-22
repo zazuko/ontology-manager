@@ -30,9 +30,7 @@ import AdminConfigList from '@/components/admin/AdminConfigList'
 import AdminConfigForm from '@/components/admin/AdminConfigForm'
 
 export default {
-  layout (context) {
-    return `default-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'default',
   middleware: 'authenticatedSuperadmin',
   components: {
     AdminMenu,

@@ -22,9 +22,7 @@ const {
 } = createNamespacedHelpers('drafts')
 
 export default {
-  layout (context) {
-    return `default-${context.app.$env.EDITOR_STYLE}`
-  },
+  layout: 'default',
   components: {
     DraftList
   },
