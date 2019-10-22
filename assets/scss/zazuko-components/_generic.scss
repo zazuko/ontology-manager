@@ -39,7 +39,7 @@ a {
 .icon {
   vertical-align: middle;
   margin-top: -.15em;
-  
+
   &.is-small {
     margin-top: 0;
   }
@@ -70,13 +70,13 @@ a {
   transition: color .1s ease;
   z-index: 0;
   color: black;
-  
+
   @include touch {
     display: inline;
     white-space: initial;
     box-shadow: 0 2px $red;
   }
-  
+
   &:after {
     content: "";
     position: absolute;
@@ -88,7 +88,7 @@ a {
     background-color: $red;
     z-index: -1;
     transition: .15s ease;
-  
+
     @include touch {
       display: none;
     }
@@ -121,7 +121,7 @@ $mobile-column-gap: 1em;
     margin-left: (-$mobile-column-gap);
     margin-right: (-$mobile-column-gap);
     margin-top: (-$mobile-column-gap);
-    
+
     &:last-child {
       margin-bottom: (-$mobile-column-gap);
     }
@@ -139,7 +139,7 @@ $mobile-column-gap: 1em;
   min-height: 100vh;
   position: relative;
   background: $bg-light;
-  
+
   > .container {
     flex-grow: 0;
   }
@@ -149,7 +149,7 @@ $mobile-column-gap: 1em;
   font-size: 3.75em;
   line-height: 1;
   color: $theme-light-primary;
-  
+
   + .subtitle {
     margin-top: 1rem;
   }
@@ -202,7 +202,7 @@ section hr {
 
 .button {
   font-weight: $weight-normal;
-  
+
   &:hover,
   &.is-hovered {
     box-shadow: 0 0 0 2px $red inset;
@@ -219,7 +219,7 @@ section hr {
 .toasted.toasted-primary {
   box-shadow: none;
   border-radius: 0;
-  
+
   &.success {
     background: hsl(122,39%,49%);
   }

@@ -7,7 +7,7 @@
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  
+
   .title {
     @include touch {
       text-align: initial;
@@ -16,10 +16,10 @@
 
   .layout-admin-header {
     padding: 3em 0 1em;
-    
+
     @include touch {
       padding: 1rem 1.5rem;
-      
+
       + .pagination {
         margin-top: -1rem;
       }
@@ -55,7 +55,7 @@
     }
   }
 
-  .layout-admin-panel {    
+  .layout-admin-panel {
     p {
       padding-bottom: 1em;
     }
@@ -63,7 +63,7 @@
 
   &-main {
     flex-basis: 100%;
-    
+
     > p {
       @include touch {
         margin-left: 1rem;
