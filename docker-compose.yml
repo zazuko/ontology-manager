@@ -14,7 +14,7 @@ services:
     env_file: .env
     environment:
       POSTGRESQL_HOST: db
-    command: "./entrypoint.sh migrate"
+    command: "./entrypoint.sh"
     links:
       - db:db
     ports:

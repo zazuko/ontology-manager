@@ -1,9 +1,9 @@
 #!/bin/sh
-DEFAULT_DESIGN=zazuko
-EDITOR_STYLE="${EDITOR_STYLE:-$DEFAULT_DESIGN}"
+DEFAULT_THEME=zazuko
+EDITOR_THEME="${EDITOR_THEME:-$DEFAULT_THEME}"
 
 node setup/migrate
-echo "STARTING EDITOR WITH DESIGN $EDITOR_STYLE"
-cp -r artifacts/nuxt_$EDITOR_STYLE nuxt_original
+echo "STARTING EDITOR WITH THEME $EDITOR_THEME"
+cp -r artifacts/nuxt_$EDITOR_THEME nuxt_original
 node setup/replace-vars
 exec npm start

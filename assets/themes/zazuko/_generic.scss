@@ -190,13 +190,13 @@ section hr {
   background-position: center;
 
   &.activity {
-    background-image: url('../images/zazuko/ic-activity.svg');
+    background-image: url('../../images/zazuko/ic-activity.svg');
   }
   &.edit {
-    background-image: url('../images/ic-edit.svg');
+    background-image: url('../../images/ic-edit.svg');
   }
   &.trash {
-    background-image: url('../images/ic-trashcan.svg');
+    background-image: url('../../images/ic-trashcan.svg');
   }
 }
 
