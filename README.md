@@ -53,9 +53,9 @@ For this reason, if during development you need to change one of these values: `
 
 1. `npm install`
 1. Run the project:
-  * Database:
-      * `make up` (If the database is booting up for the first time, you'll see migrations being retried until DB is up and they get applied.)
-  * Dev server + watch: `npm run dev`
+    * Database:
+        * `make up` (If the database is booting up for the first time, you'll see migrations being retried until DB is up and they get applied.)
+    * Dev server + watch: `npm run dev`
 
 Whenever you feel like it:
 
