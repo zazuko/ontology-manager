@@ -28,21 +28,6 @@
 
 
 
-<a name="0.9.75"></a>
-## [0.9.75](https://github.com/zazuko/ontology-editor/compare/v0.9.74...v0.9.75) (2019-10-22)
-
-
-
-<a name="0.9.74"></a>
-## [0.9.74](https://github.com/zazuko/ontology-editor/compare/v0.9.73...v0.9.74) (2019-10-21)
-
-
-
-<a name="0.9.73"></a>
-## [0.9.73](https://github.com/zazuko/ontology-editor/compare/v0.9.72...v0.9.73) (2019-10-21)
-
-
-
 <a name="0.9.72"></a>
 ## [0.9.72](https://github.com/zazuko/ontology-editor/compare/v0.9.71...v0.9.72) (2019-10-21)
 
@@ -60,11 +45,6 @@
 * **design:** first zazuko design steps ([465fede](https://github.com/zazuko/ontology-editor/commit/465fede))
 * **design:** zazuko ci design base ([083bbad](https://github.com/zazuko/ontology-editor/commit/083bbad))
 * **design:** zazuko design ([66f71ac](https://github.com/zazuko/ontology-editor/commit/66f71ac))
-
-
-
-<a name="0.9.71"></a>
-## [0.9.71](https://github.com/zazuko/ontology-editor/compare/v0.9.70...v0.9.71) (2019-08-21)
 
 
 
@@ -96,11 +76,6 @@
 ### Bug Fixes
 
 * **markdown:** marked is a dep, not devdep ([e175e4e](https://github.com/zazuko/ontology-editor/commit/e175e4e))
-
-
-
-<a name="0.9.67"></a>
-## [0.9.67](https://github.com/zazuko/ontology-editor/compare/v0.9.66...v0.9.67) (2019-07-28)
 
 
 
@@ -255,11 +230,6 @@
 
 
 
-<a name="0.9.55"></a>
-## [0.9.55](https://github.com/zazuko/ontology-editor/compare/v0.9.54...v0.9.55) (2019-06-19)
-
-
-
 <a name="0.9.54"></a>
 ## [0.9.54](https://github.com/zazuko/ontology-editor/compare/v0.9.53...v0.9.54) (2019-06-17)
 
@@ -267,16 +237,6 @@
 ### Bug Fixes
 
 * better trifid fetch dataset logging ([807a942](https://github.com/zazuko/ontology-editor/commit/807a942))
-
-
-
-<a name="0.9.53"></a>
-## [0.9.53](https://github.com/zazuko/ontology-editor/compare/v0.9.52...v0.9.53) (2019-06-12)
-
-
-
-<a name="0.9.52"></a>
-## [0.9.52](https://github.com/zazuko/ontology-editor/compare/v0.9.51...v0.9.52) (2019-06-06)
 
 
 
@@ -322,11 +282,6 @@ Designs can be configured at runtime using the `EDITOR_STYLE` env var.
 Healthcheck endpoint: `/api/health` returns http200 with `ok` as plain/text.
 
 * add healthcheck endpoint ([d04bc3c](https://github.com/zazuko/ontology-editor/commit/d04bc3c))
-
-
-
-<a name="0.9.47"></a>
-## [0.9.47](https://github.com/zazuko/ontology-editor/compare/v0.9.46...v0.9.47) (2019-06-05)
 
 
 
@@ -395,11 +350,6 @@ Admin pagination is much nicer.
 
 
 
-<a name="0.9.34"></a>
-## [0.9.34](https://github.com/zazuko/ontology-editor/compare/v0.9.33...v0.9.34) (2019-05-15)
-
-
-
 <a name="0.9.33"></a>
 ## [0.9.33](https://github.com/zazuko/ontology-editor/compare/v0.9.32...v0.9.33) (2019-05-14)
 
@@ -410,11 +360,6 @@ Admin pagination is much nicer.
 * **structure:** recursively count proposals count down structure tree ([42a8958](https://github.com/zazuko/ontology-editor/commit/42a8958))  
 Proposal count displayed on the structure is counting recursively to prevent a parent with 0 proposal
 to show 0 when its children have proposals.
-
-<a name="0.9.32"></a>
-## [0.9.32](https://github.com/zazuko/ontology-editor/compare/v0.9.31...v0.9.32) (2019-05-13)
-
-
 
 <a name="0.9.31"></a>
 ## [0.9.31](https://github.com/zazuko/ontology-editor/compare/v0.9.30...v0.9.31) (2019-05-13)
@@ -635,11 +580,6 @@ to show 0 when its children have proposals.
 
 
 
-<a name="0.9.11"></a>
-## [0.9.11](https://github.com/zazuko/ontology-editor/compare/v0.9.10...v0.9.11) (2019-04-18)
-
-
-
 <a name="0.9.10"></a>
 ## [0.9.10](https://github.com/zazuko/ontology-editor/compare/v0.9.9...v0.9.10) (2019-04-15)
 
@@ -674,11 +614,6 @@ to show 0 when its children have proposals.
 
 
 
-<a name="0.9.1"></a>
-## [0.9.1](https://github.com/zazuko/ontology-editor/compare/v0.9.0...v0.9.1) (2019-04-08)
-
-
-
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/zazuko/ontology-editor/compare/v0.8.15...v0.9.0) (2019-04-01)
 
@@ -686,11 +621,6 @@ to show 0 when its children have proposals.
 ### Features
 
 * **rdf:** display class-like and property-like resources ([4f09877](https://github.com/zazuko/ontology-editor/commit/4f09877))
-
-
-
-<a name="0.8.15"></a>
-## [0.8.15](https://github.com/zazuko/ontology-editor/compare/v0.8.14...v0.8.15) (2019-03-27)
 
 
 
@@ -951,11 +881,6 @@ to show 0 when its children have proposals.
 
 
 
-<a name="0.6.46"></a>
-## [0.6.46](https://github.com/zazuko/ontology-editor/compare/v0.6.45...v0.6.46) (2019-02-04)
-
-
-
 <a name="0.6.45"></a>
 ## [0.6.45](https://github.com/zazuko/ontology-editor/compare/v0.6.44...v0.6.45) (2019-02-04)
 
@@ -996,11 +921,6 @@ to show 0 when its children have proposals.
 
 
 
-<a name="0.6.41"></a>
-## [0.6.41](https://github.com/zazuko/ontology-editor/compare/v0.6.40...v0.6.41) (2019-01-28)
-
-
-
 <a name="0.6.40"></a>
 ## [0.6.40](https://github.com/zazuko/ontology-editor/compare/v0.6.39...v0.6.40) (2019-01-25)
 
@@ -1018,11 +938,6 @@ to show 0 when its children have proposals.
 ### Bug Fixes
 
 * **proposal:** Replace cancel with discard ([5989fac](https://github.com/zazuko/ontology-editor/commit/5989fac))
-
-
-
-<a name="0.6.38"></a>
-## [0.6.38](https://github.com/zazuko/ontology-editor/compare/v0.6.37...v0.6.38) (2019-01-23)
 
 
 

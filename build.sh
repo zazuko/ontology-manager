@@ -1,23 +1,23 @@
 #!/bin/bash
 
-DESIGNS=$(ls ./assets/scss/*.scss | sed s%./assets/scss/%% | sed s%-style.scss%%)
+THEMES=$(ls ./assets/themes/ | sed s%./assets/themes/%%)
 mkdir ./artifacts
 
-for DESIGN in $DESIGNS; do
-  echo "BUILDING $DESIGN"
+for THEME in $THEMES; do
+  echo "BUILDING $THEME"
   # modify nuxt.config.js
-  sed -i.bak s%zazuko-style%$DESIGN-style% nuxt.config.js
+  sed -i.bak s%themes/zazuko/theme%themes/$THEME/theme% nuxt.config.js
 
   # build the project
   npm run build -- --modern=server
   # delete source maps for client
   rm .nuxt/dist/client/*.map
 
-  cp -r .nuxt artifacts/nuxt_$DESIGN
+  cp -r .nuxt artifacts/nuxt_$THEME
 
   # restore nuxt.config.js
   cat nuxt.config.js.bak > nuxt.config.js
-  echo "BUILT $DESIGN"
+  echo "BUILT $THEME"
   ls ./artifacts
 done
 

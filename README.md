@@ -7,18 +7,19 @@
 1. Create an OAuth app: <https://github.com/settings/applications/new>
 1. Homepage / Callback : `http://localhost:3000/`
 
-(Keep these values, you can always reuse them locally. Stash the env file if need be.)
+(Keep these values, you can always reuse them locally.)
 
 ### 2. Get a Personal Access Token
 
 1. Generate a token (Scopes `repo, user:email`): <https://github.com/settings/tokens/new>
 
-(Keep this value, you can always reuse them locally. Stash the env file if need be.)
+(Keep this value, you can always reuse it locally.)
 
 ### 3. Fill in Env Vars
 
-1. Create a file [`./.env`](./.env)
-1. Fill it with contents from [`./.env.example`](./.env.example)
+1. Copy the example env file [`./.env.example`](./.env.example) to [`./.env`](./.env):
+    `cp .env.example .env`
+2. Set variables `OAUTH_` and `GITHUB_` to the values from step 1. resp. 2.
 
 ```sh
 # customer namespace
@@ -65,6 +66,8 @@ Whenever you feel like it:
 
 Run an editor container with the above env variables.
 
+Extra runtime environment variable: `EDITOR_THEME=zazuko`. Valid values for `EDITOR_THEME` are any folder name in [`./assets/themes/`](./assets/themes/) that have a `theme.scss` in it.
+
 ### Local Deployment
 
 Do this when you want to test the app locally under production settings, especially useful to test the initial setup / editor installation process.
@@ -105,11 +108,6 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 `GET /api/health` should return HTTP200 with content `ok` as plain text.
 
-## E2E tests
-
-1. `npm run e2e`
-1. `npm run e2e:open`
-
 ## Architecture
 
 ### 2 Services
@@ -126,6 +124,8 @@ That's it. The remaining configuration is done using the installer (navigate to 
 ## Concepts and Implementation Overview
 
 ### Trifid
+
+The [Trifid](https://github.com/zazuko/trifid-core) middleware is used to allow ontology content dereferencing, meaning that if `http://your.editor.com/schema/SomeObject` is an IRI in your ontology, you will be able to get Turtle via content negotiation: `curl http://your.editor.com/schema/SomeObject -H 'Accept: text/turtle'`.
 
 ### Proposals
 
@@ -181,19 +181,14 @@ drop role example_com_role_anonymous;
 drop role example_com_role_person;
 ```
 
-### How to create a new design?
+### How to create a new theme?
 
-Designs are loaded by [page layouts](./layouts/) using a design name defined by the environment variable `EDITOR_STYLE`.
-If `EDITOR_STYLE=foobar-baz`, the editor will use `./layouts/default-foobar-baz.vue` and  `./layouts/background-foobar-baz.vue`.
+To create a new theme, simply copy an existing theme and modify it:
 
-The simplest way of creating a new design is: 
-1. choose a name `somename` for your design,
-1. create a copy of the `default` and `background` layouts and name them `default-somename.vue` and `background-somename.vue`,
-1. these layouts should `import` your stylesheets in the `beforeCreate` step.
+1. `cp -r assets/themes/zazuko assets/themes/your-theme`
+1. The scss main file/entrypoint is: `assets/themes/your-theme/theme.scss`
+1. Configure nuxt to use your theme: `{ lang: 'scss', src: '@/assets/themes/your-theme/theme.scss' }` instead of `{ lang: 'scss', src: '@/assets/themes/zazuko/theme.scss' }`
 
-Our file naming convention can be seen in [./assets/scss/](./assets/scss/):
-* `./assets/scss/somename-style.scss` is the stylesheet entrypoint for
-* `./assets/scss/somename-components/`
 
 ## References
 

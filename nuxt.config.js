@@ -33,7 +33,7 @@ module.exports = async () => {
     ** Global CSS
     */
     css: [
-      { lang: 'scss', src: '@/assets/scss/zazuko-style.scss' }
+      { lang: 'scss', src: '@/assets/themes/zazuko/theme.scss' }
     ],
 
     /*
@@ -218,7 +218,7 @@ module.exports = async () => {
         ** Run ESLint on save
         */
         if (isDev && isClient) {
-          config.devtool = '#source-map'
+          config.devtool = 'source-map'
           config.module.rules.push({
             enforce: 'pre',
             test: /\.(js|vue)$/,
