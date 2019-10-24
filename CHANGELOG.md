@@ -1,3 +1,13 @@
+<a name="0.9.80"></a>
+## [0.9.80](https://github.com/zazuko/ontology-editor/compare/v0.9.79...v0.9.80) (2019-10-24)
+
+
+### Bug Fixes
+
+* **setup:** [#71](https://github.com/zazuko/ontology-editor/issues/71) - install redirects to correct protocol ([c217ea0](https://github.com/zazuko/ontology-editor/commit/c217ea0))
+
+
+
 <a name="0.9.79"></a>
 ## [0.9.79](https://github.com/zazuko/ontology-editor/compare/v0.9.78...v0.9.79) (2019-10-24)
 
