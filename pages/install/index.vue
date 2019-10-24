@@ -72,9 +72,6 @@
               </div>
             </div>
           </div>
-          <!-- <admin-config-form
-          :config="this.$store.state.config"
-          @configSaved="reboot" /> -->
 
           <loader :show-if="rebooting">
             <p class="subtitle">
@@ -196,7 +193,7 @@ export default {
           if (await this.isUp()) {
             clearInterval(checker)
             setTimeout(() => {
-              location.reload()
+              window.location.href = `${this.protocol}://${this.host}/install`
             }, 10 * 1000)
           }
         }, 500)
