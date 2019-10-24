@@ -41,12 +41,6 @@
     "rewrite.root.url": "datasetBaseUrl"
   },
   "plugins": {
-    "requestLogger": {
-      "priority": 20,
-      "module": "trifid-core:./plugins/middleware",
-      "middleware": "morgan",
-      "params": ["combined"]
-    },
     "compression": {
       "priority": 30,
       "module": "trifid-core:./plugins/middleware",

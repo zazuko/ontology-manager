@@ -1,0 +1,11 @@
+{
+  "baseConfig": "cwd:trifid/trifid.config-base.json",
+  "plugins": {
+    "requestLogger": {
+      "priority": 20,
+      "module": "trifid-core:./plugins/middleware",
+      "middleware": "morgan",
+      "params": ["combined"]
+    }
+  }
+}

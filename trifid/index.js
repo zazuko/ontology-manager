@@ -42,8 +42,11 @@ export default {
 
 async function trifidMiddleware (config) {
   const trifid = new Trifid()
+  const baseConfig = process.env.NODE_ENV === 'production'
+    ? join(__dirname, 'trifid.config-prod.json')
+    : join(__dirname, 'trifid.config-base.json')
   const trifidConfig = {
-    baseConfig: `${join(__dirname, 'trifid.config-base.json')}`,
+    baseConfig,
     datasetBaseUrl: config.ontology.datasetBaseUrl,
     classBaseUrl: config.ontology.classBaseUrl,
     propertyBaseUrl: config.ontology.propertyBaseUrl,
