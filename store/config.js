@@ -36,7 +36,6 @@ export const actions = {
       config = result.data.currentPublicConfig
     }
     catch (error) {
-      console.error(error)
     }
     if (!config) {
       config = dummyConfig()
