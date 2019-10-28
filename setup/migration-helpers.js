@@ -14,9 +14,9 @@ function getConfigFromEnvVars () {
     host: process.env.EDITOR_HOST || 'localhost:3000',
     protocol: process.env.EDITOR_PROTOCOL || 'http',
     meta: {
-      title: _.get(editorConfig, 'head.title', 'Zazuko Ontology Editor Demo'),
+      title: _.get(editorConfig, 'head.title', 'Zazuko Ontology Manager Demo'),
       customerName: process.env.CUSTOMER_NAME || 'Zazuko GmbH',
-      description: _.get(editorConfig, 'head.description', 'Linked Data Ontology Editor for Domain Specialists')
+      description: _.get(editorConfig, 'head.description', 'Linked Data Ontology Manager for Domain Specialists')
     },
     logoUrl: '/zazuko-logo.svg',
     text: {
@@ -34,7 +34,7 @@ function getConfigFromEnvVars () {
       oauthClientId: process.env.OAUTH_CLIENT_ID || ''
     },
     committer: {
-      name: _.get(editorConfig, 'committer.name', 'Ontology Editor'),
+      name: _.get(editorConfig, 'committer.name', 'Ontology Manager'),
       email: _.get(editorConfig, 'committer.email', 'victor.felder@zazuko.com')
     }
   }

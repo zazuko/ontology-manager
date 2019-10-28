@@ -26,7 +26,7 @@ module.exports = async function (editorConfig) {
   router.__cacheClear = () => apicache.clear()
 
   router.get('/', (req, res, next) => {
-    res.send('Ontology Editor currently using E2E helpers')
+    res.send('Ontology Manager currently using E2E helpers')
   })
 
   router.post('/auth/login', (req, res, next) => {

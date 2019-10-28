@@ -20,7 +20,7 @@ module.exports = async function (editorConfig) {
   })
 
   router.get('/', (req, res, next) => {
-    res.send('Ontology Editor currently using GitHub')
+    res.send('Ontology Manager currently using GitHub')
   })
 
   router.get('/blob/:file', async (req, res, next) => {

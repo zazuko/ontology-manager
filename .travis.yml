@@ -1,7 +1,7 @@
 sudo: required
 
 env:
-  - DOCKER_COMPOSE_VERSION=1.22.0
+  - DOCKER_COMPOSE_VERSION=1.24.1
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -18,10 +18,10 @@ services:
 
 language: node_js
 node_js:
-  - "10"
+  - "12"
 
 before_script: npm install -g npm@^6
 
-install: npm ci --ignore-scripts
+install: npm ci
 
 script: npm run test

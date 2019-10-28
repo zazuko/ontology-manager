@@ -10,7 +10,7 @@
 
       <div class="columns">
         <div class="column">
-          <p>Zazuko Ontology Editor v{{ version }}</p>
+          <p>Zazuko Ontology Manager v{{ version }}</p>
         </div>
       </div>
     </section>

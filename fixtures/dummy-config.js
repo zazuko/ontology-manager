@@ -7,9 +7,9 @@ module.exports = () => ({
     protocol: 'http',
     style: 'zazuko',
     meta: {
-      title: 'ACME Ontology Editor',
+      title: 'ACME Ontology Manager',
       customerName: 'ACME',
-      description: 'Linked Data Ontology Editor for Domain Specialists'
+      description: 'Linked Data Ontology Manager for Domain Specialists'
     },
     logoUrl: '/zazuko-logo.png',
     text: {

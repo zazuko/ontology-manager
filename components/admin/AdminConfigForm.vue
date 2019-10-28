@@ -85,7 +85,7 @@
                 class="input"
                 v-model="editor.meta.title"
                 type="text"
-                placeholder="ZOE - Zazuko Ontology Editor"
+                placeholder="ZOM - Zazuko Ontology Manager"
                 required>
             </p>
           </div>
@@ -103,7 +103,7 @@
                 class="input"
                 v-model="editor.meta.description"
                 type="text"
-                placeholder="Linked Data Ontology Editor for Domain Specialists"
+                placeholder="Linked Data Ontology Manager for Domain Specialists"
                 required>
             </p>
           </div>
@@ -121,7 +121,7 @@
                 class="input"
                 v-model="editor.logoUrl"
                 type="text"
-                placeholder="Linked Data Ontology Editor for Domain Specialists"
+                placeholder="Linked Data Ontology Manager for Domain Specialists"
                 required>
             </p>
           </div>
