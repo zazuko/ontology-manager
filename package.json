@@ -46,7 +46,8 @@
     "graphile-build-pg": "^4.4.5",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
-    "knex": "^0.19.5",
+    "isomorphic-fetch": "^2.2.1",
+    "knex": "^0.20.0",
     "marked": "^0.7.0",
     "morgan": "^1.9.1",
     "nuxt-start": "^2.10.2",
@@ -68,8 +69,6 @@
     "vue-material-design-icons": "^3.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/runtime-corejs3": "^7.6.3",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@cypress/browserify-preprocessor": "^2.1.1",
@@ -78,13 +77,9 @@
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.16",
     "babel-eslint": "^10.0.3",
-    "babel-jest": "^24.9.0",
-    "babel-plugin-dynamic-import-node": "^2.3.0",
-    "babel-preset-env": "^1.7.0",
     "bulma": "^0.8.0",
     "compression": "^1.7.4",
     "conventional-changelog-cli": "^2.0.25",
-    "core-js": "^2.6.9",
     "cypress": "^3.5.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
@@ -97,18 +92,13 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^5.2.3",
-    "glob": "^7.1.5",
     "husky": "^3.0.9",
-    "isomorphic-fetch": "^2.2.1",
     "jest": "^24.9.0",
     "lint-staged": "^9.4.2",
-    "node-fetch": "^2.6.0",
     "node-sass": "^4.13.0",
     "nuxt": "^2.10.2",
     "pg": "^7.12.1",
-    "readable-stream": "^3.4.0",
-    "sass-loader": "^7.3.1",
-    "vue-apollo": "^3.0.0-rc.2"
+    "sass-loader": "^7.3.1"
   },
   "engines": {
     "node": ">=8.6"
