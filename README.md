@@ -96,8 +96,6 @@ CUSTOMER_NAME=zazuko
 POSTGRESQL_PASSWORD=make-this-secret
 # `containername` if postgres is linked with the name `containername`
 POSTGRESQL_HOST=db
-# a secret password used by the editor's postgres roles
-POSTGRESQL_ROLE_POSTGRAPHILE_PASSWORD=password-used-by-postgraphile-to-access-pg
 # a token used as hash/salt, keep it secret for JWT security
 POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
 ```
