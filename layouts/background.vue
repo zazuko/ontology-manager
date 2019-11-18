@@ -17,8 +17,10 @@ export default {
   },
   methods: {},
   mounted () {
-    if (window.Cypress) {
-      window.appReady = true
+    if (window.Cypress && process.browser) {
+      window.onNuxtReady(() => {
+        window.appReady = true
+      })
     }
   }
 }

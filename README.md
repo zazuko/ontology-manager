@@ -106,6 +106,13 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 `GET /api/health` should return HTTP200 with content `ok` as plain text.
 
+## Tests
+
+### 1 End-to-End
+
+1. Run `npm run e2e:server`
+2. When it's up, start `npm run e2e:open`
+
 ## Architecture
 
 ### 2 Services

@@ -5,6 +5,7 @@ const debug = require('debug')('editor:e2e')
 const tmpTestFolder = path.resolve('./test/repo/tmp')
 fs.mkdir(tmpTestFolder).catch(() => {})
 const log = path.resolve('./test/repo/tmp/log.txt')
+fs.open(log, 'w').then((fd) => fd.close())
 
 async function append (str, obj = {}) {
   const jsonLine = {

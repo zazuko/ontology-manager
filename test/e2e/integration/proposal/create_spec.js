@@ -36,12 +36,14 @@ describe('Proposal', () => {
     })
 
     it('can request a class modification', () => {
-      cy.get('#proposal-change-object').click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500).get('#proposal-change-object').click()
       cy.url().should('be', '/proposal/class?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction&edit=true')
     })
 
     it('can request a new property', () => {
-      cy.get('#proposal-add-property').click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500).get('#proposal-add-property').click()
       cy.url().should('be', '/proposal/property?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction')
     })
   })
