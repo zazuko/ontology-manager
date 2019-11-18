@@ -98,7 +98,7 @@ export default {
   async asyncData ({ route, store }) {
     const params = route.params
     let iri = store.state.config.ontology.datasetBaseUrl + params.pathMatch
-    if (route.path.endsWith('/')) {
+    if (route.path.endsWith('/') && !iri.endsWith('/')) {
       iri += '/'
     }
 
@@ -244,7 +244,7 @@ export default {
     let iri = store.state.config.ontology.datasetBaseUrl + params.pathMatch
 
     // we don't have access to asyncData in here
-    if (route.path.endsWith('/')) {
+    if (route.path.endsWith('/') && !iri.endsWith('/')) {
       iri += '/'
     }
 
