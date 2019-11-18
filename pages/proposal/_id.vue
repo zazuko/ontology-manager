@@ -243,6 +243,12 @@ export default {
               this.readonly = true
             }
           })
+          .catch(() => {
+            return this.$router.app.error({
+              statusCode: 404,
+              message: 'Not found'
+            })
+          })
       }, 200)
     }
   },

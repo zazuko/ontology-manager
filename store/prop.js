@@ -60,15 +60,17 @@ export const actions = {
       })
 
       const proposal = result.data.proposal
+      if (!_get(proposal, 'proposalObject')) {
+        throw new Error('Not found')
+      }
       const deserialized = this.$proposalDeserializer(proposal.proposalObject)
 
       commit(LOAD, deserialized)
       commit(SET_ID, proposal.id)
-      return Promise.resolve(proposal.isDraft)
+      return proposal.isDraft
     }
     catch (error) {
-      console.error(error)
-      return Promise.reject(error)
+      throw error
     }
   },
   async [SAVE] ({ dispatch, commit, state }) {
