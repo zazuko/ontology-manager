@@ -161,9 +161,6 @@ async function createApiMiddleware () {
       apiMiddleware = await createApiMiddleware()
       debug('new middleware')
     }
-    else {
-      debug('cached middleware')
-    }
     apiMiddleware(req, res, next)
   })
 

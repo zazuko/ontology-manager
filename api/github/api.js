@@ -78,17 +78,18 @@ module.exports = class GitHubAPIv3 {
     const headers = cached ? { 'If-Modified-Since': cached.lastModified } : {}
 
     let content
+    let lastModified
     try {
       const response = await this.__octokit.repos.getContents({ ...query, headers })
       content = Buffer.from(response.data.content, 'base64').toString()
-      const lastModified = response.headers['last-modified']
-      __cache.set(`${ref}/${path}`, { lastModified, content })
+      lastModified = response.headers['last-modified']
+      debug(`github sent 200 for file ${ref}/${path}`)
     }
     catch (error) {
       // '304 not modified', let's serve cached version
       if (error.status === 304) {
         debug(`github sent 304 for file ${ref}/${path}`)
-        content = cached.content
+        return cached.content
       }
       else {
         debug(`rate limit: ${error.headers['x-ratelimit-remaining']}`)
@@ -96,6 +97,7 @@ module.exports = class GitHubAPIv3 {
       }
     }
 
+    __cache.set(`${ref}/${path}`, { lastModified, content })
     return content
   }
 
