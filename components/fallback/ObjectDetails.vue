@@ -69,9 +69,7 @@
 
         <div v-show="description">
           <p class="title is-3">Long Description</p>
-          <p>
-            {{ description }}
-          </p>
+          <div v-html="description" />
         </div>
       </div>
 
@@ -168,6 +166,7 @@ import PropertiesTable from './PropertiesTable'
 import LinkToIri from './LinkToIri'
 import cloneDeep from 'lodash/cloneDeep'
 import { term } from '@/libs/utils'
+import { sanitizeHTML, toHTML } from '@/libs/editor'
 
 export default {
   name: 'ObjectDetails',
@@ -208,7 +207,8 @@ export default {
     },
     description () {
       const descriptionQuad = this.ontology.match(this.iri, this.$termIRI.description).toArray()
-      return _get(descriptionQuad, '[0].object.value', '')
+      const description = _get(descriptionQuad, '[0].object.value', '')
+      return sanitizeHTML(toHTML(description))
     },
     properties () {
       if (this.isClass) {
@@ -216,7 +216,7 @@ export default {
         return properties
       }
 
-      return null
+      return []
     },
     usedOn () {
       const classes = this.$usedOnClasses(this.iri.value, this.ontology)
