@@ -1,5 +1,6 @@
 import { postgraphile } from 'postgraphile'
 import { PgMutationUpsertPlugin } from 'postgraphile-upsert-plugin'
+const debug = require('debug')('editor:graphql')
 
 // https://node-postgres.com/api/client
 const pgConfig = {
@@ -41,6 +42,7 @@ const options = {
   simpleSubscriptions: false,
   appendPlugins: [PgMutationUpsertPlugin],
   dynamicJson: true,
+  disableQueryLog: !debug.enabled,
   // all the following options can be helpful in dev or debug mode
   graphiql: process.env.NODE_ENV !== 'production',
   enhanceGraphiql: process.env.NODE_ENV !== 'production',
