@@ -25,7 +25,12 @@
         class="icon is-small has-text-grey-lighter">
         <plus v-show="showPlusSymbol" />
       </span>
-      {{ $getTerm(tree.iri) || tree.label }}
+      <span v-if="tree.isCreativeWork">
+        {{ tree.label || $getTerm(tree.iri) }}
+      </span>
+      <span v-else>
+        {{ $getTerm(tree.iri) || tree.label }}
+      </span>
     </nuxt-link>
 
     <ul
