@@ -2,7 +2,7 @@
   <div class="container layout-objects-list">
     <section class="container layout-objects-list-head">
       <h1 class="main-title">
-        ontology-editor
+        ontology-manager
       </h1>
       <h2 class="subtitle">
         RDF ontology/schema editor

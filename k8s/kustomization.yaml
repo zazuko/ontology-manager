@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 commonLabels:
-  app.kubernetes.io/name: ontology-editor
+  app.kubernetes.io/name: ontology-manager
 
 bases:
 - backend

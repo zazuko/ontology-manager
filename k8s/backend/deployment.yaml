@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: ontology-editor:latest
+        image: ontology-manager:latest
         imagePullPolicy: Always
 
         ports:
@@ -23,8 +23,8 @@ spec:
 
         envFrom:
         - configMapRef:
-            name: ontology-editor
+            name: ontology-manager
             optional: true
         - secretRef:
-            name: ontology-editor
+            name: ontology-manager
             optional: true

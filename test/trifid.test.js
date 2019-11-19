@@ -113,8 +113,8 @@ describe('basic dev', () => {
       const result = await getRDFXML('/pouch/CargoHandlersPouch')
 
       // NotAcceptableError: no serializer found
-      //   at ServerResponse.sendGraph [as graph] (ontology-editor/node_modules/rdf-body-parser/index.js:28:29)
-      //   at rdfBodyParser.attach.then.then (ontology-editor/node_modules/trifid-handler-fetch/index.js:53:18)
+      //   at ServerResponse.sendGraph [as graph] (ontology-manager/node_modules/rdf-body-parser/index.js:28:29)
+      //   at rdfBodyParser.attach.then.then (ontology-manager/node_modules/trifid-handler-fetch/index.js:53:18)
       expect(result.status).toBe(406)
       expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })

@@ -1,4 +1,4 @@
-# ontology-editor
+# ontology-manager
 
 ## Local Dev Setup
 
@@ -146,7 +146,7 @@ The [Trifid](https://github.com/zazuko/trifid-core) middleware is used to allow 
     * Sample value: `open`
 * `thread.is_draft`: `TRUE` until the proposal author submits their proposal
     * Sample value: `FALSE`
-* `thread.proposal_object`: the actual proposal content in a serialized format, cf. [`proposalSerializer`](https://github.com/zazuko/ontology-editor/blob/869314787d1b618665615d9131448a5662562f65/plugins/libs/proposals.js#L114-L116) and [`proposalDeserializer`](https://github.com/zazuko/ontology-editor/blob/869314787d1b618665615d9131448a5662562f65/plugins/libs/proposals.js#L118-L125)
+* `thread.proposal_object`: the actual proposal content in a serialized format, cf. [`proposalSerializer`](https://github.com/zazuko/ontology-manager/blob/8097185ca9eabc34a70b9c78ec8c2c321abdee6a/plugins/libs/proposals.js#L114-L116) and [`proposalDeserializer`](https://github.com/zazuko/ontology-manager/blob/8097185ca9eabc34a70b9c78ec8c2c321abdee6a/plugins/libs/proposals.js#L118-L125)
 * `thread.branch_name`:
     * Sample value: `2019-03-12T140521.151Z`
 
