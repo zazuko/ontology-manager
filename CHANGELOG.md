@@ -1,3 +1,14 @@
+<a name="0.9.82"></a>
+## [0.9.82](https://github.com/zazuko/ontology-manager/compare/v0.9.81...v0.9.82) (2019-11-19)
+
+
+### Bug Fixes
+
+* **object-tree:** show pouch labels instead of iri part ([5a929fd](https://github.com/zazuko/ontology-manager/commit/5a929fd))
+* **proposals:** 404 on non-existing proposals ([c87e7aa](https://github.com/zazuko/ontology-manager/commit/c87e7aa))
+
+
+
 <a name="0.9.81"></a>
 ## 0.9.81 (2019-11-18)
 
