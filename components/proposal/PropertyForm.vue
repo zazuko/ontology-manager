@@ -608,6 +608,11 @@ export default {
     },
     createDomain (label) {
       const clss = new this.$Class({ label, isNew: true })
+      const conflicts = Boolean(this.ontology.match(rdf.namedNode(clss.iri), this.$termIRI.a).toArray().length)
+      if (conflicts) {
+        this.$toast.error(`Creating a class named "${label}" would conflict with existing object ${clss.iri}`)
+        return false
+      }
       // should we push 'this.prop' into 'clss' here?
       // or do something like :parentProp="prop" on <class-form in here and display it there?
       this.$vuexPush('domains', clss)
@@ -616,6 +621,11 @@ export default {
     },
     createRange (label) {
       const clss = new this.$Class({ label, isNew: true })
+      const conflicts = Boolean(this.ontology.match(rdf.namedNode(clss.iri), this.$termIRI.a).toArray().length)
+      if (conflicts) {
+        this.$toast.error(`Creating a class named "${label}" would conflict with existing object ${clss.iri}`)
+        return false
+      }
       this.$vuexPush('ranges', clss)
       this.$vuexPush('classChildren', clss)
       return true

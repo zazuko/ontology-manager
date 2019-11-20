@@ -376,6 +376,11 @@ export default {
     },
     createProperty (label) {
       const prop = new this.$Property({ label, isNew: true })
+      const conflicts = Boolean(this.ontology.match(rdf.namedNode(prop.iri), this.$termIRI.a).toArray().length)
+      if (conflicts) {
+        this.$toast.error(`Creating a property named "${label}" would conflict with existing object ${prop.iri}`)
+        return false
+      }
       this.$vuexPush('domains', prop)
       this.$vuexPush('propChildren', prop)
       return true
