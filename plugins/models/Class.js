@@ -19,7 +19,7 @@ export default ({ app, store }, inject) => {
       this.rdfType = app.$termIRI.Class
 
       this.baseIRI = baseIRI
-      this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'camel')
+      this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'pascal')
 
       this.propChildren = propChildren
     }
