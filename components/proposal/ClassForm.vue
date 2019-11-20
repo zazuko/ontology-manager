@@ -280,11 +280,10 @@ export default {
   mounted () {
     this.init()
     if (process.browser && this.readonly !== true) {
-      let maxRetry = 20
       setTimeout(() => {
-        const waitForYate = setInterval(() => {
-          if (window.YATE) {
-            clearInterval(waitForYate)
+        this.waitForYate = setInterval(() => {
+          if (window.YATE && this.$refs.exampleTextarea) {
+            clearInterval(this.waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.readonly,
               value: this.proposalObject['example']
@@ -293,12 +292,12 @@ export default {
               this.proposalObject['example'] = cm.getValue()
             })
           }
-          else if (--maxRetry <= 0) {
-            clearInterval(waitForYate)
-          }
         }, 500)
       }, 800)
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.waitForYate)
   },
   data () {
     return {
