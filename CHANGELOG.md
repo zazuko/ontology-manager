@@ -1,3 +1,17 @@
+<a name="0.9.84"></a>
+## [0.9.84](https://github.com/zazuko/ontology-manager/compare/v0.9.83...v0.9.84) (2019-11-20)
+
+
+### Bug Fixes
+
+* **design:** ensure a margin between last subform and submit buttons ([1a7cf9e](https://github.com/zazuko/ontology-manager/commit/1a7cf9e))
+* **proposals:** ensure no conflicting IRIs are created from subforms ([859ea59](https://github.com/zazuko/ontology-manager/commit/859ea59))
+* **proposals:** generated class IRIs are pascal case ([f8c276e](https://github.com/zazuko/ontology-manager/commit/f8c276e))
+* **structure:** display objects labels instead of terms ([dd6d0f6](https://github.com/zazuko/ontology-manager/commit/dd6d0f6))
+* **yate:** only instantiate when textarea is present ([8468fbc](https://github.com/zazuko/ontology-manager/commit/8468fbc))
+
+
+
 <a name="0.9.83"></a>
 ## [0.9.83](https://github.com/zazuko/ontology-manager/compare/v0.9.82...v0.9.83) (2019-11-19)
 
