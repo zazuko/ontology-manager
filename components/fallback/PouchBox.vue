@@ -25,12 +25,7 @@
         class="class-box-icon class" />
       <p class="class-box-title">
         <span class="ellipsis">
-          <template v-if="type === 'container'">
-            {{ label }}
-          </template>
-          <template v-else>
-            {{ $getTerm(iri) || label }}
-          </template>
+          {{ label || $getTerm(iri) }}
         </span>
       </p>
       <div class="class-box-level">
