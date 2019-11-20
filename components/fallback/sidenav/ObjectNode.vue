@@ -22,8 +22,9 @@
       </span>
       <span
         v-else
-        class="icon is-small has-text-grey-lighter">
-        <plus v-show="showPlusSymbol" />
+        class="icon is-small has-text-grey-lighter"
+        @click.prevent="">
+        <plus />
       </span>
       <span v-if="tree.isCreativeWork">
         {{ tree.label || $getTerm(tree.iri) }}
