@@ -263,8 +263,11 @@ export default {
     equivalentProperty () {
       const equivalentProperty = this.ontology.match(this.iri, this.$termIRI.equivalentProperty)
         .toArray()
-        .map((quad) => _get(quad.object, 'value'), '')
-        .filter(Boolean)
+        .map((quad) => _get(quad.object, 'value'))
+        .concat(this.ontology.match(null, this.$termIRI.equivalentProperty, this.iri)
+          .toArray()
+          .map((quad) => _get(quad.subject, 'value'))
+        ).filter(Boolean)
       return equivalentProperty
     },
     equivalentClass () {
