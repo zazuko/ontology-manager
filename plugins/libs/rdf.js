@@ -41,7 +41,10 @@ export default ({ app, store }, inject) => {
       return 'http://schema.org/rangeIncludes'
     },
 
-    get sameAs () {
+    get subClassOf () {
+      return 'http://www.w3.org/2000/01/rdf-schema#subClassOf'
+    },
+    get equivalentProperty () {
       return 'http://www.w3.org/2002/07/owl#equivalentProperty'
     },
     get hasPart () {

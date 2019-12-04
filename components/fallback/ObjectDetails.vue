@@ -118,26 +118,26 @@
         </section>
         <section
           class="content"
-          v-show="sameAs.length">
+          v-show="equivalentProperty.length">
           <h4 class="title is-2">
-            Same As
+            Equivalent Property
           </h4>
           <p class="title-url is-size-7">
             http://www.w3.org/2002/07/owl#equivalentProperty
           </p>
           <ul class="types-list">
             <li
-              v-for="sameAsIRI in sameAs"
-              :key="sameAsIRI">
+              v-for="equivalentPropertyIRI in equivalentProperty"
+              :key="equivalentPropertyIRI">
               <a
-                v-if="$unPrefix(sameAsIRI)"
-                :href="$rebaseIRI(sameAsIRI)">
-                {{ $unPrefix(sameAsIRI) }}
+                v-if="$unPrefix(equivalentPropertyIRI)"
+                :href="$rebaseIRI(equivalentPropertyIRI)">
+                {{ $unPrefix(equivalentPropertyIRI) }}
               </a>
               <a
                 v-else
-                :href="$rebaseIRI(sameAsIRI)">
-                {{ sameAsIRI }}
+                :href="$rebaseIRI(equivalentPropertyIRI)">
+                {{ equivalentPropertyIRI }}
               </a>
             </li>
           </ul>
@@ -231,8 +231,13 @@ export default {
       const classes = this.$rangeOf(this.iri.value, this.ontology)
       return classes
     },
-    sameAs () {
-      const sameAs = this.ontology.match(this.iri, this.$termIRI.sameAs)
+    equivalentProperty () {
+      const equivalentProperty = this.ontology.match(this.iri, this.$termIRI.equivalentProperty)
+        .toArray()
+        .map((quad) => _get(quad.object, 'value'), '')
+        .filter(Boolean)
+      return equivalentProperty
+    },
         .toArray()
         .map((quad) => _get(quad.object, 'value'), '')
         .filter(Boolean)

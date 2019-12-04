@@ -28,12 +28,12 @@
               class="subtitle is-1">
               <span class="title-url">{{ proposalObject['iri'] }}</span>
               <span
-                v-for="(sameAs, index) in proposalObject['sameAs']"
+                v-for="(equivalentProperty, index) in proposalObject['equivalentProperty']"
                 :key="index">
                 <br>
-                sameAs:
+                equivalentProperty:
                 <span class="title-url">
-                  {{ displayNewSameAs(sameAs) }}
+                  {{ displayNewEquivalentProperty(equivalentProperty) }}
                 </span>
               </span>
             </p>
@@ -131,8 +131,8 @@
               <typeahead
                 :readonly="readonly"
                 :search-function="propertiesSearch"
-                label="Same As (owl:equivalentProperty)"
-                @selectionChanged="selectSameAs">
+                label="Equivalent Property (owl:equivalentProperty)"
+                @selectionChanged="selectEquivalentProperty">
                 <div
                   v-if="typeahead.inputString"
                   slot="custom-options"
@@ -140,9 +140,9 @@
                   class="dropdown-item">
                   <span v-if="typeahead.inputString.startsWith('http')">
                     <a
-                      title="Add external owl:sameAs IRI"
-                      @click.prevent="addExternalSameAs(typeahead.inputString) && typeahead.hide()">
-                      External sameAs: "{{ typeahead.inputString }}"
+                      title="Add external owl:equivalentProperty IRI"
+                      @click.prevent="addExternalEquivalentProperty(typeahead.inputString) && typeahead.hide()">
+                      External equivalentProperty: "{{ typeahead.inputString }}"
                     </a>
                   </span>
                 </div>
@@ -150,40 +150,40 @@
                   slot="selected-list"
                   class="panel">
                   <a
-                    v-for="(sameAs, index) in proposalObject['sameAs']"
+                    v-for="(equivalentProperty, index) in proposalObject['equivalentProperty']"
                     :key="index"
                     class="panel-block is-active">
                     <p
-                      v-show="proposalObject['isEdit'] && proposalObject['sameAsRemoved'].length"
+                      v-show="proposalObject['isEdit'] && proposalObject['equivalentPropertyRemoved'].length"
                       class="is-size-7">
                       Added:
                     </p>
                     <span
                       v-show="!readonly"
                       class="panel-icon"
-                      @click.prevent="unselectSameAs(index)">
+                      @click.prevent="unselectEquivalentProperty(index)">
                       <close-circle />
                     </span>
-                    {{ displayNewSameAs(sameAs) }}
+                    {{ displayNewEquivalentProperty(equivalentProperty) }}
                   </a>
                   <template v-if="proposalObject['isEdit'] && readonly">
                     <p
-                      v-show="proposalObject['sameAsRemoved'].length"
+                      v-show="proposalObject['equivalentPropertyRemoved'].length"
                       class="is-size-7">
                       Removed:
                     </p>
                     <a
-                      v-for="(sameAsIRI, index) in proposalObject['sameAsRemoved']"
+                      v-for="(equivalentPropertyIRI, index) in proposalObject['equivalentPropertyRemoved']"
                       :key="index"
                       class="panel-block is-active">
-                      <span v-if="_get($labelQuadForIRI(ontology, sameAsIRI), 'object.value')">
-                        {{ _get($labelQuadForIRI(ontology, sameAsIRI), 'object.value') }}
+                      <span v-if="_get($labelQuadForIRI(ontology, equivalentPropertyIRI), 'object.value')">
+                        {{ _get($labelQuadForIRI(ontology, equivalentPropertyIRI), 'object.value') }}
                       </span>
-                      <span v-else-if="$unPrefix(sameAsIRI)">
-                        {{ $unPrefix(sameAsIRI) }}
+                      <span v-else-if="$unPrefix(equivalentPropertyIRI)">
+                        {{ $unPrefix(equivalentPropertyIRI) }}
                       </span>
                       <span v-else>
-                        {{ sameAsIRI }}
+                        {{ equivalentPropertyIRI }}
                       </span>
                     </a>
                   </template>
@@ -583,27 +583,27 @@ export default {
         this.$vuexPush('rangesRemoved', range.subject.value)
       }
     },
-    selectSameAs (searchResult) {
-      const sameAs = searchResult.domain
+    selectEquivalentProperty (searchResult) {
+      const equivalentProperty = searchResult.domain
 
-      const unRemove = this.proposalObject['sameAsRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject['equivalentPropertyRemoved'].indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
-        this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
+        this.$vuexDeleteAtIndex('equivalentPropertyRemoved', unRemove)
         return
       }
       // don't add if already in there
-      const isSelected = ({ subject }) => term(subject) === term(sameAs.subject)
-      if (this.proposalObject['sameAs'].find(isSelected)) {
+      const isSelected = ({ subject }) => term(subject) === term(equivalentProperty.subject)
+      if (this.proposalObject['equivalentProperty'].find(isSelected)) {
         return
       }
-      this.$vuexPush('sameAs', sameAs)
+      this.$vuexPush('equivalentProperty', equivalentProperty)
     },
-    unselectSameAs (index) {
-      const sameAs = this.proposalObject[`sameAs[${index}]`]
-      this.$vuexDeleteAtIndex('sameAs', index)
+    unselectEquivalentProperty (index) {
+      const equivalentProperty = this.proposalObject[`equivalentProperty[${index}]`]
+      this.$vuexDeleteAtIndex('equivalentProperty', index)
 
       if (this.proposalObject['isEdit']) {
-        this.$vuexPush('sameAsRemoved', sameAs.subject.value)
+        this.$vuexPush('equivalentPropertyRemoved', equivalentProperty.subject.value)
       }
     },
     createDomain (label) {
@@ -639,11 +639,11 @@ export default {
       }
       return true
     },
-    addExternalSameAs (iri) {
-      this.$vuexPush('sameAs', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['sameAsRemoved'].indexOf(iri)
+    addExternalEquivalentProperty (iri) {
+      this.$vuexPush('equivalentProperty', this.$externalIRIToQuad(iri))
+      const unRemove = this.proposalObject['equivalentPropertyRemoved'].indexOf(iri)
       if (unRemove !== -1) {
-        this.$vuexDeleteAtIndex('sameAsRemoved', unRemove)
+        this.$vuexDeleteAtIndex('equivalentPropertyRemoved', unRemove)
         return true
       }
       return true
@@ -672,12 +672,12 @@ export default {
       }
       this.onParentIRIChange()
     },
-    displayNewSameAs (sameAs) {
-      if (!sameAs.label && sameAs.predicate.value === this.$termIRI.a.value) {
-        return term(sameAs.subject)
+    displayNewEquivalentProperty (equivalentProperty) {
+      if (!equivalentProperty.label && equivalentProperty.predicate.value === this.$termIRI.a.value) {
+        return term(equivalentProperty.subject)
       }
 
-      return ((sameAs.object && sameAs.object.value) || term(sameAs.object)) || sameAs.label
+      return ((equivalentProperty.object && equivalentProperty.object.value) || term(equivalentProperty.object)) || equivalentProperty.label
     }
   }
 }
