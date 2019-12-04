@@ -192,6 +192,69 @@
                 </nav>
               </typeahead>
             </div>
+
+            <div class="column is-6">
+              <typeahead
+                :readonly="readonly"
+                :search-function="classesSearch"
+                label="Subclass Of (rdfs:subClassOf)"
+                @selectionChanged="selectSubClass">
+                <div
+                  v-if="typeahead.inputString"
+                  slot="custom-options"
+                  slot-scope="typeahead"
+                  class="dropdown-item">
+                  <span v-if="typeahead.inputString.startsWith('http')">
+                    <a
+                      title="Add external rdfs:subClassOf IRI"
+                      @click.prevent="addExternalSubClass(typeahead.inputString) && typeahead.hide()">
+                      External subClassOf: "{{ typeahead.inputString }}"
+                    </a>
+                  </span>
+                </div>
+                <nav
+                  slot="selected-list"
+                  class="panel">
+                  <template v-if="proposalObject['subClass']">
+                    <p
+                      v-show="proposalObject['isEdit'] && proposalObject['subClassRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
+                    <a class="panel-block is-active">
+                      <span
+                        v-show="!readonly"
+                        class="panel-icon"
+                        @click.prevent="unselectSubClass(proposalObject['subClass'])">
+                        <close-circle />
+                      </span>
+                      {{ displayNewSubClass(proposalObject['subClass']) }}
+                    </a>
+                  </template>
+                  <template v-if="proposalObject['isEdit']">
+                    <p
+                      v-show="proposalObject['subClassRemoved'].length"
+                      class="is-size-7">
+                      Removed:
+                    </p>
+                    <a
+                      v-for="(subClassIRI, index) in proposalObject['subClassRemoved']"
+                      :key="index"
+                      class="panel-block is-active">
+                      <span v-if="_get($labelQuadForIRI(ontology, subClassIRI), 'object.value')">
+                        {{ _get($labelQuadForIRI(ontology, subClassIRI), 'object.value') }}
+                      </span>
+                      <span v-else-if="$unPrefix(subClassIRI)">
+                        {{ $unPrefix(subClassIRI) }}
+                      </span>
+                      <span v-else>
+                        {{ subClassIRI }}
+                      </span>
+                    </a>
+                  </template>
+                </nav>
+              </typeahead>
+            </div>
           </div>
 
           <div class="columns">
@@ -302,7 +365,7 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import { normalizeLabel, term } from '@/libs/utils'
+import { normalizeLabel, term, toastClose } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
@@ -413,6 +476,7 @@ export default {
     }
   },
   methods: {
+    _get,
     $vuexPush (path, ...values) {
       const currentValues = this.proposalObject[path]
       this.$vuexSet(`${this.storePath}.${path}`, currentValues.concat(values))
@@ -447,7 +511,6 @@ export default {
       this.$vuexDeleteAtIndex('domainsRemoved', index)
     },
     selectEquivalentClass (searchResult) {
-      // detect cycles
       const equivalentClass = searchResult.domain
 
       const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(searchResult.domain.subject.value)
@@ -462,6 +525,37 @@ export default {
       }
       this.$vuexPush('equivalentClass', equivalentClass)
     },
+    selectSubClass (searchResult) {
+      const subClass = searchResult.domain.subject.value
+
+      const unRemove = this.proposalObject['subClassRemoved'].indexOf(subClass)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('subClassRemoved', unRemove)
+        return
+      }
+      if (this.proposalObject['subClass'] && this.proposalObject['subject'].subject.value === subClass) {
+        return
+      }
+      if (subClass === this.proposalObject['iri']) {
+        return
+      }
+
+      // don't add if it is circular
+      const parentClass = (iri) => this.ontology.match(rdf.namedNode(iri), this.$termIRI.subClassOf).toArray().map(({ object }) => object.value)
+      let circular = parentClass(subClass)
+      const base = [subClass, ...circular]
+      while (circular.length) {
+        for (const iri of circular) {
+          if (base.includes(iri)) {
+            this.$toast.error('Cannot add circular subClassOf!', toastClose).goAway(1600)
+            return
+          }
+          base.push(iri)
+        }
+        circular = parentClass(subClass)
+      }
+      this.$vuexSet(`${this.storePath}.subClass`, searchResult.domain)
+    },
     unselectEquivalentClass (index) {
       const equivalentClass = this.proposalObject[`equivalentClass[${index}]`]
       this.$vuexDeleteAtIndex('equivalentClass', index)
@@ -469,6 +563,31 @@ export default {
       if (this.proposalObject['isEdit']) {
         this.$vuexPush('equivalentClassRemoved', equivalentClass.subject.value)
       }
+    },
+    unselectSubClass (quad) {
+      this.$vuexSet(`${this.storePath}.subClass`, null)
+
+      if (this.proposalObject['isEdit']) {
+        this.$vuexPush('subClassRemoved', quad.subject.value)
+      }
+    },
+    addExternalEquivalentClass (iri) {
+      this.$vuexPush('equivalentClass', this.$externalIRIToQuad(iri))
+      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
+        return true
+      }
+      return true
+    },
+    addExternalSubClass (iri) {
+      this.$vuexPush('subClass', this.$externalIRIToQuad(iri))
+      const unRemove = this.proposalObject['subClassRemoved'].indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('subClassRemoved', unRemove)
+        return true
+      }
+      return true
     },
     createProperty (label) {
       const prop = new this.$Property({ label, isNew: true })
@@ -484,14 +603,19 @@ export default {
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
     },
-    addExternalEquivalentClass (iri) {
-      this.$vuexPush('equivalentClass', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(iri)
-      if (unRemove !== -1) {
-        this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
-        return true
+    displayNewEquivalentClass (equivalentClass) {
+      if (!equivalentClass.label && equivalentClass.predicate.value === this.$termIRI.a.value) {
+        return term(equivalentClass.subject)
       }
-      return true
+
+      return ((equivalentClass.object && equivalentClass.object.value) || term(equivalentClass.object)) || equivalentClass.label
+    },
+    displayNewSubClass (subClass) {
+      if (!subClass.label && subClass.predicate.value === this.$termIRI.a.value) {
+        return term(subClass.subject)
+      }
+
+      return ((subClass.object && subClass.object.value) || term(subClass.object)) || subClass.label
     },
     init () {
       if (this.baseDatasets) {
@@ -509,13 +633,6 @@ export default {
       }
       this.propertiesSearch = this.$domainsSearchFactory(this.ontology, 'Property', false)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
-    },
-    displayNewEquivalentClass (equivalentClass) {
-      if (!equivalentClass.label && equivalentClass.predicate.value === this.$termIRI.a.value) {
-        return term(equivalentClass.subject)
-      }
-
-      return ((equivalentClass.object && equivalentClass.object.value) || term(equivalentClass.object)) || equivalentClass.label
     }
   }
 }
