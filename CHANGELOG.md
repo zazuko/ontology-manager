@@ -1,3 +1,22 @@
+<a name="0.9.85"></a>
+## [0.9.85](https://github.com/zazuko/ontology-manager/compare/v0.9.84...v0.9.85) (2019-12-04)
+
+
+### Bug Fixes
+
+* **properties:** display equivalent properties in both directions ([c17203a](https://github.com/zazuko/ontology-manager/commit/c17203a))
+* **properties:** equivalent property is not 'same as' ([50651fe](https://github.com/zazuko/ontology-manager/commit/50651fe))
+* navigation overhaul ([a613af6](https://github.com/zazuko/ontology-manager/commit/a613af6))
+* **design:** disable expanding sidenav elt w/o children ([c7f5bd8](https://github.com/zazuko/ontology-manager/commit/c7f5bd8))
+
+
+### Features
+
+* **classes:** classes can be rdfs:subClassOf ([6cd36fb](https://github.com/zazuko/ontology-manager/commit/6cd36fb))
+* **classes:** classes can have 'owl:equivalentClass'es ([755bd69](https://github.com/zazuko/ontology-manager/commit/755bd69))
+
+
+
 <a name="0.9.84"></a>
 ## [0.9.84](https://github.com/zazuko/ontology-manager/compare/v0.9.83...v0.9.84) (2019-11-20)
 
