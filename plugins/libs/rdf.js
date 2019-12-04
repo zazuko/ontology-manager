@@ -47,6 +47,9 @@ export default ({ app, store }, inject) => {
     get equivalentProperty () {
       return 'http://www.w3.org/2002/07/owl#equivalentProperty'
     },
+    get equivalentClass () {
+      return 'http://www.w3.org/2002/07/owl#equivalentClass'
+    },
     get hasPart () {
       return store.state.config.ontology.containersNestingPredicate
     },

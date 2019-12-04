@@ -11,6 +11,9 @@ export default ({ app, store }, inject) => {
       const {
         baseIRI = store.state.config.ontology.classBaseUrl,
         iri = '',
+        equivalentClass = [],
+        // equivalentClass removed from this Class, only used when editing a Class
+        equivalentClassRemoved = [], // Array<string iri>
         // properties newly added to this Class
         propChildren = [] // Array<Quad|Property>
       } = args
@@ -20,6 +23,9 @@ export default ({ app, store }, inject) => {
 
       this.baseIRI = baseIRI
       this.iri = iri || this.baseIRI + normalizeLabel(this.label, 'pascal')
+
+      this.equivalentClass = equivalentClass
+      this.equivalentClassRemoved = equivalentClassRemoved
 
       this.propChildren = propChildren
     }
@@ -56,6 +62,21 @@ export default ({ app, store }, inject) => {
 
       if (this.isDeprecated) {
         quads.push(rdf.quad(classIRI, app.$termIRI.deprecated, rdf.literal('true', rdf.namedNode('xsd:boolean'))))
+      }
+
+      if (this.equivalentClass.length) {
+        const existingEquivalentClassQuads = this.equivalentClass.reduce((xs, equivalentClass) => {
+          let equivalentClassIRI
+          if (equivalentClass instanceof QuadExt) {
+            equivalentClassIRI = equivalentClass.subject
+          }
+          else {
+            equivalentClassIRI = rdf.namedNode(equivalentClass.iri)
+          }
+          xs.push(rdf.quad(classIRI, app.$termIRI.equivalentClass, equivalentClassIRI))
+          return xs
+        }, [])
+        quads.push(...existingEquivalentClassQuads)
       }
 
       if (this.domains.length) {
@@ -105,6 +126,10 @@ export default ({ app, store }, inject) => {
           datasets.ontology.removeMatches(rdf.namedNode(iri), app.$termIRI.domain, rdf.namedNode(this.iri))
         })
 
+        this.equivalentClassRemoved.forEach((iri) => {
+          datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.equivalentClass, rdf.namedNode(iri))
+        })
+
         return {
           ontologyContent: datasetToCanonicalN3(datasets.ontology),
           structureContent: datasetToCanonicalN3(datasets.structure)
@@ -138,6 +163,7 @@ export default ({ app, store }, inject) => {
         description: descriptionQuad ? descriptionQuad.object.value : '',
         example: exampleQuad ? exampleQuad.object.value : '',
         domains: ontology.match(null, app.$termIRI.domain, existingClassIRI).toArray().map(hydrateDomain),
+        equivalentClass: ontology.match(existingClassIRI, app.$termIRI.equivalentClass, null).toArray().map(hydrateEquivalentClass),
         parentStructureIRI,
         propChildren: [],
         isSubFormCollapsed: false,
@@ -158,6 +184,16 @@ export default ({ app, store }, inject) => {
           comment: commentQuad ? commentQuad.object.value : '',
           domain: domainQuad
         }
+      }
+
+      function hydrateEquivalentClass (quad) {
+        const labelQuad = ontology.match(quad.object, app.$termIRI.label).toArray()
+        if (labelQuad.length) {
+          return firstVal(labelQuad)
+        }
+
+        // otherwise it's an external IRI
+        return app.$externalIRIToQuad(quad.object.value)
       }
     }
   }

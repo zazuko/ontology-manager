@@ -74,6 +74,35 @@
       </div>
 
       <template v-if="isClass">
+        <section
+          class="content"
+          v-show="equivalentClass.length">
+          <h4 class="title is-2">
+            Equivalent Class{{ equivalentClass.length === 1 ? '' : 'es' }}
+          </h4>
+          <p class="title-url is-size-7">
+            http://www.w3.org/2002/07/owl#equivalentClass
+          </p>
+          <ul class="types-list">
+            <li
+              v-for="equivalentClassIRI in equivalentClass"
+              :key="equivalentClassIRI">
+              <a
+                v-if="$unPrefix(equivalentClassIRI)"
+                :href="$rebaseIRI(equivalentClassIRI)">
+                {{ $unPrefix(equivalentClassIRI) }}
+              </a>
+              <a
+                v-else
+                :href="$rebaseIRI(equivalentClassIRI)">
+                {{ equivalentClassIRI }}
+              </a>
+            </li>
+          </ul>
+        </section>
+        <h4 class="title is-2">
+          Properties
+        </h4>
         <properties-table
           :properties="properties"
           :ontology="ontology"
@@ -238,10 +267,15 @@ export default {
         .filter(Boolean)
       return equivalentProperty
     },
+    equivalentClass () {
+      const equivalentClass = this.ontology.match(this.iri, this.$termIRI.equivalentClass)
         .toArray()
-        .map((quad) => _get(quad.object, 'value'), '')
-        .filter(Boolean)
-      return sameAs
+        .map((quad) => _get(quad.object, 'value'))
+        .concat(this.ontology.match(null, this.$termIRI.equivalentClass, this.iri)
+          .toArray()
+          .map((quad) => _get(quad.subject, 'value'))
+        ).filter(Boolean)
+      return equivalentClass
     },
     examples () {
       return this.ontology.match(this.iri, this.$termIRI.example)

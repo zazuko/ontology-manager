@@ -127,30 +127,99 @@
 
         <div
           v-show="validBase"
-          class="columns fold">
-          <div class="column">
-            <client-only>
+          class="fold">
+          <div class="columns">
+            <div class="column is-6">
               <typeahead
                 :readonly="readonly"
-                :search-function="searchFunction"
-                class="properties-typeahead"
-                label="Has the Following Properties"
-                @selectionChanged="selectDomain">
+                :search-function="classesSearch"
+                label="Equivalent Class (owl:equivalentClass)"
+                @selectionChanged="selectEquivalentClass">
                 <div
                   v-if="typeahead.inputString"
                   slot="custom-options"
                   slot-scope="typeahead"
-                  class="dropdown-item create-property">
-                  Create <a
-                    title="Add as a new property"
-                    @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
-                    property "{{ typeahead.inputString }}"?
-                  </a>
+                  class="dropdown-item">
+                  <span v-if="typeahead.inputString.startsWith('http')">
+                    <a
+                      title="Add external owl:equivalentClass IRI"
+                      @click.prevent="addExternalEquivalentClass(typeahead.inputString) && typeahead.hide()">
+                      External equivalentClass: "{{ typeahead.inputString }}"
+                    </a>
+                  </span>
                 </div>
+                <nav
+                  slot="selected-list"
+                  class="panel">
+                  <a
+                    v-for="(equivalentClass, index) in proposalObject['equivalentClass']"
+                    :key="index"
+                    class="panel-block is-active">
+                    <p
+                      v-show="proposalObject['isEdit'] && proposalObject['equivalentClassRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
+                    <span
+                      v-show="!readonly"
+                      class="panel-icon"
+                      @click.prevent="unselectEquivalentClass(index)">
+                      <close-circle />
+                    </span>
+                    {{ displayNewEquivalentClass(equivalentClass) }}
+                  </a>
+                  <template v-if="proposalObject['isEdit'] && readonly">
+                    <p
+                      v-show="proposalObject['equivalentClassRemoved'].length"
+                      class="is-size-7">
+                      Removed:
+                    </p>
+                    <a
+                      v-for="(equivalentClassIRI, index) in proposalObject['equivalentClassRemoved']"
+                      :key="index"
+                      class="panel-block is-active">
+                      <span v-if="_get($labelQuadForIRI(ontology, equivalentClassIRI), 'object.value')">
+                        {{ _get($labelQuadForIRI(ontology, equivalentClassIRI), 'object.value') }}
+                      </span>
+                      <span v-else-if="$unPrefix(equivalentClassIRI)">
+                        {{ $unPrefix(equivalentClassIRI) }}
+                      </span>
+                      <span v-else>
+                        {{ equivalentClassIRI }}
+                      </span>
+                    </a>
+                  </template>
+                </nav>
               </typeahead>
-            </client-only>
+            </div>
           </div>
-          <div class="column" />
+
+          <div class="columns">
+            <div class="column">
+              <client-only>
+                <typeahead
+                  :readonly="readonly"
+                  :search-function="propertiesSearch"
+                  class="properties-typeahead"
+                  label="Has the Following Properties"
+                  @selectionChanged="selectDomain">
+                  <div
+                    v-if="typeahead.inputString"
+                    slot="custom-options"
+                    slot-scope="typeahead"
+                    class="dropdown-item create-property">
+                    Create <a
+                      title="Add as a new property"
+                      @click.prevent="createProperty(typeahead.inputString) && typeahead.hide()">
+                      property "{{ typeahead.inputString }}"?
+                    </a>
+                  </div>
+                </typeahead>
+              </client-only>
+            </div>
+            <div class="column" />
+          </div>
+
         </div>
 
         <proposal-properties-table
@@ -237,6 +306,7 @@ import { normalizeLabel, term } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
+import CloseCircle from 'vue-material-design-icons/CloseCircle.vue'
 
 export default {
   name: 'ClassForm',
@@ -275,7 +345,8 @@ export default {
     PropertyForm: () => import('@/components/proposal/PropertyForm'),
     ProposalPropertiesTable,
     Editor,
-    Typeahead
+    Typeahead,
+    CloseCircle
   },
   mounted () {
     this.init()
@@ -301,7 +372,8 @@ export default {
   },
   data () {
     return {
-      searchFunction: () => ([]),
+      classesSearch: () => ([]),
+      propertiesSearch: () => ([]),
       ontology: rdf.dataset(),
       structure: rdf.dataset(),
       yate: { setValue () {}, getValue () {} }
@@ -374,6 +446,30 @@ export default {
       this.$vuexPush('domains', domain)
       this.$vuexDeleteAtIndex('domainsRemoved', index)
     },
+    selectEquivalentClass (searchResult) {
+      // detect cycles
+      const equivalentClass = searchResult.domain
+
+      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(searchResult.domain.subject.value)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
+        return
+      }
+      // don't add if already in there
+      const isSelected = ({ subject }) => term(subject) === term(equivalentClass.subject)
+      if (this.proposalObject['equivalentClass'].find(isSelected)) {
+        return
+      }
+      this.$vuexPush('equivalentClass', equivalentClass)
+    },
+    unselectEquivalentClass (index) {
+      const equivalentClass = this.proposalObject[`equivalentClass[${index}]`]
+      this.$vuexDeleteAtIndex('equivalentClass', index)
+
+      if (this.proposalObject['isEdit']) {
+        this.$vuexPush('equivalentClassRemoved', equivalentClass.subject.value)
+      }
+    },
     createProperty (label) {
       const prop = new this.$Property({ label, isNew: true })
       const conflicts = Boolean(this.ontology.match(rdf.namedNode(prop.iri), this.$termIRI.a).toArray().length)
@@ -388,6 +484,15 @@ export default {
     invalidClassname (label) {
       return !/^([A-Z])/.test(label)
     },
+    addExternalEquivalentClass (iri) {
+      this.$vuexPush('equivalentClass', this.$externalIRIToQuad(iri))
+      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
+        return true
+      }
+      return true
+    },
     init () {
       if (this.baseDatasets) {
         this.ontology = this.baseDatasets.ontology
@@ -397,12 +502,20 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
+      this.classesSearch = this.$domainsSearchFactory(this.ontology, 'Class', true)
       if (!this.subform && this.edit) {
         const originalIRI = this.proposalObject['originalIRI'] || this.proposalObject['iri']
         this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
       }
-      this.searchFunction = this.$domainsSearchFactory(this.ontology, 'Property', false)
+      this.propertiesSearch = this.$domainsSearchFactory(this.ontology, 'Property', false)
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
+    },
+    displayNewEquivalentClass (equivalentClass) {
+      if (!equivalentClass.label && equivalentClass.predicate.value === this.$termIRI.a.value) {
+        return term(equivalentClass.subject)
+      }
+
+      return ((equivalentClass.object && equivalentClass.object.value) || term(equivalentClass.object)) || equivalentClass.label
     }
   }
 }
