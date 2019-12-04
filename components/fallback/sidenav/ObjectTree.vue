@@ -6,7 +6,7 @@
     <ul
       class="menu-list">
       <object-node
-        v-for="node in tree.children"
+        v-for="node in tree.children.filter((node) => node.isCreativeWork)"
         :key="node.iri"
         :tree="node"
         :could-have-children="true"

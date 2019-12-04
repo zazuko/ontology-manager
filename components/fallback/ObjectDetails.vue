@@ -244,10 +244,10 @@ export default {
         .map((quad) => term(quad.object))
     },
     isClass () {
-      return this.$termIRI.ClassLikes
+      return Boolean(this.$termIRI.ClassLikes
         .filter(iri =>
           Boolean(this.ontology.match(this.iri, this.$termIRI.a, rdf.namedNode(iri)).toArray().length
-          )).length
+          )).length)
     },
     isProperty () {
       return Boolean(this.ontology.match(this.iri, this.$termIRI.a, this.$termIRI.Property).toArray().length)
@@ -260,14 +260,16 @@ export default {
         const parents = this.findPropertyParents(this.iri)
         return parents.map((parent) => {
           const path = []
-          let child = this.findInTree(parent.iri, structureTree[0])
+          let child = this.findInTree(parent.iri, { children: structureTree })
           if (!child) {
             return ''
           }
           while (child.parent) {
             const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
             const target = this.$rebaseIRI(child.iri)
-            path.push({ label, target })
+            if (!child.isCreativeWork) {
+              path.push({ label, target })
+            }
             child = child.parent
           }
           path.reverse()
@@ -276,14 +278,16 @@ export default {
       }
       else if (this.isClass) {
         const path = []
-        let child = this.findInTree(this.iri.value, structureTree[0])
+        let child = this.findInTree(this.iri.value, { children: structureTree })
         if (!child) {
           return ''
         }
         while (child.parent) {
           const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
           const target = this.$rebaseIRI(child.iri)
-          path.push({ label, target })
+          if (!child.isCreativeWork) {
+            path.push({ label, target })
+          }
           child = child.parent
         }
         path.reverse()

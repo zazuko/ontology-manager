@@ -6,7 +6,7 @@
       <span
         v-if="couldHaveChildren">
         <span
-          v-if="tree.children && tree.children.length"
+          v-if="children && children.length"
           class="icon is-small"
           @click.prevent="toggleCollapse">
           <minus v-show="showMinusSymbol" />
@@ -26,22 +26,19 @@
         @click.prevent="">
         <plus />
       </span>
-      <span v-if="tree.isCreativeWork">
+      <span>
         {{ tree.label || $getTerm(tree.iri) }}
-      </span>
-      <span v-else>
-        {{ $getTerm(tree.iri) || tree.label }}
       </span>
     </nuxt-link>
 
     <ul
-      v-if="tree.children && tree.children.length"
+      v-if="children && children.length"
       v-show="isActive">
       <object-node
-        v-for="node in tree.children"
+        v-for="node in children"
         :key="node.iri"
         :tree="node"
-        :could-have-children="!!tree.children.find((node) => node.children.length > 0)"
+        :could-have-children="!!children.find((node) => node.children.length > 0)"
         :current-iri="currentIri" />
     </ul>
     <div v-else>
@@ -96,8 +93,11 @@ export default {
     }
   },
   computed: {
+    children () {
+      return this.tree.children.filter((node) => node.isCreativeWork)
+    },
     hasActiveChild () {
-      const childClasses = !!this.tree.children.find((node) => node.iri === this.currentIri)
+      const childClasses = !!this.children.find((node) => node.iri === this.currentIri)
       if (childClasses) {
         return true
       }
