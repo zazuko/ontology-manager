@@ -194,7 +194,7 @@ export default {
   mounted () {
     if (process.browser) {
       this.saveInterval = setInterval(() => {
-        if ((this.prop && this.prop['isDraft'] === false) || this.readonly) {
+        if ((this.prop && this.prop.isDraft === false) || this.readonly) {
           this.stopAutosave()
           return
         }
@@ -227,10 +227,10 @@ export default {
               return
             }
 
-            if (this.prop['proposalType'] === 'Class') {
+            if (this.prop.proposalType === 'Class') {
               this.$router.push({
                 name: 'proposal-class',
-                query: { id: this.prop['threadId'] }
+                query: { id: this.prop.threadId }
               })
             }
           })
@@ -262,8 +262,8 @@ export default {
       return this.$deepModel('prop.prop')
     },
     _iri () {
-      if (this.prop['parentStructureIRI']) {
-        return this.prop['parentStructureIRI']
+      if (this.prop.parentStructureIRI) {
+        return this.prop.parentStructureIRI
       }
       return this.iri
     },

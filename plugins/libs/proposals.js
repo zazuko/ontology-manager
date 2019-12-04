@@ -115,14 +115,14 @@ export default ({ app }, inject) => {
 
       if (value && typeof value === 'object') {
         // sub proposal objects are hydrated, respecting circularity
-        if (value.hasOwnProperty('proposalType')) {
+        if ('proposalType' in value) {
           return replaceObject(value)
         }
 
         // create rdf terms out of SPOs
         if (termsKeys.includes(key)) {
-          if (value.hasOwnProperty('termType') && value.hasOwnProperty('value')) {
-            if (termsTypes.hasOwnProperty(value.termType)) {
+          if ('termType' in value && 'value' in value) {
+            if (termsTypes[value.termType]) {
               return termsTypes[value.termType](value.value)
             }
           }

@@ -64,10 +64,10 @@ export default {
     }
   },
   watch: {
-    'searchString' () {
+    searchString () {
       this.search(this.searchString)
     },
-    '$route': {
+    $route: {
       handler () {
         if (this.searchString || this.results.length) {
           this.clear()

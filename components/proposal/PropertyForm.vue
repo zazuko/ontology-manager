@@ -458,10 +458,10 @@ export default {
             clearInterval(this.waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.readonly,
-              value: this.proposalObject['example']
+              value: this.proposalObject.example
             })
             this.yate.on('change', cm => {
-              this.proposalObject['example'] = cm.getValue()
+              this.proposalObject.example = cm.getValue()
             })
           }
         }, 500)
@@ -516,7 +516,7 @@ export default {
   },
   watch: {
     'proposalObject.label' () {
-      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject['baseIRI'] + normalizeLabel(this.proposalObject['label'], 'camel'))
+      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject.baseIRI + normalizeLabel(this.proposalObject.label, 'camel'))
     },
     '$parent.proposalObject.label' () {
       this.onParentIRIChange()
@@ -537,7 +537,7 @@ export default {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => term(subject) === term(domain.subject)
-      if (this.proposalObject['domains'].find(isSelected) || this.iri === term(domain.subject)) {
+      if (this.proposalObject.domains.find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
       this.$vuexPush('domains', this.$labelQuadForIRI(this.ontology, searchResult.iri))
@@ -550,50 +550,50 @@ export default {
     }, 400),
     unselectDomain (index) {
       const domain = this.proposalObject[`domains[${index}]`]
-      const childIndex = this.proposalObject['classChildren'].indexOf(domain)
+      const childIndex = this.proposalObject.classChildren.indexOf(domain)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('domainsRemoved', domain.subject.value)
       }
     },
     selectRange (searchResult) {
       const range = searchResult.domain
 
-      const unRemove = this.proposalObject['rangesRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject.rangesRemoved.indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
         return
       }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(range.subject)
-      if (this.proposalObject['ranges'].find(isSelected)) {
+      if (this.proposalObject.ranges.find(isSelected)) {
         return
       }
       this.$vuexPush('ranges', range)
     },
     unselectRange (index) {
       const range = this.proposalObject[`ranges[${index}]`]
-      const childIndex = this.proposalObject['classChildren'].indexOf(range)
+      const childIndex = this.proposalObject.classChildren.indexOf(range)
       this.$vuexDeleteAtIndex('classChildren', childIndex)
       this.$vuexDeleteAtIndex('ranges', index)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('rangesRemoved', range.subject.value)
       }
     },
     selectEquivalentProperty (searchResult) {
       const equivalentProperty = searchResult.domain
 
-      const unRemove = this.proposalObject['equivalentPropertyRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject.equivalentPropertyRemoved.indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('equivalentPropertyRemoved', unRemove)
         return
       }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(equivalentProperty.subject)
-      if (this.proposalObject['equivalentProperty'].find(isSelected)) {
+      if (this.proposalObject.equivalentProperty.find(isSelected)) {
         return
       }
       this.$vuexPush('equivalentProperty', equivalentProperty)
@@ -602,7 +602,7 @@ export default {
       const equivalentProperty = this.proposalObject[`equivalentProperty[${index}]`]
       this.$vuexDeleteAtIndex('equivalentProperty', index)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('equivalentPropertyRemoved', equivalentProperty.subject.value)
       }
     },
@@ -632,7 +632,7 @@ export default {
     },
     addExternalRange (iri) {
       this.$vuexPush('ranges', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['rangesRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject.rangesRemoved.indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('rangesRemoved', unRemove)
         return true
@@ -641,7 +641,7 @@ export default {
     },
     addExternalEquivalentProperty (iri) {
       this.$vuexPush('equivalentProperty', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['equivalentPropertyRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject.equivalentPropertyRemoved.indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('equivalentPropertyRemoved', unRemove)
         return true
@@ -662,7 +662,7 @@ export default {
       this.$vuexSet(`${this.storePath}.parentStructureIRI`, this.iri)
       if (!this.subform) {
         if (this.edit) {
-          const originalIRI = this.proposalObject['originalIRI'] || this.proposalObject['iri']
+          const originalIRI = this.proposalObject.originalIRI || this.proposalObject.iri
           this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
         }
         if (this.proposalObject['domains.length'] === 0) {

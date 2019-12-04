@@ -89,7 +89,7 @@ export function iriToId (iri) {
 }
 
 export function childClassesCount (obj, sum = 0, recursing = false) {
-  if (obj.hasOwnProperty('childClassesCount')) {
+  if ('childClassesCount' in obj) {
     return obj.childClassesCount
   }
   let count
@@ -107,7 +107,7 @@ export function childClassesCount (obj, sum = 0, recursing = false) {
 }
 export function childPropertiesCount (obj) {
   // returned cached version if we have it
-  if (obj.hasOwnProperty('childPropertiesCount')) {
+  if ('childPropertiesCount' in obj) {
     return obj.childPropertiesCount
   }
   // compute it
@@ -166,7 +166,7 @@ export function firstVal (xs = []) {
   }
   if (xs.length) {
     const first = xs[0]
-    if (first.hasOwnProperty('subject') && first.hasOwnProperty('predicate') && first.hasOwnProperty('object')) {
+    if ('subject' in first && 'predicate' in first && 'object' in first) {
       return first
     }
     return first.value

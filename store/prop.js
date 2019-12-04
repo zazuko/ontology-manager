@@ -51,27 +51,22 @@ export const mutations = VueDeepSet.extendMutation({
 
 export const actions = {
   async [LOAD] ({ commit, state }, id) {
-    try {
-      const result = await this.app.apolloProvider.defaultClient.query({
-        query: proposalById,
-        variables: {
-          id
-        }
-      })
-
-      const proposal = result.data.proposal
-      if (!_get(proposal, 'proposalObject')) {
-        throw new Error('Not found')
+    const result = await this.app.apolloProvider.defaultClient.query({
+      query: proposalById,
+      variables: {
+        id
       }
-      const deserialized = this.$proposalDeserializer(proposal.proposalObject)
+    })
 
-      commit(LOAD, deserialized)
-      commit(SET_ID, proposal.id)
-      return proposal.isDraft
+    const proposal = result.data.proposal
+    if (!_get(proposal, 'proposalObject')) {
+      throw new Error('Not found')
     }
-    catch (error) {
-      throw error
-    }
+    const deserialized = this.$proposalDeserializer(proposal.proposalObject)
+
+    commit(LOAD, deserialized)
+    commit(SET_ID, proposal.id)
+    return proposal.isDraft
   },
   async [SAVE] ({ dispatch, commit, state }) {
     try {
@@ -110,7 +105,7 @@ export const actions = {
       }
 
       if (threadId) {
-        variables['id'] = threadId
+        variables.id = threadId
       }
       const result = await this.app.apolloProvider.defaultClient.mutate({
         mutation,

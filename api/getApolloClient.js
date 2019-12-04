@@ -10,10 +10,10 @@ const { setContext } = require('apollo-link-context')
 const { withClientState } = require('apollo-link-state')
 const fetch = require('isomorphic-fetch')
 
-let clients = {}
+const clients = {}
 module.exports = async (options = {}) => {
   const key = JSON.stringify(options)
-  if (clients.hasOwnProperty(key)) {
+  if (clients[key]) {
     return clients[key]
   }
 

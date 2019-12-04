@@ -28,7 +28,7 @@ let client
   async function waitForDB () {
     let attemptsCount = 0
     const spinner = ora('Waiting for postgres to start').start()
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       const wait = setInterval(waiting, 5000)
 
       async function waiting () {
@@ -189,53 +189,48 @@ async function migrateSettings () {
     'GITHUB_PERSONAL_ACCESS_TOKEN'
   ]
 
-  try {
-    const client = knex({
-      client: 'pg',
-      connection: {}
-    })
+  const client = knex({
+    client: 'pg',
+    connection: {}
+  })
 
-    const existingConfigs = await client
-      .withSchema('editor_schema')
-      .select('id', 'forge', 'editor', 'ontology')
-      .from('config')
-      .orderBy('id', 'desc')
-      .limit(1)
+  const existingConfigs = await client
+    .withSchema('editor_schema')
+    .select('id', 'forge', 'editor', 'ontology')
+    .from('config')
+    .orderBy('id', 'desc')
+    .limit(1)
 
-    if (!existingConfigs.length) {
-      const { forge, editor, ontology } = getConfigFromEnvVars()
+  if (!existingConfigs.length) {
+    const { forge, editor, ontology } = getConfigFromEnvVars()
 
-      const varsToImport = importableEnvVars.filter(name => !!process.env[name])
-      if (!varsToImport.length) {
-        spinner.succeed('No environment variable to import')
-        return
-      }
-      else {
-        spinner.info(`Will import the following env vars: \n  - ${varsToImport.map(x => `${x}=${process.env[x]}`).join('\n  - ')}\n`)
-      }
-
-      await client.raw(`
-        INSERT INTO
-          "editor_schema"."config"("forge", "editor", "ontology", "reason")
-        VALUES(
-          '${JSON.stringify(forge)}'::jsonb,
-          '${JSON.stringify(editor)}'::jsonb,
-          '${JSON.stringify(ontology)}'::jsonb,
-          'Initial config imported from env vars'
-        )
-        RETURNING "id", "forge", "editor", "ontology";
-      `)
-      spinner.succeed('Imported config from env vars')
+    const varsToImport = importableEnvVars.filter(name => !!process.env[name])
+    if (!varsToImport.length) {
+      spinner.succeed('No environment variable to import')
+      return
     }
     else {
-      spinner.succeed('Config exists; not importing anything.')
+      spinner.info(`Will import the following env vars: \n  - ${varsToImport.map(x => `${x}=${process.env[x]}`).join('\n  - ')}\n`)
     }
 
-    await client.destroy()
+    await client.raw(`
+      INSERT INTO
+        "editor_schema"."config"("forge", "editor", "ontology", "reason")
+      VALUES(
+        '${JSON.stringify(forge)}'::jsonb,
+        '${JSON.stringify(editor)}'::jsonb,
+        '${JSON.stringify(ontology)}'::jsonb,
+        'Initial config imported from env vars'
+      )
+      RETURNING "id", "forge", "editor", "ontology";
+    `)
+    spinner.succeed('Imported config from env vars')
   }
-  catch (err) {
-    throw err
+  else {
+    spinner.succeed('Config exists; not importing anything.')
   }
+
+  await client.destroy()
   if (client) {
     await client.destroy()
   }

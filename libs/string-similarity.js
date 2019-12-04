@@ -28,7 +28,7 @@ export function compareTwoStrings (first, second) {
     return 0
   }
 
-  let firstBigrams = new Map()
+  const firstBigrams = new Map()
   for (let i = 0; i < first.length - 1; i++) {
     const bigram = first.substr(i, 2)
     const count = firstBigrams.has(bigram)

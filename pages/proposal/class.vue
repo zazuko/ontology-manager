@@ -195,7 +195,7 @@ export default {
     if (process.browser) {
       // save draft at fixed time interval
       this.saveInterval = setInterval(() => {
-        if ((this.clss && this.clss['isDraft'] === false) || this.readonly) {
+        if ((this.clss && this.clss.isDraft === false) || this.readonly) {
           this.stopAutosave()
           return
         }
@@ -228,10 +228,10 @@ export default {
               return
             }
 
-            if (this.clss['proposalType'] === 'Property') {
+            if (this.clss.proposalType === 'Property') {
               this.$router.push({
                 name: 'proposal-property',
-                query: { id: this.clss['threadId'] }
+                query: { id: this.clss.threadId }
               })
             }
           })
@@ -263,8 +263,8 @@ export default {
       return this.$deepModel('class.clss')
     },
     _iri () {
-      if (this.clss['parentStructureIRI']) {
-        return this.clss['parentStructureIRI']
+      if (this.clss.parentStructureIRI) {
+        return this.clss.parentStructureIRI
       }
       return this.iri
     },

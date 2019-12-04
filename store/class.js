@@ -109,7 +109,7 @@ export const actions = {
       }
 
       if (threadId) {
-        variables['id'] = threadId
+        variables.id = threadId
       }
       const result = await this.app.apolloProvider.defaultClient.mutate({
         mutation,

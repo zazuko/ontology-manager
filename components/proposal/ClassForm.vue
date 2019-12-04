@@ -420,10 +420,10 @@ export default {
             clearInterval(this.waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.readonly,
-              value: this.proposalObject['example']
+              value: this.proposalObject.example
             })
             this.yate.on('change', cm => {
-              this.proposalObject['example'] = cm.getValue()
+              this.proposalObject.example = cm.getValue()
             })
           }
         }, 500)
@@ -472,7 +472,7 @@ export default {
   },
   watch: {
     'proposalObject.label' () {
-      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject['baseIRI'] + normalizeLabel(this.proposalObject['label'], 'pascal'))
+      this.$vuexSet(`${this.storePath}.iri`, this.proposalObject.baseIRI + normalizeLabel(this.proposalObject.label, 'pascal'))
     }
   },
   methods: {
@@ -489,7 +489,7 @@ export default {
       const domain = searchResult.domain
       // don't add if already in there or same as the container
       const isSelected = ({ subject }) => term(subject) === term(domain.subject)
-      if (this.proposalObject['domains'].find(isSelected) || this.iri === term(domain.subject)) {
+      if (this.proposalObject.domains.find(isSelected) || this.iri === term(domain.subject)) {
         return
       }
 
@@ -497,11 +497,11 @@ export default {
     },
     unselectDomain (index) {
       const domain = this.proposalObject.domains[index]
-      const childIndex = this.proposalObject['propChildren'].indexOf(domain)
+      const childIndex = this.proposalObject.propChildren.indexOf(domain)
       this.$vuexDeleteAtIndex('propChildren', childIndex)
       this.$vuexDeleteAtIndex('domains', index)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('domainsRemoved', domain)
       }
     },
@@ -513,14 +513,14 @@ export default {
     selectEquivalentClass (searchResult) {
       const equivalentClass = searchResult.domain
 
-      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(searchResult.domain.subject.value)
+      const unRemove = this.proposalObject.equivalentClassRemoved.indexOf(searchResult.domain.subject.value)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
         return
       }
       // don't add if already in there
       const isSelected = ({ subject }) => term(subject) === term(equivalentClass.subject)
-      if (this.proposalObject['equivalentClass'].find(isSelected)) {
+      if (this.proposalObject.equivalentClass.find(isSelected)) {
         return
       }
       this.$vuexPush('equivalentClass', equivalentClass)
@@ -528,15 +528,15 @@ export default {
     selectSubClass (searchResult) {
       const subClass = searchResult.domain.subject.value
 
-      const unRemove = this.proposalObject['subClassRemoved'].indexOf(subClass)
+      const unRemove = this.proposalObject.subClassRemoved.indexOf(subClass)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('subClassRemoved', unRemove)
         return
       }
-      if (this.proposalObject['subClass'] && this.proposalObject['subject'].subject.value === subClass) {
+      if (this.proposalObject.subClass && this.proposalObject.subject.subject.value === subClass) {
         return
       }
-      if (subClass === this.proposalObject['iri']) {
+      if (subClass === this.proposalObject.iri) {
         return
       }
 
@@ -560,20 +560,20 @@ export default {
       const equivalentClass = this.proposalObject[`equivalentClass[${index}]`]
       this.$vuexDeleteAtIndex('equivalentClass', index)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('equivalentClassRemoved', equivalentClass.subject.value)
       }
     },
     unselectSubClass (quad) {
       this.$vuexSet(`${this.storePath}.subClass`, null)
 
-      if (this.proposalObject['isEdit']) {
+      if (this.proposalObject.isEdit) {
         this.$vuexPush('subClassRemoved', quad.subject.value)
       }
     },
     addExternalEquivalentClass (iri) {
       this.$vuexPush('equivalentClass', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['equivalentClassRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject.equivalentClassRemoved.indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('equivalentClassRemoved', unRemove)
         return true
@@ -582,7 +582,7 @@ export default {
     },
     addExternalSubClass (iri) {
       this.$vuexPush('subClass', this.$externalIRIToQuad(iri))
-      const unRemove = this.proposalObject['subClassRemoved'].indexOf(iri)
+      const unRemove = this.proposalObject.subClassRemoved.indexOf(iri)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('subClassRemoved', unRemove)
         return true
@@ -628,7 +628,7 @@ export default {
       }
       this.classesSearch = this.$domainsSearchFactory(this.ontology, 'Class', true)
       if (!this.subform && this.edit) {
-        const originalIRI = this.proposalObject['originalIRI'] || this.proposalObject['iri']
+        const originalIRI = this.proposalObject.originalIRI || this.proposalObject.iri
         this.$vuexSet(`${this.storePath}.originalIRI`, originalIRI)
       }
       this.propertiesSearch = this.$domainsSearchFactory(this.ontology, 'Property', false)
