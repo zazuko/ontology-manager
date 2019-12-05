@@ -365,7 +365,7 @@
 <script>
 import _get from 'lodash/get'
 import rdf from 'rdf-ext'
-import { normalizeLabel, term, toastClose } from '@/libs/utils'
+import { normalizeLabel, term } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
@@ -531,29 +531,14 @@ export default {
       const unRemove = this.proposalObject.subClassRemoved.indexOf(subClass)
       if (unRemove !== -1) {
         this.$vuexDeleteAtIndex('subClassRemoved', unRemove)
-        return
       }
-      if (this.proposalObject.subClass && this.proposalObject.subject.subject.value === subClass) {
+      if (this.proposalObject.subClass && this.proposalObject.subClass.subject.value === subClass) {
         return
       }
       if (subClass === this.proposalObject.iri) {
         return
       }
 
-      // don't add if it is circular
-      const parentClass = (iri) => this.ontology.match(rdf.namedNode(iri), this.$termIRI.subClassOf).toArray().map(({ object }) => object.value)
-      let circular = parentClass(subClass)
-      const base = [subClass, ...circular]
-      while (circular.length) {
-        for (const iri of circular) {
-          if (base.includes(iri)) {
-            this.$toast.error('Cannot add circular subClassOf!', toastClose).goAway(1600)
-            return
-          }
-          base.push(iri)
-        }
-        circular = parentClass(subClass)
-      }
       this.$vuexSet(`${this.storePath}.subClass`, searchResult.domain)
     },
     unselectEquivalentClass (index) {
