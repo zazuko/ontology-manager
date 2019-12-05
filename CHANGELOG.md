@@ -1,3 +1,15 @@
+<a name="0.9.86"></a>
+## [0.9.86](https://github.com/zazuko/ontology-manager/compare/v0.9.85...v0.9.86) (2019-12-05)
+
+
+### Bug Fixes
+
+* **object-details:** show parent class in breadcrumb ([f97725e](https://github.com/zazuko/ontology-manager/commit/f97725e))
+* **proposals:** initialize YATE after loading proposal ([f27e234](https://github.com/zazuko/ontology-manager/commit/f27e234))
+* **proposals:** remove circular subClass check for now ([99ca7d5](https://github.com/zazuko/ontology-manager/commit/99ca7d5))
+
+
+
 <a name="0.9.85"></a>
 ## [0.9.85](https://github.com/zazuko/ontology-manager/compare/v0.9.84...v0.9.85) (2019-12-04)
 
