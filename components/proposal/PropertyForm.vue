@@ -454,7 +454,7 @@ export default {
     if (process.browser && this.readonly !== true) {
       setTimeout(() => {
         this.waitForYate = setInterval(() => {
-          if (window.YATE && this.$refs.exampleTextarea) {
+          if (window.YATE && this.$refs.exampleTextarea && this.proposalObject.label) {
             clearInterval(this.waitForYate)
             this.yate = window.YATE.fromTextArea(this.$refs.exampleTextarea, {
               readOnly: this.readonly,
@@ -464,8 +464,8 @@ export default {
               this.proposalObject.example = cm.getValue()
             })
           }
-        }, 500)
-      }, 800)
+        }, 300)
+      }, 300)
     }
   },
   beforeDestroy () {
