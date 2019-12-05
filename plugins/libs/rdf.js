@@ -44,6 +44,9 @@ export default ({ app, store }, inject) => {
     get subClassOf () {
       return 'http://www.w3.org/2000/01/rdf-schema#subClassOf'
     },
+    get subPropertyOf () {
+      return 'http://www.w3.org/2000/01/rdf-schema#subPropertyOf'
+    },
     get equivalentProperty () {
       return 'http://www.w3.org/2002/07/owl#equivalentProperty'
     },
@@ -97,6 +100,8 @@ export default ({ app, store }, inject) => {
   inject('mergedEditedOntology', mergedEditedOntology)
   inject('buildSearchIndex', buildSearchIndex)
   inject('buildTree', buildTree)
+  inject('buildSchemaTree', buildSchemaTree)
+  inject('findInTree', findInTree)
   inject('findClassProperties', findClassProperties)
   inject('unPrefix', unPrefix)
 
@@ -386,6 +391,20 @@ export default ({ app, store }, inject) => {
       return {}
     }
 
+    class StructureNode {
+      constructor (iri, parent, quads, children = []) {
+        this.iri = iri
+        this.parent = parent
+        this.quads = quads
+        this.children = children
+        this.isCreativeWork = !!quads.match(
+          rdf.namedNode(this.iri),
+          termIRI.a,
+          termIRI.creativeWork
+        ).length
+      }
+    }
+
     const nodes = {}
 
     // we consider <parentIRI> <givenPredicate> <childIRI>
@@ -394,8 +413,14 @@ export default ({ app, store }, inject) => {
         .match(null, rdf.namedNode(predicate))
         .toArray()
         .forEach((quad) => {
-          const parent = nodes[quad.subject.value] || (nodes[quad.subject.value] = new Node(quad.subject.value, undefined, structureDataset.match(quad.subject)))
-          const child = nodes[quad.object.value] || (nodes[quad.object.value] = new Node(quad.object.value, parent, structureDataset.match(quad.object)))
+          if (!nodes[quad.subject.value]) {
+            nodes[quad.subject.value] = new StructureNode(quad.subject.value, undefined, structureDataset.match(quad.subject))
+          }
+          const parent = nodes[quad.subject.value]
+          if (!nodes[quad.object.value]) {
+            nodes[quad.object.value] = new StructureNode(quad.object.value, parent, structureDataset.match(quad.object))
+          }
+          const child = nodes[quad.object.value]
           child.parent = parent
           parent.children.push(child)
         })
@@ -460,6 +485,7 @@ export default ({ app, store }, inject) => {
           // then it's a root
           acc.push(node)
         }
+        // since this structure is stored in the vuex store, it cannot be circular (max call stack in devalue)
         node.parent = null
         return acc
       }, [])
@@ -467,17 +493,88 @@ export default ({ app, store }, inject) => {
     return forest
   }
 
-  class Node {
-    constructor (iri, parent, quads, children = []) {
-      this.iri = iri
-      this.parent = parent
-      this.quads = quads
-      this.children = children
-      this.isCreativeWork = !!quads.match(
-        rdf.namedNode(this.iri),
-        termIRI.a,
-        termIRI.creativeWork
-      ).length
+  function buildSchemaTree (dataset) {
+    const nodes = {}
+
+    class SchemaNode {
+      constructor (iri, parent, quads, children = []) {
+        this.iri = iri
+        this.parent = parent
+        this.children = children
+
+        this.quads = quads
+
+        this.isClass = Boolean(quads.match(rdf.namedNode(iri), termIRI.a, termIRI.Class).size)
+        this.isSubClass = Boolean(quads.match(rdf.namedNode(iri), termIRI.subClassOf).size)
+        this.isProperty = Boolean(quads.match(rdf.namedNode(iri), termIRI.a, termIRI.Property).size)
+        this.isSubProperty = Boolean(quads.match(rdf.namedNode(iri), termIRI.subPropertyOf).size)
+      }
+    }
+
+    // we consider <childIRI> <givenPredicate> <parentIRI>
+    ;[termIRI.subClassOf, termIRI.subPropertyOf].forEach((predicate) => {
+      dataset
+        .match(null, predicate)
+        .toArray()
+        .forEach(({ subject, object }) => {
+          // X sub of Y
+          if (!nodes[object.value]) {
+            nodes[object.value] = new SchemaNode(object.value, undefined, dataset.match(object))
+          }
+          const parent = nodes[object.value]
+
+          if (!nodes[subject.value]) {
+            nodes[subject.value] = new SchemaNode(subject.value, parent, dataset.match(subject))
+          }
+          const child = nodes[subject.value]
+
+          child.parent = parent
+          parent.children.push(child)
+        })
+    })
+
+    const forest = Object.keys(nodes)
+      .reduce((acc, iri) => {
+        const node = nodes[iri]
+        node.path = `/${iri.replace(store.state.config.ontology.datasetBaseUrl, '')}`
+        node.properties = []
+        node.type = 'container'
+
+        node.label = iri
+
+        const label = dataset.match(rdf.namedNode(iri), termIRI.label).toArray()
+        if (label.length) {
+          node.label = label[0].object.value
+          node.properties = findClassProperties(iri, dataset)
+        }
+
+        if (!node.parent) {
+          // then it's a root
+          acc.push(node)
+        }
+        // since this structure is stored in the vuex store, it cannot be circular (max call stack in devalue)
+        node.parent = null
+        return acc
+      }, [])
+
+    return forest
+  }
+
+  function findInTree (iri, tree) {
+    const children = 'children' in tree ? tree.children : tree
+    if (!Array.isArray(children)) {
+      console.error(tree)
+      throw new Error('$findInTree cannot iterate')
+    }
+    for (const child of children) {
+      child.parent = tree
+      if (child.iri === iri) {
+        return child
+      }
+      const found = findInTree(iri, child)
+      if (found) {
+        return found
+      }
     }
   }
 

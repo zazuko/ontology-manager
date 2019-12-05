@@ -362,13 +362,13 @@ export default {
     },
     breadcrumbs () {
       this.init()
-      const structureTree = cloneDeep(this.$store.state.graph.structureTree)
+      const schemaTree = cloneDeep(this.$store.state.graph.schemaTree)
 
       if (this.isProperty) {
         const parents = this.findPropertyParents(this.iri)
         return parents.map((parent) => {
           const path = []
-          let child = this.findInTree(parent.iri, { children: structureTree })
+          let child = this.$findInTree(parent.iri, schemaTree)
           if (!child) {
             return ''
           }
@@ -386,7 +386,7 @@ export default {
       }
       else if (this.isClass) {
         const path = []
-        let child = this.findInTree(this.iri.value, { children: structureTree })
+        let child = this.$findInTree(this.iri.value, schemaTree)
         if (!child) {
           return ''
         }
@@ -414,18 +414,6 @@ export default {
     label (iri, dataset) {
       const label = dataset.match(iri, this.$termIRI.label).toArray()
       return _get(label, '[0].object.value', '')
-    },
-    findInTree (iri, tree) {
-      for (const child of tree.children) {
-        child.parent = tree
-        if (child.iri === iri) {
-          return child
-        }
-        const found = this.findInTree(iri, child)
-        if (found) {
-          return found
-        }
-      }
     },
     findPropertyParents (iri) {
       return this.ontology.match(iri, this.$termIRI.domain)

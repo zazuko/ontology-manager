@@ -13,6 +13,7 @@ export const state = () => ({
   structure: {},
   ontologySerialized: '',
   structureSerialized: '',
+  schemaTree: {},
   structureTree: {},
   proposalCountByIRI: {},
   searchIndex: [],
@@ -32,6 +33,7 @@ export const getters = {
     }
     return state.structure.clone()
   },
+  schemaTree: (state) => state.schemaTree,
   structureTree: (state) => state.structureTree,
   clientReady: (state) => state.clientReady
 }
@@ -40,6 +42,7 @@ export const mutations = {
   ontologyInit (state, ontologyDataset) {
     state.ontologySerialized = serialize(ontologyDataset)
     state.ontology = ontologyDataset
+    state.schemaTree = this.$buildSchemaTree(ontologyDataset)
   },
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
@@ -54,6 +57,7 @@ export const mutations = {
     state.proposalCountByIRI = count
   },
   rebuildStructureTree (state) {
+    state.schemaTree = this.$buildSchemaTree(state.ontology)
     state.structureTree = this.$buildTree(state.structure, state.ontology, state.proposalCountByIRI)
   }
 }
