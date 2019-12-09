@@ -46,7 +46,7 @@ function getConfigFromEnvVars () {
     containersNestingPredicate: process.env.CONTAINERS_NESTING_PREDICATE || 'http://schema.org/hasPart',
     ontologyRawUrl: process.env.ONTOLOGY_RAW_URL || 'https://raw.githubusercontent.com/vhf/o/example-com/ontology.nt',
     structureRawUrl: process.env.STRUCTURE_RAW_URL || 'https://raw.githubusercontent.com/vhf/o/example-com/structure.nt',
-    ontologyResourceUrl: '/'
+    ontologyResourceUrl: '/rdf'
   }
 
   const forge = {

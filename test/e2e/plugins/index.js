@@ -24,7 +24,7 @@ function parseToJSON (content) {
 // plugins file
 module.exports = (on, config) => {
   // accept a envFile value or use development by default
-  const file = config.env.envFile || 'docker-app-dev/.env'
+  const file = config.env.envFile || './.env.example'
 
   const content = getConfigurationByFile(file)
   const envObj = parseToJSON(content)

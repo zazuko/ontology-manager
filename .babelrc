@@ -1,9 +1,9 @@
 {
-  "presets": [["env", {"modules": false}]],
+  "presets": [["@babel/env", {"modules": false}]],
   "env": {
     "test": {
       "presets": [
-        ["env", {
+        ["@babel/env", {
           "targets": {
             "node": "current"
           }

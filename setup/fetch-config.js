@@ -1,6 +1,5 @@
 const knex = require('knex')
 const debug = require('debug')('editor:config')
-// const getConfigFromEnvVars = require('./migration-helpers').getConfigFromEnvVars
 const envInit = require('./env-init')
 
 let config

@@ -2,10 +2,6 @@ import { resolve } from 'path'
 import { Nuxt, Builder } from 'nuxt'
 import axios from 'axios'
 
-const envInit = require('../setup/env-init')
-// load env vars
-envInit()
-
 jest.setTimeout(100000)
 
 // https://github.com/axios/axios/issues/960#issuecomment-320659373

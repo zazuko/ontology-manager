@@ -8,6 +8,12 @@ const pgConfig = {
   // bigger timeout for dev env to account for longer app startup time
   statement_timeout: process.env.NODE_ENV === 'production' ? 5000 : 15000
 }
+/*
+For some reason, tests cannot run without this.
+https://github.com/graphile/postgraphile/blob/04310e2b1766bd1705e39fef078738298a5444f4/src/postgraphile/postgraphile.ts#L19
+This condition is always false, making graphile throw.
+*/
+Object.setPrototypeOf(pgConfig, Object.prototype)
 
 const schemaName = 'editor_schema'
 

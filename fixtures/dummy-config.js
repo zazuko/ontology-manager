@@ -35,7 +35,7 @@ module.exports = () => ({
     containersNestingPredicate: 'http://schema.org/hasPart',
     ontologyRawUrl: 'file:./fixtures/empty.nt',
     structureRawUrl: 'file:./fixtures/empty.nt',
-    ontologyResourceUrl: '/'
+    ontologyResourceUrl: '/rdf'
   },
   forge: {
     oauthHost: 'https://github.com/login/oauth',
