@@ -1,3 +1,18 @@
+<a name="0.9.87"></a>
+## [0.9.87](https://github.com/zazuko/ontology-manager/compare/v0.9.86...v0.9.87) (2019-12-09)
+
+
+### Bug Fixes
+
+* **proposals:** redirect to draft as soon as it's saved ([4dc1a62](https://github.com/zazuko/ontology-manager/commit/4dc1a62))
+
+
+### Features
+
+* **schema:** detect subClass cycles ([0d8b2df](https://github.com/zazuko/ontology-manager/commit/0d8b2df))
+
+
+
 <a name="0.9.86"></a>
 ## [0.9.86](https://github.com/zazuko/ontology-manager/compare/v0.9.85...v0.9.86) (2019-12-05)
 
