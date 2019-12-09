@@ -173,3 +173,57 @@ export function firstVal (xs = []) {
   }
   return ''
 }
+
+export function buildAdjacencyList (trees) {
+  const acc = {}
+  for (const tree of trees) {
+    traverse(tree)
+  }
+
+  function traverse (node) {
+    acc[node.iri] = acc[node.iri] || []
+    for (const child of node.children) {
+      acc[node.iri].push(traverse(child))
+    }
+    return node.iri
+  }
+  return acc
+}
+
+export function isCyclicTree (tree) {
+  const adjacencyList = buildAdjacencyList(tree)
+  return isCyclic(adjacencyList)
+}
+
+export function isCyclic (adjacencyList) {
+  function recursiveCheck (node, visited, stack) {
+    visited[node] = true
+    stack[node] = true
+    for (const child of adjacencyList[node]) {
+      if (!visited[child]) {
+        if (recursiveCheck(child, visited, stack)) {
+          return true
+        }
+      }
+      else if (stack[child]) {
+        return true
+      }
+    }
+    stack[node] = false
+    return false
+  }
+
+  const visited = {}
+  const stack = {}
+  Object.keys(adjacencyList).forEach((key) => {
+    visited[key] = false
+    stack[key] = false
+  })
+
+  for (const node of Object.keys(adjacencyList)) {
+    if (!visited[node] && recursiveCheck(node, visited, stack)) {
+      return true
+    }
+  }
+  return false
+}

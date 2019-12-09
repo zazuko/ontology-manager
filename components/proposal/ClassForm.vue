@@ -364,8 +364,9 @@
 
 <script>
 import _get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import rdf from 'rdf-ext'
-import { normalizeLabel, term } from '@/libs/utils'
+import { buildAdjacencyList, isCyclic, normalizeLabel, term, toastClose } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import ProposalPropertiesTable from './ProposalPropertiesTable'
@@ -435,6 +436,7 @@ export default {
   },
   data () {
     return {
+      schemaTree: {},
       classesSearch: () => ([]),
       propertiesSearch: () => ([]),
       ontology: rdf.dataset(),
@@ -539,6 +541,14 @@ export default {
         return
       }
 
+      const adjacencyList = buildAdjacencyList(this.schemaTree)
+      adjacencyList[subClass] = adjacencyList[subClass] || []
+      adjacencyList[subClass].push(this.proposalObject.iri)
+      if (isCyclic(adjacencyList)) {
+        this.$toast.error('Cannot create cyclic subClassOf', toastClose).goAway(10000)
+        return
+      }
+
       this.$vuexSet(`${this.storePath}.subClass`, searchResult.domain)
     },
     unselectEquivalentClass (index) {
@@ -611,6 +621,7 @@ export default {
         this.ontology = this.$store.getters['graph/ontology']
         this.structure = this.$store.getters['graph/structure']
       }
+      this.schemaTree = cloneDeep(this.$store.state.graph.schemaTree)
       this.classesSearch = this.$domainsSearchFactory(this.ontology, 'Class', true)
       if (!this.subform && this.edit) {
         const originalIRI = this.proposalObject.originalIRI || this.proposalObject.iri
