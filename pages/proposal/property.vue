@@ -273,6 +273,14 @@ export default {
     ...propertyGetters(['success', 'error'])
   },
   watch: {
+    id () {
+      if (typeof this.id === 'number') {
+        this.$router.push({
+          name: 'proposal-property',
+          query: { id: this.id }
+        })
+      }
+    },
     success () {
       if (!this.error && this.success) {
         this.$store.dispatch('drafts/LOAD')

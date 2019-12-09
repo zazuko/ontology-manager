@@ -274,6 +274,14 @@ export default {
     ...classGetters(['success', 'error'])
   },
   watch: {
+    id () {
+      if (typeof this.id === 'number') {
+        this.$router.push({
+          name: 'proposal-class',
+          query: { id: this.id }
+        })
+      }
+    },
     success () {
       if (!this.error && this.success) {
         this.$store.dispatch('drafts/LOAD')
