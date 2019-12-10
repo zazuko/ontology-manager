@@ -9,12 +9,12 @@ import fetchDataset from '@/trifid/dataset-fetch-client'
 import countProposals from '@/apollo/queries/countProposals'
 
 export const state = () => ({
-  ontology: {},
-  structure: {},
+  ontology: rdf.dataset(),
+  structure: rdf.dataset(),
   ontologySerialized: '',
   structureSerialized: '',
-  schemaTree: {},
-  structureTree: {},
+  schemaTree: [],
+  structureTree: [],
   proposalCountByIRI: {},
   searchIndex: [],
   clientReady: false
@@ -80,18 +80,15 @@ export const actions = {
   },
 
   async [RELOAD_DATASET] ({ commit, dispatch, state, rootState }) {
-    const cache = JSON.stringify(state.proposalCountByIRI)
     await dispatch(COUNT_PROPOSALS)
-    const compare = JSON.stringify(state.proposalCountByIRI)
-    if (compare !== cache) {
-      commit('rebuildStructureTree')
-    }
+    commit('rebuildStructureTree')
 
     try {
       const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
       if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
         commit('ontologyInit', ontologyDataset)
         commit('structureInit', structureDataset)
+        commit('rebuildStructureTree')
       }
       return dispatch(DESERIALIZE)
     }

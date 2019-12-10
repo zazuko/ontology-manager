@@ -4,7 +4,7 @@ import N3Parser from 'rdf-parser-n3'
 import axios from 'axios'
 import fetchConfig from '../setup/fetch-config'
 
-const debug = require('debug')('editor:trifid')
+const debug = require('debug')('editor:backend:trifid')
 
 // * used by a trifid plugin on first server requests
 export default async function fetchDataset () {

@@ -1,6 +1,6 @@
 const helpersFactory = require('./helpers')
 const octokitFactory = require('@octokit/rest')
-const debug = require('debug')('editor:api')
+const debug = require('debug')('editor:backend')
 const octokitDebug = require('debug')('editor:octokit')
 const __cache = new Map()
 
@@ -21,7 +21,7 @@ module.exports = class GitHubAPIv3 {
 
     // private helpers
     this.__octokit = octokitFactory({
-      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:api'),
+      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:backend'),
       auth: `token ${forge.committerPersonalAccessToken}`,
       log: {
         debug: octokitDebug,
@@ -32,7 +32,7 @@ module.exports = class GitHubAPIv3 {
       }
     })
     debug('new GitHubAPIv3', {
-      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:api'),
+      debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:backend'),
       auth: `token ${forge.committerPersonalAccessToken}`
     })
 

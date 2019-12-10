@@ -15,7 +15,7 @@
     </section>
 
     <section
-      v-for="(tree, index) in children"
+      v-for="(tree, index) in structureTree"
       :key="index"
       class="container layout-objects-list-item">
       <structure
@@ -28,20 +28,22 @@
 </template>
 
 <script>
-import _get from 'lodash/get'
-import rdf from 'rdf-ext'
-
+import { createNamespacedHelpers } from 'vuex'
 import Structure from '@/components/fallback/Structure'
+
+const {
+  mapGetters: graphGetters
+} = createNamespacedHelpers('graph')
 
 export default {
   layout: 'background',
   components: {
     Structure
   },
+  computed: {
+    ...graphGetters(['ontology', 'structure', 'structureTree'])
+  },
   mounted () {
-    this.ontology = this.$store.getters['graph/ontology']
-    this.structure = this.$store.getters['graph/structure']
-
     setTimeout(() => {
       const cookies = document.cookie.split(';')
       if (cookies.length > 1 && this.$store.state.config.setup && process.browser) {
@@ -57,10 +59,7 @@ export default {
   },
   data () {
     return {
-      objectType: 'container',
-      ontology: rdf.dataset(),
-      structure: rdf.dataset(),
-      children: _get(this, '$store.state.graph.structureTree', [])
+      objectType: 'container'
     }
   }
 }

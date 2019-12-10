@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const bodyParser = require('body-parser')
-const debug = require('debug')('editor:api')
+const debug = require('debug')('editor:backend')
 const express = require('express')
 const gql = require('graphql-tag')
 const jwt = require('express-jwt')

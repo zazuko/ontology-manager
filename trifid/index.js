@@ -3,7 +3,7 @@ import express from 'express'
 import { join } from 'path'
 import fetchConfig from '../setup/fetch-config'
 
-const debug = require('debug')('editor:trifid')
+const debug = require('debug')('editor:backend:trifid')
 const app = express()
 app.set('trust proxy', 'loopback')
 app.set('x-powered-by', null)

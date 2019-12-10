@@ -1,7 +1,5 @@
 import * as VueDeepSet from 'vue-deepset'
 
-let datasetPolling = false
-
 export const state = () => ({
   authProcessDone: false
 })
@@ -23,17 +21,13 @@ export const actions = {
     await dispatch('config/LOAD_CONFIG')
     commit('class/NEW')
     commit('prop/NEW')
+    await dispatch('graph/RELOAD_DATASET')
 
     if (req && req.ontology) {
       commit('graph/ontologyInit', req.ontology)
     }
     if (req && req.structure) {
       commit('graph/structureInit', req.structure)
-    }
-    if (!datasetPolling && process.server) {
-      datasetPolling = setInterval(() => {
-        dispatch('graph/RELOAD_DATASET')
-      }, 5000)
     }
   },
   async nuxtClientInit ({ commit, dispatch }, context) {

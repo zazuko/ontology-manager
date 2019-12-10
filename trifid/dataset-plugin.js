@@ -1,19 +1,11 @@
 import fetchDataset from './dataset-fetch'
-
-const debug = require('debug')('editor:trifid')
-
-let datasets = null
-
-process.on('SIGHUP', async () => {
-  datasets = await fetchDataset()
-  debug('Trifid: datasets reloaded')
-})
+import rdf from 'rdf-ext'
 
 module.exports = handler
 
 /**
- * This middleware runs on every page load, it fetchs the dataset and puts
- * it on the request
+ * This middleware runs on every page load, it fetchs the datasets and puts
+ * them on the request
  */
 function handler (router) {
   router.use(async (req, res, next) => {
@@ -23,13 +15,11 @@ function handler (router) {
       return
     }
 
-    if (!datasets) {
-      datasets = await fetchDataset()
-    }
-    const { ontologyDataset, structureDataset } = datasets
+    const datasets = await fetchDataset()
+    const { ontologyDataset, structureDataset } = datasets || {}
 
-    req.ontology = ontologyDataset
-    req.structure = structureDataset
+    req.ontology = ontologyDataset || rdf.dataset()
+    req.structure = structureDataset || rdf.dataset()
 
     next()
   })

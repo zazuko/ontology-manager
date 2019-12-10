@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Router = require('express').Router
 const axios = require('axios')
 const gql = require('graphql-tag')
-const debug = require('debug')('editor:api')
+const debug = require('debug')('editor:backend')
 
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
@@ -10,6 +10,21 @@ const GitHubAPIv3 = require('./api')
 module.exports = async function (editorConfig) {
   const router = Router()
   const api = new GitHubAPIv3(editorConfig)
+
+  const filesCache = new Map()
+  setInterval(async () => {
+    for (const [path, content] of filesCache.entries()) {
+      try {
+        const newContent = await api.getFile({ path })
+        if (newContent !== content) {
+          filesCache.set(path, newContent)
+        }
+      }
+      catch (err) {
+        debug(err)
+      }
+    }
+  }, 5000)
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
@@ -28,6 +43,7 @@ module.exports = async function (editorConfig) {
     let content
     try {
       content = await api.getFile({ path })
+      filesCache.set(path, content)
     }
     catch (err) {
       debug(`/blob/${path}`, err)
