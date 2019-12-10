@@ -82,6 +82,7 @@ import { resource } from 'rdf-utils-dataset'
 // https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
 import JsonLdSerializer from 'rdf-serializer-jsonld'
 import _get from 'lodash/get'
+import { createNamespacedHelpers } from 'vuex'
 
 import Structure from '@/components/fallback/Structure'
 import ObjectDetails from '@/components/fallback/ObjectDetails'
@@ -92,6 +93,10 @@ import ClassProposals from '@/components/fallback/ClassProposals'
 import Loader from '@/components/layout/Loader'
 
 import { findSubtreeInForest, term } from '@/libs/utils'
+
+const {
+  mapGetters: graphGetters
+} = createNamespacedHelpers('graph')
 
 export default {
   layout: 'background',
@@ -148,6 +153,7 @@ export default {
     Loader
   },
   computed: {
+    ...graphGetters(['ontology', 'structure', 'structureTree']),
     isObjectList () {
       return this.$termIRI && this.$termIRI.creativeWork.equals(this.objectType)
     },
@@ -158,8 +164,7 @@ export default {
       return Boolean(this.$termIRI.ClassLikes.includes(this.objectType.value))
     },
     subtree () {
-      const structureTree = this.$store.state.graph.structureTree
-      const tree = findSubtreeInForest(structureTree, this.iri)
+      const tree = findSubtreeInForest(this.structureTree, this.iri)
       return tree
     },
     object () {
@@ -198,8 +203,6 @@ export default {
   data () {
     return {
       objectType: '',
-      ontology: rdf.dataset(),
-      structure: rdf.dataset(),
       dataReady: false
     }
   },
@@ -224,8 +227,6 @@ export default {
     }
   },
   mounted () {
-    this.ontology = this.$store.getters['graph/ontology']
-    this.structure = this.$store.getters['graph/structure']
     this.setObjectType()
   },
   validate ({ params, query, store, route }) {
