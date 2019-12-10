@@ -1,3 +1,13 @@
+<a name="0.9.88"></a>
+## [0.9.88](https://github.com/zazuko/ontology-manager/compare/v0.9.87...v0.9.88) (2019-12-10)
+
+
+### Bug Fixes
+
+* **graphs:** graphs are reactive and reload is smarter ([bb2a145](https://github.com/zazuko/ontology-manager/commit/bb2a145))
+
+
+
 <a name="0.9.87"></a>
 ## [0.9.87](https://github.com/zazuko/ontology-manager/compare/v0.9.86...v0.9.87) (2019-12-09)
 
