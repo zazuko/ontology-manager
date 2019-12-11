@@ -201,7 +201,7 @@ export function isCyclic (adjacencyList) {
   function recursiveCheck (node, visited, stack) {
     visited[node] = true
     stack[node] = true
-    for (const child of adjacencyList[node]) {
+    for (const child of (adjacencyList[node] || [])) {
       if (!visited[child]) {
         if (recursiveCheck(child, visited, stack)) {
           return true

@@ -1,4 +1,4 @@
-import { findSubtreeInForest, isCyclicTree } from '../libs/utils'
+import { findSubtreeInForest, isCyclicTree, buildAdjacencyList, isCyclic } from '../libs/utils'
 
 describe('libs/utils', () => {
   test('findSubtreeInForest', () => {
@@ -23,7 +23,7 @@ describe('libs/utils', () => {
     expect(findSubtreeInForest(tree, 'e')).toBe(nodeE)
   })
 
-  describe('detectCycle', () => {
+  describe('cycle utilities', () => {
     it('has no cycle', () => {
       const schemaTree = [{
         iri: 'a',
@@ -139,6 +139,29 @@ describe('libs/utils', () => {
         children: [{ iri: 'b', children: [] }]
       }]
       expect(isCyclicTree(schemaTree)).toBe(true)
+    })
+
+    it('works with key not in adjacency list', () => {
+      const schemaTree = [{
+        iri: 'a',
+        children: [{
+          iri: 'b',
+          children: [{
+            iri: 'c',
+            children: [{
+              iri: 'd',
+              children: []
+            }]
+          }]
+        }]
+      },
+      {
+        iri: 'b',
+        children: []
+      }]
+      const adjacencyList = buildAdjacencyList(schemaTree)
+      adjacencyList.a.push('x')
+      expect(isCyclic(adjacencyList)).toBe(false)
     })
   })
 })
