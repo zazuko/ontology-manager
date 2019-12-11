@@ -75,14 +75,14 @@ module.exports = class GitHubAPIv3 {
     const query = { owner, repo, path, ref }
 
     const cached = __cache.get(`${ref}/${path}`)
-    const headers = cached ? { 'If-Modified-Since': cached.lastModified } : {}
+    const headers = cached ? { 'If-None-Match': cached.etag } : {}
 
     let content
-    let lastModified
+    let etag
     try {
       const response = await this.__octokit.repos.getContents({ ...query, headers })
       content = Buffer.from(response.data.content, 'base64').toString()
-      lastModified = response.headers['last-modified']
+      etag = response.headers.etag
       debug(`github sent 200 for file ${ref}/${path}`)
     }
     catch (error) {
@@ -97,7 +97,7 @@ module.exports = class GitHubAPIv3 {
       }
     }
 
-    __cache.set(`${ref}/${path}`, { lastModified, content })
+    __cache.set(`${ref}/${path}`, { etag, content })
     return content
   }
 
