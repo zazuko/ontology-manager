@@ -333,8 +333,10 @@ export default {
         .concat(this.ontology.match(null, this.$termIRI.equivalentProperty, this.iri)
           .toArray()
           .map((quad) => _get(quad.subject, 'value'))
-        ).filter(Boolean)
-      return equivalentProperty
+        )
+        .filter(Boolean)
+
+      return [...new Set(equivalentProperty)]
     },
     equivalentClass () {
       const equivalentClass = this.ontology.match(this.iri, this.$termIRI.equivalentClass)
@@ -375,7 +377,7 @@ export default {
           while (child.parent) {
             const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
             const target = this.$rebaseIRI(child.iri)
-            if (!child.isCreativeWork) {
+            if (!child.isCreativeWork && label) {
               path.push({ label, target })
             }
             child = child.parent
@@ -393,7 +395,7 @@ export default {
         while (child.parent) {
           const label = this.label(rdf.namedNode(child.iri), this.bothDatasets)
           const target = this.$rebaseIRI(child.iri)
-          if (!child.isCreativeWork) {
+          if (!child.isCreativeWork && label) {
             path.push({ label, target })
           }
           child = child.parent
