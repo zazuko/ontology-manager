@@ -42,8 +42,8 @@
 
         <div class="columns class-details">
           <div class="column is-6">
-            <label class="label">Class Name</label>
             <div class="field class-name">
+              <label class="label">Class Name</label>
               <div class="control">
                 <input
                   :readonly="readonly"
@@ -114,10 +114,10 @@
               <div class="control">
                 <textarea
                   ref="exampleTextarea"
+                  class="textarea"
                   :readonly="readonly"
                   v-debounce
-                  v-model.lazy="proposalObject['example']"
-                  class="textarea" />
+                  v-model.lazy="proposalObject['example']" />
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@
         <hr>
 
         <div
-          v-show="validBase"
+          v-show="canContinue"
           class="fold">
           <div class="columns">
             <div class="column is-6">
@@ -302,7 +302,7 @@
           <div class="column is-6">
             <button
               class="button is-info subform-submit"
-              :readonly="!validBase"
+              :readonly="!canContinue"
               @click.prevent="$vuexSet(`${storePath}.isSubFormCollapsed`, true)">
               Add "<em>{{ proposalObject['label'] }}</em>" to the proposal
             </button>
@@ -461,7 +461,7 @@ export default {
         structure: datasets.structure.merge(this.structure)
       }
     },
-    validBase () {
+    canContinue () {
       try {
         // this triggers validation
         this.proposalObject.validate()
