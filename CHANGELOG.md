@@ -1,3 +1,22 @@
+<a name="0.9.89"></a>
+## [0.9.89](https://github.com/zazuko/ontology-manager/compare/v0.9.88...v0.9.89) (2019-12-11)
+
+
+### Bug Fixes
+
+* **breadcrumb:** remove missing labels ([c9fb533](https://github.com/zazuko/ontology-manager/commit/c9fb533))
+* **utils:** cycle detection works with brand new keys ([b5d8716](https://github.com/zazuko/ontology-manager/commit/b5d8716))
+* markup fixes ([bb2d09c](https://github.com/zazuko/ontology-manager/commit/bb2d09c))
+* **api:** always fetch last version from github ([0a3870a](https://github.com/zazuko/ontology-manager/commit/0a3870a))
+* **index:** graphs are reactive ([2cb9d2d](https://github.com/zazuko/ontology-manager/commit/2cb9d2d))
+
+
+### Features
+
+* **schema:** schema has a version, incremented by proposals ([042f11c](https://github.com/zazuko/ontology-manager/commit/042f11c))
+
+
+
 <a name="0.9.88"></a>
 ## [0.9.88](https://github.com/zazuko/ontology-manager/compare/v0.9.87...v0.9.88) (2019-12-10)
 
