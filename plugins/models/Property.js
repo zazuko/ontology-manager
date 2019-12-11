@@ -1,7 +1,7 @@
 import rdf from 'rdf-ext'
 import QuadExt from 'rdf-ext/lib/Quad'
 import Resource from './Resource'
-import { firstVal, datasetToCanonicalN3, normalizeLabel } from '@/libs/utils'
+import { bumpVersion, firstVal, datasetToCanonicalN3, normalizeLabel } from '@/libs/utils'
 
 export default ({ app, store }, inject) => {
   class Property extends Resource {
@@ -147,11 +147,15 @@ export default ({ app, store }, inject) => {
           datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.equivalentProperty, rdf.namedNode(iri))
         })
 
+        bumpVersion(datasets.structure)
+
         return {
           ontologyContent: datasetToCanonicalN3(datasets.ontology),
           structureContent: datasetToCanonicalN3(datasets.structure)
         }
       }
+
+      bumpVersion(datasets.structure)
 
       return {
         ontologyContent: datasetToCanonicalN3(ontology.merge(datasets.ontology)),

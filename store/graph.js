@@ -3,7 +3,7 @@ import rdf from 'rdf-ext'
 import DatasetExt from 'rdf-ext/lib/Dataset'
 import N3Parser from 'rdf-parser-n3'
 import { Readable } from 'readable-stream'
-import { serialize } from '@/libs/utils'
+import { serialize, getVersion } from '@/libs/utils'
 import { DESERIALIZE, RELOAD_DATASET, COUNT_PROPOSALS } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch-client'
 import countProposals from '@/apollo/queries/countProposals'
@@ -17,7 +17,8 @@ export const state = () => ({
   structureTree: [],
   proposalCountByIRI: {},
   searchIndex: [],
-  clientReady: false
+  clientReady: false,
+  version: -1
 })
 
 export const getters = {
@@ -47,6 +48,8 @@ export const mutations = {
   structureInit (state, structureDataset) {
     state.structureSerialized = serialize(structureDataset)
     state.structure = structureDataset
+    state.version = getVersion(structureDataset)
+    console.log(`dataset version: ${state.version}`)
     state.structureTree = this.$buildTree(structureDataset, state.ontology, state.proposalCountByIRI)
   },
   clientReady (state) {
@@ -93,7 +96,7 @@ export const actions = {
       return dispatch(DESERIALIZE)
     }
     catch (err) {
-      //
+      console.error(err)
     }
   },
 
