@@ -1,3 +1,13 @@
+<a name="0.9.90"></a>
+## [0.9.90](https://github.com/zazuko/ontology-manager/compare/v0.9.89...v0.9.90) (2019-12-12)
+
+
+### Bug Fixes
+
+* **dataset:** client fetch dataset only when new version server-side ([cc0e6fe](https://github.com/zazuko/ontology-manager/commit/cc0e6fe))
+
+
+
 <a name="0.9.89"></a>
 ## [0.9.89](https://github.com/zazuko/ontology-manager/compare/v0.9.88...v0.9.89) (2019-12-11)
 
