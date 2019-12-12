@@ -1,7 +1,8 @@
-const helpersFactory = require('./helpers')
-const octokitFactory = require('@octokit/rest')
 const debug = require('debug')('editor:backend')
 const octokitDebug = require('debug')('editor:octokit')
+const octokitFactory = require('@octokit/rest')
+const helpersFactory = require('./helpers')
+
 const __cache = new Map()
 
 module.exports = class GitHubAPIv3 {
@@ -92,8 +93,8 @@ module.exports = class GitHubAPIv3 {
         return cached.content
       }
       else {
-        debug(`rate limit: ${error.headers['x-ratelimit-remaining']}`)
-        throw error
+        debug(`rate limit: ${error.headers['x-ratelimit-remaining']}, ${ref}/${path}`)
+        throw new Error('rate limited')
       }
     }
 

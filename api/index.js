@@ -46,7 +46,7 @@ async function createApiMiddleware () {
   Except when linking github oauth token with postgraphile JWT, all
   API requests that come through here need a valid postgraphile JWT
   */
-  let unprotectedRoutes = ['', '/health', '/link', '/cache', '/auth/login', '/auth/logout', '/auth/user', '/reboot-app', '/setup']
+  let unprotectedRoutes = ['', '/health', '/link', '/cache', '/auth/login', '/auth/logout', '/auth/user', '/reboot-app', '/setup', '/version']
   if (process.env.NODE_TEST) {
     unprotectedRoutes.push('/log')
   }

@@ -1,23 +1,40 @@
 const _ = require('lodash')
-const Router = require('express').Router
 const axios = require('axios')
-const gql = require('graphql-tag')
 const debug = require('debug')('editor:backend')
-
+const gql = require('graphql-tag')
+const N3Parser = require('rdf-parser-n3')
+const rdf = require('rdf-ext')
+const Router = require('express').Router
+const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
+
+const parser = new N3Parser({ factory: rdf })
 
 module.exports = async function (editorConfig) {
   const router = Router()
   const api = new GitHubAPIv3(editorConfig)
 
   const filesCache = new Map()
+  let version
   setInterval(async () => {
     for (const [path, content] of filesCache.entries()) {
       try {
         const newContent = await api.getFile({ path })
         if (newContent !== content) {
           filesCache.set(path, newContent)
+        }
+        if (typeof version === 'undefined' || newContent !== content) {
+          const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
+          const quadStream = parser.import(stringToStream(versionPart))
+          const dataset = await rdf.dataset().import(quadStream)
+          const newVersion = getVersion(dataset)
+          if (newVersion !== null) {
+            version = newVersion
+          }
+          else if (typeof version === 'undefined') {
+            version = -1
+          }
         }
       }
       catch (err) {
@@ -36,6 +53,10 @@ module.exports = async function (editorConfig) {
 
   router.get('/', (req, res, next) => {
     res.send('Ontology Manager currently using GitHub')
+  })
+
+  router.get('/version', (req, res, next) => {
+    res.json({ version })
   })
 
   router.get('/blob/:file', async (req, res) => {
@@ -386,4 +407,13 @@ module.exports = async function (editorConfig) {
   }
 
   return router
+}
+
+function getVersion (dataset) {
+  const quads = dataset.match(null, rdf.namedNode('http://schema.org/version')).toArray()
+    .filter(({ subject, object }) => subject.termType === 'BlankNode' && object.termType === 'Literal')
+  if (quads.length) {
+    return parseInt(quads[0].object.value, 10)
+  }
+  return null
 }

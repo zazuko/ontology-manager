@@ -1,8 +1,8 @@
 import _get from 'lodash/get'
-import rdf from 'rdf-ext'
+import { Readable } from 'readable-stream'
 import DatasetExt from 'rdf-ext/lib/Dataset'
 import N3Parser from 'rdf-parser-n3'
-import { Readable } from 'readable-stream'
+import rdf from 'rdf-ext'
 import { serialize, getVersion } from '@/libs/utils'
 import { DESERIALIZE, RELOAD_DATASET, COUNT_PROPOSALS } from '@/store/action-types'
 import fetchDataset from '@/trifid/dataset-fetch-client'
@@ -87,6 +87,10 @@ export const actions = {
     commit('rebuildStructureTree')
 
     try {
+      const { version } = await this.app.$axios.$get('/api/version')
+      if (version === state.version) {
+        return true
+      }
       const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
       if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
         commit('ontologyInit', ontologyDataset)
