@@ -17,6 +17,9 @@ export default ({ app, store }, inject) => {
         equivalentProperty = [],
         // equivalentProperty removed from this Property, only used when editing a Property
         equivalentPropertyRemoved = [], // Array<string iri>
+        subProperty = '',
+        // subProperty removed from this Class, only used when editing a Class
+        subPropertyRemoved = [], // Array<string iri>
         // Class to which this Property belongs
         classChildren = [] // Array<Quad|Class>
       } = args
@@ -29,6 +32,9 @@ export default ({ app, store }, inject) => {
 
       this.equivalentProperty = equivalentProperty
       this.equivalentPropertyRemoved = equivalentPropertyRemoved
+
+      this.subProperty = subProperty
+      this.subPropertyRemoved = subPropertyRemoved
 
       this.ranges = ranges
       this.rangesRemoved = rangesRemoved
@@ -96,6 +102,12 @@ export default ({ app, store }, inject) => {
         quads.push(...existingEquivalentPropertyQuads)
       }
 
+      if (this.subProperty) {
+        quads.push(
+          rdf.quad(propertyIRI, app.$termIRI.subPropertyOf, this.subProperty.subject)
+        )
+      }
+
       if (this.domains.length) {
         const existingDomainsQuads = this.domains.reduce((xs, domain) => {
           let domainIRI
@@ -147,6 +159,10 @@ export default ({ app, store }, inject) => {
           datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.equivalentProperty, rdf.namedNode(iri))
         })
 
+        this.subPropertyRemoved.forEach((iri) => {
+          datasets.ontology.removeMatches(rdf.namedNode(this.iri), app.$termIRI.subPropertyOf, rdf.namedNode(iri))
+        })
+
         bumpVersion(datasets.structure)
 
         return {
@@ -186,6 +202,7 @@ export default ({ app, store }, inject) => {
         domains: ontology.match(existingPropertyIRI, app.$termIRI.domain, null).toArray().map(hydrateDomain),
         ranges: ontology.match(existingPropertyIRI, app.$termIRI.range, null).toArray().map(hydrateRange),
         equivalentProperty: ontology.match(existingPropertyIRI, app.$termIRI.equivalentProperty, null).toArray().map(hydrateEquivalentProperty),
+        subProperty: firstVal(ontology.match(existingPropertyIRI, app.$termIRI.subPropertyOf, null).toArray().map(hydrateSubProperty)),
         /*
         TODO: we should show the property change request on a class 'object-details'
         page for ALL CLASSES to which this property applies. We'll need to find a trick
@@ -217,6 +234,16 @@ export default ({ app, store }, inject) => {
       }
 
       function hydrateEquivalentProperty (quad) {
+        const labelQuad = ontology.match(quad.object, app.$termIRI.label).toArray()
+        if (labelQuad.length) {
+          return firstVal(labelQuad)
+        }
+
+        // otherwise it's an external IRI
+        return app.$externalIRIToQuad(quad.object.value)
+      }
+
+      function hydrateSubProperty (quad) {
         const labelQuad = ontology.match(quad.object, app.$termIRI.label).toArray()
         if (labelQuad.length) {
           return firstVal(labelQuad)

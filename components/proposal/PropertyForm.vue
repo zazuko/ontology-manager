@@ -190,6 +190,69 @@
                 </nav>
               </typeahead>
             </div>
+
+            <div class="column is-6">
+              <typeahead
+                :readonly="readonly"
+                :search-function="propertiesSearch"
+                label="Subclass Of (rdfs:subPropertyOf)"
+                @selectionChanged="selectSubProperty">
+                <div
+                  v-if="typeahead.inputString"
+                  slot="custom-options"
+                  slot-scope="typeahead"
+                  class="dropdown-item">
+                  <span v-if="typeahead.inputString.startsWith('http')">
+                    <a
+                      title="Add external rdfs:subPropertyOf IRI"
+                      @click.prevent="addExternalSubProperty(typeahead.inputString) && typeahead.hide()">
+                      External subPropertyOf: "{{ typeahead.inputString }}"
+                    </a>
+                  </span>
+                </div>
+                <nav
+                  slot="selected-list"
+                  class="panel">
+                  <template v-if="proposalObject['subProperty']">
+                    <p
+                      v-show="proposalObject['isEdit'] && proposalObject['subPropertyRemoved'].length"
+                      class="is-size-7">
+                      Added:
+                    </p>
+                    <a class="panel-block is-active">
+                      <span
+                        v-show="!readonly"
+                        class="panel-icon"
+                        @click.prevent="unselectSubProperty(proposalObject['subProperty'])">
+                        <close-circle />
+                      </span>
+                      {{ displayNewSubProperty(proposalObject['subProperty']) }}
+                    </a>
+                  </template>
+                  <template v-if="proposalObject['isEdit']">
+                    <p
+                      v-show="proposalObject['subPropertyRemoved'].length"
+                      class="is-size-7">
+                      Removed:
+                    </p>
+                    <a
+                      v-for="(subPropertyIRI, index) in proposalObject['subPropertyRemoved']"
+                      :key="index"
+                      class="panel-block is-active">
+                      <span v-if="_get($labelQuadForIRI(ontology, subPropertyIRI), 'object.value')">
+                        {{ _get($labelQuadForIRI(ontology, subPropertyIRI), 'object.value') }}
+                      </span>
+                      <span v-else-if="$unPrefix(subPropertyIRI)">
+                        {{ $unPrefix(subPropertyIRI) }}
+                      </span>
+                      <span v-else>
+                        {{ subPropertyIRI }}
+                      </span>
+                    </a>
+                  </template>
+                </nav>
+              </typeahead>
+            </div>
           </div>
 
           <client-only>
@@ -403,7 +466,7 @@
 
 <script>
 import rdf from 'rdf-ext'
-import { debounce, normalizeLabel, term } from '@/libs/utils'
+import { buildAdjacencyList, debounce, isCyclic, normalizeLabel, term, toastClose } from '@/libs/utils'
 import Typeahead from './Typeahead'
 import Editor from '@/components/editor/Editor'
 import CloseCircle from 'vue-material-design-icons/CloseCircle.vue'
@@ -552,12 +615,43 @@ export default {
       }
       this.$vuexPush('equivalentProperty', equivalentProperty)
     },
+    selectSubProperty (searchResult) {
+      const subProperty = searchResult.domain.subject.value
+
+      const unRemove = this.proposalObject.subPropertyRemoved.indexOf(subProperty)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('subPropertyRemoved', unRemove)
+      }
+      if (this.proposalObject.subProperty && this.proposalObject.subProperty.subject.value === subProperty) {
+        return
+      }
+      if (subProperty === this.proposalObject.iri) {
+        return
+      }
+
+      const adjacencyList = buildAdjacencyList(this.schemaTree)
+      adjacencyList[subProperty] = adjacencyList[subProperty] || []
+      adjacencyList[subProperty].push(this.proposalObject.iri)
+      if (isCyclic(adjacencyList)) {
+        this.$toast.error('Cannot create cyclic subPropertyOf', toastClose).goAway(10000)
+        return
+      }
+
+      this.$vuexSet(`${this.storePath}.subProperty`, searchResult.domain)
+    },
     unselectEquivalentProperty (index) {
       const equivalentProperty = this.proposalObject[`equivalentProperty[${index}]`]
       this.$vuexDeleteAtIndex('equivalentProperty', index)
 
       if (this.proposalObject.isEdit) {
         this.$vuexPush('equivalentPropertyRemoved', equivalentProperty.subject.value)
+      }
+    },
+    unselectSubProperty (quad) {
+      this.$vuexSet(`${this.storePath}.subProperty`, null)
+
+      if (this.proposalObject.isEdit) {
+        this.$vuexPush('subPropertyRemoved', quad.subject.value)
       }
     },
     createDomain (label) {
@@ -602,6 +696,29 @@ export default {
       }
       return true
     },
+    addExternalSubProperty (iri) {
+      this.$vuexPush('subProperty', this.$externalIRIToQuad(iri))
+      const unRemove = this.proposalObject.subPropertyRemoved.indexOf(iri)
+      if (unRemove !== -1) {
+        this.$vuexDeleteAtIndex('subPropertyRemoved', unRemove)
+        return true
+      }
+      return true
+    },
+    displayNewEquivalentProperty (equivalentProperty) {
+      if (!equivalentProperty.label && equivalentProperty.predicate.value === this.$termIRI.a.value) {
+        return term(equivalentProperty.subject)
+      }
+
+      return ((equivalentProperty.object && equivalentProperty.object.value) || term(equivalentProperty.object)) || equivalentProperty.label
+    },
+    displayNewSubProperty (subProperty) {
+      if (!subProperty.label && subProperty.predicate.value === this.$termIRI.a.value) {
+        return term(subProperty.subject)
+      }
+
+      return ((subProperty.object && subProperty.object.value) || term(subProperty.object)) || subProperty.label
+    },
     init () {
       this.propertiesSearch = this.$domainsSearchFactory(this.ontology, 'Property', true)
       if (!this.subform) {
@@ -615,13 +732,6 @@ export default {
         }
       }
       this.onParentIRIChange()
-    },
-    displayNewEquivalentProperty (equivalentProperty) {
-      if (!equivalentProperty.label && equivalentProperty.predicate.value === this.$termIRI.a.value) {
-        return term(equivalentProperty.subject)
-      }
-
-      return ((equivalentProperty.object && equivalentProperty.object.value) || term(equivalentProperty.object)) || equivalentProperty.label
     }
   }
 }

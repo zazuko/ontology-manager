@@ -73,59 +73,60 @@
         </div>
       </div>
 
+      <section
+        class="content"
+        v-show="subOf.length">
+        <h4 class="title is-2">
+          Sub {{ isClass ? 'Class' : 'Property' }} Of
+        </h4>
+        <p class="title-url is-size-7">
+          {{ subTypeIRI.value }}
+        </p>
+        <ul class="types-list">
+          <li
+            v-for="subIRI in subOf"
+            :key="subIRI">
+            <a
+              v-if="$unPrefix(subIRI)"
+              :href="$rebaseIRI(subIRI)">
+              {{ $unPrefix(subIRI) }}
+            </a>
+            <a
+              v-else
+              :href="$rebaseIRI(subIRI)">
+              {{ subIRI }}
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="content"
+        v-show="parentOf.length">
+        <h4 class="title is-2">
+          Parent Of
+        </h4>
+        <p class="is-size-7">
+          Reverse relation of <span class="title-url">{{ subTypeIRI.value }}</span>
+        </p>
+        <ul class="types-list">
+          <li
+            v-for="subIRI in parentOf"
+            :key="subIRI">
+            <a
+              v-if="$unPrefix(subIRI)"
+              :href="$rebaseIRI(subIRI)">
+              {{ $unPrefix(subIRI) }}
+            </a>
+            <a
+              v-else
+              :href="$rebaseIRI(subIRI)">
+              {{ subIRI }}
+            </a>
+          </li>
+        </ul>
+      </section>
+
       <template v-if="isClass">
-        <section
-          class="content"
-          v-show="subClassOf.length">
-          <h4 class="title is-2">
-            Sub Class Of
-          </h4>
-          <p class="title-url is-size-7">
-            http://www.w3.org/2000/01/rdf-schema#subClassOf
-          </p>
-          <ul class="types-list">
-            <li
-              v-for="subClassIRI in subClassOf"
-              :key="subClassIRI">
-              <a
-                v-if="$unPrefix(subClassIRI)"
-                :href="$rebaseIRI(subClassIRI)">
-                {{ $unPrefix(subClassIRI) }}
-              </a>
-              <a
-                v-else
-                :href="$rebaseIRI(subClassIRI)">
-                {{ subClassIRI }}
-              </a>
-            </li>
-          </ul>
-        </section>
-        <section
-          class="content"
-          v-show="parentOf.length">
-          <h4 class="title is-2">
-            Parent Of
-          </h4>
-          <p class="is-size-7">
-            Reverse relation of <span class="title-url">http://www.w3.org/2000/01/rdf-schema#subClassOf</span>
-          </p>
-          <ul class="types-list">
-            <li
-              v-for="subClassIRI in parentOf"
-              :key="subClassIRI">
-              <a
-                v-if="$unPrefix(subClassIRI)"
-                :href="$rebaseIRI(subClassIRI)">
-                {{ $unPrefix(subClassIRI) }}
-              </a>
-              <a
-                v-else
-                :href="$rebaseIRI(subClassIRI)">
-                {{ subClassIRI }}
-              </a>
-            </li>
-          </ul>
-        </section>
         <section
           class="content"
           v-show="equivalentClass.length">
@@ -312,15 +313,21 @@ export default {
       const classes = this.$rangeOf(this.iri.value, this.ontology)
       return classes
     },
-    subClassOf () {
-      const parents = this.ontology.match(this.iri, this.$termIRI.subClassOf)
+    subTypeIRI () {
+      if (this.isClass) {
+        return this.$termIRI.subClassOf
+      }
+      return this.$termIRI.subPropertyOf
+    },
+    subOf () {
+      const parents = this.ontology.match(this.iri, this.subTypeIRI)
         .toArray()
         .map((quad) => _get(quad.object, 'value'))
         .filter(Boolean)
       return parents
     },
     parentOf () {
-      const children = this.ontology.match(null, this.$termIRI.subClassOf, this.iri)
+      const children = this.ontology.match(null, this.subTypeIRI, this.iri)
         .toArray()
         .map((quad) => _get(quad.subject, 'value'))
         .filter(Boolean)
