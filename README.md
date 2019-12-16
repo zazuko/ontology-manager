@@ -20,7 +20,6 @@ The schema/vocabulary/ontology itself is stored as [N-Triples](https://en.wikipe
 
 The development setup lets you run a local instance of the ontology manager that connects to a remote GitHub repository. It is the best way to develop.
 
-
 ### 1. Get OAuth Credentials
 
 1. Create an OAuth app: <https://github.com/settings/applications/new>
@@ -152,14 +151,18 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 ## Tests
 
-### 1. End-to-End
+### End-to-End
 
 1. Run `npm run e2e:server`
 2. When it's up, start `npm run e2e:open`
 
-### 2. Unit Tests
+### Unit Tests
 
-1. Run `npm run unit:test`
+1. Run `npm run test:unit`
+
+### Integration Tests
+
+1. Run `npm run test:integration`
 
 ## Architecture
 
@@ -209,12 +212,6 @@ These store modules are responsible for loading a proposal from the DB, saving a
 
 * A thread can either be a `discussion` or a `proposal`.
 * A thread with `discussion` type is a conversation, messages belong to a thread.
-
-## Resources
-
-- https://github.com/Akryum/vue-apollo/blob/master/tests/demo/src/components/ChannelView.vue
-- https://github.com/Akryum/vue-apollo/tree/master/tests/demo/src/graphql
-
 
 ## Helpful Tools
 
