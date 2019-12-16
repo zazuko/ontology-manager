@@ -8,11 +8,24 @@
         RDF ontology/schema editor
       </h2>
 
-      <div class="columns">
-        <div class="column">
-          <p>Zazuko Ontology Manager v{{ version }}</p>
-        </div>
-      </div>
+      <ul class="columns">
+        <ul class="column">
+          <ul>
+            <li>
+              Zazuko Ontology Manager
+              <a
+                :href="editorVersionLink"
+                target="_blank">v{{ editorVersion }}</a>
+            </li>
+            <li>
+              Ontology Version
+              <a
+                :href="ontologyLink"
+                target="_blank">v{{ ontologyVersion }}</a>
+            </li>
+          </ul>
+        </ul>
+      </ul>
     </section>
   </div>
 </template>
@@ -22,10 +35,26 @@ import { version } from '@/package.json'
 
 export default {
   layout: 'background',
+  async asyncData (app) {
+    const { version } = await app.$axios.$get('/api/version')
+    return {
+      ontologyVersion: version
+    }
+  },
   components: {},
   data () {
     return {
-      version
+      editorVersion: version,
+      ontologyVersion: -1
+    }
+  },
+  computed: {
+    editorVersionLink () {
+      return `https://github.com/zazuko/ontology-manager/tree/v${this.editorVersion}`
+    },
+    ontologyLink () {
+      const { owner, repo, branch } = this.$store.state.config.editor.github
+      return `https://github.com/${owner}/${repo}/tree/${branch}`
     }
   }
 }
