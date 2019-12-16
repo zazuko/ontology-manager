@@ -55,6 +55,12 @@
                 {{ item.thread.headline }}
               </nuxt-link>
             </span>
+            <span v-else-if="item.actionType === 'PROPOSAL_EDIT'">
+              edited the proposal
+              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+                {{ item.thread.headline }}
+              </nuxt-link>
+            </span>
             <span v-else-if="item.actionType === 'PROPOSAL_ACCEPT'">
               accepted the proposal
               <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
@@ -104,6 +110,7 @@ import Close from 'vue-material-design-icons/Close.vue'
 
 const actionTypes = [
   'PROPOSAL_SUBMIT',
+  'PROPOSAL_EDIT',
   'PROPOSAL_ACCEPT',
   'PROPOSAL_REJECT',
   'CONVERSATION_CREATE',

@@ -157,6 +157,11 @@
     }
   }
 
+  .proposal-edit {
+    @extend .proposal-submit;
+    margin-top: calc(1.5rem - 2.5em);
+  }
+
   .proposal-author-img {
     width: 40px; height: 40px;
 

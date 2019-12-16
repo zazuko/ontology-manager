@@ -109,6 +109,18 @@
             </property-form>
             <div v-else />
 
+            <div
+              v-show="isProposalAuthor && !isDraft"
+              class="columns proposal-edit">
+              <p class="column">
+                <button
+                  class="button submit-proposal"
+                  @click="editProposal">
+                  Edit Proposal
+                </button>
+              </p>
+            </div>
+
             <h1
               id="conversation"
               class="title is-2 conversation-title">
@@ -119,21 +131,23 @@
                 :discussion="discussion"
                 @refreshDiscussion="refreshDiscussion" />
             </div>
-            <div class="discussion">
+            <div
+              v-show="$store.state.auth.loggedIn"
+              class="discussion">
               <discussion-reply
                 :id="id"
                 @answerAdded="refreshDiscussion" />
             </div>
           </div>
-
         </div>
       </section>
-      <div
-        v-else>
+
+      <div v-else>
         <loader :show-if="true">
           <p class="subtitle">Loading Proposal</p>
         </loader>
       </div>
+
     </div>
   </div>
 </template>
@@ -150,7 +164,7 @@ import Vote from '@/components/proposal/Vote'
 import Loader from '@/components/layout/Loader'
 
 import discussionById from '@/apollo/queries/discussionById'
-import { LOAD } from '@/store/action-types'
+import { EDIT, LOAD } from '@/store/action-types'
 import { toastClose } from '@/libs/utils'
 import { emptyDiscussion } from '@/libs/fixtures'
 
@@ -194,14 +208,22 @@ export default {
         return this.$store.state[this.path]
       }
       return this.$deepModel(this.path)
+    },
+    isProposalAuthor () {
+      return this.discussion.authorId === this.$store.state.auth.personId
+    },
+    isDraft () {
+      return this.obj.isDraft
     }
   },
   methods: {
     ...classActions({
-      loadClass: LOAD
+      loadClass: LOAD,
+      editClass: EDIT
     }),
     ...propertyActions({
-      loadProperty: LOAD
+      loadProperty: LOAD,
+      editProperty: EDIT
     }),
     authorsAvatar (name = '') {
       return `${name}'s avatar'`
@@ -213,6 +235,20 @@ export default {
             this.$toast.success(message, toastClose).goAway(1600)
           }
         })
+    },
+    async editProposal () {
+      if (this.type === 'Class') {
+        await this.editClass()
+      }
+      else {
+        await this.editProperty()
+      }
+      await this.$store.dispatch('drafts/LOAD')
+
+      this.$router.push({
+        name: `proposal-${this.type.toLowerCase()}`,
+        query: { id: this.id }
+      })
     },
     init () {
       this.type = this.$proposalType(this.discussion.proposalObject)

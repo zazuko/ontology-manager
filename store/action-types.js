@@ -1,6 +1,8 @@
 export const NEW = 'NEW'
 export const SAVE = 'SAVE'
 export const SUBMIT = 'SUBMIT'
+export const EDIT = 'EDIT'
+export const APPROVE = 'APPROVE'
 export const LOAD = 'LOAD'
 export const LOAD_CONFIG = 'LOAD_CONFIG'
 export const DESERIALIZE = 'DESERIALIZE'

@@ -1,5 +1,5 @@
 query UserDrafts ($authorId: Int!) {
-  proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true, status: OPEN}) {
+  proposals: allThreads (condition: {authorId: $authorId, threadType: PROPOSAL, isDraft: true}) {
     drafts: nodes {
       id,
       headline,

@@ -5,7 +5,7 @@ import rdf from 'rdf-ext'
 
 import proposalById from '@/apollo/queries/proposalById'
 
-import { SAVE, SUBMIT, NEW, LOAD } from '@/store/action-types'
+import { APPROVE, LOAD, EDIT, NEW, SAVE, SUBMIT } from '@/store/action-types'
 import { SET_ID, ERROR, SUCCESS } from '@/store/mutation-types'
 
 export const state = () => ({
@@ -46,6 +46,9 @@ export const mutations = VueDeepSet.extendMutation({
   },
   [LOAD] (state, clss) {
     state.clss = clss
+  },
+  [EDIT] (state) {
+    state.clss.isDraft = true
   }
 })
 
@@ -161,7 +164,36 @@ export const actions = {
     }
   },
 
-  async APPROVE ({ dispatch, commit, state, rootState }, { threadId, token }) {
+  async [EDIT] ({ commit, dispatch, state }) {
+    try {
+      const threadId = state.clss.threadId
+      commit(EDIT)
+      await dispatch(SAVE)
+
+      const mutation = gql`
+        mutation ($threadId: Int!) {
+          editProposal (input: {
+            threadId: $threadId
+          }) {
+            thread {
+              id
+            }
+          }
+        }
+      `
+      const variables = { threadId }
+      await this.app.apolloProvider.defaultClient.mutate({
+        mutation,
+        variables
+      })
+      await dispatch(LOAD, threadId)
+    }
+    catch (err) {
+      console.error(err)
+    }
+  },
+
+  async [APPROVE] ({ dispatch, commit, state, rootState }, { threadId, token }) {
     await dispatch(LOAD, threadId)
     try {
       const classProposalData = state.clss.generateProposal({
