@@ -1,6 +1,19 @@
-# ontology-manager
+# Zazuko Ontology Manager
 
-## Local Dev Setup
+This is the open source repository of the [Zazuko Ontology Manager](https://zazuko.com/products/ontology-manager/). From our product page:
+
+> The Zazuko Ontology Manager (ZOM) is a web application for serving, browsing and modeling RDF Schemas and Ontologies. It supports the full process of creating, publishing and extending an ontology. ZOM's user interface has been designed for teams of domain specialists working jointly on an ontology. No specific ontology modeling knowledge is required to use the editor. ZOM leverages GitHub to store the ontology, but carefully hides the complexity of serializing the schema into RDF triples from users of the editor.
+> 
+> We believe creating, editing, evolving an ontology is easiest done using a collaborative web platform designed specifically for this use case, allowing all actors to reach consensus gradually, using asynchronous proposals, discussions and votes.
+
+Please consult the [product page](https://zazuko.com/products/ontology-manager/) & [this blog post](https://zazuko.com/blog/schema-manager-oss/) for details.
+
+
+## Local Development Setup
+
+The schema/vocabulary/ontology itself is stored as [N-Triples](https://en.wikipedia.org/wiki/N-Triples) in a [GitHub](https://github.com/) repository. OAuth credentials & a Personal Access Token are required to set up the Ontology Manager.
+
+See [Architecture](#Architecture) for other requirements. 
 
 ### 1. Get OAuth Credentials
 
@@ -115,7 +128,7 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 ## Architecture
 
-### 2 Services
+### Two Services
 
 1. A Postgres Database
 1. A web backend made of:
@@ -130,7 +143,7 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 ### Trifid
 
-The [Trifid](https://github.com/zazuko/trifid-core) middleware is used to allow ontology content dereferencing, meaning that if `http://your.editor.com/schema/SomeObject` is an IRI in your ontology, you will be able to get Turtle via content negotiation: `curl http://your.editor.com/schema/SomeObject -H 'Accept: text/turtle'`.
+The [Trifid](https://github.com/zazuko/trifid-core) middleware is used to allow ontology content dereferencing, meaning that if `http://your.editor.com/schema/SomeObject` is an IRI in your ontology, you will be able to get N-Triples via content negotiation: `curl http://your.editor.com/schema/SomeObject -H 'Accept: application/n-triples'`.
 
 ### Proposals
 
@@ -202,3 +215,7 @@ To create a new theme, simply copy an existing theme and modify it:
 * Nuxt: https://nuxtjs.org/guide/installation
     * Apollo: https://github.com/nuxt-community/apollo-module
     * Auth: https://auth.nuxtjs.org/
+
+## License
+
+This software is released under the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html), see [LICENSE](LICENSE) for details.
