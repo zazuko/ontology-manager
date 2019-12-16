@@ -8,12 +8,18 @@ This is the open source repository of the [Zazuko Ontology Manager](https://zazu
 
 Please consult the [product page](https://zazuko.com/products/ontology-manager/) & [this blog post](https://zazuko.com/blog/schema-manager-oss/) for details.
 
+* For local development, see [Local Development Setup](#local-development-setup).
+* If you want to deploy the editor, see the section [Deployment](#prod-deployment).
+* See [Architecture](#architecture) for a better understanding of the design of the Ontology Manager.
 
 ## Local Development Setup
 
+Requirements: you will need Docker and [docker-compose](https://docs.docker.com/compose/).
+
 The schema/vocabulary/ontology itself is stored as [N-Triples](https://en.wikipedia.org/wiki/N-Triples) in a [GitHub](https://github.com/) repository. OAuth credentials & a Personal Access Token are required to set up the Ontology Manager.
 
-See [Architecture](#Architecture) for other requirements. 
+The development setup lets you run a local instance of the ontology manager that connects to a remote GitHub repository. It is the best way to develop.
+
 
 ### 1. Get OAuth Credentials
 
@@ -77,9 +83,34 @@ Whenever you feel like it:
 
 ## Deployment
 
-Run an editor container with the above env variables.
+The Ontology Manager is typically deployed using Docker. For testing it can also be deployed locally.
 
-Extra runtime environment variable: `EDITOR_THEME=zazuko`. Valid values for `EDITOR_THEME` are any folder name in [`./assets/themes/`](./assets/themes/) that have a `theme.scss` in it.
+Run an editor container with the following environment variables:
+```sh
+# customer namespace
+## this should be a slug, so no space, no special characters etc
+CUSTOMER_NAME=zazuko
+
+# postgres config
+POSTGRESQL_USER=postgres
+POSTGRESQL_PASSWORD=make-this-secret
+POSTGRESQL_DATABASE=postgres
+POSTGRESQL_HOST=localhost
+
+# secret seed for JWT - https://www.graphile.org/postgraphile/security/
+POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
+
+OAUTH_HOST=https://github.com/login/oauth
+OAUTH_CLIENT_ID=
+OAUTH_CLIENT_SECRET=
+GITHUB_PERSONAL_ACCESS_TOKEN=
+
+# optional variables
+DEBUG=editor:*
+# SENTRY_DSN=
+```
+
+Without further customization, the default theme will be used. You can set the theme used by the Ontology Manager at runtime using the following environment variable: `EDITOR_THEME=zazuko`. Valid values for `EDITOR_THEME` are any folder name in [`./assets/themes/`](./assets/themes/) that have a `theme.scss` in it.
 
 ### Local Deployment
 
@@ -121,10 +152,14 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 ## Tests
 
-### 1 End-to-End
+### 1. End-to-End
 
 1. Run `npm run e2e:server`
 2. When it's up, start `npm run e2e:open`
+
+### 2. Unit Tests
+
+1. Run `npm run unit:test`
 
 ## Architecture
 
