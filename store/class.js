@@ -80,7 +80,7 @@ export const actions = {
       const isEdit = state.clss.isEdit
 
       const mutation = gql`
-        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isEdit: Boolean!) {
+        mutation (${mutationParam}$headline: String!, $body: String!, $iri: String!, $proposalObject: JSON!, $threadType: ThreadType!, $isEdit: Boolean!, $originalIRI: String) {
           upsertThread (input: {
             thread: {
               ${threadInput}
@@ -89,7 +89,8 @@ export const actions = {
               iri: $iri,
               proposalObject: $proposalObject,
               threadType: $threadType,
-              isEdit: $isEdit
+              isEdit: $isEdit,
+              originalIri: $originalIRI
             }
           }) {
             thread {
@@ -110,6 +111,9 @@ export const actions = {
 
       if (threadId) {
         variables.id = threadId
+      }
+      if (state.clss.originalIRI) {
+        variables.originalIRI = state.clss.originalIRI
       }
       const result = await this.app.apolloProvider.defaultClient.mutate({
         mutation,

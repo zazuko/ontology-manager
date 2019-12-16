@@ -112,12 +112,13 @@ export const actions = {
       const result = await this.app.apolloProvider.defaultClient.query({
         query: countProposals
       })
+
       const proposals = _get(result, 'data.proposals.proposals', [])
       const count = proposals.reduce((acc, { iri, originalIri, isEdit, proposalObject }) => {
         const proposalType = proposalObject[proposalObject[0].proposalType]
 
         if (proposalType === 'Class' && isEdit) {
-          iri = originalIri
+          iri = iri || originalIri
         }
         if (!acc[iri]) {
           acc[iri] = {
@@ -146,6 +147,7 @@ export const actions = {
         }
         return acc
       }, {})
+
       commit('proposalCountByIRI', count)
     }
     catch (err) {

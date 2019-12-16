@@ -164,7 +164,7 @@ export default {
       return !!_get(this.changedPropertyProposals, 'proposals.length')
     },
     hasProposals () {
-      return this.hasObjectProposal || this.hasClassProposal || this.hasPropertyProposal
+      return this.hasObjectProposals || this.hasClassProposals || this.hasPropertyProposals
     }
   },
   apollo: {
