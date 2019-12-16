@@ -28,7 +28,7 @@
             <a
               :href="issues"
               class="button is-info">
-              See all support request
+              See all support requests
             </a>
           </p>
         </div>
