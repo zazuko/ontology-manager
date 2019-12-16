@@ -13,8 +13,12 @@
       </template>
     </h2>
 
+    <p v-if="!hasProposals">
+      No proposals on this object at the moment.
+    </p>
+
     <table
-      v-if="_get(newObjectProposals, 'proposals.length')"
+      v-if="hasObjectProposals"
       class="table generic-table is-fullwidth">
       <thead>
         <tr>
@@ -56,7 +60,7 @@
     </table>
 
     <table
-      v-if="isClass && _get(changedClassProposals, 'proposals.length')"
+      v-if="hasClassProposals"
       class="table generic-table is-fullwidth">
       <thead>
         <tr>
@@ -85,7 +89,7 @@
     </table>
 
     <table
-      v-if="_get(changedPropertyProposals, 'proposals.length')"
+      v-if="hasPropertyProposals"
       class="table generic-table is-fullwidth">
       <thead>
         <tr>
@@ -147,6 +151,20 @@ export default {
     },
     answersCount (proposal) {
       return _get(proposal, 'answers.messages', []).length
+    }
+  },
+  computed: {
+    hasObjectProposals () {
+      return !!_get(this.newObjectProposals, 'proposals.length')
+    },
+    hasClassProposals () {
+      return this.isClass && !!_get(this.changedClassProposals, 'proposals.length')
+    },
+    hasPropertyProposals () {
+      return !!_get(this.changedPropertyProposals, 'proposals.length')
+    },
+    hasProposals () {
+      return this.hasObjectProposal || this.hasClassProposal || this.hasPropertyProposal
     }
   },
   apollo: {
