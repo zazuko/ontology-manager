@@ -1,3 +1,23 @@
+<a name="0.9.91"></a>
+## [0.9.91](https://github.com/zazuko/ontology-manager/compare/v0.9.90...v0.9.91) (2019-12-16)
+
+
+### Bug Fixes
+
+* add empty state when there are no proposals ([39ae344](https://github.com/zazuko/ontology-manager/commit/39ae344))
+* count and display 'class changed' proposals ([af832ce](https://github.com/zazuko/ontology-manager/commit/af832ce))
+* **about:** add links and ontology version to about page ([e1a733f](https://github.com/zazuko/ontology-manager/commit/e1a733f))
+* **design:** link instead of button for "see all requests" ([68f50f7](https://github.com/zazuko/ontology-manager/commit/68f50f7))
+* typo on support page ([5a81d4e](https://github.com/zazuko/ontology-manager/commit/5a81d4e))
+
+
+### Features
+
+* **properties:** properties can be rdfs:subPropertyOf ([29ea156](https://github.com/zazuko/ontology-manager/commit/29ea156))
+* **proposals:** take a proposal back to drafts for modifications ([73bbfb6](https://github.com/zazuko/ontology-manager/commit/73bbfb6))
+
+
+
 <a name="0.9.90"></a>
 ## [0.9.90](https://github.com/zazuko/ontology-manager/compare/v0.9.89...v0.9.90) (2019-12-12)
 
