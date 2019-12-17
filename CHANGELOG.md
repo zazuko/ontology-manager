@@ -1,3 +1,13 @@
+<a name="0.9.92"></a>
+## [0.9.92](https://github.com/zazuko/ontology-manager/compare/v0.9.91...v0.9.92) (2019-12-17)
+
+
+### Bug Fixes
+
+* change class proposals count available on count and pouches ([af845a1](https://github.com/zazuko/ontology-manager/commit/af845a1))
+
+
+
 <a name="0.9.91"></a>
 ## [0.9.91](https://github.com/zazuko/ontology-manager/compare/v0.9.90...v0.9.91) (2019-12-16)
 
