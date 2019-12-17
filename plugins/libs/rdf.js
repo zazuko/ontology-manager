@@ -434,10 +434,14 @@ export default ({ app, store }, inject) => {
       changeProperty: 0
     }
     const mergeProposalCounts = (a, b) => {
+      if (b.added) {
+        return
+      }
       a.newClass += b.newClass
       a.newProperty += b.newProperty
       a.changeClass += b.changeClass
       a.changeProperty += b.changeProperty
+      b.added = true
     }
 
     const forest = Object.keys(nodes)

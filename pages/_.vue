@@ -13,7 +13,7 @@
 
       <!-- layout-objects-list -->
       <div
-        v-if="$termIRI.creativeWork.equals(objectType)"
+        v-if="displayStructure"
         v-show="dataReady">
         <section class="container layout-objects-list-head">
           <h1 class="main-title">
@@ -154,6 +154,9 @@ export default {
   },
   computed: {
     ...graphGetters(['ontology', 'structure', 'structureTree']),
+    displayStructure () {
+      return this.$termIRI.creativeWork.equals(this.objectType)
+    },
     isObjectList () {
       return this.$termIRI && this.$termIRI.creativeWork.equals(this.objectType)
     },

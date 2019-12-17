@@ -33,10 +33,7 @@
           v-show="type === 'container'"
           class="class-box-level-item">
           <span class="class-box-label">
-            Object{{ classesCount === 1 ? '' : 's' }}
-          </span>
-          <span class="class-box-value">
-            {{ classesCount }}
+            {{ classesCount }} Object{{ classesCount === 1 ? '' : 's' }}
           </span>
         </div>
         <client-only>
@@ -44,13 +41,10 @@
             <div
               v-for="key in Object.keys(proposalCount)"
               :key="key"
-              v-show="proposalCount[key]"
+              v-show="proposalCount[key] && proposalTypes.includes(key)"
               class="class-box-level-item">
               <span class="class-box-label">
-                {{ proposalType[key] }} Proposal{{ proposalCount[key] === 1 ? '' : 's' }}
-              </span>
-              <span class="class-box-value">
-                {{ proposalCount[key] }}
+                {{ proposalCount[key] }} {{ proposalTypeLabels[key] }} Proposal{{ proposalCount[key] === 1 ? '' : 's' }}
               </span>
             </div>
           </template>
@@ -109,13 +103,15 @@ export default {
     iriToId
   },
   data () {
+    const proposalTypeLabels = {
+      newClass: 'New Class',
+      newProperty: 'New Property',
+      changeClass: 'Change Class',
+      changeProperty: 'Change Property'
+    }
     return {
-      proposalType: {
-        newClass: 'New Class',
-        newProperty: 'New Property',
-        changeClass: 'Change Class',
-        changeProperty: 'Change Property'
-      }
+      proposalTypeLabels,
+      proposalTypes: Object.keys(proposalTypeLabels)
     }
   }
 }

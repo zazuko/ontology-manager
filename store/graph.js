@@ -83,16 +83,15 @@ export const actions = {
   },
 
   async [RELOAD_DATASET] ({ commit, dispatch, state, rootState }) {
-    await dispatch(COUNT_PROPOSALS)
-    commit('rebuildStructureTree')
-
     try {
       const { version } = await this.app.$axios.$get('/api/version')
       if (version === state.version) {
         return true
       }
+
       const { ontologyDataset, structureDataset } = await fetchDataset(rootState.config)
       if (state.ontologySerialized !== serialize(ontologyDataset) || state.structureSerialized !== serialize(structureDataset)) {
+        await dispatch(COUNT_PROPOSALS)
         commit('ontologyInit', ontologyDataset)
         commit('structureInit', structureDataset)
         commit('rebuildStructureTree')
@@ -118,7 +117,7 @@ export const actions = {
         const proposalType = proposalObject[proposalObject[0].proposalType]
 
         if (proposalType === 'Class' && isEdit) {
-          iri = iri || originalIri
+          iri = originalIri || iri
         }
         if (!acc[iri]) {
           acc[iri] = {
