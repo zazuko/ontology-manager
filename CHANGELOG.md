@@ -1,3 +1,13 @@
+<a name="0.9.94"></a>
+## [0.9.94](https://github.com/zazuko/ontology-manager/compare/v0.9.93...v0.9.94) (2019-12-18)
+
+
+### Performance Improvements
+
+* **version:** more mem efficient version checking ([ed99a89](https://github.com/zazuko/ontology-manager/commit/ed99a89))
+
+
+
 <a name="0.9.93"></a>
 ## [0.9.93](https://github.com/zazuko/ontology-manager/compare/v0.9.92...v0.9.93) (2019-12-18)
 
