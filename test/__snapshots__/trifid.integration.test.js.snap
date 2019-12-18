@@ -19,3 +19,5 @@ Array [
   "http://www.w3.org/2000/01/rdf-schema#label",
 ]
 `;
+
+exports[`basic dev Renders IRI from dataset wrt Accept header jsonld in html 1`] = `"["`;

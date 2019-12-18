@@ -24,11 +24,16 @@ let nuxt = null
 // Init Nuxt.js and create a server listening on localhost:4000
 describe('basic dev', () => {
   beforeAll(async () => {
-    const config = await require(resolve(__dirname, '../nuxt.config.js'))()
-    nuxt = new Nuxt(config)
-    await nuxt.ready()
-    await new Builder(nuxt).build()
-    return nuxt.listen(3000, 'localhost')
+    try {
+      const config = await require(resolve(__dirname, '../nuxt.config.js'))()
+      nuxt = new Nuxt(config)
+      await nuxt.ready()
+      await new Builder(nuxt).build()
+      await nuxt.listen(3000, 'localhost')
+    }
+    catch (err) {
+      console.error(err)
+    }
   })
 
   // Close server and ask nuxt to stop listening to file changes
@@ -82,12 +87,12 @@ describe('basic dev', () => {
   })
 
   describe('Renders IRI from dataset wrt Accept header', () => {
-    test.skip('jsonld in html', async () => {
+    test('jsonld in html', async () => {
       const result = await getHTML('/pouch/CargoHandlersPouch')
 
       expect(result.status).toBe(200)
 
-      const found = result.data.match(/<script data-n-head="true" type="application\/ld\+json" id="data">([\s\S]+?)]<\/script>/m)
+      const found = result.data.match(/type="application\/ld\+json" id="data">([\s\S]+?)]<\/script>/m)
       expect(found[1]).toMatchSnapshot()
     })
 
@@ -124,8 +129,7 @@ describe('basic dev', () => {
 
     test('html for turtle', async () => {
       const result = await getTURTLE('/pouch/CargoHandlersPouch')
-
-      expect(result.status).toBe(404)
+      expect(result.status).toBe(200)
       expect(result.data.toLowerCase()).toContain('<!doctype html>')
     })
   })

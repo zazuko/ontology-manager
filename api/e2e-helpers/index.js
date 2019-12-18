@@ -1,16 +1,18 @@
 const _ = require('lodash')
-const Router = require('express').Router
-const apicache = require('apicache')
+const debug = require('debug')('editor:backend')
 const gql = require('graphql-tag')
+const N3Parser = require('rdf-parser-n3')
+const stringToStream = require('string-to-stream')
+const Router = require('express').Router
+const rdf = require('rdf-ext')
 const apolloClientFactory = require('../getApolloClient')
 const FSAPI = require('./api')
 
+const parser = new N3Parser({ factory: rdf })
 const router = Router()
 
 module.exports = async function (editorConfig) {
   const api = new FSAPI(editorConfig)
-  const onlyStatus200 = (req, res) => res.statusCode === 200
-  const cache = (duration) => apicache.middleware(duration, onlyStatus200)
 
   const anonApolloClient = await apolloClientFactory()
 
@@ -23,10 +25,40 @@ module.exports = async function (editorConfig) {
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
   const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
 
-  router.__cacheClear = () => apicache.clear()
+  const filesCache = new Map()
+  let version
+  setInterval(async () => {
+    for (const [path, content] of filesCache.entries()) {
+      try {
+        const newContent = await api.getFile({ path })
+        if (newContent !== content) {
+          filesCache.set(path, newContent)
+        }
+        if (typeof version === 'undefined' || newContent !== content) {
+          const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
+          const quadStream = parser.import(stringToStream(versionPart))
+          const dataset = await rdf.dataset().import(quadStream)
+          const newVersion = getVersion(dataset)
+          if (newVersion !== null) {
+            version = newVersion
+          }
+          else if (typeof version === 'undefined') {
+            version = -1
+          }
+        }
+      }
+      catch (err) {
+        debug(err)
+      }
+    }
+  }, 5000)
 
   router.get('/', (req, res, next) => {
     res.send('Ontology Manager currently using E2E helpers')
+  })
+
+  router.get('/version', (req, res, next) => {
+    res.json({ version })
   })
 
   router.post('/auth/login', (req, res, next) => {
@@ -57,11 +89,7 @@ module.exports = async function (editorConfig) {
     res.send(content)
   })
 
-  router.get('/cache', (req, res) => {
-    res.json(apicache.getIndex())
-  })
-
-  router.get('/blob/:branch/:file', cache('5 minutes'), async (req, res, next) => {
+  router.get('/blob/:branch/:file', async (req, res, next) => {
     const path = req.params.file
     const branch = req.params.branch
     const content = await api.getFile({ path, branch })
@@ -70,9 +98,8 @@ module.exports = async function (editorConfig) {
     res.send(content)
   })
 
-  router.get('/blob/:file', cache('5 minutes'), async (req, res, next) => {
+  router.get('/blob/:file', async (req, res, next) => {
     const path = req.params.file
-    req.apicacheGroup = `file:${path}`
     const content = await api.getFile({ path })
     res.type('application/n-triples')
 
@@ -237,10 +264,6 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/approve', async (req, res, next) => {
-    [ontologyFilename, structureFilename].forEach((file) => {
-      apicache.clear(`file:${file}`)
-    })
-
     const { threadId, number } = req.body
 
     try {
@@ -279,10 +302,6 @@ module.exports = async function (editorConfig) {
   })
 
   router.post('/proposal/close', async (req, res, next) => {
-    [ontologyFilename, structureFilename].forEach((file) => {
-      apicache.clear(`file:${file}`)
-    })
-
     const { threadId, number, status } = req.body
 
     if (!['resolved', 'hidden', 'rejected'].includes(status.toLowerCase())) {
@@ -357,4 +376,13 @@ module.exports = async function (editorConfig) {
   }
 
   return router
+}
+
+function getVersion (dataset) {
+  const quads = dataset.match(null, rdf.namedNode('http://schema.org/version')).toArray()
+    .filter(({ subject, object }) => subject.termType === 'BlankNode' && object.termType === 'Literal')
+  if (quads.length) {
+    return parseInt(quads[0].object.value, 10)
+  }
+  return null
 }
