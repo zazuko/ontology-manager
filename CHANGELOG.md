@@ -1,3 +1,13 @@
+<a name="0.9.93"></a>
+## [0.9.93](https://github.com/zazuko/ontology-manager/compare/v0.9.92...v0.9.93) (2019-12-18)
+
+
+### Bug Fixes
+
+* **object-details:** show full example value ([7347cf5](https://github.com/zazuko/ontology-manager/commit/7347cf5))
+
+
+
 <a name="0.9.92"></a>
 ## [0.9.92](https://github.com/zazuko/ontology-manager/compare/v0.9.91...v0.9.92) (2019-12-17)
 
