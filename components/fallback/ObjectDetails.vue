@@ -228,9 +228,7 @@
       <section
         v-show="examples.length"
         id="example">
-        <h2 class="title is-2">
-          Example{{ examples.length > 1 ? 's' : '' }}
-        </h2>
+        <h2 class="title is-2">Example{{ examples.length > 1 ? 's' : '' }}</h2>
         <div>
           <pre
             v-for="(example, index) in examples"
@@ -247,7 +245,6 @@ import rdf from 'rdf-ext'
 import PropertiesTable from './PropertiesTable'
 import LinkToIri from './LinkToIri'
 import cloneDeep from 'lodash/cloneDeep'
-import { term } from '@/libs/utils'
 import { sanitizeHTML, toHTML } from '@/libs/editor'
 
 export default {
@@ -358,7 +355,7 @@ export default {
     examples () {
       return this.ontology.match(this.iri, this.$termIRI.example)
         .toArray()
-        .map((quad) => term(quad.object))
+        .map((quad) => quad.object.value)
     },
     isClass () {
       return Boolean(this.$termIRI.ClassLikes
