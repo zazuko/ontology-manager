@@ -36,9 +36,9 @@ import { version } from '@/package.json'
 export default {
   layout: 'background',
   async asyncData (app) {
-    const { version } = await app.$axios.$get('/api/version')
+    const versionResponse = await app.$axios.$get('/api/version')
     return {
-      ontologyVersion: version
+      ontologyVersion: versionResponse.version
     }
   },
   components: {},

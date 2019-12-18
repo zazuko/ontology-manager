@@ -18,28 +18,28 @@ module.exports = async function (editorConfig) {
   const filesCache = new Map()
   let version
   setInterval(async () => {
-    for (const [path, content] of filesCache.entries()) {
-      try {
-        const newContent = await api.getFile({ path })
-        if (newContent !== content) {
-          filesCache.set(path, newContent)
+    const path = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
+    const content = filesCache.get(path)
+    try {
+      const newContent = await api.getFile({ path })
+      if (hash(newContent) !== content) {
+        filesCache.set(path, hash(newContent))
+      }
+      if (typeof version === 'undefined' || newContent !== content) {
+        const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
+        const quadStream = parser.import(stringToStream(versionPart))
+        const dataset = await rdf.dataset().import(quadStream)
+        const newVersion = getVersion(dataset)
+        if (newVersion !== null) {
+          version = newVersion
         }
-        if (typeof version === 'undefined' || newContent !== content) {
-          const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
-          const quadStream = parser.import(stringToStream(versionPart))
-          const dataset = await rdf.dataset().import(quadStream)
-          const newVersion = getVersion(dataset)
-          if (newVersion !== null) {
-            version = newVersion
-          }
-          else if (typeof version === 'undefined') {
-            version = -1
-          }
+        else if (typeof version === 'undefined') {
+          version = -1
         }
       }
-      catch (err) {
-        debug(err)
-      }
+    }
+    catch (err) {
+      debug(err)
     }
   }, 5000)
 
@@ -64,7 +64,7 @@ module.exports = async function (editorConfig) {
     let content
     try {
       content = await api.getFile({ path })
-      filesCache.set(path, content)
+      filesCache.set(path, hash(content))
     }
     catch (err) {
       debug(`/blob/${path}`, err)
@@ -415,3 +415,5 @@ function getVersion (dataset) {
   }
   return null
 }
+
+const hash = (str) => str.split('').reduce((hash, char) => (((hash << 5) - hash) + char.charCodeAt(0)) | 0, 0).toString(16)
