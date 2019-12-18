@@ -12,7 +12,7 @@
     "migrate": "node setup/migrate.js",
     "precommit": "npm run lint",
     "start": "nuxt-start",
-    "test:unit": "NODE_TEST=1 jest --testPathIgnorePatterns test/*integration.test.js",
+    "test:unit": "NODE_TEST=1 jest --testPathPattern test/* --testPathIgnorePatterns test/*integration.test.js",
     "test:integration": "NODE_TEST=1 jest --testPathPattern test/*integration.test.js",
     "e2e:migrate": "NODE_TEST=1 npm run migrate",
     "e2e:open": "cypress open",

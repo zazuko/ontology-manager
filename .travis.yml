@@ -1,3 +1,8 @@
+language: node_js
+
+node_js:
+  - "12"
+
 sudo: required
 
 env:
@@ -8,20 +13,19 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+
+  - cp .env.example .env
   - docker-compose up -d db
-  - sleep 45
-  - node setup/migrate.js
-  - docker-compose up -d
+  - npm install -g npm@^6
 
 services:
   - docker
 
-language: node_js
-node_js:
-  - "12"
-
-before_script: npm install -g npm@^6
-
 install: npm ci
 
-script: npm run test
+before_script:
+  - node setup/migrate.js
+
+script:
+  - npm run test:unit
+  - npm run test:integration

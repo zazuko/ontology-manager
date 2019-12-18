@@ -2,26 +2,18 @@ const _ = require('lodash')
 const debug = require('debug')('editor:backend')
 const gql = require('graphql-tag')
 const N3Parser = require('rdf-parser-n3')
-const stringToStream = require('string-to-stream')
-const Router = require('express').Router
 const rdf = require('rdf-ext')
+const Router = require('express').Router
+const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const FSAPI = require('./api')
 
 const parser = new N3Parser({ factory: rdf })
-const router = Router()
 
 module.exports = async function (editorConfig) {
+  const router = Router()
   const api = new FSAPI(editorConfig)
 
-  const anonApolloClient = await apolloClientFactory()
-
-  const getApolloClientForUser = (req) => apolloClientFactory({
-    user: req.user.person_id,
-    token: req.get('Authorization'),
-    getAuth: () => req.get('Authorization'),
-    ssr: true
-  })
   const ontologyFilename = editorConfig.ontology.ontologyRawUrl.substr(editorConfig.ontology.ontologyRawUrl.lastIndexOf('/') + 1)
   const structureFilename = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
 
@@ -52,6 +44,14 @@ module.exports = async function (editorConfig) {
       }
     }
   }, 5000)
+
+  const anonApolloClient = await apolloClientFactory()
+  const getApolloClientForUser = async (req) => apolloClientFactory({
+    user: req.user.person_id,
+    token: req.get('Authorization'),
+    getAuth: () => req.get('Authorization'),
+    ssr: true
+  })
 
   router.get('/', (req, res, next) => {
     res.send('Ontology Manager currently using E2E helpers')
@@ -89,18 +89,18 @@ module.exports = async function (editorConfig) {
     res.send(content)
   })
 
-  router.get('/blob/:branch/:file', async (req, res, next) => {
+  router.get('/blob/:file', async (req, res) => {
     const path = req.params.file
-    const branch = req.params.branch
-    const content = await api.getFile({ path, branch })
-    res.type('application/n-triples')
-
-    res.send(content)
-  })
-
-  router.get('/blob/:file', async (req, res, next) => {
-    const path = req.params.file
-    const content = await api.getFile({ path })
+    let content
+    try {
+      content = await api.getFile({ path })
+      filesCache.set(path, content)
+    }
+    catch (err) {
+      debug(`/blob/${path}`, err)
+      res.status(500).send('error')
+      return
+    }
     res.type('application/n-triples')
 
     res.send(content)
@@ -117,9 +117,16 @@ module.exports = async function (editorConfig) {
       id: clientId
     } = req.body
 
-    const { token, avatarUrl, serverId } = await checkToken(req, res)
+    let { token, avatarUrl, serverId } = {}
 
+    try {
+      ({ token, avatarUrl, serverId } = await checkToken(req, res))
+    }
+    catch (err) {
+      debug(err)
+    }
     if (!clientId || clientId !== serverId) {
+      debug({ message: `Client-provided ID ${clientId} doesn't match server's one ${serverId}` })
       res.status(500).send({ message: `Client-provided ID ${clientId} doesn't match server's one` })
       return
     }
@@ -200,10 +207,10 @@ module.exports = async function (editorConfig) {
     }
     catch (err) {
       if (_.get(err, 'graphQLErrors.length', 0)) {
-        console.error(err.graphQLErrors)
+        debug(err.graphQLErrors)
       }
       else {
-        console.error(err)
+        debug(err)
       }
     }
 

@@ -87,8 +87,6 @@ module.exports = async function (editorConfig) {
       id: clientId
     } = req.body
 
-    // console.log(`Linking attempt: ${JSON.stringify({ clientEmail, clientName, clientUsername, clientId })}`)
-
     let { token, avatarUrl, serverId } = {}
 
     try {
