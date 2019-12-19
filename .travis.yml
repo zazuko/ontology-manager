@@ -16,7 +16,7 @@ before_install:
 
   - cp .env.example .env
   - docker-compose up -d db
-  - npm install -g npm@^6
+  - npm install -g npm@^6 wait-on
 
 services:
   - docker
@@ -28,5 +28,5 @@ before_script:
 
 script:
   - npm run test:unit
-  - NODE_TEST=1 npm run dev &
-  - npm run test:integration
+  - npm run e2e:headless &
+  - wait-on http://localhost:3000/about && npm run test:integration
