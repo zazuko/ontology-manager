@@ -12,8 +12,8 @@
     "migrate": "node setup/migrate.js",
     "precommit": "npm run lint",
     "start": "nuxt-start",
-    "test:unit": "NODE_TEST=1 jest --testPathPattern test/* --testPathIgnorePatterns test/*integration.test.js",
-    "test:integration": "NODE_TEST=1 jest --testPathPattern test/*integration.test.js",
+    "test:unit": "NODE_TEST=1 ava test/unit/*.js",
+    "test:integration": "ava test/integration/*.js",
     "e2e:migrate": "NODE_TEST=1 npm run migrate",
     "e2e:open": "cypress open",
     "e2e:server": "npm run e2e:migrate && NODE_TEST=1 npm run dev",
@@ -79,6 +79,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
+    "ava": "^2.4.0",
     "babel-eslint": "^10.0.3",
     "bulma": "^0.8.0",
     "compression": "^1.7.4",
@@ -89,15 +90,15 @@
     "eslint-config-standard": "^14.1.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^3.0.3",
+    "eslint-plugin-ava": "^9.0.0",
     "eslint-plugin-cypress": "^2.8.1",
     "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.0.1",
+    "esm": "^3.2.25",
     "husky": "^3.1.0",
-    "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.13.0",
     "nuxt": "^2.11.0",
@@ -111,6 +112,11 @@
     "*.js": [
       "eslint --fix",
       "git add"
+    ]
+  },
+  "ava": {
+    "require": [
+      "esm"
     ]
   }
 }

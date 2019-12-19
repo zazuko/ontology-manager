@@ -28,4 +28,5 @@ before_script:
 
 script:
   - npm run test:unit
+  - NODE_TEST=1 npm run dev &
   - npm run test:integration

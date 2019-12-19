@@ -3,7 +3,6 @@ module.exports = {
   env: {
     browser: true,
     node: true,
-    'jest/globals': true,
     'cypress/globals': true
   },
   parserOptions: {
@@ -21,7 +20,7 @@ module.exports = {
   // required to lint *.vue files
   plugins: [
     'vue',
-    'jest',
+    'ava',
     'cypress'
   ],
   settings: {

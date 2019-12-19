@@ -162,6 +162,7 @@ That's it. The remaining configuration is done using the installer (navigate to 
 
 ### Integration Tests
 
+1. Run `NODE_TEST=1 npm run dev`
 1. Run `npm run test:integration`
 
 ## Architecture
