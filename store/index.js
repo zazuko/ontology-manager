@@ -18,6 +18,12 @@ export const actions = {
   // a. why we have access to `req`
   // b. why it will be broken client-side: data will be (de)serialized to/from JSON for the client
   async nuxtServerInit ({ commit, dispatch }, { req, res }) {
+    if (process.server) {
+      const Cookies = require('cookies')
+      const cookieJar = new Cookies(req, res)
+      const token = cookieJar.get('zom_token')
+      await this.app.$apolloHelpers.onLogin(token)
+    }
     await dispatch('config/LOAD_CONFIG')
     commit('class/NEW')
     commit('prop/NEW')

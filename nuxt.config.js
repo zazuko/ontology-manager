@@ -93,12 +93,15 @@ module.exports = async () => {
     ** Module config: apollo
     */
     apollo: {
+      tokenName: 'zom_token',
+      authenticationType: 'Bearer',
       clientConfigs: {
         default: {
           httpEndpoint: `${editorConfig.editor.protocol}://${editorConfig.editor.host}/graphql`,
           // You can use `wss` for secure connection (recommended in production)
           // Use `null` to disable subscriptions
-          wsEndpoint: null // `ws://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
+          wsEndpoint: null, // `ws://${process.env.EDITOR_HOST || 'localhost:3000'}/graphql`,
+          tokenName: 'zom_token'
         }
       }
     },
