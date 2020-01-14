@@ -4,13 +4,16 @@ let resp
 
 Cypress.Commands.add('login', (path) => {
   let $nuxt
+  let apolloClient
   cy.window().should('have.property', 'appReady', true)
   cy.window()
     .its('$nuxt')
     .then((_$nuxt) => {
       $nuxt = _$nuxt
-      return $nuxt.$auth.loginWith('local')
+
+      apolloClient = $nuxt.$apolloProvider.defaultClient
     })
+    .then(() => $nuxt.$auth.loginWith('local'))
     .then(() => {
       if (resp) {
         return Promise.resolve(resp)
@@ -31,6 +34,11 @@ Cypress.Commands.add('login', (path) => {
       $nuxt.$auth.$storage.setState('hats', resp.body.personHats)
       $nuxt.$apolloHelpers.onLogin(jwtToken)
       $nuxt.$auth.$storage.setState('localUser', true)
+    })
+    // make sure no query is in flight
+    .then(() => apolloClient.queryManager.fetchQueryRejectFns)
+    .then(() => apolloClient.clearStore())
+    .then(() => {
       if (path) {
         cy.goto(path)
       }
