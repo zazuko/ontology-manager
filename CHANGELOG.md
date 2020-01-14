@@ -1,3 +1,14 @@
+<a name="0.9.95"></a>
+## [0.9.95](https://github.com/zazuko/ontology-manager/compare/v0.9.94...v0.9.95) (2020-01-14)
+
+
+### Bug Fixes
+
+* **auth:** sign in SSR as user ([a1c4923](https://github.com/zazuko/ontology-manager/commit/a1c4923))
+* **trifid:** serve 406 on unserializable Accepts ([10b270d](https://github.com/zazuko/ontology-manager/commit/10b270d))
+
+
+
 <a name="0.9.94"></a>
 ## [0.9.94](https://github.com/zazuko/ontology-manager/compare/v0.9.93...v0.9.94) (2019-12-18)
 
