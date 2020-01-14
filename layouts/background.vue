@@ -7,10 +7,12 @@
 </template>
 
 <script>
+import Auth from '@/mixins/auth'
 import TopNav from '@/components/layout/TopNav'
 import PageFooter from '@/components/layout/PageFooter'
 
 export default {
+  extends: Auth,
   components: {
     TopNav,
     PageFooter
