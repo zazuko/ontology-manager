@@ -147,7 +147,7 @@ export function term (o) {
     throw new Error(`Cannot call term() on '${JSON.stringify(o)}'`)
   }
 
-  return (oIri.match(new RegExp('[^/^#]+(?=$)')) || [])[0]
+  return (oIri.match(new RegExp('([^/^#]+)[/]?(?=$)')) || ['', ''])[1]
 }
 
 export function normalizeLabel (label, type = 'pascal') {

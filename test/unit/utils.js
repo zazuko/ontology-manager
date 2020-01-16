@@ -1,5 +1,5 @@
 import test from 'ava'
-import { findSubtreeInForest, isCyclicTree, buildAdjacencyList, isCyclic } from '../../libs/utils'
+import { findSubtreeInForest, isCyclicTree, buildAdjacencyList, isCyclic, term } from '../../libs/utils'
 
 test('libs/utils: findSubtreeInForest', (t) => {
   const nodeA = { iri: 'a', children: [] }
@@ -161,4 +161,11 @@ test('libs/utils: cycle utilities: works with key not in adjacency list', (t) =>
   const adjacencyList = buildAdjacencyList(schemaTree)
   adjacencyList.a.push('x')
   t.false(isCyclic(adjacencyList))
+})
+
+test('libs/utils: term', (t) => {
+  t.is(term('http://example.com/foo'), 'foo')
+  t.is(term('http://example.com/bar/foo'), 'foo')
+  t.is(term('http://example.com/bar/foo/'), 'foo')
+  t.is(term('http://example.com/bar#foo'), 'foo')
 })
