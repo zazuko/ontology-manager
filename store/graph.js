@@ -165,7 +165,13 @@ async function deserialize (string) {
     }
   })
 
-  const quadStream = parser.import(input)
+  try {
+    const quadStream = parser.import(input)
 
-  return rdf.dataset().import(quadStream)
+    return rdf.dataset().import(quadStream)
+  }
+  catch (err) {
+    console.error('Failed to parse ntriples: ', err.message)
+    return rdf.fdataset()
+  }
 }
