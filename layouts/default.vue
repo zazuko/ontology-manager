@@ -12,6 +12,7 @@ import TopNav from '@/components/layout/TopNav'
 import PageFooter from '@/components/layout/PageFooter'
 
 export default {
+  name: 'DefaultLayout',
   extends: Auth,
   components: {
     TopNav,
