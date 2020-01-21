@@ -8,7 +8,7 @@
         <form
           class="container settings-form"
           @submit.prevent="setup">
-          <h1 class="title">Editor Configuration</h1>
+          <h1 class="title">Ontology Manager Configuration</h1>
           <h2 class="subtitle">Step 1</h2>
 
           <p class="text">
@@ -202,7 +202,7 @@ export default {
   },
   head () {
     const h = {
-      title: this.$headTitle('Editor Installation')
+      title: this.$headTitle('Ontology Manager Installation')
     }
     return h
   },

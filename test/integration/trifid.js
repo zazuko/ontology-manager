@@ -84,7 +84,7 @@ test('Renders IRI from dataset wrt Accept header: html for html', async (t) => {
   t.true(result.data.toLowerCase().includes('<!doctype html>'))
 })
 
-test.skip('Renders IRI from dataset wrt Accept header: json for jsonld', async (t) => {
+test('Renders IRI from dataset wrt Accept header: json for jsonld', async (t) => {
   t.timeout(15000)
   const result = await getJSONLD('/schema/FlightManifest')
 
@@ -117,7 +117,7 @@ test('Renders IRI from dataset wrt Accept header: http406 for n-quads', async (t
   t.timeout(15000)
   const result = await getNQ('/schema/FlightManifest')
   t.is(result.status, 406)
-  t.is(result.data.toLowerCase(), 'cannot serialize to: application/n-quads')
+  t.is(result.data.toLowerCase(), 'no serializer for: "application/n-quads", available formats: "application/ld+json", "application/n-triples", "text/n3", "text/turtle", "application/json"')
 })
 
 test('Renders 404 for IRI not in dataset: html for html', async (t) => {

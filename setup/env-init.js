@@ -8,6 +8,10 @@ const mandatoryEnvVars = [
 ]
 
 module.exports = function envInit () {
+  if (process.env.NODE_TEST) {
+    // since dotenv doesn't overwrite existing env vars, load test env first
+    dotenv.config({ path: '.env.test' })
+  }
   dotenv.config()
 
   Object.entries(process.env).forEach(([key, value]) => {

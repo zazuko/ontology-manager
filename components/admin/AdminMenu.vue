@@ -17,7 +17,7 @@
           <nuxt-link
             :to="{ name: 'admin-settings' }"
             :class="{ 'is-active': currentRoute === 'admin-settings'}">
-            Editor Settings
+            Ontology Manager Settings
           </nuxt-link>
         </li>
       </ul>
