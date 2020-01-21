@@ -48,7 +48,7 @@ module.exports = class FSAPI {
   }
 
   async getFile ({ path = this.ontologyPath, branch = this.branch } = {}) {
-    return fs.readFile(require.resolve(`../../test/repo/${path}`))
+    return (await fs.readFile(require.resolve(`../../test/repo/${path}`))).toString()
   }
 
   async updateFile ({ message, content, branch, author, structure = false }) {
@@ -119,7 +119,7 @@ module.exports = class FSAPI {
   }
 
   async readLog () {
-    const content = (await fs.readFile(log, 'utf8'))
+    const content = (await fs.readFile(log, 'utf8')).toString()
       .replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g, 'SOME_DATE')
       .replace(/\d{4}-\d{2}-\d{2}T\d{6}\.\d{3}Z/g, 'BRANCH_NAME')
     debug('read file, content:', content)

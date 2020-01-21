@@ -18,12 +18,15 @@ module.exports = {
         "Cargo Weight\n       \n          Property"
       ],
       "3": [
+        "Height\n       \n          Property",
         "netWeight\n       \n          Property",
         "grossWeight\n       \n          Property",
         "AWB Total Weight\n       \n          Property",
         "AWB Total Weight UoM\n       \n          Property",
         "AWB Manifested Weight\n       \n          Property",
-        "Cargo Weight\n       \n          Property"
+        "Cargo Weight\n       \n          Property",
+        "Shippers Instruction\n       \n          Need a good definition. Here is one from shippingsolutions.com - The Shipper's Letter of Instruction helps to convey specific instructions from the exporter to his agent, usually an international freight forwarder.",
+        "Carriers Pouch\n       \n          A pouch is an entity we use to logically group data elements together for the role in the logistics chain that predominantly would provide the data.  It is intended to enably a quick access to schema needed. For the Carriers Pouch, you will find data typically from the following documents; Flight Manifest, Freight Booked List, NOTOC."
       ]
     }
   },

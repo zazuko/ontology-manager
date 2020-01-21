@@ -22,7 +22,7 @@ module.exports = function handler (router) {
       req.iri = '… nothing here …'
     }
     else if (!req.accepts(serializersFor)) {
-      res.status(406).send(`Cannot serialize to: ${accepted}`)
+      res.status(406).send(`No serializer for: "${accepted}", available formats: "${serializersFor.join('", "')}"`)
       return
     }
 
