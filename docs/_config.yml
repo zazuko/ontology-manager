@@ -1,0 +1,22 @@
+title: Zazuko Ontology Manager Documentation
+
+markdown: kramdown
+remote_theme: pmarsceill/just-the-docs
+
+defaults:
+  - scope:
+      path: ""
+      type: docs
+    values:
+      sidebar:
+        nav: "docs"
+
+logo: "https://zazuko.com/logo/zazuko-logo.svg"
+
+aux_links:
+  "GitHub":
+    - "https://github.com/zazuko/ontology-manager"
+  "Demo Instance":
+    - "http://editor.zazuko.com"
+  "Zazuko":
+    - "https://zazuko.com"
