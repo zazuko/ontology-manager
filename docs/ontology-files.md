@@ -2,6 +2,7 @@
 title: Ontology Files
 nav_order: 300
 has_children: false
+has_toc: true
 ---
 
 # Ontology Files
@@ -105,7 +106,7 @@ Here is a complete example to generate this structure:
 
 ![structure screenshot](https://user-images.githubusercontent.com/2022803/72528903-6d52fc80-386c-11ea-9e95-d5a9da74df1d.png)
 
-```ntriples
+```
 <http://example.com/games/> <http://schema.org/hasPart> <http://example.com/games/board-games/> .
 <http://example.com/games/> <http://schema.org/hasPart> <http://example.com/games/card-games/> .
 <http://example.com/games/> <http://schema.org/hasPart> <http://example.com/games/dice-games/> .
@@ -136,7 +137,7 @@ Here is a complete example to generate this structure:
 
 From there, you could either start with an empty ontology file or add some sample content to your ontology file:
 
-```ntriples
+```
 <http://example.com/schema/RockClimbing> <http://purl.org/dc/terms/modified> "2018-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
 <http://example.com/schema/RockClimbing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://example.com/schema/RockClimbing> <http://www.w3.org/2000/01/rdf-schema#comment> "A sport where the goal is to climb." .
@@ -145,11 +146,11 @@ From there, you could either start with an empty ontology file or add some sampl
 
 and display RockClimbing into IndividualSport by adding to the structure file:
 
-```ntriples
+```
 <http://example.com/sports/individual-sports/> <http://schema.org/hasPart> <http://example.com/schema/RockClimbing> .
 ```
 
-(Note: runing the ontology manager with the environment variable `DEBUG=editor:*` to see ntriples parsing errors is useful when you are setting up brand new files. The ontology manager won't create invalid ntriples but when you are experimenting with different things by directly pushing files to GitHub, please keep this in mind. Remember to turn debugging of when you go live.)
+(Note: running the ontology manager with the environment variable `DEBUG=editor:*` to see RDF parsing errors is useful when you are setting up brand new files. The ontology manager won't create invalid n-triples but when you are experimenting with different things by directly pushing files to GitHub, please keep this in mind. Remember to turn debugging of when you go live.)
 
 At this point you will have the following, one object in the "Individual Sports" group.
 
