@@ -117,7 +117,7 @@ export default {
   },
   head () {
     const h = {
-      title: this.$headTitle('Editor Settings - Admin')
+      title: this.$headTitle('Ontology Manager Settings - Admin')
     }
     return h
   }

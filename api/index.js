@@ -37,7 +37,7 @@ async function createApiMiddleware () {
   else {
     throw new Error('No forge API configured or configured forge API not found.')
   }
-  debug(`Starting Editor for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
+  debug(`Starting ZOM for ${process.env.CUSTOMER_NAME} with ${api} support, config v${editorConfig.id}`)
   return require(`./${api}`)(editorConfig)
 }
 
@@ -68,7 +68,7 @@ async function createApiMiddleware () {
 
   process.on('SIGHUP', async () => {
     apiMiddleware = await createApiMiddleware()
-    debug('Editor API: apiMiddleware reloaded')
+    debug('ZOM API: apiMiddleware reloaded')
   })
 
   router.post('/setup', async (req, res, next) => {

@@ -65,7 +65,7 @@ export default {
   },
   head () {
     const h = {
-      title: this.$headTitle('Editor Installation')
+      title: this.$headTitle('Ontology Manager Installation')
     }
     return h
   },

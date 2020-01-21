@@ -14,7 +14,7 @@
         <h1 class="title">Pre-filled with version {{ config.id }} values</h1>
         <p v-show="error">{{ error }}</p>
       </template>
-      <h1 class="title">1. Editor Settings</h1>
+      <h1 class="title">1. Ontology Manager Settings</h1>
       <h2 class="subtitle">1.1. General</h2>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -75,7 +75,7 @@
       </div>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Editor Title</label>
+          <label class="label">Ontology Manager Title</label>
         </div>
         <div class="field-body">
           <div class="field">
@@ -93,7 +93,7 @@
       </div>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Editor Short Description</label>
+          <label class="label">Ontology Manager Short Description</label>
         </div>
         <div class="field-body">
           <div class="field">
