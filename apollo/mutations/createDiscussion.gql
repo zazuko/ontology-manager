@@ -1,10 +1,11 @@
-mutation ($headline: String!, $body: String!, $iri: String!, $threadType: ThreadType!) {
+mutation ($headline: String!, $body: String!, $iri: String!) {
   createThread (input: {
     thread: {
       headline: $headline,
       body: $body,
       iri: $iri,
-      threadType: $threadType
+      threadType: DISCUSSION,
+      status: OPEN
     }
   }) {
     thread {
