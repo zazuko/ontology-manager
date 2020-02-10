@@ -18,15 +18,15 @@ describe('Search', () => {
 
   it('should be available on homepage', () => {
     cy.get('#topbar-search').focus().type('cargo').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 2)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gte', 2)
     cy.get('#topbar-search').clear()
 
     cy.get('#topbar-search').focus().type('cargo weight').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 0)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gte', 1)
     cy.get('#topbar-search').clear()
 
     cy.get('#topbar-search').focus().type('weight').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 3)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gte', 3)
     cy.get('#topbar-search').clear()
   })
 
