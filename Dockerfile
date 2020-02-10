@@ -8,6 +8,7 @@ ARG SENTRY_ORG
 ARG SENTRY_PROJECT
 
 RUN apk add --no-cache bash python
+RUN npm install -g npm@6.13.7
 
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -23,6 +24,7 @@ ENV BUILDING_WITHOUT_PG_ACCESS=yes
 RUN bash /app/build.sh
 
 FROM node:12-alpine
+RUN npm install -g npm@6.13.7
 
 WORKDIR /app
 
