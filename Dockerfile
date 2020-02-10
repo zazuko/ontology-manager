@@ -7,7 +7,7 @@ ARG SENTRY_URL
 ARG SENTRY_ORG
 ARG SENTRY_PROJECT
 
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash python
 
 WORKDIR /app
 COPY package.json package-lock.json ./
