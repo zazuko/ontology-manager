@@ -7,7 +7,7 @@ ARG SENTRY_URL
 ARG SENTRY_ORG
 ARG SENTRY_PROJECT
 
-RUN apk add --no-cache bash python
+RUN apk add --no-cache bash python make g++
 RUN npm install -g npm@6.13.7
 
 WORKDIR /app
@@ -29,7 +29,7 @@ RUN npm install -g npm@6.13.7
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --production
+RUN npm ci --production --no-optional
 
 COPY . .
 
