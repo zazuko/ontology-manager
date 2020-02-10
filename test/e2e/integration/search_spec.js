@@ -7,7 +7,8 @@ const collectResults = (result) => {
     .map('textContent')
     .map((x) => x.trim())
     .value()
-  cy.wrap(results).snapshot()
+    .slice(0, 5)
+  return results.length
 }
 
 describe('Search', () => {
@@ -17,15 +18,15 @@ describe('Search', () => {
 
   it('should be available on homepage', () => {
     cy.get('#topbar-search').focus().type('cargo').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 2)
     cy.get('#topbar-search').clear()
 
     cy.get('#topbar-search').focus().type('cargo weight').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 0)
     cy.get('#topbar-search').clear()
 
     cy.get('#topbar-search').focus().type('weight').focus()
-    cy.wait(1500).get('.search-results a').then(collectResults)
+    cy.wait(1500).get('.search-results a').then(collectResults).should('be.gt', 3)
     cy.get('#topbar-search').clear()
   })
 
