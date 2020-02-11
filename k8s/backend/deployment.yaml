@@ -15,9 +15,12 @@ spec:
           containerPort: 3000
 
         resources:
-          limits:
+          requests:
             memory: "600Mi"
             cpu: "300m"
+          limits:
+            memory: "600Mi"
+            cpu: "600m"
 
         livenessProbe:
           initialDelaySeconds: 30
