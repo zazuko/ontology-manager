@@ -13,16 +13,6 @@
 
 
 
-<a name="0.9.100"></a>
-## [0.9.100](https://github.com/zazuko/ontology-manager/compare/v0.9.99...v0.9.100) (2020-02-10)
-
-
-
-<a name="0.9.99"></a>
-## [0.9.99](https://github.com/zazuko/ontology-manager/compare/v0.9.98...v0.9.99) (2020-02-10)
-
-
-
 <a name="0.9.98"></a>
 ## [0.9.98](https://github.com/zazuko/ontology-manager/compare/v0.9.97...v0.9.98) (2020-02-10)
 
@@ -30,11 +20,6 @@
 ### Bug Fixes
 
 * node-gyp requires python ([01e7819](https://github.com/zazuko/ontology-manager/commit/01e7819))
-
-
-
-<a name="0.9.97"></a>
-## [0.9.97](https://github.com/zazuko/ontology-manager/compare/v0.9.96...v0.9.97) (2020-02-10)
 
 
 
