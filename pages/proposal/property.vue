@@ -213,11 +213,11 @@ export default {
     }
     // if we have an ID from the URL here, we load
     else if (this.isEditingExistingDraft) {
-      const waitForAuth = setInterval(() => {
+      this.waitForAuth = setInterval(() => {
         if (!this.$store.state.authProcessDone || typeof this.prop === 'undefined') {
           return
         }
-        clearInterval(waitForAuth)
+        clearInterval(this.waitForAuth)
         this.load(this.id)
           .then((isDraft) => {
             this.storeReady = true
@@ -248,9 +248,10 @@ export default {
       this.storeReady = true
     }
   },
-  beforeDestroy () {
+  async beforeDestroy () {
+    clearInterval(this.waitForAuth)
     if (this.saveInterval) {
-      this.saveDraft()
+      await this.saveDraft()
       this.stopAutosave()
     }
   },

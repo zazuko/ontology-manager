@@ -186,18 +186,23 @@ export default {
       }
       this.rebooting = true
       setTimeout(() => {
-        const checker = setInterval(async () => {
+        this.checker = setInterval(async () => {
           if (this.checkInProgress) {
             return
           }
           if (await this.isUp()) {
-            clearInterval(checker)
+            clearInterval(this.checker)
             setTimeout(() => {
               window.location.href = `${this.protocol}://${this.host}/install`
             }, 10 * 1000)
           }
         }, 500)
       }, 1000)
+    }
+  },
+  beforeDestroy () {
+    if (this.checker) {
+      clearInterval(this.checker)
     }
   },
   head () {

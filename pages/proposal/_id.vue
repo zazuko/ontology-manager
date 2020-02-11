@@ -267,11 +267,11 @@ export default {
           message: 'Not found'
         })
       }
-      const waitForAuth = setInterval(() => {
+      this.waitForAuth = setInterval(() => {
         if (!this.$store.state.authProcessDone) {
           return
         }
-        clearInterval(waitForAuth)
+        clearInterval(this.waitForAuth)
 
         loader(this.id)
           .then((isDraft) => {
@@ -286,6 +286,11 @@ export default {
             })
           })
       }, 200)
+    }
+  },
+  beforeDestroy () {
+    if (this.waitForAuth) {
+      clearInterval(this.waitForAuth)
     }
   },
   validate ({ params }) {
