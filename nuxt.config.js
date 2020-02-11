@@ -61,7 +61,6 @@ module.exports = async () => {
     ** Nuxt.js modules
     */
     modules: [
-      '@/modules/healthcheck',
       '@/modules/vue-deepset',
       '@nuxtjs/axios',
       '@nuxtjs/auth',
@@ -70,17 +69,6 @@ module.exports = async () => {
       '@nuxtjs/sentry',
       '@nuxtjs/feed'
     ],
-
-    /*
-    ** Module config: healthcheck
-    */
-    healthcheck: {
-      path: '/api/health',
-      contentType: 'text/plain',
-      healthy: () => {
-        return 'ok'
-      }
-    },
 
     /*
     ** Module config: axios

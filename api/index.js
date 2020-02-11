@@ -71,6 +71,11 @@ async function createApiMiddleware () {
     debug('ZOM API: apiMiddleware reloaded')
   })
 
+  router.get('/health', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain')
+    res.end('ok')
+  })
+
   router.post('/setup', async (req, res, next) => {
     // This endpoint can only be triggered before any config exists in the DB.
     // Since the data received here will configure axios, we cannot use axios yet so
