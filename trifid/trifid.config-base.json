@@ -41,11 +41,6 @@
     "rewrite.root.url": "datasetBaseUrl"
   },
   "plugins": {
-    "compression": {
-      "priority": 30,
-      "module": "trifid-core:./plugins/middleware",
-      "middleware": "compression"
-    },
     "patchHeaders": {
       "priority": 40,
       "module": "trifid-core:./plugins/middleware",
