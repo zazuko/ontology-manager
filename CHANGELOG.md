@@ -1,3 +1,13 @@
+<a name="0.9.103"></a>
+## [0.9.103](https://github.com/zazuko/ontology-manager/compare/v0.9.102...v0.9.103) (2020-02-11)
+
+
+### Bug Fixes
+
+* downgrade pg ([c5feb7f](https://github.com/zazuko/ontology-manager/commit/c5feb7f))
+
+
+
 <a name="0.9.102"></a>
 ## [0.9.102](https://github.com/zazuko/ontology-manager/compare/v0.9.101...v0.9.102) (2020-02-11)
 
