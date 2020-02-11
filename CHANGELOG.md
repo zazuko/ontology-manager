@@ -1,3 +1,18 @@
+<a name="0.9.101"></a>
+## [0.9.101](https://github.com/zazuko/ontology-manager/compare/v0.9.100...v0.9.101) (2020-02-11)
+
+
+### Bug Fixes
+
+* **api:** implement a simpler healthcheck ([e28e9fa](https://github.com/zazuko/ontology-manager/commit/e28e9fa))
+* add k8s backend container limits ([cc90cd6](https://github.com/zazuko/ontology-manager/commit/cc90cd6))
+* clear all intervals before destroying components ([096d6ad](https://github.com/zazuko/ontology-manager/commit/096d6ad))
+* k8s CPU limit is twice CPU request ([692b50a](https://github.com/zazuko/ontology-manager/commit/692b50a))
+* remove trifid compression ([3a1d55d](https://github.com/zazuko/ontology-manager/commit/3a1d55d))
+* replace deprecated dependencies ([99c25cd](https://github.com/zazuko/ontology-manager/commit/99c25cd))
+
+
+
 <a name="0.9.100"></a>
 ## [0.9.100](https://github.com/zazuko/ontology-manager/compare/v0.9.99...v0.9.100) (2020-02-10)
 
