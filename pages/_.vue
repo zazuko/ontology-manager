@@ -79,8 +79,7 @@
 <script>
 import rdf from 'rdf-ext'
 import { resource } from 'rdf-utils-dataset'
-// https://zulip.zazuko.com/#narrow/stream/11-rdfjs/subject/jsonld.20serializer/near/4899
-import JsonLdSerializer from 'rdf-serializer-jsonld'
+import JsonLdSerializer from '@rdfjs/serializer-jsonld'
 import _get from 'lodash/get'
 import { createNamespacedHelpers } from 'vuex'
 
@@ -113,7 +112,7 @@ export default {
     try {
       jsonld = await new Promise((resolve, reject) => {
         iriDataset = matched(store, iri)
-        if (!iriDataset) {
+        if (!iriDataset || !iriDataset.size) {
           resolve()
         }
         const quadStream = rdf.graph(iriDataset).toStream()
@@ -288,14 +287,14 @@ export default {
 function matched (store, iri) {
   const subject = rdf.namedNode(iri)
   const ontologyDataset = store.getters['graph/ontology']
-  const structureDataset = store.getters['graph/structure']
 
   const ontology = resource(ontologyDataset, subject)
-  const structure = resource(structureDataset, subject)
-
   if (ontology.size > 0) {
     return ontology
   }
+
+  const structureDataset = store.getters['graph/structure']
+  const structure = resource(structureDataset, subject)
   return structure
 }
 </script>

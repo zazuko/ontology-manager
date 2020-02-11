@@ -1,7 +1,7 @@
 import _get from 'lodash/get'
 import { Readable } from 'readable-stream'
 import DatasetExt from 'rdf-ext/lib/Dataset'
-import N3Parser from 'rdf-parser-n3'
+import N3Parser from '@rdfjs/parser-n3'
 import rdf from 'rdf-ext'
 import { serialize, getVersion } from '@/libs/utils'
 import { DESERIALIZE, RELOAD_DATASET, COUNT_PROPOSALS } from '@/store/action-types'

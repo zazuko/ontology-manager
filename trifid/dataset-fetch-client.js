@@ -1,6 +1,6 @@
 import rdf from 'rdf-ext'
 import stringToStream from 'string-to-stream'
-import N3Parser from 'rdf-parser-n3'
+import N3Parser from '@rdfjs/parser-n3'
 import axios from 'axios'
 
 const debug = require('debug')('editor:trifid')
