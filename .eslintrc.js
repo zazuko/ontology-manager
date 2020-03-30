@@ -49,6 +49,8 @@ module.exports = {
     'object-shorthand': 'error',
     'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
     'brace-style': ['error', 'stroustrup', { 'allowSingleLine': false }],
-    'curly': ['error', 'all']
+    'curly': ['error', 'all'],
+    'template-curly-spacing' : 'off',
+    indent : 'off'
   }
 }
