@@ -1,3 +1,8 @@
+<a name="0.9.106"></a>
+## [0.9.106](https://github.com/zazuko/ontology-manager/compare/v0.9.105...v0.9.106) (2020-03-30)
+
+
+
 <a name="0.9.105"></a>
 ## [0.9.105](https://github.com/zazuko/ontology-manager/compare/v0.9.104...v0.9.105) (2020-03-30)
 
