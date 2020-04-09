@@ -2,6 +2,7 @@ import * as VueDeepSet from 'vue-deepset'
 import _get from 'lodash/get'
 import gql from 'graphql-tag'
 import rdf from 'rdf-ext'
+import { bumpVersion } from '@/libs/utils'
 
 import proposalById from '@/apollo/queries/proposalById'
 
@@ -190,7 +191,7 @@ export const actions = {
     try {
       const propertyProposalData = state.prop.generateProposal({
         ontology: rootState.graph.ontology,
-        structure: rootState.graph.structure
+        structure: bumpVersion(rootState.graph.structure)
       })
       const isEdit = state.prop.isEdit
 

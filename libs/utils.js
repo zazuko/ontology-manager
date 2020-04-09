@@ -1,7 +1,6 @@
 import _camelCase from 'lodash/camelCase'
 import _get from 'lodash/get'
 import _upperFirst from 'lodash/upperFirst'
-import { namedNode } from '@rdfjs/data-model'
 import { quadToNTriples } from '@rdfjs/to-ntriples'
 import rdf from 'rdf-ext'
 
@@ -230,23 +229,20 @@ export function isCyclic (adjacencyList) {
   return false
 }
 
-export function getVersion (dataset) {
-  const quads = dataset.match(null, namedNode('http://schema.org/version')).toArray()
-    .filter(({ subject, object }) => subject.termType === 'BlankNode' && object.termType === 'Literal')
+export function getVersion (structureDataset) {
+  const versionSubject = rdf.namedNode('http://editor.zazuko.com/_datasetVersion')
+  const quads = structureDataset.match(versionSubject, rdf.namedNode('http://schema.org/version')).toArray()
   if (quads.length) {
     return parseInt(quads[0].object.value, 10)
   }
   return 0
 }
 
-export function bumpVersion (structureDataset) {
+export function bumpVersion (_structureDataset) {
+  const structureDataset = _structureDataset.clone()
   const version = getVersion(structureDataset)
-  const versionQuads = structureDataset.match(null, namedNode('http://schema.org/version')).toArray()
-    .filter(({ subject, object }) => subject.termType === 'BlankNode' && object.termType === 'Literal')
-  versionQuads.forEach((quad) => {
-    structureDataset.removeMatches(quad.subject, quad.predicate, quad.object)
-  })
-  const subject = versionQuads.length ? versionQuads[0].subject : rdf.blankNode()
-  const versionQuad = rdf.quad(subject, namedNode('http://schema.org/version'), rdf.literal(version + 1, rdf.namedNode('http://www.w3.org/2001/XMLSchema#integer')))
-  structureDataset.add(versionQuad)
+  const versionSubject = rdf.namedNode('http://editor.zazuko.com/_datasetVersion')
+  structureDataset.removeMatches(rdf.namedNode('http://editor.zazuko.com/_datasetVersion'))
+  const versionQuad = rdf.quad(versionSubject, rdf.namedNode('http://schema.org/version'), rdf.literal(version + 1))
+  return structureDataset.add(versionQuad)
 }
