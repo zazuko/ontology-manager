@@ -190,7 +190,7 @@
 
 <script>
 import axios from 'axios'
-import { toastClose } from '@/libs/utils'
+import { toastClose, getVersion } from '@/libs/utils'
 import Loader from '@/components/layout/Loader'
 import OpenInNew from 'vue-material-design-icons/OpenInNew.vue'
 import ThumbUpOutline from 'vue-material-design-icons/ThumbUpOutline.vue'
@@ -229,7 +229,10 @@ export default {
     }
   },
   data () {
+    const version = getVersion(this.$store.getters['graph/structure'])
     return {
+      version,
+      targetVersion: 0,
       working: false,
       statusDropdown: false,
       statusFilter: 'open',
@@ -244,11 +247,32 @@ export default {
       }
     }
   },
-  mounted () {
+  async mounted () {
     this.filterStatus(this.statusFilter)
+    await this.check()
   },
   methods: {
+    async check () {
+      this.$store.dispatch('graph/RELOAD_DATASET')
+      let i = 0
+      if (this.targetVersion) {
+        return new Promise((resolve) => {
+          const interval = setInterval(() => {
+            i++
+            const version = getVersion(this.$store.getters['graph/structure'])
+            if (version > this.version) {
+              this.version = version
+            }
+            if (i++ > 20 || this.version >= this.targetVersion) {
+              clearInterval(interval)
+              resolve()
+            }
+          }, 400)
+        })
+      }
+    },
     async approve ({ id, proposalType }) {
+      await this.check()
       this.working = true
       try {
         const store = proposalType === 'Property' ? 'prop' : 'class'
@@ -260,6 +284,7 @@ export default {
         this.$emit('updated', id)
         this.$store.dispatch('graph/RELOAD_DATASET')
         this.$toast.success('Proposal approved!', toastClose).goAway(1600)
+        this.targetVersion++
       }
       catch (err) {
         this.working = false
@@ -269,6 +294,7 @@ export default {
       }
     },
     async reject (proposal, status = 'REJECTED') {
+      await this.check()
       this.working = true
       const body = {
         threadId: proposal.id,
