@@ -1,3 +1,13 @@
+<a name="0.9.107"></a>
+## [0.9.107](https://github.com/zazuko/ontology-manager/compare/v0.9.106...v0.9.107) (2020-04-14)
+
+
+### Bug Fixes
+
+* avoid blankNode conflicts for dataset version ([d45c86c](https://github.com/zazuko/ontology-manager/commit/d45c86c))
+
+
+
 <a name="0.9.106"></a>
 ## [0.9.106](https://github.com/zazuko/ontology-manager/compare/v0.9.105...v0.9.106) (2020-03-30)
 
