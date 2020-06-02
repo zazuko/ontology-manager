@@ -1,3 +1,13 @@
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/zazuko/ontology-manager/compare/v0.9.107...v0.10.0) (2020-06-02)
+
+
+### Features
+
+* namespace zom-specific pages with zom/ ([b2a36e2](https://github.com/zazuko/ontology-manager/commit/b2a36e2))
+
+
+
 <a name="0.9.107"></a>
 ## [0.9.107](https://github.com/zazuko/ontology-manager/compare/v0.9.106...v0.9.107) (2020-04-14)
 
