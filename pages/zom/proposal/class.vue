@@ -230,7 +230,7 @@ export default {
 
             if (this.clss.proposalType === 'Property') {
               this.$router.push({
-                name: 'proposal-property',
+                name: 'zom-proposal-property',
                 query: { id: this.clss.threadId }
               })
             }
@@ -277,7 +277,7 @@ export default {
     id () {
       if (typeof this.id === 'number') {
         this.$router.push({
-          name: 'proposal-class',
+          name: 'zom-proposal-class',
           query: { id: this.id }
         })
       }
@@ -285,7 +285,7 @@ export default {
     success () {
       if (!this.error && this.success) {
         this.$store.dispatch('drafts/LOAD')
-        this.$router.push({ name: 'proposal-id', params: { id: this.success } })
+        this.$router.push({ name: 'zom-proposal-id', params: { id: this.success } })
       }
     },
     error () {

@@ -27,7 +27,7 @@
           <nuxt-link
             v-if="isClass"
             id="proposal-change-object"
-            :to="{ name: 'proposal-class', query: { iri: iri.value, edit: true } }"
+            :to="{ name: 'zom-proposal-class', query: { iri: iri.value, edit: true } }"
             class="title-edit-button">
             <img
               class="hoverable-icon"
@@ -38,7 +38,7 @@
           <nuxt-link
             v-else-if="isProperty"
             id="proposal-change-object"
-            :to="{ name: 'proposal-property', query: { iri: iri.value, edit: true } }"
+            :to="{ name: 'zom-proposal-property', query: { iri: iri.value, edit: true } }"
             class="title-edit-button">
             <img
               class="hoverable-icon"

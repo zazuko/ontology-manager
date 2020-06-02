@@ -125,7 +125,7 @@ export default {
       return
     }
     else if (this.$store.state.config.setup === 'step2') {
-      this.$router.push('/install/form')
+      this.$router.push('/zom/install/form')
       return
     }
     this.protocol = window.location.protocol.split(':')[0]
@@ -193,7 +193,7 @@ export default {
           if (await this.isUp()) {
             clearInterval(this.checker)
             setTimeout(() => {
-              window.location.href = `${this.protocol}://${this.host}/install`
+              window.location.href = `${this.protocol}://${this.host}/zom/install`
             }, 10 * 1000)
           }
         }, 500)
@@ -213,7 +213,7 @@ export default {
   },
   validate ({ store, redirect }) {
     if (store.state.config.setup === 'step2') {
-      redirect('/install/form')
+      redirect('/zom/install/form')
       return true
     }
     else if (store.state.config.setup === false) {

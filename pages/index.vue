@@ -15,8 +15,8 @@
     </section>
 
     <section
-      v-for="(tree, index) in structureTree"
-      :key="index"
+      v-for="tree in $store.state.graph.structureTree"
+      :key="tree.iri"
       class="container layout-objects-list-item">
       <structure
         :obj="tree"

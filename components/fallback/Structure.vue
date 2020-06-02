@@ -11,8 +11,8 @@
             v-if="_get(obj, 'children.length', false)"
             class="content">
             <div
-              v-for="(group, index) in arrayToGroups(obj)"
-              :key="index"
+              v-for="group in groups(obj)"
+              :key="group.iri"
               class="tile is-ancestor object-tiles">
               <div
                 v-for="child in group"
@@ -82,8 +82,10 @@ export default {
   },
   methods: {
     _get,
-    arrayToGroups,
-    childClassesCount
+    childClassesCount,
+    groups (obj) {
+      return arrayToGroups(obj)
+    }
   }
 }
 </script>

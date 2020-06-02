@@ -316,7 +316,7 @@ export default {
             })
           }
           if (data.discussion.threadType !== 'PROPOSAL') {
-            this.$router.push({ name: 'discussion-id', params: { id: this.$route.params.id } })
+            this.$router.push({ name: 'zom-discussion-id', params: { id: this.$route.params.id } })
           }
           this.init()
         }

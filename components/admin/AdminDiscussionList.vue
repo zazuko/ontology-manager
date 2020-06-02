@@ -16,7 +16,7 @@
         :key="discussion.id">
         <td>
           <p>
-            <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+            <nuxt-link :to="{ name: 'zom-discussion-id', params: { id: discussion.id } }">
               {{ discussion.headline }}
             </nuxt-link>
           </p>

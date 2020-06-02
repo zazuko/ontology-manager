@@ -19,7 +19,7 @@
                 <template v-if="proposal.proposalObject.label">
                   <pouch-box
                     :label="proposal.proposalObject.label"
-                    :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                    :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }"
                     :properties-count="_get(proposal, 'proposalObject.propChildren.length', 0)"
                     :iri="proposal.proposalObject.iri"
                     :modified="proposal.updatedAt"
@@ -39,7 +39,7 @@
           class="layout-objects-list-tools">
           <nuxt-link
             id="proposal-new-class"
-            :to="{ name: 'proposal-class', query: { iri: iri } }"
+            :to="{ name: 'zom-proposal-class', query: { iri: iri } }"
             class="button">
             Request New Class
           </nuxt-link>

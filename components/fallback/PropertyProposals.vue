@@ -4,7 +4,7 @@
       Proposals
       <template v-if="$auth && $auth.$state.loggedIn && isClass">
         <nuxt-link
-          :to="{ name: 'proposal-property', query: { iri: iri } }"
+          :to="{ name: 'zom-proposal-property', query: { iri: iri } }"
           id="proposal-add-property"
           title="Request new property"
           class="title-edit-button">
@@ -38,7 +38,7 @@
           v-for="proposal in newObjectProposals.proposals"
           :key="proposal.id">
           <td>
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+            <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }">
               {{ proposal.proposalObject.label }}
             </nuxt-link>
           </td>
@@ -77,7 +77,7 @@
           v-for="proposal in changedClassProposals.proposals"
           :key="proposal.id">
           <td>
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+            <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }">
               {{ proposal.proposalObject.label }}
             </nuxt-link>
           </td>
@@ -106,7 +106,7 @@
           v-for="proposal in changedPropertyProposals.proposals"
           :key="proposal.id">
           <td>
-            <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+            <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }">
               {{ proposal.proposalObject.label }}
             </nuxt-link>
           </td>

@@ -35,7 +35,7 @@
             class="navbar-item" />
           <nuxt-link
             v-show="$auth && $auth.$state.loggedIn && $store.state.auth.isAdmin"
-            :to="{ name: 'admin-proposals', params: {} }"
+            :to="{ name: 'zom-admin-proposals', params: {} }"
             class="navbar-item">
             Admin
           </nuxt-link>

@@ -61,7 +61,7 @@ Cypress.Commands.add('clearDrafts', () => {
     .then(($nuxt) => {
       return new Promise((resolve) => setTimeout(() => {
         if ($nuxt.$store.state.drafts.drafts.length > 0) {
-          cy.goto('/proposal/drafts')
+          cy.goto('/zom/proposal/drafts')
           cy.get('table.table.admin-table .discard-draft').each(($button) => {
             cy.wrap($button).click()
           })
@@ -74,7 +74,7 @@ Cypress.Commands.add('clearDrafts', () => {
 Cypress.Commands.add('clearDrafts', () => {
   cy.countDrafts().then((count) => {
     if (count > 0) {
-      cy.goto('/proposal/drafts')
+      cy.goto('/zom/proposal/drafts')
       cy.get('table.table.admin-table .discard-draft').each(($button) => {
         cy.wrap($button).click()
       })

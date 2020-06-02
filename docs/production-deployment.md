@@ -49,7 +49,7 @@ Do this when you want to test the app locally under production settings, especia
 1. Start the local containers: (alternative: `make localup`)
     * `docker-compose up -d`
     * `docker-compose logs -f app nginx`
-1. Go to <http://localhost:8000/install> (simple) or better yet: set `testdomain.com` to `127.0.0.1` in your hosts file and go to <http://testdomain.com:8000/install>
+1. Go to <http://localhost:8000/zom/install> (simple) or better yet: set `testdomain.com` to `127.0.0.1` in your hosts file and go to <http://testdomain.com:8000/zom/install>
 
 ### Prod Deployment
 
@@ -68,7 +68,7 @@ POSTGRESQL_HOST=db
 POSTGRAPHILE_TOKEN_SECRET=this-is-secret-as-well
 ```
 
-That's it. The remaining configuration is done using the installer (navigate to the container's `/install` once it's up).
+That's it. The remaining configuration is done using the installer (navigate to the container's `/zom/install` once it's up).
 
 #### healthcheck endpoint
 
