@@ -88,7 +88,7 @@
           :key="proposal.id">
           <td>
             <p>
-              <nuxt-link :to="{ name: 'proposal-id', params: { id: proposal.id } }">
+              <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }">
                 {{ proposal.headline }}
               </nuxt-link>
               <a
@@ -167,13 +167,13 @@
             <span v-else>
               <nuxt-link
                 v-if="proposal.proposalType === 'Class'"
-                :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }"
                 class="button is-small is-info">
                 See
               </nuxt-link>
               <nuxt-link
                 v-if="proposal.proposalType === 'Property'"
-                :to="{ name: 'proposal-id', params: { id: proposal.id } }"
+                :to="{ name: 'zom-proposal-id', params: { id: proposal.id } }"
                 class="button is-small is-info">
                 See
               </nuxt-link>

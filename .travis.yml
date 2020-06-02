@@ -31,6 +31,6 @@ script:
 - NODE_TEST=1 npm run build
 - NODE_TEST=1 npm run start &
 - PID1=$!
-- wait-on http://localhost:3000/about && npm run test:integration
+- wait-on http://localhost:3000/zom/about && npm run test:integration
 - npm run test:e2e
 - kill $PID1

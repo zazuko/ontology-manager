@@ -20,7 +20,7 @@ describe('Proposal', () => {
     it('can request a new class', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(3000).get('#proposal-new-class').click()
-      cy.url().should('be', '/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
+      cy.url().should('be', '/zom/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
     })
   })
 
@@ -38,13 +38,13 @@ describe('Proposal', () => {
     it('can request a class modification', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(3000).get('#proposal-change-object').click()
-      cy.url().should('be', '/proposal/class?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction&edit=true')
+      cy.url().should('be', '/zom/proposal/class?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction&edit=true')
     })
 
     it('can request a new property', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(3000).get('#proposal-add-property').click()
-      cy.url().should('be', '/proposal/property?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction')
+      cy.url().should('be', '/zom/proposal/property?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction')
     })
   })
 
@@ -52,7 +52,7 @@ describe('Proposal', () => {
     beforeEach(() => {
       cy.visit('/')
       cy.login()
-      cy.clearDrafts().then(() => cy.goto('/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch'))
+      cy.clearDrafts().then(() => cy.goto('/zom/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch'))
     })
 
     it('saves a draft and discards it', () => {
@@ -77,12 +77,12 @@ describe('Proposal', () => {
 
       cy.countProposalsOn('http://example.com/pouch/CargoHandlersPouch')
         .then((count) => {
-          cy.url().should('include', 'http://localhost:3000/proposal/class?id=')
+          cy.url().should('include', 'http://localhost:3000/zom/proposal/class?id=')
           submitProposal().then(() => {
             cy.readLogAndClear().then((response) => {
               cy.wrap(response.body).snapshot()
             })
-            cy.url().should('not.include', 'http://localhost:3000/proposal/class?id=')
+            cy.url().should('not.include', 'http://localhost:3000/zom/proposal/class?id=')
             cy.get('.notification-counter').should('not.be.visible')
             cy.goto('/pouch/CargoHandlersPouch').wait(3000)
             assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })

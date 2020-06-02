@@ -43,7 +43,7 @@ export default {
       this.$router.push('/')
     }
     else if (this.$store.state.config.setup === 'step1') {
-      this.$router.push('/install')
+      this.$router.push('/zom/install')
     }
   },
   methods: {
@@ -71,7 +71,7 @@ export default {
   },
   validate ({ store, redirect }) {
     if (store.state.config.setup === 'step1') {
-      redirect('/install')
+      redirect('/zom/install')
       return true
     }
     else if (store.state.config.setup === false) {

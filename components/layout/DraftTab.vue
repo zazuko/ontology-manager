@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    :to="{ name: 'proposal-drafts', params: {} }">
+    :to="{ name: 'zom-proposal-drafts', params: {} }">
     Drafts
     <span
       v-show="counter"

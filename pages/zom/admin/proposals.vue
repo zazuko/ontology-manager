@@ -5,12 +5,14 @@
     <client-only>
       <pagination
         :page="page"
-        :results-count="discussionsCount"
+        :results-count="proposalsCount"
         :results-per-page="pageSize"
-        route="admin-discussions" />
+        route="zom-admin-proposals" />
       <div class="responsive-table layout-admin-main">
-        <admin-discussion-list
-          :discussions="rows"
+        <admin-proposal-list
+          :proposals="proposals"
+          @sort="sortUpdate"
+          @status-filter="statusFilterUpdate"
           @updated="refetch()" />
       </div>
     </client-only>
@@ -19,9 +21,9 @@
 
 <script>
 import _get from 'lodash/get'
-import adminDiscussionList from '@/apollo/queries/adminDiscussionList'
-import adminDiscussionListPageCount from '@/apollo/queries/adminDiscussionListPageCount'
-import AdminDiscussionList from '@/components/admin/AdminDiscussionList'
+import adminProposalList from '@/apollo/queries/adminProposalList'
+import adminProposalListPageCount from '@/apollo/queries/adminProposalListPageCount'
+import AdminProposalList from '@/components/admin/AdminProposalList'
 import AdminMenu from '@/components/admin/AdminMenu'
 import Pagination from '@/components/layout/Pagination'
 
@@ -29,16 +31,17 @@ export default {
   layout: 'default',
   middleware: 'authenticatedAdmin',
   components: {
-    AdminDiscussionList,
     AdminMenu,
+    AdminProposalList,
     Pagination
   },
   data () {
     return {
-      rows: [],
+      proposals: [],
       orderBy: ['UPDATED_AT_DESC'],
+      filterStatus: false,
       pageSize: 10,
-      discussionsCount: 0
+      proposalsCount: 0
     }
   },
   computed: {
@@ -50,11 +53,22 @@ export default {
   methods: {
     refetch () {
       this.$apollo.queries.discussions.refetch()
+    },
+    sortUpdate (sortBy) {
+      this.orderBy = sortBy
+    },
+    statusFilterUpdate (status) {
+      if (status === 'all') {
+        this.filterStatus = false
+      }
+      else {
+        this.filterStatus = status
+      }
     }
   },
   apollo: {
     discussions: {
-      query: adminDiscussionList,
+      query: adminProposalList,
       variables () {
         const vars = {
           first: this.pageSize,
@@ -63,11 +77,14 @@ export default {
         if (this.orderBy.length) {
           vars.orderBy = this.orderBy
         }
+        if (this.filterStatus) {
+          vars.status = this.filterStatus.toUpperCase()
+        }
         return vars
       },
       result ({ data, loading }) {
         if (!loading) {
-          this.rows = _get(data, 'discussions.nodes', [])
+          this.proposals = _get(data, 'discussions.nodes', [])
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -76,10 +93,17 @@ export default {
       }
     },
     count: {
-      query: adminDiscussionListPageCount,
+      query: adminProposalListPageCount,
+      variables () {
+        const vars = {}
+        if (this.filterStatus) {
+          vars.status = this.filterStatus.toUpperCase()
+        }
+        return vars
+      },
       result ({ data, loading }) {
         if (!loading) {
-          this.discussionsCount = _get(data, 'count.nodes.length', 0)
+          this.proposalsCount = _get(data, 'count.nodes.length', 0)
         }
       },
       fetchPolicy: 'cache-and-network',
@@ -90,7 +114,7 @@ export default {
   },
   head () {
     const h = {
-      title: this.$headTitle('Discussions Management - Admin')
+      title: this.$headTitle('Proposals Management - Admin')
     }
     return h
   }

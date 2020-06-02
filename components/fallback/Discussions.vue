@@ -17,7 +17,7 @@
         </div>
         <template v-if="$auth && $auth.$state.loggedIn">
           <nuxt-link
-            :to="{ name: 'discussion-new', query: { iri: iri } }"
+            :to="{ name: 'zom-discussion-new', query: { iri: iri } }"
             class="button is-pulled-right is-info">
             New Thread
           </nuxt-link>
@@ -42,7 +42,7 @@
             </figure>
             <div class="media-content">
               <h3 class="discussion-list-title">
-                <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+                <nuxt-link :to="{ name: 'zom-discussion-id', params: { id: discussion.id } }">
                   {{ discussion.headline }}
                 </nuxt-link>
               </h3>
@@ -51,7 +51,7 @@
               </p>
             </div>
             <div class="media-right">
-              <nuxt-link :to="{ name: 'discussion-id', params: { id: discussion.id } }">
+              <nuxt-link :to="{ name: 'zom-discussion-id', params: { id: discussion.id } }">
                 <span class="discussion-list-creation-info">
                   Created {{ discussion.createdAt | formatDate }} by
                 </span>

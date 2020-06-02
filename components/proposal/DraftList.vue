@@ -23,13 +23,13 @@
           <td class="draft-actions">
             <nuxt-link
               v-if="$proposalType(draft.proposalObject) === 'Class'"
-              :to="{ name: 'proposal-class', query: { id: draft.id } }"
+              :to="{ name: 'zom-proposal-class', query: { id: draft.id } }"
               class="button edit-draft">
               Edit Proposal
             </nuxt-link>
             <nuxt-link
               v-else
-              :to="{ name: 'proposal-property', query: { id: draft.id } }"
+              :to="{ name: 'zom-proposal-property', query: { id: draft.id } }"
               class="button edit-draft">
               Edit Proposal
             </nuxt-link>

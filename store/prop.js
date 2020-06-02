@@ -150,6 +150,7 @@ export const actions = {
       })
 
       commit(SUCCESS, id)
+      dispatch('graph/RELOAD_DATASET', {}, { root: true })
     }
     catch (error) {
       console.error(error)

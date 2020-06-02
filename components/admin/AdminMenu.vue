@@ -15,7 +15,7 @@
         </li>
         <li v-show="$store.state.auth.isSuperadmin">
           <nuxt-link
-            :to="{ name: 'admin-settings' }"
+            :to="{ name: 'zom-admin-settings' }"
             :class="{ 'is-active': currentRoute === 'admin-settings'}">
             Ontology Manager Settings
           </nuxt-link>
@@ -32,10 +32,10 @@ export default {
   name: 'AdminMenu',
   data () {
     const tabs = [
-      { route: 'admin-proposals', title: 'Proposals' },
-      { route: 'admin-discussions', title: 'Discussions' },
-      { route: 'admin-users', title: 'Users' },
-      { route: 'admin-hats', title: 'Hats' }
+      { route: 'zom-admin-proposals', title: 'Proposals' },
+      { route: 'zom-admin-discussions', title: 'Discussions' },
+      { route: 'zom-admin-users', title: 'Users' },
+      { route: 'zom-admin-hats', title: 'Hats' }
     ]
     return {
       tabs

@@ -49,7 +49,7 @@
                         <chevron-up />
                       </span>
                     </a>
-                    <nuxt-link :to="{ name: 'support' }">
+                    <nuxt-link :to="{ name: 'zom-support' }">
                       Support
                       <span class="footer-back-icon icon is-medium">
                         <lifebuoy />

@@ -109,7 +109,8 @@ export const actions = {
     }
     try {
       const result = await this.app.apolloProvider.defaultClient.query({
-        query: countProposals
+        query: countProposals,
+        fetchPolicy: 'no-cache'
       })
 
       const proposals = _get(result, 'data.proposals.proposals', [])

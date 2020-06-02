@@ -51,31 +51,31 @@
 
             <span v-if="item.actionType === 'PROPOSAL_SUBMIT'">
               submitted the proposal
-              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
             </span>
             <span v-else-if="item.actionType === 'PROPOSAL_EDIT'">
               edited the proposal
-              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
             </span>
             <span v-else-if="item.actionType === 'PROPOSAL_ACCEPT'">
               accepted the proposal
-              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
             </span>
             <span v-else-if="item.actionType === 'PROPOSAL_REJECT'">
               rejected the proposal
-              <nuxt-link :to="{ name: 'proposal-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-proposal-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
             </span>
             <span v-else-if="item.actionType === 'CONVERSATION_CREATE'">
               created a conversation
-              <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-discussion-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
               on
@@ -85,7 +85,7 @@
             </span>
             <span v-else-if="item.actionType === 'CONVERSATION_COMMENT'">
               left a comment on conversation
-              <nuxt-link :to="{ name: 'discussion-id', params: { id: item.thread.id } }">
+              <nuxt-link :to="{ name: 'zom-discussion-id', params: { id: item.thread.id } }">
                 {{ item.thread.headline }}
               </nuxt-link>
               on
