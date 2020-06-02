@@ -1,6 +1,6 @@
 const debug = require('debug')('editor:backend')
 const octokitDebug = require('debug')('editor:octokit')
-const octokitFactory = require('@octokit/rest')
+const { Octokit } = require('@octokit/rest')
 const helpersFactory = require('./helpers')
 
 const __cache = new Map()
@@ -21,7 +21,7 @@ module.exports = class GitHubAPIv3 {
     this.structurePath = ontology.structureRawUrl.substr(ontology.structureRawUrl.lastIndexOf('/') + 1)
 
     // private helpers
-    this.__octokit = octokitFactory({
+    this.__octokit = new Octokit({
       debug: process.env.NODE_ENV !== 'production' || require('debug').enabled('editor:backend'),
       auth: `token ${forge.committerPersonalAccessToken}`,
       log: {
@@ -116,7 +116,7 @@ module.exports = class GitHubAPIv3 {
     })
     debug(`updateFile: for 'refs/heads/${branch}' SHA is '${sha}'`)
 
-    const response = await this.__octokit.repos.updateFile({
+    const response = await this.__octokit.repos.createOrUpdateFile({
       content: Buffer.from(content).toString('base64'),
       path,
       owner,
