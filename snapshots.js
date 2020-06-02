@@ -1,5 +1,5 @@
 module.exports = {
-  "__version": "4.0.1",
+  "__version": "4.4.0",
   "Proposal": {
     "create class proposal": {
       "submits a proposal": {
