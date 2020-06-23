@@ -14,6 +14,9 @@ module.exports = async () => {
     // https://nuxtjs.org/api/configuration-modern
     modern: false,
 
+    // https://github.com/nuxt/telemetry
+    telemetry: false,
+
     /*
     ** Headers of the page
     */
@@ -177,6 +180,9 @@ module.exports = async () => {
 
     // https://nuxtjs.org/api/configuration-env
     env: {},
+
+    publicRuntimeConfig: {},
+    privateRuntimeConfig: {},
 
     /*
     ** Build configuration
