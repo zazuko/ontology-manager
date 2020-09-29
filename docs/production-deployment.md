@@ -48,7 +48,7 @@ Do this when you want to test the app locally under production settings, especia
     * `docker-compose build`
 1. Start the local containers: (alternative: `make localup`)
     * `docker-compose up -d`
-    * `docker-compose logs -f app nginx`
+    * `docker-compose logs -f app`
 1. Go to <http://localhost:8000/zom/install> (simple) or better yet: set `testdomain.com` to `127.0.0.1` in your hosts file and go to <http://testdomain.com:8000/zom/install>
 
 ### Prod Deployment
