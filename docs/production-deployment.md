@@ -40,7 +40,7 @@ Without further customization, the default theme will be used. You can set the t
 
 Do this when you want to test the app locally under production settings, especially useful to test the initial setup / editor installation process.
 
-1. Create an OAuth app: <https://github.com/settings/applications/new> using Homepage / Callback : `http://localhost:8000/`
+1. Create an OAuth app: <https://github.com/settings/applications/new> using Homepage / Callback : `http://localhost:3000/`
     * only do this once and keep the `Client ID` and `Client Secret`, reusing these values works well.
 1. Shut down the database and delete its content:
     * `make reset`
