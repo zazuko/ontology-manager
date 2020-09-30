@@ -9,13 +9,13 @@ services:
       - "5432:5432"
     env_file: .env
 
-  app:
-    build: .
-    env_file: .env
-    environment:
-      POSTGRESQL_HOST: db
-    command: "./entrypoint.sh"
-    links:
-      - db:db
-    ports:
-      - "3000:3000"
+  # app:
+  #   build: .
+  #   env_file: .env
+  #   environment:
+  #     POSTGRESQL_HOST: db
+  #   command: "./entrypoint.sh"
+  #   links:
+  #     - db:db
+  #   ports:
+  #     - "3000:3000"
