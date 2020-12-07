@@ -1,3 +1,15 @@
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/zazuko/ontology-manager/compare/v0.10.0...v0.11.0) (2020-12-07)
+
+
+### Bug Fixes
+
+* **layout:** change details in property and class layout ([09b31bc](https://github.com/zazuko/ontology-manager/commit/09b31bc)), closes [#16](https://github.com/zazuko/ontology-manager/issues/16)
+* restrict node version to <=12 until fixes for node14 ([e97e105](https://github.com/zazuko/ontology-manager/commit/e97e105))
+* **deps:** upgrade dependencies ([3234341](https://github.com/zazuko/ontology-manager/commit/3234341))
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/zazuko/ontology-manager/compare/v0.9.107...v0.10.0) (2020-06-02)
 
