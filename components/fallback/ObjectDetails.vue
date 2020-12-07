@@ -50,25 +50,13 @@
         </template>
       </h1>
       <h2 class="subtitle is-6">
-        Canonical URL: <span class="title-url">{{ iri.value }}</span>
+        {{ comment }} &mdash; <span class="title-url">{{ iri.value }}</span>
       </h2>
 
       <div class="content">
-        <ul class="goto-nav">
-          <li>Quick links:</li>
-          <li><a href="#proposals">Proposals</a></li>
-          <li><a href="#conversations">Conversation</a></li>
-        </ul>
-
-        <div v-show="comment">
-          <p class="title is-2">Description</p>
-          <p>
-            {{ comment }}
-          </p>
-        </div>
 
         <div v-show="description">
-          <p class="title is-3">Long Description</p>
+          <p class="title is-3">Description</p>
           <div v-html="description" />
         </div>
       </div>
@@ -131,11 +119,8 @@
           class="content"
           v-show="equivalentClass.length">
           <h4 class="title is-2">
-            Equivalent Class{{ equivalentClass.length === 1 ? '' : 'es' }}
+            External Class{{ equivalentClass.length === 1 ? '' : 'es' }}
           </h4>
-          <p class="title-url is-size-7">
-            http://www.w3.org/2002/07/owl#equivalentClass
-          </p>
           <ul class="types-list">
             <li
               v-for="equivalentClassIRI in equivalentClass"
@@ -170,6 +155,29 @@
       <template v-else>
         <section
           class="content"
+          v-show="equivalentProperty.length">
+          <h4 class="title is-2">
+            External Property
+          </h4>
+          <ul class="types-list">
+            <li
+              v-for="equivalentPropertyIRI in equivalentProperty"
+              :key="equivalentPropertyIRI">
+              <a
+                v-if="$unPrefix(equivalentPropertyIRI)"
+                :href="$rebaseIRI(equivalentPropertyIRI)">
+                {{ $unPrefix(equivalentPropertyIRI) }}
+              </a>
+              <a
+                v-else
+                :href="$rebaseIRI(equivalentPropertyIRI)">
+                {{ equivalentPropertyIRI }}
+              </a>
+            </li>
+          </ul>
+        </section>
+        <section
+          class="content"
           v-show="rangeOf.length">
           <h4 class="title is-2">
             Values are of types
@@ -195,32 +203,6 @@
               <nuxt-link :to="clss.url">
                 {{ clss.label }}
               </nuxt-link>
-            </li>
-          </ul>
-        </section>
-        <section
-          class="content"
-          v-show="equivalentProperty.length">
-          <h4 class="title is-2">
-            Equivalent Property
-          </h4>
-          <p class="title-url is-size-7">
-            http://www.w3.org/2002/07/owl#equivalentProperty
-          </p>
-          <ul class="types-list">
-            <li
-              v-for="equivalentPropertyIRI in equivalentProperty"
-              :key="equivalentPropertyIRI">
-              <a
-                v-if="$unPrefix(equivalentPropertyIRI)"
-                :href="$rebaseIRI(equivalentPropertyIRI)">
-                {{ $unPrefix(equivalentPropertyIRI) }}
-              </a>
-              <a
-                v-else
-                :href="$rebaseIRI(equivalentPropertyIRI)">
-                {{ equivalentPropertyIRI }}
-              </a>
             </li>
           </ul>
         </section>
