@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -eu
 THEMES=$(ls ./assets/themes/ | sed s%./assets/themes/%%)
 mkdir ./artifacts
 
@@ -11,7 +12,7 @@ for THEME in $THEMES; do
   # build the project
   npm run build -- --modern=server
   # delete source maps for client
-  rm .nuxt/dist/client/*.map
+  rm -f .nuxt/dist/client/*.map
 
   cp -r .nuxt artifacts/nuxt_$THEME
 

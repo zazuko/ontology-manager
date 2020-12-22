@@ -19,7 +19,7 @@ build:
   script:
     - THEMES="$(mktemp -d)"
     - git clone "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.zazuko.com/docker/ontology-manager-private.git" "$THEMES"
-    - rm -rfv "${THEMES}/.git" "${THEMES}/*.md"
+    - rm -rfv "${THEMES}/.git" "${THEMES}"/*.md
     - rsync -avr --out-format="%n" "${THEMES}/" .
     - crane auth login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - |

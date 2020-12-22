@@ -28,6 +28,13 @@ spec:
             memory: "600Mi"
             cpu: "600m"
 
+        readinessProbe:
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          httpGet:
+            port: http
+            path: /api/health
+
         livenessProbe:
           initialDelaySeconds: 30
           timeoutSeconds: 5
