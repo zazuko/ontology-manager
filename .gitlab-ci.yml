@@ -17,6 +17,10 @@ build:
       - image.tar
 
   script:
+    - THEMES="$(mktemp -d)"
+    - git clone "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.zazuko.com/docker/ontology-manager-private.git" "$THEMES"
+    - rm -rfv "${THEMES}/.git" "${THEMES}/*.md"
+    - rsync -avr --out-format="%n" "${THEMES}/" .
     - crane auth login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - |
       executor \
@@ -26,6 +30,11 @@ build:
         --build-arg="BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
         --build-arg="COMMIT=$CI_COMMIT_SHA" \
         --build-arg="VERSION=$CI_COMMIT_REF_SLUG" \
+        --build-arg="SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN" \
+        --build-arg="SENTRY_DSN=$SENTRY_DSN" \
+        --build-arg="SENTRY_ORG=$SENTRY_ORG" \
+        --build-arg="SENTRY_PROJECT=$SENTRY_PROJECT" \
+        --build-arg="SENTRY_URL=$SENTRY_URL" \
         --no-push \
         --tarPath="$CI_PROJECT_DIR/image.tar"
 
