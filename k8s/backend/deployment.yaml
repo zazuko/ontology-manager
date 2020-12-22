@@ -5,6 +5,12 @@ metadata:
 spec:
   template:
     spec:
+      enableServiceLinks: false
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+
       containers:
       - name: backend
         image: ontology-manager:latest
