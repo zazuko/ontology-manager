@@ -1,3 +1,13 @@
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/zazuko/ontology-manager/compare/v0.11.2...v0.12.0) (2021-02-04)
+
+
+### Bug Fixes
+
+* switch to new github oauth app API ([749bfc6](https://github.com/zazuko/ontology-manager/commit/749bfc6))
+
+
+
 <a name="0.11.2"></a>
 ## [0.11.2](https://github.com/zazuko/ontology-manager/compare/v0.11.1...v0.11.2) (2020-12-22)
 
