@@ -1,0 +1,31 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Setup
+      run: |
+        cp .env.example .env
+        docker-compose up -d db
+        npm install -g npm@^6 wait-on
+        npm ci
+    - name: Migrate
+      run: npm run e2e:migrate
+    - name: Unit tests
+      run: npm run test:unit
+    - name: E2E tests
+      run: |
+        NODE_TEST=1 npm run build
+        NODE_TEST=1 npm run start &
+        PID1=$!
+        wait-on http://localhost:3000/zom/about && npm run test:integration
+        npm run test:e2e
+        kill $PID1
