@@ -81,7 +81,7 @@ module.exports = class GitHubAPIv3 {
     let content
     let etag
     try {
-      const response = await this.__octokit.repos.getContents({ ...query, headers })
+      const response = await this.__octokit.repos.getContent({ ...query, headers })
       content = Buffer.from(response.data.content, 'base64').toString()
       etag = response.headers.etag
       debug(`github sent 200 for file ${ref}/${path}`)
@@ -116,7 +116,7 @@ module.exports = class GitHubAPIv3 {
     })
     debug(`updateFile: for 'refs/heads/${branch}' SHA is '${sha}'`)
 
-    const response = await this.__octokit.repos.createOrUpdateFile({
+    const response = await this.__octokit.repos.createOrUpdateFileContents({
       content: Buffer.from(content).toString('base64'),
       path,
       owner,

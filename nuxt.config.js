@@ -9,8 +9,6 @@ module.exports = async () => {
   return {
     rootDir: __dirname,
 
-    mode: 'universal',
-
     // https://nuxtjs.org/api/configuration-modern
     modern: false,
 
