@@ -566,7 +566,7 @@
                 <p class="control">
                   <input
                     :readonly="disabled"
-                    v-model="smtp.smtpPort"
+                    v-model.number="smtp.smtpPort"
                     class="input code">
                 </p>
                 <p class="control is-expanded">

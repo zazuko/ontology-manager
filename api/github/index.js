@@ -5,19 +5,27 @@ const gql = require('graphql-tag')
 const N3Parser = require('@rdfjs/parser-n3')
 const rdf = require('rdf-ext')
 const Router = require('express').Router
+const nodemailer = require('nodemailer')
 const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 
 const parser = new N3Parser({ factory: rdf })
 
+let ontologyReloader
+
 module.exports = async function (editorConfig) {
+  // editorConfig is always the latest, full (private + public) config
   const router = Router()
   const api = new GitHubAPIv3(editorConfig)
 
   const filesCache = new Map()
-  let version
-  setInterval(async () => {
+  let ontologyVersion
+
+  if (ontologyReloader) {
+    clearInterval(ontologyReloader)
+  }
+  ontologyReloader = setInterval(async () => {
     const path = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
     const content = filesCache.get(path)
     try {
@@ -25,16 +33,16 @@ module.exports = async function (editorConfig) {
       if (hash(newContent) !== content) {
         filesCache.set(path, hash(newContent))
       }
-      if (typeof version === 'undefined' || newContent !== content) {
+      if (typeof ontologyVersion === 'undefined' || newContent !== content) {
         const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
         const quadStream = parser.import(stringToStream(versionPart))
         const dataset = await rdf.dataset().import(quadStream)
         const newVersion = getVersion(dataset)
         if (newVersion !== null) {
-          version = newVersion
+          ontologyVersion = newVersion
         }
-        else if (typeof version === 'undefined') {
-          version = -1
+        else if (typeof ontologyVersion === 'undefined') {
+          ontologyVersion = -1
         }
       }
     }
@@ -42,6 +50,30 @@ module.exports = async function (editorConfig) {
       debug(err)
     }
   }, 5000)
+
+  let smtpTransporter
+  const { smtpPort, smtpUser, smtpServer, smtpPassword } = editorConfig.smtp
+  debug(editorConfig.smtp)
+  if (smtpPort && smtpServer && smtpUser && smtpPassword) {
+    smtpTransporter = nodemailer.createTransport({
+      host: smtpServer,
+      port: parseInt(smtpPort, 10),
+      secure: editorConfig.smtp.secure,
+      auth: {
+        user: smtpUser,
+        pass: smtpPassword
+      }
+    })
+    smtpTransporter.verify(function (error, success) {
+      if (error) {
+        debug(error)
+        smtpTransporter = null
+      }
+      else {
+        debug('SMTP server configured')
+      }
+    })
+  }
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
@@ -56,7 +88,7 @@ module.exports = async function (editorConfig) {
   })
 
   router.get('/version', (req, res, next) => {
-    res.json({ version })
+    res.json({ version: ontologyVersion })
   })
 
   router.get('/blob/:file', async (req, res) => {
