@@ -168,7 +168,6 @@ function setupClient () {
   })
 }
 
-// temp
 async function migrateSettings () {
   const spinner = ora('Migrating settings from env vars to DB').start()
 
@@ -186,7 +185,12 @@ async function migrateSettings () {
     'STRUCTURE_RAW_URL',
     'OAUTH_HOST',
     'OAUTH_CLIENT_SECRET',
-    'GITHUB_PERSONAL_ACCESS_TOKEN'
+    'GITHUB_PERSONAL_ACCESS_TOKEN',
+    'SMTP_USER',
+    'SMTP_PASSWORD',
+    'SMTP_SERVER',
+    'SMTP_PORT',
+    'SMTP_SECURE'
   ]
 
   const client = knex({
@@ -196,13 +200,13 @@ async function migrateSettings () {
 
   const existingConfigs = await client
     .withSchema('editor_schema')
-    .select('id', 'forge', 'editor', 'ontology')
+    .select('id', 'forge', 'editor', 'ontology', 'smtp')
     .from('config')
     .orderBy('id', 'desc')
     .limit(1)
 
   if (!existingConfigs.length) {
-    const { forge, editor, ontology } = getConfigFromEnvVars()
+    const { forge, editor, ontology, smtp } = getConfigFromEnvVars()
 
     const varsToImport = importableEnvVars.filter(name => !!process.env[name])
     if (!varsToImport.length) {
@@ -215,14 +219,14 @@ async function migrateSettings () {
 
     await client.raw(`
       INSERT INTO
-        "editor_schema"."config"("forge", "editor", "ontology", "reason")
+        "editor_schema"."config"("forge", "editor", "ontology", "smtp", "reason")
       VALUES(
         '${JSON.stringify(forge)}'::jsonb,
         '${JSON.stringify(editor)}'::jsonb,
         '${JSON.stringify(ontology)}'::jsonb,
+        '${JSON.stringify(smtp)}'::jsonb,
         'Initial config imported from env vars'
-      )
-      RETURNING "id", "forge", "editor", "ontology";
+      );
     `)
     spinner.succeed('Imported config from env vars')
   }

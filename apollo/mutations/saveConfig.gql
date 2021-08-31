@@ -1,8 +1,9 @@
-mutation ($forge: JSON!, $editor: JSON!, $ontology: JSON!, $reason: String!) {
+mutation ($forge: JSON!, $editor: JSON!, $ontology: JSON!, $smtp: JSON!, $reason: String!) {
   saveConfig (input: {
     forge: $forge,
     editor: $editor,
     ontology: $ontology,
+    smtp: $smtp,
     reason: $reason
   }) {
     config {
@@ -10,6 +11,7 @@ mutation ($forge: JSON!, $editor: JSON!, $ontology: JSON!, $reason: String!) {
       ontology
       reason
       editor
+      smtp
     }
   }
 }

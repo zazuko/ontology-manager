@@ -7,6 +7,8 @@ has_toc: true
 
 # Local Development Setup
 
+**Trifid doesn't support Node >12, for this reason the Ontology Manager requires Node 12.**
+
 Requirements: you will need Docker and [docker-compose](https://docs.docker.com/compose/).
 
 The schema/vocabulary/ontology itself is stored as [N-Triples](https://en.wikipedia.org/wiki/N-Triples) in a [GitHub](https://github.com/) repository. OAuth credentials & a Personal Access Token are required to set up the Ontology Manager.
@@ -62,7 +64,7 @@ For this reason, if during development you need to change one of these values: `
 
 ## 4. Run the Dev Server
 
-1. `npm install`
+1. `npm ci`
 1. Run the project:
     * Database:
         * `make up` (If the database is booting up for the first time, you'll see migrations being retried until DB is up and they get applied.)

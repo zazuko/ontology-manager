@@ -54,7 +54,16 @@ function getConfigFromEnvVars () {
     oauthClientSecret: process.env.OAUTH_CLIENT_SECRET || '',
     committerPersonalAccessToken: process.env.GITHUB_PERSONAL_ACCESS_TOKEN || ''
   }
-  return { editor, forge, ontology }
+
+  const smtp = {
+    smtpUser: process.env.SMTP_USER,
+    smtpPassword: process.env.SMTP_PASSWORD,
+    smtpServer: process.env.SMTP_SERVER,
+    smtpPort: process.env.SMTP_PORT,
+    smtpTLS: process.env.SMTP_TLS,
+    smtpSTARTTLS: process.env.SMTP_STARTTLS
+  }
+  return { editor, forge, ontology, smtp }
 }
 
 module.exports = {
