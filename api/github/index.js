@@ -5,10 +5,10 @@ const gql = require('graphql-tag')
 const N3Parser = require('@rdfjs/parser-n3')
 const rdf = require('rdf-ext')
 const Router = require('express').Router
-const nodemailer = require('nodemailer')
 const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
+const { initMailer, sendMail } = require('../email')
 
 const parser = new N3Parser({ factory: rdf })
 
@@ -51,29 +51,7 @@ module.exports = async function (editorConfig) {
     }
   }, 5000)
 
-  let smtpTransporter
-  const { smtpPort, smtpUser, smtpServer, smtpPassword } = editorConfig.smtp
-  debug(editorConfig.smtp)
-  if (smtpPort && smtpServer && smtpUser && smtpPassword) {
-    smtpTransporter = nodemailer.createTransport({
-      host: smtpServer,
-      port: parseInt(smtpPort, 10),
-      secure: editorConfig.smtp.secure,
-      auth: {
-        user: smtpUser,
-        pass: smtpPassword
-      }
-    })
-    smtpTransporter.verify(function (error, success) {
-      if (error) {
-        debug(error)
-        smtpTransporter = null
-      }
-      else {
-        debug('SMTP server configured')
-      }
-    })
-  }
+  await initMailer(editorConfig)
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({

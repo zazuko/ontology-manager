@@ -59,9 +59,9 @@ function getConfigFromEnvVars () {
     smtpUser: process.env.SMTP_USER,
     smtpPassword: process.env.SMTP_PASSWORD,
     smtpServer: process.env.SMTP_SERVER,
-    smtpPort: process.env.SMTP_PORT,
-    smtpTLS: process.env.SMTP_TLS,
-    smtpSTARTTLS: process.env.SMTP_STARTTLS
+    smtpPort: (process.env.SMTP_PORT && parseInt(process.env.SMTP_PORT, 10)) || '',
+    secure: process.env.SMTP_SECURE === 'true',
+    senderAddress: process.env.SMTP_SENDER
   }
   return { editor, forge, ontology, smtp }
 }

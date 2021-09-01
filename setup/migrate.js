@@ -190,7 +190,8 @@ async function migrateSettings () {
     'SMTP_PASSWORD',
     'SMTP_SERVER',
     'SMTP_PORT',
-    'SMTP_SECURE'
+    'SMTP_SECURE',
+    'SMTP_SENDER'
   ]
 
   const client = knex({

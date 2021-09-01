@@ -584,6 +584,23 @@
 
         <div class="field is-horizontal">
           <div class="field-label is-normal">
+            <label class="label">Sender Address</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  v-model="smtp.senderAddress"
+                  placeholder="">
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
             <label class="label">SMTP User</label>
           </div>
           <div class="field-body">
