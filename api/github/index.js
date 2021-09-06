@@ -8,7 +8,7 @@ const Router = require('express').Router
 const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
-const { initMailer, sendMail } = require('../email')
+const { initMailer, sendMail, adminEmails } = require('../email')
 
 const parser = new N3Parser({ factory: rdf })
 
@@ -220,6 +220,16 @@ module.exports = async function (editorConfig) {
       })
       debug('/proposal/submit/: proposal finalized')
 
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/proposal/${threadId}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New proposal',
+        text: dedent(`A proposal was created on "${editorConfig.editor.meta.title}".
+
+          Proposal URL: ${url}
+        `)
+      })
+
       res.json(result.data)
     }
     catch (err) {
@@ -430,3 +440,5 @@ function getVersion (dataset) {
 }
 
 const hash = (str) => str.split('').reduce((hash, char) => (((hash << 5) - hash) + char.charCodeAt(0)) | 0, 0).toString(16)
+
+const dedent = (str) => str.split('\n').map(x => x.trimStart()).join('\n')

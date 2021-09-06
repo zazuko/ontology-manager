@@ -1,12 +1,15 @@
 const debug = require('debug')('editor:backend')
+const Knex = require('knex')
 const nodemailer = require('nodemailer')
 
 module.exports = {
   initMailer,
-  sendMail
+  sendMail,
+  adminEmails
 }
 
 let smtpTransporter
+let smtpSender
 let senderAddress = ''
 
 async function initMailer (editorConfig) {
@@ -17,6 +20,7 @@ async function initMailer (editorConfig) {
   }
 
   if (smtpPort && smtpServer && smtpUser && smtpPassword) {
+    smtpSender = smtpUser
     smtpTransporter = nodemailer.createTransport({
       host: smtpServer,
       port: parseInt(smtpPort, 10),
@@ -38,14 +42,42 @@ async function initMailer (editorConfig) {
       resolve(smtpTransporter)
     }))
   }
-  return Promise.resolve()
+  return Promise.resolve(null)
 }
 
 async function sendMail ({ recipients, subject, text }) {
-  return smtpTransporter.sendMail({
-    from: senderAddress,
-    cc: recipients,
-    subject,
-    text
+  if (!smtpTransporter) {
+    return
+  }
+  const emails = recipients.map((recipient) =>
+    smtpTransporter
+      .sendMail({
+        sender: senderAddress,
+        from: senderAddress,
+        to: recipient,
+        subject,
+        text
+      })
+      .then(() => true)
+      .catch((err) => {
+        debug(err)
+        return false
+      }))
+  return Promise.all(emails).then(results => results.every(Boolean))
+}
+
+async function adminEmails () {
+  const client = Knex({
+    client: 'pg',
+    connection: {}
   })
+
+  const results = await client.raw(`
+    SELECT pe.email FROM editor_private_schema.person_account AS pe
+    JOIN editor_schema.person AS e ON e.id = pe.person_id
+    WHERE e.is_admin = true;
+  `)
+  const emails = results.rows.map(({ email }) => email)
+
+  return client.destroy().then(() => emails)
 }
