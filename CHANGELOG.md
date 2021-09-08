@@ -1,3 +1,17 @@
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/zazuko/ontology-manager/compare/v0.12.0...v0.13.0) (2021-09-08)
+
+
+### Features
+
+* create smtp server on init and after config change ([6f09cde](https://github.com/zazuko/ontology-manager/commit/6f09cde))
+* send email notifications on proposal creation ([2ae745a](https://github.com/zazuko/ontology-manager/commit/2ae745a))
+* send mail notifications on discussion answer ([23f73b4](https://github.com/zazuko/ontology-manager/commit/23f73b4))
+* send mail notifications on discussion creation ([71bd1a5](https://github.com/zazuko/ontology-manager/commit/71bd1a5))
+* smtp settings config form ([9ad9e51](https://github.com/zazuko/ontology-manager/commit/9ad9e51))
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/zazuko/ontology-manager/compare/v0.11.2...v0.12.0) (2021-02-04)
 
