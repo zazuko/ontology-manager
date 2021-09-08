@@ -410,6 +410,49 @@ module.exports = async function (editorConfig) {
     }
   })
 
+  router.post('/discussions/answer', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($threadId: Int!, $body: String!, $hatId: Int) {
+            createMessage (input: {
+              message: {
+                threadId: $threadId,
+                body: $body,
+                hatId: $hatId
+              }
+            }) {
+              message {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/discussion/${req.body.threadId}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New Answer',
+        text: dedent(`An answer was posted on "${editorConfig.editor.meta.title}".
+
+          Discussion URL: ${url}
+        `)
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
   function getToken (req) {
     if (!req.get('Authorization')) {
       return
