@@ -19,7 +19,7 @@ describe('Proposal', () => {
 
     it('can request a new class', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(3000).get('#proposal-new-class').click()
+      cy.wait(5000).get('#proposal-new-class').click()
       cy.url().should('be', '/zom/proposal/class?iri=http%3A%2F%2Fexample.com%2Fpouch%2FCargoHandlersPouch')
     })
   })
@@ -37,13 +37,13 @@ describe('Proposal', () => {
 
     it('can request a class modification', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(3000).get('#proposal-change-object').click()
+      cy.wait(5000).get('#proposal-change-object').click()
       cy.url().should('be', '/zom/proposal/class?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction&edit=true')
     })
 
     it('can request a new property', () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.wait(3000).get('#proposal-add-property').click()
+      cy.wait(5000).get('#proposal-add-property').click()
       cy.url().should('be', '/zom/proposal/property?iri=http%3A%2F%2Fexample.com%2Fschema%2FShippersInstruction')
     })
   })
@@ -84,7 +84,7 @@ describe('Proposal', () => {
             })
             cy.url().should('not.include', 'http://localhost:3000/zom/proposal/class?id=')
             cy.get('.notification-counter').should('not.be.visible')
-            cy.goto('/pouch/CargoHandlersPouch').wait(3000)
+            cy.goto('/pouch/CargoHandlersPouch').wait(5000)
             assertBoxesCountOn('/pouch/CargoHandlersPouch', { class: 1, proposal: count + 1 })
           })
         })
@@ -216,7 +216,7 @@ function createDraft () {
       cy.get('.subform-submit').invoke('text').then(text => expect(text).to.contain('Add "Disk Wheel" to the proposal'))
       cy.get('.subform-submit').click()
       cy.get('.property-details').should('not.exist')
-      cy.get('.collapsed-title').wait(3000).invoke('text').then(text => expect(text).to.contain('New Property "Disk Wheel"'))
+      cy.get('.collapsed-title').wait(5000).invoke('text').then(text => expect(text).to.contain('New Property "Disk Wheel"'))
       cy.get('.subform-reopen').click()
       cy.get('.property-details').should('exist')
     })
