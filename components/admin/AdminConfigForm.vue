@@ -550,6 +550,115 @@
         </div>
       </div>
 
+      <div>
+        <hr>
+
+        <h1 class="title">4. Email Settings</h1>
+        <h2 class="subtitle">4.1. SMTP Parameters</h2>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Port &amp; Server</label>
+          </div>
+          <div class="field-body">
+            <div class="field is-expanded">
+              <div class="field has-addons">
+                <p class="control">
+                  <input
+                    :readonly="disabled"
+                    v-model.number="smtp.smtpPort"
+                    class="input code">
+                </p>
+                <p class="control is-expanded">
+                  <input
+                    :readonly="disabled"
+                    class="input code"
+                    type="text"
+                    v-model="smtp.smtpServer"
+                    placeholder="">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Sender Address</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  v-model="smtp.senderAddress"
+                  placeholder="">
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">SMTP User</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  v-model="smtp.smtpUser"
+                  placeholder="">
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">SMTP Password</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  v-model="smtp.smtpPassword"
+                  placeholder="">
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Secure</label>
+          </div>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select v-model="smtp.secure">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+              <p class="help">
+                <a
+                  href="https://nodemailer.com/smtp/#tls-options"
+                  target="_blank">
+                  read more
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <hr>
 
       <h1 class="title">4. Save</h1>
@@ -639,6 +748,7 @@ export default {
       editor: clone(this.config.editor),
       forge: clone(this.config.forge || {}),
       ontology: clone(this.config.ontology || {}),
+      smtp: clone(this.config.smtp || {}),
       numberOfColumns: this.config.editor.text.home.length,
       reason: initialSetup ? 'Initial Config' : '',
       error: ''
@@ -690,11 +800,16 @@ export default {
       this.error = ''
       delete this.editor.setup
 
+      if (this.smtp.secure) {
+        this.smtp.secure = this.smtp.secure === 'true'
+      }
+
       const variables = {
         editor: this.editor,
         forge: this.forge,
         ontology: this.ontology,
-        reason: this.reason
+        reason: this.reason,
+        smtp: this.smtp
       }
 
       try {

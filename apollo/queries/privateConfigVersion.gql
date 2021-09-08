@@ -6,6 +6,7 @@ query PrivateConfigVersion ($version: Int!) {
     forge
     editor
     ontology
+    smtp
     personByAuthorId {
       avatar
       username

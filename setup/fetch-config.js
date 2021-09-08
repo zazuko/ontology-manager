@@ -26,7 +26,7 @@ module.exports = async function fetchConfig () {
 
   const results = await client
     .withSchema('editor_schema')
-    .select('id', 'forge', 'editor', 'ontology')
+    .select('id', 'forge', 'editor', 'ontology', 'smtp')
     .from('config')
     .orderBy('id', 'desc')
     .limit(1)

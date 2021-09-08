@@ -8,16 +8,24 @@ const Router = require('express').Router
 const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
+const { initMailer, sendMail, adminEmails } = require('../email')
 
 const parser = new N3Parser({ factory: rdf })
 
+let ontologyReloader
+
 module.exports = async function (editorConfig) {
+  // editorConfig is always the latest, full (private + public) config
   const router = Router()
   const api = new GitHubAPIv3(editorConfig)
 
   const filesCache = new Map()
-  let version
-  setInterval(async () => {
+  let ontologyVersion
+
+  if (ontologyReloader) {
+    clearInterval(ontologyReloader)
+  }
+  ontologyReloader = setInterval(async () => {
     const path = editorConfig.ontology.structureRawUrl.substr(editorConfig.ontology.structureRawUrl.lastIndexOf('/') + 1)
     const content = filesCache.get(path)
     try {
@@ -25,16 +33,16 @@ module.exports = async function (editorConfig) {
       if (hash(newContent) !== content) {
         filesCache.set(path, hash(newContent))
       }
-      if (typeof version === 'undefined' || newContent !== content) {
+      if (typeof ontologyVersion === 'undefined' || newContent !== content) {
         const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
         const quadStream = parser.import(stringToStream(versionPart))
         const dataset = await rdf.dataset().import(quadStream)
         const newVersion = getVersion(dataset)
         if (newVersion !== null) {
-          version = newVersion
+          ontologyVersion = newVersion
         }
-        else if (typeof version === 'undefined') {
-          version = -1
+        else if (typeof ontologyVersion === 'undefined') {
+          ontologyVersion = -1
         }
       }
     }
@@ -42,6 +50,8 @@ module.exports = async function (editorConfig) {
       debug(err)
     }
   }, 5000)
+
+  await initMailer(editorConfig)
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
@@ -56,7 +66,7 @@ module.exports = async function (editorConfig) {
   })
 
   router.get('/version', (req, res, next) => {
-    res.json({ version })
+    res.json({ version: ontologyVersion })
   })
 
   router.get('/blob/:file', async (req, res) => {
@@ -210,6 +220,16 @@ module.exports = async function (editorConfig) {
       })
       debug('/proposal/submit/: proposal finalized')
 
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/proposal/${threadId}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New proposal',
+        text: dedent(`A proposal was created on "${editorConfig.editor.meta.title}".
+
+          Proposal URL: ${url}
+        `)
+      })
+
       res.json(result.data)
     }
     catch (err) {
@@ -344,6 +364,95 @@ module.exports = async function (editorConfig) {
     }
   })
 
+  router.post('/discussions/create', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($headline: String!, $body: String!, $iri: String!) {
+            createThread (input: {
+              thread: {
+                headline: $headline,
+                body: $body,
+                iri: $iri,
+                threadType: DISCUSSION,
+                status: OPEN
+              }
+            }) {
+              thread {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/discussion/${result.data.createThread.thread.id}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New discussion',
+        text: dedent(`A discussion was created on "${editorConfig.editor.meta.title}".
+
+          Title: ${req.body.headline}
+          Discussion URL: ${url}
+        `)
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
+  router.post('/discussions/answer', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($threadId: Int!, $body: String!, $hatId: Int) {
+            createMessage (input: {
+              message: {
+                threadId: $threadId,
+                body: $body,
+                hatId: $hatId
+              }
+            }) {
+              message {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/discussion/${req.body.threadId}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New Answer',
+        text: dedent(`An answer was posted on "${editorConfig.editor.meta.title}".
+
+          Discussion URL: ${url}
+        `)
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
   function getToken (req) {
     if (!req.get('Authorization')) {
       return
@@ -420,3 +529,5 @@ function getVersion (dataset) {
 }
 
 const hash = (str) => str.split('').reduce((hash, char) => (((hash << 5) - hash) + char.charCodeAt(0)) | 0, 0).toString(16)
+
+const dedent = (str) => str.split('\n').map(x => x.trimStart()).join('\n')

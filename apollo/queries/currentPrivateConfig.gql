@@ -5,5 +5,6 @@ query CurrentPrivateConfig {
     forge
     editor
     ontology
+    smtp
   }
 }

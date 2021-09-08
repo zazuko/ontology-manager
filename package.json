@@ -52,6 +52,7 @@
     "knex": "^0.21.17",
     "marked": "^1.2.9",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.6.3",
     "nuxt-start": "^2.14.12",
     "ora": "^4.0.4",
     "patch-headers": "^1.1.0",

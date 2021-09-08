@@ -355,6 +355,74 @@ module.exports = async function (editorConfig) {
     }
   })
 
+  router.post('/discussions/create', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($headline: String!, $body: String!, $iri: String!) {
+            createThread (input: {
+              thread: {
+                headline: $headline,
+                body: $body,
+                iri: $iri,
+                threadType: DISCUSSION,
+                status: OPEN
+              }
+            }) {
+              thread {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
+  router.post('/discussions/answer', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($threadId: Int!, $body: String!, $hatId: Int) {
+            createMessage (input: {
+              message: {
+                threadId: $threadId,
+                body: $body,
+                hatId: $hatId
+              }
+            }) {
+              message {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
   // TODO: factor these out
   function getToken (req) {
     if (!req.get('Authorization')) {
