@@ -364,6 +364,52 @@ module.exports = async function (editorConfig) {
     }
   })
 
+  router.post('/discussions/create', async (req, res, next) => {
+    try {
+      const userApolloClient = await getApolloClientForUser(req)
+
+      const result = await userApolloClient.mutate({
+        mutation: gql`
+          mutation ($headline: String!, $body: String!, $iri: String!) {
+            createThread (input: {
+              thread: {
+                headline: $headline,
+                body: $body,
+                iri: $iri,
+                threadType: DISCUSSION,
+                status: OPEN
+              }
+            }) {
+              thread {
+                id
+              }
+            }
+          }`,
+        variables: req.body
+      })
+
+      const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/discussion/${result.data.createThread.thread.id}`
+      sendMail({
+        recipients: await adminEmails(),
+        subject: 'New discussion',
+        text: dedent(`A discussion was created on "${editorConfig.editor.meta.title}".
+
+          Title: ${req.body.headline}
+          Discussion URL: ${url}
+        `)
+      })
+
+      res.json(result.data)
+    }
+    catch (err) {
+      if (_.get(err, 'request.headers.authorization')) {
+        err.request.headers.authorization = '[...]'
+      }
+      debug(err.message, err.request)
+      res.status(500).json({ message: err.message })
+    }
+  })
+
   function getToken (req) {
     if (!req.get('Authorization')) {
       return

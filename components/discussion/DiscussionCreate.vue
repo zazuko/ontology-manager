@@ -58,7 +58,7 @@
 
 <script>
 import _get from 'lodash/get'
-import createDiscussion from '@/apollo/mutations/createDiscussion'
+import axios from 'axios'
 import Editor from '@/components/editor/Editor'
 
 export default {
@@ -87,6 +87,7 @@ export default {
   methods: {
     _get,
     create () {
+      const token = this.$apolloHelpers.getToken()
       const variables = {
         headline: this.headlineModel,
         iri: this.iri,
@@ -94,7 +95,9 @@ export default {
         isDraft: false
       }
 
-      this.$apollo.mutate({ mutation: createDiscussion, variables })
+      const headers = { headers: { authorization: `Bearer ${token}` } }
+
+      axios.post('/api/discussions/create', variables, headers)
         .then((result) => {
           const id = _get(result, 'data.createThread.thread.id')
           if (id) {
