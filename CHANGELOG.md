@@ -1,3 +1,19 @@
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/zazuko/ontology-manager/compare/v0.13.0...v0.14.0) (2021-09-14)
+
+
+### Bug Fixes
+
+* **config:** admin config form does not coerce smtp.secure ([58ad2ef](https://github.com/zazuko/ontology-manager/commit/58ad2ef))
+* auth checks that github is used before fetch github mail ([45de13e](https://github.com/zazuko/ontology-manager/commit/45de13e))
+
+
+### Features
+
+* send email to all discussion participants on response ([45929f7](https://github.com/zazuko/ontology-manager/commit/45929f7))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/zazuko/ontology-manager/compare/v0.12.0...v0.13.0) (2021-09-08)
 
