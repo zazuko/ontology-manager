@@ -1,3 +1,13 @@
+<a name="0.14.1"></a>
+## [0.14.1](https://github.com/zazuko/ontology-manager/compare/v0.14.0...v0.14.1) (2021-09-14)
+
+
+### Bug Fixes
+
+* avoid startup crash on failed TLS SMTP connection ([932cbe4](https://github.com/zazuko/ontology-manager/commit/932cbe4))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/zazuko/ontology-manager/compare/v0.13.0...v0.14.0) (2021-09-14)
 
