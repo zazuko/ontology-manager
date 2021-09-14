@@ -8,7 +8,7 @@ const Router = require('express').Router
 const stringToStream = require('string-to-stream')
 const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
-const { initMailer, sendMail, adminEmails } = require('../email')
+const { initMailer, sendMail, adminEmails, threadParticipants } = require('../email')
 
 const parser = new N3Parser({ factory: rdf })
 
@@ -433,8 +433,10 @@ module.exports = async function (editorConfig) {
       })
 
       const url = `${editorConfig.editor.protocol}://${editorConfig.editor.host}/zom/discussion/${req.body.threadId}`
+      const admins = await adminEmails()
+      const participants = await threadParticipants()
       sendMail({
-        recipients: await adminEmails(),
+        recipients: [...new Set([...admins, ...participants])],
         subject: 'New Answer',
         text: dedent(`An answer was posted on "${editorConfig.editor.meta.title}".
 
