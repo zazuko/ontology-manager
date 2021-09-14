@@ -55,3 +55,30 @@ These store modules are responsible for loading a proposal from the DB, saving a
 
 * A thread can either be a `discussion` or a `proposal`.
 * A thread with `discussion` type is a conversation, messages belong to a thread.
+
+## Extending the Ontology Manager
+
+### Forges
+
+The only forge supported at the moment is GitHub.
+Implementing other forges was planned from the get-go so the project is not tightly coupled with GitHub.
+
+Whenever the manager needs to interact with GitHub, the frontend hits the API which then deals with the GitHub API.
+(This strategy also prevents leaking the credentials used to connect to the forge.)
+
+[`./api/`](./api/) contains two forge implementations:
+* `github`, used in the demo
+* `e2e-test`, a dummy implementation used by the end-to-end tests
+
+A new backend API could be started by copying the github API and adapting the implementation of each endpoint to the new forge.
+
+Depending on the manager configuration, the [manager loads the appropriate backend](https://github.com/zazuko/ontology-manager/blob/45de13edfe41fd0b85ee360699bab9107487b46d/api/index.js#L27-L39).
+
+There are a few places where this separation of forge implementations bleeds into other files, namely all the startup config things:
+the new forge should be detectable in
+[nuxt config](https://github.com/zazuko/ontology-manager/blob/45de13edfe41fd0b85ee360699bab9107487b46d/nuxt.config.js#L98-L125),
+the "[env migrator](https://github.com/zazuko/ontology-manager/blob/45de13edfe41fd0b85ee360699bab9107487b46d/setup/migrate.js#L174)"
+responsible for loading env variables config into the database config table, and the
+[dummy config](https://github.com/zazuko/ontology-manager/blob/45de13edfe41fd0b85ee360699bab9107487b46d/fixtures/dummy-config.js#L5-L25)
+loaded by default.
+
