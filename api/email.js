@@ -20,18 +20,25 @@ async function initMailer (editorConfig) {
   }
 
   if (smtpPort && smtpServer && smtpUser && smtpPassword) {
-    smtpTransporter = nodemailer.createTransport({
-      host: smtpServer,
-      port: parseInt(smtpPort, 10),
-      secure: editorConfig.smtp.secure,
-      auth: {
-        user: smtpUser,
-        pass: smtpPassword
-      }
-    })
+    try {
+      smtpTransporter = nodemailer.createTransport({
+        host: smtpServer,
+        port: parseInt(smtpPort, 10),
+        secure: editorConfig.smtp.secure,
+        auth: {
+          user: smtpUser,
+          pass: smtpPassword
+        }
+      })
+    }
+    catch (err) {
+      debug('failed to configure SMTP transporter')
+      return Promise.resolve(null)
+    }
 
     return new Promise((resolve) => smtpTransporter.verify((error, success) => {
       if (error) {
+        debug('failed to verify SMTP transporter')
         debug(error)
         smtpTransporter = null
       }

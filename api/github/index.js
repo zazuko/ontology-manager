@@ -51,7 +51,12 @@ module.exports = async function (editorConfig) {
     }
   }, 5000)
 
-  await initMailer(editorConfig)
+  try {
+    await initMailer(editorConfig)
+  }
+  catch (err) {
+    debug('failed to init SMTP transporter')
+  }
 
   const anonApolloClient = await apolloClientFactory()
   const getApolloClientForUser = async (req) => apolloClientFactory({
