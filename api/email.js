@@ -5,11 +5,11 @@ const nodemailer = require('nodemailer')
 module.exports = {
   initMailer,
   sendMail,
-  adminEmails
+  adminEmails,
+  threadParticipants
 }
 
 let smtpTransporter
-let smtpSender
 let senderAddress = ''
 
 async function initMailer (editorConfig) {
@@ -20,7 +20,6 @@ async function initMailer (editorConfig) {
   }
 
   if (smtpPort && smtpServer && smtpUser && smtpPassword) {
-    smtpSender = smtpUser
     smtpTransporter = nodemailer.createTransport({
       host: smtpServer,
       port: parseInt(smtpPort, 10),
@@ -73,9 +72,43 @@ async function adminEmails () {
   })
 
   const results = await client.raw(`
-    SELECT pe.email FROM editor_private_schema.person_account AS pe
-    JOIN editor_schema.person AS e ON e.id = pe.person_id
+    SELECT pe.email
+    FROM editor_private_schema.person_account AS pe
+    JOIN editor_schema.person AS e
+    ON e.id = pe.person_id
     WHERE e.is_admin = true;
+  `)
+  const emails = results.rows.map(({ email }) => email)
+
+  return client.destroy().then(() => emails)
+}
+
+async function threadParticipants () {
+  const client = Knex({
+    client: 'pg',
+    connection: {}
+  })
+
+  const results = await client.raw(`
+    WITH thread AS (
+      SELECT *
+      FROM editor_schema.thread AS t
+      WHERE t.id = 4
+    )
+    SELECT pe.email
+    FROM editor_private_schema.person_account AS pe
+    JOIN editor_schema.person AS e
+    ON e.id = pe.person_id
+    WHERE e.id IN (
+      SELECT m.author_id
+      FROM thread AS t
+      JOIN editor_schema.message AS m
+      ON m.thread_id = t.id
+      WHERE t.id = 4
+        UNION
+      SELECT author_id
+      FROM thread
+    );
   `)
   const emails = results.rows.map(({ email }) => email)
 
