@@ -29,14 +29,21 @@ spec:
             cpu: "600m"
 
         readinessProbe:
-          initialDelaySeconds: 30
           timeoutSeconds: 5
           httpGet:
             port: http
             path: /api/health
 
         livenessProbe:
-          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          httpGet:
+            port: http
+            path: /api/health
+
+        startupProbe:
+          # Give the app about 5min to start
+          periodSeconds: 10
+          failureThreshold: 30
           timeoutSeconds: 5
           httpGet:
             port: http
