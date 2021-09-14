@@ -44,9 +44,9 @@ export default {
       let email = _get(this, '$store.state.auth.user.email')
 
       if ([username, id].every(Boolean)) {
-        // if github user set their email as 'private', email ends up 'null' here
-        // so we have to fetch it via the API
-        if (!email) {
+        if (!email && this.$store.state.config.editor.github) {
+          // if github user set their email as 'private', email ends up 'null' here
+          // so we have to fetch it via the API
           const headers = { headers: { authorization: this.$auth.getToken(strategy) } }
           const result = await axios.get('https://api.github.com/user/emails', headers)
           email = _get(result, 'data[0].email') || `${tmp}-unknown@example.com`

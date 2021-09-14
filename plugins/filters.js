@@ -17,11 +17,3 @@ Vue.filter('formatTime', (date) => {
   const timePart = d.substring(dateTimeSeparator + 1, d.indexOf('.'))
   return `${datePart} ${timePart}`
 })
-
-// export default async ({ store }) => {
-//   const owner = _get(store, 'state.config.editor.github.owner', '')
-//   const repo = _get(store, 'state.config.editor.github.repo', '')
-//   Vue.filter('forgeLink', (id) => {
-//     return `https://github.com/${owner}/${repo}/pull/${id}`
-//   })
-// }
