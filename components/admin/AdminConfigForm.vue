@@ -642,8 +642,8 @@
               <div class="control">
                 <div class="select is-fullwidth">
                   <select v-model="smtp.secure">
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                    <option :value="true">Yes</option>
+                    <option :value="false">No</option>
                   </select>
                 </div>
               </div>
@@ -799,10 +799,6 @@ export default {
     async saveConfig () {
       this.error = ''
       delete this.editor.setup
-
-      if (this.smtp.secure) {
-        this.smtp.secure = this.smtp.secure === 'true'
-      }
 
       const variables = {
         editor: this.editor,
