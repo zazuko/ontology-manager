@@ -1,5 +1,5 @@
 default:
-  image: registry.zazuko.com/docker/deploy-image:v1.4
+  image: ghcr.io/zazuko/deploy-image:v1.4
   tags:
     - kubernetes
 
