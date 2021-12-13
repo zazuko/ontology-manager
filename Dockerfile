@@ -7,7 +7,7 @@ ARG SENTRY_URL
 ARG SENTRY_ORG
 ARG SENTRY_PROJECT
 
-RUN apk add --no-cache bash python make g++ git
+RUN apk add --no-cache bash python3 make g++ git
 RUN npm install -g npm@6.13.7
 
 WORKDIR /app
