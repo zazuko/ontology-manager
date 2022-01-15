@@ -50,7 +50,7 @@
     "graphql-tag": "^2.11.0",
     "isomorphic-fetch": "^3.0.0",
     "knex": "^0.21.17",
-    "marked": "^1.2.9",
+    "marked": "^4.0.10",
     "morgan": "^1.9.1",
     "nodemailer": "^6.6.3",
     "nuxt-start": "^2.14.12",
