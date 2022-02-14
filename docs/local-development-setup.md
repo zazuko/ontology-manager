@@ -8,6 +8,7 @@ has_toc: true
 # Local Development Setup
 
 **Trifid doesn't support Node >12, for this reason the Ontology Manager requires Node 12.**
+See https://github.com/zazuko/trifid/issues/83 for Node version support.
 
 Requirements: you will need Docker and [docker-compose](https://docs.docker.com/compose/).
 
