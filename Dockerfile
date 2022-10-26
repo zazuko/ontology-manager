@@ -34,7 +34,7 @@ RUN npm ci --production --no-optional
 
 COPY --chown=node:node . .
 
-COPY --from=base /app/artifacts/ ./artifacts
+COPY --chown=node:node --from=base /app/artifacts/ ./artifacts
 
 ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
