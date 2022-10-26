@@ -7,16 +7,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version:
+          - 14
+          - 16
+          - 18
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout Git repository
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          node-version: "12"
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
       - name: Setup
         run: |
           cp .env.example .env
           docker-compose up -d db
-          npm install -g npm@^6 wait-on
+          npm install -g wait-on
           npm ci
       - name: Migrate
         run: npm run e2e:migrate
