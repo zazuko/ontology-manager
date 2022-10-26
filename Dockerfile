@@ -1,7 +1,5 @@
 FROM node:12-alpine as base
 
-USER node
-
 ARG SENTRY_DSN
 ARG CUSTOMER_NAME
 ARG SENTRY_AUTH_TOKEN
@@ -26,11 +24,8 @@ ENV BUILDING_WITHOUT_PG_ACCESS=yes
 RUN bash /app/build.sh
 
 FROM node:12-alpine
-
-USER node
-
 RUN npm install -g npm@6.13.7
-
+USER node
 WORKDIR /app
 
 COPY package.json package-lock.json ./
