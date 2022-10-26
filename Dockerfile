@@ -25,6 +25,7 @@ RUN bash /app/build.sh
 
 FROM node:12-alpine
 RUN npm install -g npm@6.13.7
+
 USER node
 WORKDIR /app
 
