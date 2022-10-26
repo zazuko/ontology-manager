@@ -26,8 +26,10 @@ RUN bash /app/build.sh
 FROM node:12-alpine
 RUN npm install -g npm@6.13.7
 
-USER node
 WORKDIR /app
+RUN mkdir /app/nuxt_original
+RUN chown -R node:node /app && chgrp -R 0 /app && chmod -R g+rwX /app
+USER node
 
 COPY package.json package-lock.json ./
 RUN npm ci --production --no-optional
