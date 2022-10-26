@@ -32,7 +32,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --production --no-optional
 
-COPY . .
+COPY --chown=node:node . .
 
 COPY --from=base /app/artifacts/ ./artifacts
 
