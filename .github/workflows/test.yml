@@ -12,7 +12,6 @@ jobs:
         node-version:
           - 14
           - 16
-          - 18
 
     steps:
       - name: Checkout Git repository
