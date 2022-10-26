@@ -5,6 +5,7 @@
   "author": "Zazuko GmbH",
   "license": "AGPLv3",
   "private": true,
+  "type": "commonjs",
   "scripts": {
     "build": "nuxt build",
     "dev": "NUXT_HOST=0.0.0.0 nuxt",
@@ -30,7 +31,6 @@
     "@nuxtjs/sentry": "4.3.4",
     "@nuxtjs/toast": "3.3.1",
     "@octokit/rest": "17.9.2",
-    "@rdfjs/data-model": "1.2.0",
     "@rdfjs/parser-n3": "1.1.4",
     "@rdfjs/serializer-jsonld": "1.2.2",
     "@rdfjs/serializer-ntriples": "1.0.3",

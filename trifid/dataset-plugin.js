@@ -1,5 +1,5 @@
-import fetchDataset from './dataset-fetch'
-import rdf from 'rdf-ext'
+let fetchDataset
+let rdf
 
 module.exports = handler
 
@@ -7,7 +7,16 @@ module.exports = handler
  * This middleware runs on every page load, it fetchs the datasets and puts
  * them on the request
  */
-function handler (router) {
+async function handler (router) {
+  if (!fetchDataset) {
+    fetchDataset = await import('./dataset-fetch.mjs')
+    fetchDataset = fetchDataset.default
+  }
+
+  if (!rdf) {
+    rdf = await import('rdf-ext')
+  }
+
   router.use(async (req, res, next) => {
     // skip when trifid handles it
     if (req.iri && req.iri.startsWith('http')) {

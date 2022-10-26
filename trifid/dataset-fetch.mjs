@@ -2,9 +2,10 @@ import rdf from 'rdf-ext'
 import stringToStream from 'string-to-stream'
 import N3Parser from '@rdfjs/parser-n3'
 import axios from 'axios'
-import fetchConfig from '../setup/fetch-config'
+import fetchConfig from '../setup/fetch-config.js'
+import debugModule from 'debug'
 
-const debug = require('debug')('editor:backend:trifid')
+const debug = debugModule('editor:backend:trifid')
 
 // * used by a trifid plugin on first server requests
 export default async function fetchDataset () {
