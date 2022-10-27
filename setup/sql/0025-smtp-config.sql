@@ -4,8 +4,7 @@ comment on column editor_schema.config.smtp is 'SMTP config';
 
 
 ------------------------------------------------
-drop function editor_schema.save_config;
-create function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, smtp jsonb, reason text)
+create or replace function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, smtp jsonb, reason text)
 returns editor_schema.config as $$
 declare version editor_schema.config;
 begin
