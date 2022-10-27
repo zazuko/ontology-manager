@@ -34,7 +34,7 @@ create trigger proposal_submit_logger
     )
   execute procedure editor_private_schema.tg_log__proposal_submit();
 -- new trigger to log proposal edits
-create function editor_private_schema.tg_log__proposal_edit()
+create or replace function editor_private_schema.tg_log__proposal_edit()
 returns trigger as $$
 begin
   insert into editor_schema.log
