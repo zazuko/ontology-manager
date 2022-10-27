@@ -1,7 +1,7 @@
 alter table editor_schema.person add column is_superadmin boolean default false;
 comment on column editor_schema.person.is_superadmin is 'If true, the user can change the editor config.';
 -- We're using exists here because it guarantees true/false rather than true/false/null
-create function editor_schema.current_person_is_superadmin() returns bool as $$
+create or replace function editor_schema.current_person_is_superadmin() returns bool as $$
   select exists(
     select 1 from editor_schema.person where id = editor_schema.current_person_id() and is_superadmin = true
   );
