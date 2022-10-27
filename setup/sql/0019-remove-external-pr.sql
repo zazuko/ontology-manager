@@ -1,4 +1,4 @@
-drop trigger proposal_submit_logger on editor_schema.thread;
+drop trigger if exists proposal_submit_logger on editor_schema.thread;
 
 alter table editor_schema.thread alter column external_id type text;
 
