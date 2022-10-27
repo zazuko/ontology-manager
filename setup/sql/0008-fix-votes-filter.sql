@@ -1,7 +1,5 @@
-drop function editor_schema.users_vote_on_thread;
-
 -- gets the current user's vote on a thread
-create function editor_schema.users_vote_on_thread(
+create or replace function editor_schema.users_vote_on_thread(
   thread_id integer
 ) returns editor_schema.vote_type as $$
 #variable_conflict use_variable
@@ -20,10 +18,8 @@ comment on function editor_schema.users_vote_on_thread(integer) is 'Gets the cur
 
 grant execute on function editor_schema.users_vote_on_thread(integer) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 
-drop function editor_schema.votes_tally;
-
 -- gets vote tally for a thread
-create function editor_schema.votes_tally(
+create or replace function editor_schema.votes_tally(
   thread_id integer
 ) returns editor_schema.vote_tally as $$
 #variable_conflict use_variable
