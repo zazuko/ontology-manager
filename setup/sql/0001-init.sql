@@ -46,20 +46,20 @@ create type editor_schema.thread_type as enum (
   'proposal'
 );
 
-create function editor_schema.current_person() returns editor_schema.person as $$
+create or replace function editor_schema.current_person() returns editor_schema.person as $$
   select *
   from editor_schema.person
   where id = current_setting('jwt.claims.person_id')::integer
 $$ language sql stable;
 comment on function editor_schema.current_person() is 'Gets the person who was identified by our JWT.';
 
-create function editor_schema.current_person_id() returns int as $$
+create or replace function editor_schema.current_person_id() returns int as $$
   select nullif(current_setting('jwt.claims.person_id', true), '')::int;
 $$ language sql stable set search_path from current;
 comment on function editor_schema.current_person_id() is 'Gets the person who was identified by our JWT.';
 
 -- We're using exists here because it guarantees true/false rather than true/false/null
-create function editor_schema.current_person_is_admin() returns bool as $$
+create or replace function editor_schema.current_person_is_admin() returns bool as $$
   select exists(
     select 1 from editor_schema.person where id = editor_schema.current_person_id() and is_admin = true
   );
@@ -108,7 +108,7 @@ comment on column editor_schema.message.created_at is 'The time this message was
 
 alter default privileges revoke execute on functions from public;
 
-create function editor_schema.search_messages(search text) returns setof editor_schema.thread as $$
+create or replace function editor_schema.search_messages(search text) returns setof editor_schema.thread as $$
   select thread.*
   from editor_schema.thread as thread
   join editor_schema.message as message
@@ -122,7 +122,7 @@ alter table editor_schema.person add column updated_at timestamp default now();
 alter table editor_schema.thread add column updated_at timestamp default now();
 alter table editor_schema.message add column updated_at timestamp default now();
 
-create function editor_private_schema.tg_persons__make_first_person_admin() returns trigger as $$
+create or replace function editor_private_schema.tg_persons__make_first_person_admin() returns trigger as $$
 begin
   if not exists(select 1 from editor_schema.person) then
     NEW.is_admin = true;
@@ -136,7 +136,7 @@ create trigger _make_first_person_admin
   for each row
   execute procedure editor_private_schema.tg_persons__make_first_person_admin();
 
-create function editor_private_schema.set_updated_at() returns trigger as $$
+create or replace function editor_private_schema.set_updated_at() returns trigger as $$
 begin
   new.updated_at := current_timestamp;
   return new;
@@ -171,7 +171,7 @@ comment on column editor_private_schema.person_account.email is 'The email addre
 comment on column editor_private_schema.person_account.oauth_token is 'The token issued by the oauth process.';
 comment on column editor_private_schema.person_account.oauth_provided_id is 'The account ID provided by the oauth external service.';
 
-create function editor_schema.register_person(
+create or replace function editor_schema.register_person(
   name text,
   username text,
   email text,
@@ -219,7 +219,7 @@ create type editor_schema.jwt_token as (
   name text
 );
 
-create function editor_schema.authenticate(
+create or replace function editor_schema.authenticate(
   oauth_token text,
   oauth_provided_id integer
 ) returns editor_schema.jwt_token as $$
