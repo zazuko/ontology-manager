@@ -36,7 +36,7 @@
     "@rdfjs/serializer-jsonld": "1.2.2",
     "@rdfjs/serializer-ntriples": "1.0.3",
     "@rdfjs/to-ntriples": "1.0.2",
-    "apicache": "1.6.1",
+    "apicache": "1.6.3",
     "apollo-link": "1.2.14",
     "camouflage-rewrite": "1.4.0",
     "cookies": "0.8.0",
