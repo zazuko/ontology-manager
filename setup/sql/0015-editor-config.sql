@@ -1,7 +1,7 @@
 alter table editor_schema.person add column is_superadmin boolean default false;
 comment on column editor_schema.person.is_superadmin is 'If true, the user can change the editor config.';
 -- We're using exists here because it guarantees true/false rather than true/false/null
-create function editor_schema.current_person_is_superadmin() returns bool as $$
+create or replace function editor_schema.current_person_is_superadmin() returns bool as $$
   select exists(
     select 1 from editor_schema.person where id = editor_schema.current_person_id() and is_superadmin = true
   );
@@ -46,7 +46,7 @@ comment on column editor_schema.config.ontology is 'Ontology configuration.';
 -- drop policy select_config on editor_schema.config for select
 --   using (true);
 
-create function editor_schema.current_public_config(out version integer, out editor jsonb, out ontology jsonb) as $$
+create or replace function editor_schema.current_public_config(out version integer, out editor jsonb, out ontology jsonb) as $$
 select id, editor, ontology
 from editor_schema.config
 order by id desc
@@ -87,7 +87,7 @@ $$ language sql stable strict security definer;
 comment on function editor_schema.config_list is 'Gets the all configurable settings.';
 grant execute on function editor_schema.config_list to $POSTGRESQL_ROLE_PERSON;
 
-create function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, reason text)
+create or replace function editor_schema.save_config(forge jsonb, editor jsonb, ontology jsonb, reason text)
 returns editor_schema.config as $$
 declare version editor_schema.config;
 begin

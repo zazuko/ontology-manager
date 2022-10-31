@@ -40,7 +40,7 @@ create policy select_log on editor_schema.log for select
   using (true);
 
 -- triggers
-create function editor_private_schema.tg_log__proposal_submit()
+create or replace function editor_private_schema.tg_log__proposal_submit()
 returns trigger as $$
 begin
   insert into editor_schema.log
@@ -51,7 +51,7 @@ begin
 end;
 $$ language plpgsql;
 
-create function editor_private_schema.tg_log__proposal_accept()
+create or replace function editor_private_schema.tg_log__proposal_accept()
 returns trigger as $$
 begin
   insert into editor_schema.log
@@ -73,7 +73,7 @@ begin
 end;
 $$ language plpgsql;
 
-create function editor_private_schema.tg_log__conversation_create()
+create or replace function editor_private_schema.tg_log__conversation_create()
 returns trigger as $$
 begin
   insert into editor_schema.log
@@ -84,7 +84,7 @@ begin
 end;
 $$ language plpgsql;
 
-create function editor_private_schema.tg_log__conversation_comment()
+create or replace function editor_private_schema.tg_log__conversation_comment()
 returns trigger as $$
 begin
   insert into editor_schema.log

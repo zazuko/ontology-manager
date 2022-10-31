@@ -33,7 +33,7 @@ create policy delete_vote on editor_schema.vote for delete to $POSTGRESQL_ROLE_P
   using (editor_schema.current_person_is_admin());
 
 -- gets the current user's vote on a thread
-create function editor_schema.users_vote_on_thread(
+create or replace function editor_schema.users_vote_on_thread(
   thread_id int
 ) returns editor_schema.vote_type as $$
   select vote from editor_schema.vote where person_id = editor_schema.current_person_id();
@@ -42,7 +42,7 @@ comment on function editor_schema.users_vote_on_thread(integer) is 'Gets the cur
 grant execute on function editor_schema.users_vote_on_thread(integer) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 
 -- gets vote tally for a thread
-create function editor_schema.votes_tally(
+create or replace function editor_schema.votes_tally(
   thread_id integer
 ) returns editor_schema.vote_tally as $$
 declare

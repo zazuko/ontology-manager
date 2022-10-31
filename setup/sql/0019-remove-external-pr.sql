@@ -14,7 +14,6 @@ create trigger proposal_submit_logger
     )
   execute procedure editor_private_schema.tg_log__proposal_submit();
 
-drop function editor_schema.finalize_proposal;
 create or replace function editor_schema.finalize_proposal(
   thread_id int
 ) returns editor_schema.thread as $$
