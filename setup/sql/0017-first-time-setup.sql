@@ -57,6 +57,6 @@ $$ language plpgsql strict security definer;
 comment on function editor_schema.save_config(jsonb, jsonb, jsonb, text) is E'Saves a new version of the config.';
 grant execute on function editor_schema.save_config(jsonb, jsonb, jsonb, text) to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
 grant insert on table editor_schema.config to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON;
-drop policy insert_config on editor_schema.config;
+drop policy if exists insert_config on editor_schema.config;
 create policy insert_config on editor_schema.config for insert to $POSTGRESQL_ROLE_ANONYMOUS, $POSTGRESQL_ROLE_PERSON
   with check (editor_schema.current_person_is_superadmin());
