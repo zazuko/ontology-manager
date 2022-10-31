@@ -1,5 +1,5 @@
-create schema editor_schema;
-create schema editor_private_schema;
+create schema if not exists editor_schema;
+create schema if not exists editor_private_schema;
 
 create table editor_schema.person (
   id               serial primary key,
