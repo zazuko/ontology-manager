@@ -403,28 +403,32 @@ export default ({ app, store }, inject) => {
           termIRI.creativeWork
         ).length
       }
+
+      toJSON () {
+        return { ...this }
+      }
     }
 
     const nodes = {}
 
-    // we consider <parentIRI> <givenPredicate> <childIRI>
-    ;[stringIRI.hasPart].forEach((predicate) => {
-      structureDataset
-        .match(null, rdf.namedNode(predicate))
-        .toArray()
-        .forEach((quad) => {
-          if (!nodes[quad.subject.value]) {
-            nodes[quad.subject.value] = new StructureNode(quad.subject.value, undefined, structureDataset.match(quad.subject))
-          }
-          const parent = nodes[quad.subject.value]
-          if (!nodes[quad.object.value]) {
-            nodes[quad.object.value] = new StructureNode(quad.object.value, parent, structureDataset.match(quad.object))
-          }
-          const child = nodes[quad.object.value]
-          child.parent = parent
-          parent.children.push(child)
-        })
-    })
+      // we consider <parentIRI> <givenPredicate> <childIRI>
+      ;[stringIRI.hasPart].forEach((predicate) => {
+        structureDataset
+          .match(null, rdf.namedNode(predicate))
+          .toArray()
+          .forEach((quad) => {
+            if (!nodes[quad.subject.value]) {
+              nodes[quad.subject.value] = new StructureNode(quad.subject.value, undefined, structureDataset.match(quad.subject))
+            }
+            const parent = nodes[quad.subject.value]
+            if (!nodes[quad.object.value]) {
+              nodes[quad.object.value] = new StructureNode(quad.object.value, parent, structureDataset.match(quad.object))
+            }
+            const child = nodes[quad.object.value]
+            child.parent = parent
+            parent.children.push(child)
+          })
+      })
 
     const modifiedDataset = structureDataset.merge(ontologyDataset).match(null, termIRI.modified)
     const baseProposalCount = {
@@ -512,6 +516,10 @@ export default ({ app, store }, inject) => {
         this.isSubClass = Boolean(quads.match(rdf.namedNode(iri), termIRI.subClassOf).size)
         this.isProperty = Boolean(quads.match(rdf.namedNode(iri), termIRI.a, termIRI.Property).size)
         this.isSubProperty = Boolean(quads.match(rdf.namedNode(iri), termIRI.subPropertyOf).size)
+      }
+
+      toJSON () {
+        return { ...this }
       }
     }
 
