@@ -27,13 +27,16 @@ FROM node:12-alpine
 RUN npm install -g npm@6.13.7
 
 WORKDIR /app
+RUN mkdir /app/nuxt_original
+RUN chown -R node:node /app && chgrp -R 0 /app && chmod -R g+rwX /app
+USER node
 
 COPY package.json package-lock.json ./
 RUN npm ci --production --no-optional
 
-COPY . .
+COPY --chown=node:node . .
 
-COPY --from=base /app/artifacts/ ./artifacts
+COPY --chown=node:node --from=base /app/artifacts/ ./artifacts
 
 ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
