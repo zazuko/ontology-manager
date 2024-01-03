@@ -229,8 +229,10 @@ export function isCyclic (adjacencyList) {
   return false
 }
 
+export const DATASET_VERSION_IRI = 'http://editor.zazuko.com/_datasetVersion'
+
 export function getVersion (structureDataset) {
-  const versionSubject = rdf.namedNode('http://editor.zazuko.com/_datasetVersion')
+  const versionSubject = rdf.namedNode(DATASET_VERSION_IRI)
   const quads = structureDataset.match(versionSubject, rdf.namedNode('http://schema.org/version')).toArray()
   if (quads.length) {
     return parseInt(quads[0].object.value, 10)
@@ -241,8 +243,8 @@ export function getVersion (structureDataset) {
 export function bumpVersion (_structureDataset) {
   const structureDataset = _structureDataset.clone()
   const version = getVersion(structureDataset)
-  const versionSubject = rdf.namedNode('http://editor.zazuko.com/_datasetVersion')
-  structureDataset.removeMatches(rdf.namedNode('http://editor.zazuko.com/_datasetVersion'))
+  const versionSubject = rdf.namedNode(DATASET_VERSION_IRI)
+  structureDataset.removeMatches(rdf.namedNode(DATASET_VERSION_IRI))
   const versionQuad = rdf.quad(versionSubject, rdf.namedNode('http://schema.org/version'), rdf.literal(version + 1))
   return structureDataset.add(versionQuad)
 }

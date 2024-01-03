@@ -48,6 +48,10 @@ export default class Resource {
     this.isEdit = isEdit
   }
 
+  toJSON () {
+    return { ...this }
+  }
+
   validate () {
     if (!this.baseIRI) {
       throw new Error(`${this.proposalType} 'baseIRI' missing`)

@@ -19,7 +19,7 @@ module.exports = function handler (router) {
         req.headers.accept = filtered
       }
       // disables trifid serialization because this iri won't be found in the datasets
-      req.iri = '… nothing here …'
+      req.iri = 'https://example.com/disabled'
     }
     else if (!req.accepts(serializersFor)) {
       res.status(406).send(`No serializer for: "${accepted}", available formats: "${serializersFor.join('", "')}"`)
