@@ -10,6 +10,8 @@ const apolloClientFactory = require('../getApolloClient')
 const GitHubAPIv3 = require('./api')
 const { initMailer, sendMail, adminEmails, threadParticipants } = require('../email')
 
+const DATASET_VERSION_IRI = 'http://editor.zazuko.com/_datasetVersion'
+
 const parser = new N3Parser({ factory: rdf })
 
 let ontologyReloader
@@ -34,7 +36,7 @@ module.exports = async function (editorConfig) {
         filesCache.set(path, hash(newContent))
       }
       if (typeof ontologyVersion === 'undefined' || newContent !== content) {
-        const versionPart = newContent.split('\n').filter((line) => line.startsWith('_:')).join('\n')
+        const versionPart = newContent.split('\n').filter((line) => line.includes(DATASET_VERSION_IRI)).join('\n')
         const quadStream = parser.import(stringToStream(versionPart))
         const dataset = await rdf.dataset().import(quadStream)
         const newVersion = getVersion(dataset)
@@ -528,7 +530,6 @@ module.exports = async function (editorConfig) {
 
 function getVersion (dataset) {
   const quads = dataset.match(null, rdf.namedNode('http://schema.org/version')).toArray()
-    .filter(({ subject, object }) => subject.termType === 'BlankNode' && object.termType === 'Literal')
   if (quads.length) {
     return parseInt(quads[0].object.value, 10)
   }
