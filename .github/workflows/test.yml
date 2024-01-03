@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 14
-          - 16
+          - 18
+          - 20
 
     steps:
       - name: Checkout Git repository
